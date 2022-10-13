@@ -1,0 +1,78 @@
+----------------------------------------------------------------
+Actor arg
+----------------------------------------------------------------
+
+C ${.Table.tb1.value}
+
+All Node base_node  
+
+
+----------------------------------------------------------------
+-Actor base_node Node parent = .
+-Actor base_node Node name &= n2
+Actor base_node Node
+----------------------------------------------------------------
+
+C ${name}  - ${var}  ${eq}  ${value}
+
+Out delay
+
+C {
+
+Its Node_parent x  
+
+C }
+----------------------------------------------------------------
+Actor x
+----------------------------------------------------------------
+
+C  ${.arg} child ${name}  
+
+Out delay
+
+C ${.arg}  {
+
+Its Node_parent x ${.arg}  
+
+C ${.arg}  }
+
+E_O_F
+
+In tst.d:
+
+Node n1  parent  . v = 9
+Node n11 parent n1 v = 9
+ Link n22
+Node n12 parent n1 v = 9
+
+Node n2   parent   . v = 9
+Node n21  parent  n2 v = 9
+ Link n11
+Node n22  parent  n2 v = 9
+Node n221 parent n22 v = 9
+ Link n1
+
+Out node.a:
+ 
+n1 - v = 9
+{
+  child n11 2
+  child n12 2
+}
+n11 - v = 9
+n12 - v = 9
+n2 - v = 9
+{
+  child n21 2
+  child n22 2
+  {
+   child n221 3
+  }
+}
+n21 - v = 9
+n22 - v = 9
+{
+  child n221 2
+}
+n221 - v = 9
+

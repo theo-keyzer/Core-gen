@@ -1,0 +1,181 @@
+
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C func load(_ tok: String, _ act: ActT, _ ln: Array<Character>) {
+
+All Comp ifdo
+
+C }
+C
+C func refs(_ act: ActT) {
+
+All Comp do2
+All Comp do2_act
+
+C }
+C 
+
+All Comp do
+
+----------------------------------------------------------------
+Actor ifdo .
+----------------------------------------------------------------
+
+C 	if tok == "${name}c" { ld_${name}l(act,  ln); }
+
+Its Token ifdo_tok
+
+----------------------------------------------------------------
+Actor ifdo_tok .
+----------------------------------------------------------------
+
+C 	if tok == "${token}c" { ld_${.ifdo.name}l(act,  ln); }
+
+----------------------------------------------------------------
+Actor do2_act Comp name = Actor
+----------------------------------------------------------------
+
+C 	for i in 0..<act.ap_${name}l.count  {
+C 		let st = act.ap_${name}l[i];
+C 		if st.kcomp == "." { continue; }
+C 		if st.kcomp == "E_O_L" { continue; }
+C 		if st.kcomp == "Ikp" { continue; }
+C 		if st.kcomp == "Ijson" { continue; }
+C 		if st.kcomp == "Igroup" { continue; }
+
+All Comp do2_act_comp
+
+C 		print("?No " + st.kcomp + " Comp " + st.kline + "?")
+C 	}
+
+----------------------------------------------------------------
+Actor do2_act_comp
+----------------------------------------------------------------
+
+C 		if st.kcomp == "${name}c" { continue; }
+
+----------------------------------------------------------------
+Actor do2 .
+----------------------------------------------------------------
+
+Out delay
+
+C 	for i in 0..<act.ap_${name}l.count  {
+C 		let st = act.ap_${name}l[i];
+		
+Its Element ele2
+
+C 	}
+
+----------------------------------------------------------------
+Actor ele2 . mw = R1
+----------------------------------------------------------------
+
+C 		st.k${name}lp = fnd( "${Ref_element.comp.name}c_" + st.k${name}l , st.k${name}l, "${Ref_element.opt} ", st.kline ); // R1
+
+----------------------------------------------------------------
+Actor ele2 . mw = F1
+----------------------------------------------------------------
+
+C 		st.k${name}lp = fnd( String( st.parentp ) + "_${Ref_element.comp.name}c_" + st.k${name}l , st.k${name}l, "${Ref_element.opt} ", st.kline ); // F1
+
+----------------------------------------------------------------
+Actor ele2 . mw = L1
+----------------------------------------------------------------
+
+C 		st.k${name}lp = fnd( String( st.k${Ref2_element.element2.name}lp ) + "_${Ref2_element.comp.name}c_" + st.k${name}l , st.k${name}l, "${Ref2_element.opt} ", st.kline ); // L1
+
+----------------------------------------------------------------
+Actor do Comp
+----------------------------------------------------------------
+
+C func ld_${name}l(_ act: ActT, _ ln: Array<Character>) {
+C 	let k = Kp${name}c.init();
+C 	k.kid = act.ap_${name}l.count;
+C 	k.kme = "${name}c"
+C 	k.kline = String( Lno );
+
+Its Element ele
+Its parent parent_field
+
+Du find
+
+C 	act.ap_${name}l.append( k );
+C }
+C
+
+C
+
+----------------------------------------------------------------
+Actor find . find = Find
+----------------------------------------------------------------
+
+Its Element ele_name
+
+----------------------------------------------------------------
+Actor ele_name . name = name
+----------------------------------------------------------------
+
+C 	Dict[ "${.do.name}c_" + k.kname ] = k.kid;
+
+----------------------------------------------------------------
+Actor find . find = FindIn
+----------------------------------------------------------------
+
+Its Element ele_name_in
+
+----------------------------------------------------------------
+Actor ele_name_in . name = name
+----------------------------------------------------------------
+
+C 	Dict[ String( k.parentp ) + "_${.do.name}c_" + k.kname ] = k.kid;
+
+----------------------------------------------------------------
+Actor parent_field Comp name = Actor
+----------------------------------------------------------------
+
+C 	k.parentp = act.ap_${name}l.count-1;
+C 	if k.parentp < 0 { 
+C 		print(Lno + " has no parent"); 
+C 		return;
+C 	}
+C 	act.ap_${name}l[ k.parentp ].kchilds.append( k );
+
+----------------------------------------------------------------
+Actor parent_field Comp name != Actor
+----------------------------------------------------------------
+
+C 	k.parentp = act.ap_${name}l.count-1;
+C 	if k.parentp < 0 { 
+C 		print(Lno + " has no parent"); 
+C 		return;
+C 	}
+C 	act.ap_${name}l[ k.parentp ].its${.do.name}l.append( k );
+C 	act.ap_${name}l[ k.parentp ].kchilds.append( k );
+
+----------------------------------------------------------------
+Actor ele . mw in C1,R1,F1,L1
+----------------------------------------------------------------
+
+C 	k.k${name}l = getw(ln);
+C 	k.names[ "${name}l" ] = k.k${name}l;
+
+----------------------------------------------------------------
+Actor ele . mw = I1_x
+----------------------------------------------------------------
+
+C 	i, err := strconv.Atoi( getw(l) )
+C 	if err != nil { i = 1 }
+C 	st.K${name}l = i
+
+----------------------------------------------------------------
+Actor ele . mw = V1
+----------------------------------------------------------------
+
+C 	k.k${name}l = getws(ln)
+C 	k.names[ "${name}l" ] = k.k${name}l;
+
+
+
