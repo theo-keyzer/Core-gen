@@ -21,13 +21,13 @@ They are given an input node to operate on.
 
 The actor has a list of commands it runs through.
 
-The (C) command prints the output. The ${var} are the variables of the node.
+The `C` command prints the output. The `${var}` are the variables of the node.
 The variables are generated.
 
-The (Its) command calls another actor with some relation node of it.
+The `Its` command calls another actor with some relation node of it.
 This way it can navigate the input tree. The relations are generated.
 
-The (All) command calls another actor that has no relation to it.
+The `All` command calls another actor that has no relation to it.
 
 It loads the actor and input files and starts at the first actor it has.
 The loader is generated.
@@ -38,7 +38,7 @@ be adjusted as its calls back to the actor engine or the engine wants it to be d
 
 # Input files
 
-The code generator has a input schema file (gen.unit) to define these nodes
+The code generator has a input schema file `gen.unit` to define these nodes
 and the relation between them.
 ```
 ----------------------------------------------------------------
@@ -79,7 +79,7 @@ Comp Element parent Comp FindIn
 Here the generator defines itself.
 
 
-The sample application schema (app.unit) is defined is a similar way.
+The sample application schema `app.unit` is defined is a similar way.
 ```
 ----------------------------------------------------------------
 Comp Table parent . Find
@@ -115,22 +115,22 @@ Ref  field1 Field check
 Ref  table2 Table check
 Ref2 field2 Field table2 check
 ```
-Here F1 is a internal reference meaning it links to a field inside a table. 
-Both the join and field share the same parent (Table). Only works if the parents are the same.
+Here `F1` is a internal reference meaning it links to a field inside a table. 
+Both the join and field share the same parent `Table`. Only works if the parents are the same.
 
-The R1 means that its a reference field. The Ref defines the relation
-The L1 is a double link that needs both a table and a field to link to.
-The Ref2 defines the relation for this. It uses the table2 to get to the field2. 
-The table2 needs to be a R1 and be before field2.
+The `R1` means that its a reference field. The `Ref` defines the relation
+The `L1` is a double link that needs both a table and a field to link to.
+The `Ref2` defines the relation for this. It uses the `table2` to get to the `field2`. 
+The `table2` needs to be a R1 and be before `field2`.
 
-You need a Ref for each R1,F1 and a Ref2 for each L1. This is what the loader uses for the linking
+You need a `Ref` for each `R1,F1` and a `Ref2` for each `L1`. This is what the loader uses for the linking
 and what the classes need for navigation and variable lookups.
-The Find and FindIn is for the lookup dict - relies on (name).
-The R1 needs to go to a (Find) and L1,F1 need to go to (FindIn).
+The `Find` and `FindIn` is for the lookup dict - relies on `name`.
+The `R1` needs to go to a `Find` and `L1,F1` need to go to `FindIn`.
 
-The check means it is a error if not found. A dot (.) can be used as optional.
+The check means it is a error if not found. A dot `.` can be used as optional.
 
-This definition (app.u) is used by the code generator to build the sample application generator.
+This definition `app.unit` is used by the code generator to build the sample application generator.
 ```
 gen s_check.act   app.unit,act.unit 
 ```
@@ -140,18 +140,18 @@ Errors would end up in the generated source files if ignored.
 gen s_load.act   app.unit,act.unit > sample/load.swift 
 gen s_struct.act app.unit,act.unit > sample/structs.swift 
 ```
-The actor template files (s_load.act,s_struct.act) generate the output based on the defintions.
-The actor definition file (act.unit) has a schema to define the actor language. This
+The actor template files `s_load.act,s_struct.act` generate the output based on the defintions.
+The actor definition file `act.unit` has a schema to define the actor language. This
 gets included into the sample app, as it too need to generate.
 
-The util.swift has the string utils and the main.swift is the runtime engine. 
+The `util.swift` has the string utils and the `main.swift` is the runtime engine. 
 Both can be copied from the gen application and customized.
 
 Once complied, it works the same as above.
 ```
 sample tst.act tst.def
 ```
-The input definition file (tst.def) is shown here.
+The input definition file `tst.def` is shown here.
 ```
 ----------------------------------------------------------------
 Table tb1 as a
@@ -168,7 +168,7 @@ Field t2f1 VAR display normal,grid
 
 Join t2f1 to tb1 t1f1
 ```
-Here the (Join) links the (t2f1) field to the (t1f1) field of table (tb1).
+Here the `Join` links the `t2f1` field to the `t1f1` field of table `tb1`.
 
 The actor/template like language is to navigate the input data nodes.
 The actor ends up in an instance of a class. From there
@@ -176,7 +176,7 @@ it can print the fields of the instance and go to another actor.
 
 # Actor input files
 
-The actor template file (tst2.act) is shown here.
+The actor template file `tst2.act` is shown here.
 ```
 ----------------------------------------------------------------
 Actor arg
@@ -238,33 +238,33 @@ The output would be:
 Select (a.t1f2) from tb1 a
 Select (b.t2f1, a.t1f2) from tb2 b, tb1 a where b.t2f1 = a.t1f1
 ```
-The (Join) class has the (parent,field1,table2,field2) variables that point to (Field,Table) instances.
-The (parent) variable goes to the (Table) it belonged to that has the (value) variable. 
-The ${.0.} outputs (where ) if it is the first row and ${.1.} outputs (and ) if it is not the first row.
+The `Join` class has the `parent,field1,table2,field2` variables that point to `Field,Table` instances.
+The `parent` variable goes to the `Table` it belonged to that has the `value` variable. 
+The `${.0.}` outputs `where ` if it is the first row and `${.1.}` outputs `and ` if it is not the first row.
 The actor has a case like matcher to limit and separate the rows, so it is the first row that matches.
-The ${.+} is the row number. The ${.arg} is the arument passed.
+The `${.+}` is the row number. The `${.arg}` is the arument passed.
 
-The (Its) loops on its child nodes (Field,Join).
+The `Its` loops on its child nodes `Field,Join`.
 
-It uses the first actor's name (arg) as the starting actor. 
+It uses the first actor's name `arg` as the starting actor. 
 ```
 All Table table_sel
 ```
-Call the actor table_sel for all the instances of the Table class.
+Call the actor `table_sel` for all the instances of the `Table` class.
 ```
 Actor table_sel Table
 ```
-The (table_sel) is the name of the actor, (Table) a reminder that the operations are from the Table class.
-It gets a handle on the Table class instance. The actor would ignore this actor if the node type passed is not Table.
-Not checked if it is a (.) or nothing.
+The `table_sel` is the name of the actor, `Table` a reminder that the operations are from the Table class.
+It gets a handle on the `Table` class instance. The actor would ignore this actor if the node type passed is not `Table`.
+Not checked if it is a `.` or nothing.
 
-The (Cs) prints the output code with no newline. 
+The `Cs` prints the output code with no newline. 
 ```
 Its Field field_sel
 ```
-Calls the actor field_sel for all its child fields. The Table class has the code for (Field,Join).
+Calls the actor `field_sel` for all its child fields. The `Table` class has the code for `Field,Join`.
 
-The ${name} is the value of the variable (name) in the Table class. 
+The `${name}` is the value of the variable `name` in the `Table` class. 
 ```
 ----------------------------------------------------------------
 Actor field_sel Field use has grid
@@ -272,14 +272,14 @@ Actor field_sel Field use has grid
 
 Cs ${.1., } ${parent.value} .${name} 
 ```
-The (use) is a variable of the Field class.
-The (has) match a list of values (normal,grid) from the (use) variable to an item (grid), (in) works the other way round.
+The `use` is a variable of the `Field` class.
+The `has` match a list of values `normal,grid` from the `use` variable to an item `grid`, `in` works the other way round.
 
-The ${parent.value}, the parent would go to (Table) and then the value of it.
+The `${parent.value}`, the parent would go to `Table` and then the value of it.
 
 Variable names are lower case, other has special meaning to get to the value. The same aplies to Its.
 
-The ${.1.} has the value of (, ) if it is not the first entry.
+The `${.1.}` has the value of `, ` if it is not the first entry.
 ```
 Out delay
 ```
@@ -289,27 +289,27 @@ output, it gets disgarded. This is to avoid having empty selects.
 
 Its table2.Field join_field_sel
 ```
-The Join node has a pointer variable (table2) going to (Table) that has a lsit of fields
-that gets passed to the join_field_sel actor.
+The `Join` node has a pointer variable `table2` going to `Table` that has a lsit of fields
+that gets passed to the `join_field_sel` actor.
 
 # More
 
-Variable ${.Table.tb1.name} global access to input data. Matches the tables's name to tb1.
-The ${.actor_name.} access to the node that the actor has.
-Break - breaks the actor loop - if non matches it can get to the default one.
-Break loop - break the calling loop - if only needing one.
-Unique - for not duplication code.
-The &= on the actor's match is true is the previous one was true. 
-Its .actor_name - use that actor's node instead.
+Variable `${.Table.tb1.name}` global access to input data. Matches the tables's name to `tb1`.
+The `${.actor_name.}` access to the node that the actor has.
+`Break` - breaks the actor loop - if non matches it can get to the default one.
+`Break loop` - break the calling loop - if only needing one.
+`Unique` - for not duplication code.
+The `&=` on the actor's match is true is the previous one was true. 
+Its .`actor_name` - use that actor's node instead.
 Reverse links.
 ```
 Its Link_to.parent sort_item
 ```
 
-The link has a to field (to) pointing to node. This gets the links
+The `Link` has a to field `to` pointing to `Node`. This gets the links
 that points to itself. The link's parent is not the same as this one here.
 
-The (_) are reverse links.
+The `_` are reverse links.
 
 # General
 
