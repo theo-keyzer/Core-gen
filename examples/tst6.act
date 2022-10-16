@@ -35,7 +35,7 @@ Actor graph_all . value = A-B,B-C
 
 C  all ${key}  ${value} 
 
-Its value.Graph.name aa
+-Its value.Graph.name aa
 Break
 
 ----------------------------------------------------------------
