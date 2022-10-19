@@ -1,0 +1,80 @@
+----------------------------------------------------------------
+Actor arg
+----------------------------------------------------------------
+
+C ${1}  ${2}  ${3}  ${4}
+
+All Matrix mat_collect 1,2,3,4,5,6,7
+
+-All Matrix mat_collect ${3}
+-Group remove 2 3
+-All Group..sort graph_all ${4}
+
+All Group...sort graph_all check
+-All Group graph_all check
+-Group pr
+
+
+--Group load
+
+-C xx ${.Pocket.2.Key.3.name} 
+
+-All Pocket z
+
+Actor z
+C ${name}
+Its Key zz
+Actor zz
+C  ${name}  ${value} 
+
+---------------------------------------------------------------
+Actor mat_collect Matrix search in ${.arg}
+----------------------------------------------------------------
+
+All Graph graph_collect ${a} -${b}
+All Graph graph_collect ${b} -${c}
+
+---------------------------------------------------------------
+Actor graph_collect Graph name = ${.arg}
+----------------------------------------------------------------
+
+Group add ${.mat_collect.search} ${search} ${name}
+
+----------------------------------------------------------------
+Actor graph_all Group value = A-B,B-C
+----------------------------------------------------------------
+
+C  all ${key}  ${value} 
+
+-Its value.Graph.name aa
+Break
+
+----------------------------------------------------------------
+Actor aa
+----------------------------------------------------------------
+
+C -- aassww -- ${name}  ${value}
+
+----------------------------------------------------------------
+Actor graph_all Group value = B-C
+----------------------------------------------------------------
+
+C  all ${key}  ${value} 
+
+Break
+
+-----------------------------------------------------------------
+Actor graph_all Group value = A-C,C-A,C-B
+----------------------------------------------------------------
+
+C  all ${key}  ${value} 
+
+Break
+
+-----------------------------------------------------------------
+Actor graph_all Group .arg = check
+-Actor graph_all Group
+----------------------------------------------------------------
+
+C  no  ${pocket}  ${key}  ${value}  ${.arg} 
+

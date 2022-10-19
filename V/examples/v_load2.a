@@ -1,0 +1,295 @@
+
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+-C module ss
+-C import s
+C 
+C pub fn load(tok string, ln string, pos int, mut kp_all Kall, fl string) {
+
+All Comp ifdo
+
+C }
+C
+C pub fn refs(mut kp_all Kall) {
+
+All Comp do2
+
+C }
+C 
+
+Cs pub type Tcmd = 
+
+All Comp cmds
+
+C
+C
+C pub struct Kall {
+C 	mut:
+C 	dict map[string]int
+-C 	act_cmds [] Tcmd
+
+All Comp all
+
+C }
+C 
+
+All Comp struct
+All Comp do
+
+----------------------------------------------------------------
+Actor cmds Comp parent.name = Actor
+----------------------------------------------------------------
+
+Cs ${.1. |}  Kp${name}c
+
+----------------------------------------------------------------
+Actor ifdo .
+----------------------------------------------------------------
+
+C 	if tok == "${name}c" { ld_${name}l(ln,pos, mut kp_all, fl) }
+
+----------------------------------------------------------------
+-Actor all Comp name != Actor
+Actor all Comp parent.name != Actor
+----------------------------------------------------------------
+
+C 	ap_${name}l []Kp${name}c
+
+----------------------------------------------------------------
+Actor struct Comp name = Actor
+----------------------------------------------------------------
+
+-D ${name}c struct
+
+-Its star star
+
+C pub struct Kp${name}c {
+C 	mut:
+C 	kme int
+C 	names map[string]string
+C 	fline string
+
+Its parent parent_field
+Its Element val_inc
+Its Element val_inc2
+
+C 	kchilds []Tcmd
+
+C }
+C
+
+----------------------------------------------------------------
+Actor struct Comp name != Actor
+----------------------------------------------------------------
+
+-D ${name}c struct
+
+-Its star star
+
+C pub struct Kp${name}c {
+C 	mut:
+C 	kme int
+C 	names map[string]string
+C 	fline string
+
+Its parent s_parent_field
+Its Element val_inc
+Its Element val_inc2
+Its Comp_parent from_to
+-Its Element val_inc_d
+-Du struct_du
+
+C }
+C
+
+----------------------------------------------------------------
+Actor from_to Comp
+----------------------------------------------------------------
+
+-C 	its_${name}l []Kp${name}c
+C 	its_${name}l []int
+
+
+----------------------------------------------------------------
+Actor val_inc Element mw = C1 	k_${name}l string
+Actor val_inc Element mw = V1 	k_${name}l string
+Actor val_inc Element mw = I1 	k_${name}l int
+Actor val_inc Element mw = P1 	k_${name}l int
+Actor val_inc Element mw = D1 	k_${name}l int
+Actor val_inc Element mw = R1 	k_${name}l string
+Actor val_inc Element mw = F1 	k_${name}l string
+Actor val_inc Element mw = L1 	k_${name}l string
+Actor val_inc Element mw = M1 	k_${name}l int
+Actor val_inc Element mw = A1 	k_${name}l int
+Actor val_inc2 Element mw = R1 	k_${name}lp int
+Actor val_inc2 Element mw = F1 	k_${name}lp int
+Actor val_inc2 Element mw = L1 	k_${name}lp int
+----------------------------------------------------------------
+Actor s_parent_field Comp
+----------------------------------------------------------------
+
+-C 	var parent: String = "";
+C 	parentp int
+
+----------------------------------------------------------------
+Actor ifdox .
+----------------------------------------------------------------
+
+C 	if tok == "${name}c" { ld_${name}l(act,  ln); }
+
+-Its Token ifdo_tok
+
+----------------------------------------------------------------
+Actor ifdo_tok .
+----------------------------------------------------------------
+
+C 	if tok == "${token}c" { ld_${.ifdo.name}l(act,  ln); }
+
+----------------------------------------------------------------
+Actor do2 Comp  parent.name != Actor
+----------------------------------------------------------------
+
+Out delay
+
+C 	for mut st in kp_all.ap_${name}l  {
+-Cb 	for mut st in kp_all.ap_${name}l  {
+-Cb 		mut st := kp_all.ap_${name}l[i];
+		
+Its Element ele2
+
+-Cf 	}
+C 	}
+
+----------------------------------------------------------------
+Actor ele2 . mw = R1
+----------------------------------------------------------------
+
+C 		st.k_${name}lp = fnd(kp_all, "${Ref_element.comp}c_" + st.k_${name}l , st.k_${name}l, "${Ref_element.opt} ", st.fline ) // R1
+
+----------------------------------------------------------------
+Actor ele2 . mw = F1
+----------------------------------------------------------------
+
+C 		st.k_${name}lp = fnd(kp_all, st.parentp.str() + "_${Ref_element.comp}c_" + st.k_${name}l , st.k_${name}l, "${Ref_element.opt} ", st.fline ) // F1
+
+----------------------------------------------------------------
+Actor ele2 . mw = L1
+----------------------------------------------------------------
+
+C 		st.k_${name}lp = fnd(kp_all, st.k_${Ref2_element.element2}lp.str() + "_${Ref2_element.comp}c_" + st.k_${name}l , st.k_${name}l, "${Ref2_element.opt} ", st.fline ) // L1
+
+----------------------------------------------------------------
+Actor do Comp parent.name = Actor
+----------------------------------------------------------------
+
+C pub fn ld_${name}l(ln string, opos int, mut kp_all Kall, lc string) {
+C 	mut pos := opos
+C 	mut node := Kp${name}c{}
+-C 	node.kme = kp_all.ap_${name}l.len
+C 	node.fline = lc
+
+Its Element ele
+Its parent parent_field
+
+Du find
+
+-C 	kp_all.ap_${name}l << node
+
+C }
+C
+
+C
+
+----------------------------------------------------------------
+Actor do Comp parent.name != Actor
+----------------------------------------------------------------
+
+C pub fn ld_${name}l(ln string, opos int, mut kp_all Kall, lc string) {
+C 	mut pos := opos
+C 	mut node := Kp${name}c{}
+C 	node.kme = kp_all.ap_${name}l.len
+C 	node.fline = lc
+
+Its Element ele
+Its parent parent_field
+
+Du find
+
+C 	kp_all.ap_${name}l << node
+-C 	kp_all.ap_${name}l << node.kme
+
+C }
+C
+
+C
+
+----------------------------------------------------------------
+Actor find . find = Find
+----------------------------------------------------------------
+
+Its Element ele_name
+
+----------------------------------------------------------------
+Actor ele_name . name = name
+----------------------------------------------------------------
+
+-C 	Dict[ "${.do.name}c_" + k.kname ] = k.kme;
+C 	kp_all.dict[ "${.do.name}c_" + node.k_name ] = node.kme
+
+----------------------------------------------------------------
+Actor find . find = FindIn
+----------------------------------------------------------------
+
+Its Element ele_name_in
+
+----------------------------------------------------------------
+Actor ele_name_in . name = name
+----------------------------------------------------------------
+
+-C 	Dict[ String( k.parentp ) + "_${.Def.do.name}c_" + k.kname ] = k.kme;
+C 	kp_all.dict[ node.parentp.str() + "_${.do.name}c_" + node.k_name ] = node.kme
+
+----------------------------------------------------------------
+Actor parent_field Comp name = Actor
+----------------------------------------------------------------
+
+C 	node.parentp = kp_all.ap_${name}l.len-1
+C 	if node.parentp < 0 { 
+C 		println(lc + " has no parent") 
+C 		return
+C 	}
+C 	kp_all.ap_${name}l[node.parentp].kchilds << node
+
+----------------------------------------------------------------
+Actor parent_field Comp name != Actor
+----------------------------------------------------------------
+
+C 	node.parentp = kp_all.ap_${name}l.len-1
+C 	if node.parentp < 0 { 
+C 		println(lc + " has no parent") 
+C 		return
+C 	}
+C 	kp_all.ap_${name}l[node.parentp].its_${.do.name}l << node.kme
+
+----------------------------------------------------------------
+Actor ele . mw in C1,R1,F1,L1
+----------------------------------------------------------------
+
+C 	node.k_${name}l, pos = getw(ln,pos)
+C 	node.names[ "${name}l" ] = node.k_${name}l
+
+----------------------------------------------------------------
+Actor ele . mw = I1_x
+----------------------------------------------------------------
+
+
+----------------------------------------------------------------
+Actor ele . mw = V1
+----------------------------------------------------------------
+
+C 	node.k_${name}l, pos = getws(ln,pos)
+C 	node.names[ "${name}l" ] = node.k_${name}l
+
+
+

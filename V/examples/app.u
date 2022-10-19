@@ -1,0 +1,77 @@
+----------------------------------------------------------------
+Comp Node parent . Find
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+	Element pad        C1 WORD       * padding
+	Element parent     R1 Node       * parent node
+	Element var        C1 WORD       * a table
+	Element eq         C1 WORD       * padding, as
+	Element value      C1 WORD       * value
+
+Ref parent Node .
+
+----------------------------------------------------------------
+Comp Link parent Node
+----------------------------------------------------------------
+
+	Element to       R1 Node       * node name
+	
+Ref to Node check
+
+----------------------------------------------------------------
+Comp Graph parent . Find
+----------------------------------------------------------------
+
+	Element name     C1 WORD * a type
+	Element pad      C1 WORD             * Padding
+	Element search   V1 WORD             * Search for field
+
+----------------------------------------------------------------
+Comp Matrix parent . Find
+----------------------------------------------------------------
+
+	Element a        C1 WORD * a type
+	Element b        C1 WORD * a type
+	Element c        C1 WORD * a type
+	Element pad      C1 WORD             * Padding
+	Element search   C1 WORD             * Search for field
+
+----------------------------------------------------------------
+Comp Table parent . Find
+----------------------------------------------------------------
+
+	Element name  C1 WORD * a table
+	Element pad   C1 WORD * padding, as
+	Element value C1 WORD * value
+
+----------------------------------------------------------------
+Comp Field parent Table FindIn
+----------------------------------------------------------------
+
+	Element name           C1 WORD       * a field name
+	Element dt             C1 WORD       * data type
+	Element pad            C1 WORD       * padding
+	Element use            C1 WORD       * grid,search
+-	Element field_in       R1 Field_type * a link to a field type
+
+-Ref field_in Field_type .
+
+----------------------------------------------------------------
+Comp Join parent Table
+----------------------------------------------------------------
+
+
+	Element field1 F1 .Field       * link to its field
+	Element table2 R1 Table        * link to other table
+	Element field2 L1 Table.Field  * link to other table's field
+	Element pad    C1 WORD         * padding 
+	Element use    C1 WORD         * grid,search
+
+
+Ref  field1 Field check
+Ref  table2 Table check
+Ref2 field2 Field table2 check
+
+
+

@@ -1,0 +1,342 @@
+----------------------------------------------------------------
+Actor main Non
+----------------------------------------------------------------
+
+C pub fn dict_val(s string) int
+C {
+C 	if val := k_all.dict[s] 
+C 	{
+C 		return val
+C 	}
+C 	return -1
+C }
+C
+C pub fn var_all(a string, b string, lc string) (bool, string) {
+C 	a2,b2 := split(b)
+C 	a3,b3 := split(b2)
+
+All Comp var_all
+
+C 	return false, "?" + a + "?" + lc + ', ' + @FILE_LINE  + "?"
+C }
+C
+
+
+C pub fn do_all(a string, b string, c string, act string, arg string, lc string, sact int) int {
+C 	mut cnt := 0
+
+All Comp do_all
+
+C 	println("? No all " + a + " cmd " + lc + ', ' + @FILE_LINE  + "?")
+C 	return 0
+C }
+C
+
+All Comp struct
+
+----------------------------------------------------------------
+Actor struct2 Comp
+----------------------------------------------------------------
+
+C ${name} 
+
+----------------------------------------------------------------
+Actor ar .
+----------------------------------------------------------------
+
+C 	var ap_${name}l: [Kp${name}c] = [];
+
+----------------------------------------------------------------
+Actor var_all Comp find = Find
+----------------------------------------------------------------
+
+C 	if a == "${name}c" {
+-C 		if val := kp_all.dict[ "${name}c_" + a2 ] {
+C 		val := dict_val( "${name}c_" + a2 )
+C 		if val >= 0 { return k_all.ap_${name}l[val].get_var(a3, b3, lc) }
+C 		return false, "?" + a + "=" + a2 + "?" + lc + ', ' + @FILE_LINE  + "?"
+C 	}
+	
+----------------------------------------------------------------
+Actor do_all Comp parent != Actor
+----------------------------------------------------------------
+
+C 	if a == "${name}c" {  // ${} 
+C 		for i in 0 .. k_all.ap_${name}l.len
+C 		{
+C 			if b != '' {
+C 				ret := k_all.ap_${name}l[i].doo(b, c, act, arg, lc, sact, cnt)
+C 				if ret > 0 { return ret-1 }
+C 				if ret == 0 { cnt++ }
+C 				continue
+C 			}
+
+-Its Element do_all_ele
+
+C 			ret := actor( act, k_all.ap_${name}l[i], cnt, arg, sact )
+C 			if ret != 0 { return ret-1 }
+C 			cnt++
+C 		}
+C 		return 0
+C 	}
+
+----------------------------------------------------------------
+Actor do_all_ele Element name = name
+----------------------------------------------------------------
+
+C 			if b != "" { if k_all.ap_${.do_all.name}l[i].k_name != b { continue } }
+
+----------------------------------------------------------------
+Actor struct Comp
+----------------------------------------------------------------
+
+C pub fn (def Kp${name}c) doo(a string, b string, act string, arg string, lc string, sact int, pcnt int) int
+C {
+	mut cnt := 0
+
+Its Comp_parent from_to_doo
+Its parent parent_field_func
+Its Ref ref_func
+Its Ref2 ref_func2
+Its Ref_comp other_func
+Its Ref2_comp other_func2
+
+C 	ok, val := def.get_var(a,'',lc)
+C 	if ok == true {
+C 		if val == b {
+C 			return actor(act, def, pcnt, arg, sact)
+C 		}
+C 		return -1
+C 	}
+C 	println("?No its " + a + " cmd for " + def.fline + "," + lc + ', ' + @FILE_LINE  + "?")
+C 	return 0
+C }
+
+C pub fn (def Kp${name}c) get_var(a string, b string, lc string) (bool, string)
+C {
+C 	if b == '' {
+C 		if val := def.names[ a ]
+C 		{
+C 			return true, val
+C 		}
+C 	}
+
+Its Ref ref_var
+Its Ref2 ref_var2
+Its parent parent_field_var
+Its Ref_comp other_var
+Its Ref2_comp other_var2
+Its Comp_parent find
+
+C 	if b != '' {
+C 		return false, "?" + a + '.' + b + "?" + def.fline + ", " + lc + ', ' + @FILE_LINE  + "?"
+C 	}
+C 	return false, "?" + a + "?" + def.fline + ", " + lc + ', ' + @FILE_LINE  + "?"
+C }
+C
+
+----------------------------------------------------------------
+Actor find Comp find = FindIn
+----------------------------------------------------------------
+
+Its Element ele_name_in
+
+----------------------------------------------------------------
+Actor ele_name_in . name = name
+----------------------------------------------------------------
+
+C 	if a == "${.find.name}c" { // ${}
+C 		a2,b2 := split(b)
+C 		if en := k_all.dict[ def.kme.str() + "_${.find.name}c_" + a2 ] {
+C 			a3,b3 := split(b2)
+C 			return k_all.ap_${.find.name}l[en].get_var(a3, b3, lc)
+C 		}
+C 		return false, "?" + a + "=" + a2 + "?" + def.fline + ", " + lc + ', ' + @FILE_LINE  + "?"
+C 	}
+
+----------------------------------------------------------------
+Actor ref_func Ref
+----------------------------------------------------------------
+
+C 	if a == "${element.name}l" { // ${}
+C 		if def.k_${element.name}lp >= 0 {
+C 			if b == "" {
+C 				return actor(act, k_all.ap_${comp.name}l[def.k_${element.name}lp], pcnt, arg, sact)
+C 			}
+C 			a2,b2 := split(b)
+C 			return k_all.ap_${comp.name}l[def.k_${element.name}lp].doo(a2,b2, act, arg,lc,sact,pcnt)
+C 		}
+C 		return 0
+C 	}
+
+----------------------------------------------------------------
+Actor ref_func2 Ref2
+----------------------------------------------------------------
+
+C 	if a == "${element.name}l" { // ${}
+C 		if def.k_${element.name}lp >= 0 {
+C 			if b == "" {
+C 				return actor(act, k_all.ap_${comp.name}l[def.k_${element.name}lp], pcnt, arg, sact)
+C 			} 
+C 			a2,b2 := split(b)
+C 			return k_all.ap_${comp.name}l[def.k_${element.name}lp].doo(a2,b2, act, arg,lc,sact,pcnt)
+C 		}
+C 		return 0
+C 	}
+
+----------------------------------------------------------------
+Actor parent_field_func Comp
+----------------------------------------------------------------
+
+C 	if a == "parent" { // ${}
+C 		if def.parentp >= 0 {
+C 			if b == "" {
+C 				return actor(act, k_all.ap_${name}l[def.parentp], pcnt, arg, sact)
+C 			}
+C 			a2,b2 := split(b)
+C 			return k_all.ap_${name}l[def.parentp].doo(a2,b2, act, arg, lc, sact,pcnt )
+C 		}
+C 		return 0
+C 	}
+
+----------------------------------------------------------------
+Actor parent_field_var Comp
+----------------------------------------------------------------
+
+C 	if a == "parent" { // ${}
+C 		if def.parentp >= 0 {
+C 			a2,b2 := split(b)
+C 			return k_all.ap_${name}l[def.parentp].get_var(a2,b2, lc )
+C 		}
+C 	}
+
+----------------------------------------------------------------
+Actor other_func Ref
+----------------------------------------------------------------
+
+-C 	if a == "${parent.name}c_${element.name}l" { // ${}
+-C 		mut cnt := 0
+-C 		for i in 0 .. k_all.ap_${parent.name}l.len {
+-C 			if k_all.ap_${parent.name}l[i].k_${element.name}lp != def.kme { continue }
+-C 			ret := actor(act, k_all.ap_${parent.name}l[i], cnt, arg, sact )
+-C 			if ret != 0 { return ret-1 }
+-C 			cnt++
+-C 		}
+-C 		return 0
+-C 	}
+---
+C 	if a == "${parent.name}c_${element.name}l" { // ${}
+C 		mut cnt := -1
+C 		for i in 0 .. k_all.ap_${parent.name}l.len {
+C 			cnt++
+C 			if k_all.ap_${parent.name}l[i].k_${element.name}lp != def.kme { continue }
+C 			if b == "" {
+C 				ret := actor(act, k_all.ap_${parent.name}l[i], cnt, arg, sact )
+C 				if ret != 0 { return ret-1 }
+C 				continue
+C 			}
+C 			a2,b2 := split(b)
+C 			ret := k_all.ap_${parent.name}l[i].doo(a2,b2, act, arg,lc,sact,cnt)
+C 			if ret != 0 { return ret-1 }
+C 		}
+C 		return 0
+C 	}
+
+----------------------------------------------------------------
+Actor other_func2 Ref2
+----------------------------------------------------------------
+
+C 	if a == "${parent.name}c_${element.name}l" { // ${}
+C 		mut cnt := 0
+C 		for i in 0 .. k_all.ap_${parent.name}l.len {
+C 			if k_all.ap_${parent.name}l[i].k_${element.name}lp != def.kme { continue }
+C 			ret := actor(act, k_all.ap_${parent.name}l[i], cnt, arg, sact )
+C 			if ret != 0 { return ret-1 }
+C 			cnt++
+C 		}
+C 		return 0
+C 	}
+
+----------------------------------------------------------------
+Actor ref_var Ref
+----------------------------------------------------------------
+
+C 	if a == "${element.name}l" { // ${}
+C 		if def.k_${element.name}lp >= 0 {
+C 			a2,b2 := split(b)
+C 			return k_all.ap_${comp.name}l[def.k_${element.name}lp].get_var(a2,b2, lc)
+C 		}
+C 	}
+
+----------------------------------------------------------------
+Actor ref_var2 Ref2
+----------------------------------------------------------------
+
+C 	if a == "${element.name}l" { // ${}
+C 		if def.k_${element.name}lp >= 0 {
+C 			a2,b2 := split(b)
+C 			return k_all.ap_${comp.name}l[def.k_${element.name}lp].get_var(a2,b2, lc)
+C 		}
+C 	}
+
+----------------------------------------------------------------
+Actor from_to_doo Comp
+----------------------------------------------------------------
+
+-C 	if a == "${name}c" { // ${}
+-C 		mut cnt := 0
+-C 		for i in def.its_${name}l {
+-C 			ret := actor(act, k_all.ap_${name}l[i], cnt, arg, sact )
+-C 			if ret != 0 { return ret-1 }
+-C 			cnt++
+-C 		}
+-C 		return 0
+-C 	}
+--
+C 	if a == "${name}c" { // ${}
+C 		mut cnt := -1
+C 		for i in def.its_${name}l {
+C 			cnt++
+C 			if b == "" {
+C 				ret := actor(act, k_all.ap_${name}l[i], cnt, arg, sact )
+C 				if ret != 0 { return ret-1 }
+C 				continue
+C 			}
+C 			a2,b2 := split(b)
+C 			ret := k_all.ap_${name}l[i].doo(a2,b2, act, arg,lc,sact,cnt)
+C 			if ret != 0 { return ret-1 }
+C 		}
+C 		return 0
+C 	}
+
+----------------------------------------------------------------
+Actor other_var Ref
+----------------------------------------------------------------
+
+C 	if a == "${parent.name}c_${element.name}l" { // ${}
+C 		for i in 0 .. k_all.ap_${parent.name}l.len {
+C 			if k_all.ap_${parent.name}l[i].k_${element.name}lp != def.kme { continue }
+C 			a2,b2 := split(b)
+C 			return k_all.ap_${parent.name}l[i].get_var(a2,b2, lc)
+C 		}
+C 	}
+
+----------------------------------------------------------------
+Actor other_var2 Ref2
+----------------------------------------------------------------
+
+C 	if a == "${parent.name}c_${element.name}l" { // ${}
+C 		for i in 0 .. k_all.ap_${parent.name}l.len {
+C 			if k_all.ap_${parent.name}l[i].k_${element.name}lp != def.kme { continue }
+C 			a2,b2 := split(b)
+C 			return k_all.ap_${parent.name}l[i].get_var(a2,b2, lc )
+C 		}
+C 	}
+-C 	if a == "${parent.name}c_${element2.name}l" { // ${} ???
+-C 		for i in 0 .. def.ap_${parent.name}l.len {
+-C 			if k_all.ap_${parent.name}l[i].k_${element2.name}lp != def.kme { continue }
+-C 			return k_all.ap_${parent.name}l[i].get_var(b, '', lc);
+-C 		}
+-C 	}
+
+
