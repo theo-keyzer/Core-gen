@@ -1,0 +1,256 @@
+----------------------------------------------------------------
+Actor main Non
+----------------------------------------------------------------
+
+C package main
+C
+C import (
+C 	"strconv"
+C )
+C
+
+All comp struct
+
+----------------------------------------------------------------
+Actor struct Comp name = Actorx
+----------------------------------------------------------------
+
+C func (me Kp${name}c) Doo(st KpIts, what string, pos int) int {
+C 	return(0)
+C }
+C 
+C func (me Kp${name}c) GetVar(s string, ln string) string {
+C 	if s == "me" { return( strconv.Itoa(me.Kme) ) }
+C 	if s == "me_id" { return( "${name}c:" + strconv.Itoa(me.Kme) ) }
+C 	if s == "me_name" { return( "${name}c" ) }
+
+Its element pvar
+
+C 	return("?"+s+"?"+me.Fline+"?"+ln+"?")
+C }
+C
+
+----------------------------------------------------------------
+-Actor struct Comp name != Actor
+Actor struct Comp
+----------------------------------------------------------------
+
+D ${name}c function its
+C func (me Kp${name}c) Doo(st KpIts, what string, pos int) int {
+
+Its comp_parent its_child_func
+Its parent parent_field_func
+Its ref ref_func
+All ref other_func
+
+C 	return(0)
+C }
+C 
+
+Unique clear
+
+D ${name}c function getvar
+C func (me Kp${name}c) GetVar(s string, ln string) string {
+C 	if s == "me" { return( strconv.Itoa(me.Kme) ) }
+C 	if s == "me_id" { return( "${name}c:" + strconv.Itoa(me.Kme) ) }
+C 	if s == "me_name" { return( "${name}c" ) }
+
+Its element pvar
+All ref other_var
+All ref other_var_
+Its parent parent_field_var
+Its ref ref_var
+Its comp_parent its_child_var_
+
+C 	return("?"+s+"?"+me.Fline+"?"+ln+"?")
+C }
+C
+
+Unique clear
+
+================ function data =================================
+
+----------------------------------------------------------------
+Actor init_func
+----------------------------------------------------------------
+
+Unique add s
+
+C 	s := st.Kwhat
+C 	if len(what) > 0 { s = what }
+
+----------------------------------------------------------------
+Actor init2_func
+----------------------------------------------------------------
+
+Unique add s1
+Du init_func
+
+C 	s1,s2 := mysplit2(s)
+
+----------------------------------------------------------------
+Actor other_func Ref
+----------------------------------------------------------------
+
+Du init_func
+
+C 	if s == "${parent.name}l_${element.name}l" {
+C 		for i := 0; i < len(Def.Ap${parent.name}c); i++ {
+C 			if Def.Ap${parent.name}c[i].K${element.name}lP != me.Kme { continue }
+C 			v := Goo( st.KactorP, Def.Ap${parent.name}c[i], pos )
+C 			if v == 0 { continue }
+C 			if v > 0 { return(v) } // return
+C 			return(v+1) // break
+C 		}
+C 	}
+
+----------------------------------------------------------------
+Actor its_child_func Comp
+----------------------------------------------------------------
+
+Du init_func
+
+C 	if s == "${name}l" {
+C 		for c := 0; c < len( me.its${name}c ); c++ {
+C 			v := Goo(st.KactorP, me.its${name}c[c], c )
+C 			if v == 0 { continue }
+C 			if v > 0 { return(v) } // return
+C 			return(v+1) // break
+C 		}
+C 	}
+
+----------------------------------------------------------------
+Actor parent_field_func Comp
+----------------------------------------------------------------
+
+Du init2_func
+
+D 	its parent
+C 	if s1 == "parent" {
+-C 		return( me.up.GetVar(s2, ln) )
+C 		if len(s2) > 0 {
+C 			v := me.up.Doo(st, s2, pos)
+C 			return(v)
+C 		} else {
+C 			v := Goo(st.KactorP, me.up, pos )
+C 			return(v)
+C 		}
+C 	}
+
+----------------------------------------------------------------
+Actor ref_func Ref
+----------------------------------------------------------------
+
+Du init2_func
+
+D 	its ${element.name}l  - call actor for ${comp.name}l by my ${element.name}l 
+D 	its ${element.name}l...  - call actor for ${comp.name}l's variable by my ${element.name}l 
+C 	if s1 == "${element.name}l" {
+C 		if me.K${element.name}lP >= 0 {
+C 			if len(s2) > 0 {
+C 				v := Def.Ap${comp.name}c[me.K${element.name}lP].Doo(st, s2, pos)
+C 				return(v)
+C 			} else {
+C 				v := Goo(st.KactorP, Def.Ap${comp.name}c[me.K${element.name}lP], pos )
+C 				return(v)
+C 			}
+C 		}
+C 	}
+
+================ variable data =================================
+
+----------------------------------------------------------------
+Actor init_var
+----------------------------------------------------------------
+
+Unique add s1
+
+C 	s1,s2 := mysplit2(s)
+
+----------------------------------------------------------------
+Actor pvar Element mw in C1,V1,R1,F1
+----------------------------------------------------------------
+
+D 	$${${name}l} - value of
+C 	if s == "${name}l" { return( me.K${name}l ) }
+
+----------------------------------------------------------------
+Actor pvar Element mw = I1
+----------------------------------------------------------------
+
+D 	$${${name}l} - value of
+C 	if s == "${name}l" { return( strconv.Itoa(me.K${name}l) ) }
+
+----------------------------------------------------------------
+Actor other_var_ Ref
+----------------------------------------------------------------
+
+Du init_var
+
+D 	$${${parent.name}l_${element.name}l_.variable=value...}  - find first ${parent.name}l where its ${element.name}l has a reference to me and where its variable = value, continue with ${parent.name}l's variables
+C 	if s1 == "${parent.name}l_${element.name}l_" {
+C 		s3,s4,s5 := mysplit3(s2)
+C 		for i := 0; i < len(Def.Ap${parent.name}c); i++ {
+C 			if Def.Ap${parent.name}c[i].K${element.name}lP != me.Kme { continue }
+C 			v := Def.Ap${parent.name}c[i].GetVar(s3, ln)
+C 			if s4 != v { continue }
+C 			return( Def.Ap${parent.name}c[i].GetVar(s5, ln) )
+C 		}
+C 	}
+
+
+----------------------------------------------------------------
+Actor other_var Ref
+----------------------------------------------------------------
+
+Du init_var
+ 
+D 	$${${parent.name}l_${element.name}l...}  - find first ${parent.name}l where its ${element.name}l has a reference to me, continue with ${parent.name}l's variables
+C 	if s1 == "${parent.name}l_${element.name}l" {
+C 		for i := 0; i < len(Def.Ap${parent.name}c); i++ {
+C 			if Def.Ap${parent.name}c[i].K${element.name}lP != me.Kme { continue }
+C 			return( Def.Ap${parent.name}c[i].GetVar(s2, ln) )
+C 		}
+C 	}
+
+----------------------------------------------------------------
+Actor its_child_var_ Comp
+----------------------------------------------------------------
+
+Du init_var
+
+D 	$${${name}l_.variable=value...}  - find first ${name}l where its variable = value, continue with ${name}l's variables
+C 	if s1 == "${name}l_" {
+C 		s3,s4,s5 := mysplit3(s2)
+C 		for i := 0; i < len( me.its${name}c); i++ {
+C 			v:= me.its${name}c[i].GetVar(s3, ln)
+C 			if s4 != v { continue }
+C 			return( me.its${name}c[i].GetVar(s5, ln) )
+C 		}
+C 	}
+
+
+----------------------------------------------------------------
+Actor parent_field_var Comp
+----------------------------------------------------------------
+
+Du init_var
+
+D 	$${parent...}  - continue with its parent ($P{parent.name}l)'s variables
+C 	if s1 == "parent" {
+C 		return( me.up.GetVar(s2, ln) )
+C 	}
+
+----------------------------------------------------------------
+Actor ref_var Ref
+----------------------------------------------------------------
+
+Du init_var
+
+D 	$${${element.name}l...}  - continue with ${comp.name}c's variables from ${element.name}l
+C 	if s1 == "${element.name}l" {
+C 		if me.K${element.name}lP >= 0 {
+C 			return( Def.Ap${comp.name}c[me.K${element.name}lP].GetVar(s2, ln) )
+C 		}
+C 	}
+

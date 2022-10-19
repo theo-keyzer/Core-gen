@@ -1,0 +1,167 @@
+:File jgenl.a
+
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C package main
+C
+C import (
+C 	"strconv"
+C 	"fmt"
+C )
+C 
+C type Act_t struct {
+
+All comp ar
+
+C }
+C 
+C var Acts Act_t
+C 
+C func Run(l string, ln string) {
+C 	s := getw(l)
+C 	if s == "*" { s = "Star" }
+
+All comp ifdo
+
+C }
+C 
+C func Run2() {
+
+All comp fill
+
+C }
+C 
+
+All comp do
+All comp find
+All comp do2
+
+----------------------------------------------------------------
+Actor find .
+----------------------------------------------------------------
+
+Its element do_find
+
+----------------------------------------------------------------
+Actor fill .
+----------------------------------------------------------------
+
+C 	do2${name}c()
+
+----------------------------------------------------------------
+Actor ifdo .
+----------------------------------------------------------------
+
+C 	if s == "${name}c" { do${name}c(l, ln) }
+
+----------------------------------------------------------------
+Actor ar .
+----------------------------------------------------------------
+
+C 	Ap${name}c [] *Kp${name}c
+
+----------------------------------------------------------------
+Actor do Comp
+----------------------------------------------------------------
+
+C func do${name}c(l string, ln string) {
+C 	st := new(Kp${name}c)
+C 	st.Kme = len(Acts.Ap${name}c)
+C 	st.Fline = ln
+C 	Acts.Ap${name}c = append(Acts.Ap${name}c, st)
+
+Its element ele
+Its parent parent_field
+
+C }
+C
+
+----------------------------------------------------------------
+Actor do2 .
+----------------------------------------------------------------
+
+C func do2${name}c() {
+C 	for i := 0; i < len( Acts.Ap${name}c ); i++ {
+C 		st := Acts.Ap${name}c[i]
+C 		st.Kme = i
+
+Its element ele2
+
+C 	}
+C }
+C
+
+----------------------------------------------------------------
+Actor ele2 . mw = R1
+----------------------------------------------------------------
+
+C 		st.K${name} P = find_${mw2}L( st.K${name} , "${ref_element.opt} ", st.Fline );
+
+----------------------------------------------------------------
+Actor ele2 . mw = F1
+----------------------------------------------------------------
+
+-C 		st.K${name} P = find_${mw2}L( st.K${name} , st.${pad}  );
+C 		st.K${name} P = find_${mw2}L( st.K${name} , "${ref_element.opt} ", st.${ref_element.var} , st.Fline );
+
+----------------------------------------------------------------
+Actor parent_field Comp name = Actor
+----------------------------------------------------------------
+
+C 	Acts.Ap${name}c[ len( Acts.Ap${name}c)-1 ].Kchilds = append(Acts.Ap${name}c[ len( Acts.Ap${name}c)-1 ].Kchilds, st)
+C 	Acts.Ap${name}c[ len( Acts.Ap${name}c)-1 ].its$P{name}c = append(Acts.Ap${name}c[ len( Acts.Ap${name}c)-1 ].its$P{name}c, st)
+C 	st.up = Acts.Ap${name}c[ len(Acts.Ap${name}c)-1]
+
+----------------------------------------------------------------
+Actor parent_field Comp name != Actor
+----------------------------------------------------------------
+
+C 	Acts.Ap${name}c[ len( Acts.Ap${name}c)-1 ].its$P{name}c = append(Acts.Ap${name}c[ len( Acts.Ap${name}c)-1 ].its$P{name}c, st)
+C 	st.up = Acts.Ap${name}c[ len(Acts.Ap${name}c)-1]
+
+----------------------------------------------------------------
+Actor ele_its
+----------------------------------------------------------------
+
+-C 	st.its${name}c = []
+
+----------------------------------------------------------------
+Actor ele . mw in C1,R1,F1
+----------------------------------------------------------------
+
+C 	st.K${name}  = getw(l)
+
+----------------------------------------------------------------
+Actor ele . mw = I1
+----------------------------------------------------------------
+
+C 	i, err := strconv.Atoi( getw(l) )
+C 	if err != nil { i = 1 }
+C 	st.K${name}  = i
+
+----------------------------------------------------------------
+Actor ele . mw = V1
+----------------------------------------------------------------
+
+C 	st.K${name}  = getws(l)
+
+----------------------------------------------------------------
+Actor do_find Element name = name
+----------------------------------------------------------------
+
+C func find_$P{name}l(s string, opt string, ln string) int {
+C 	if s == "." {
+C 		 	if opt != "check" { return(-1) }
+C 	}
+C 	for i := 0; i < len(Acts.Ap$P{name}c); i++ {
+C 		if s == Acts.Ap$P{name}c[i].Kname { return(i) }
+C 	}
+C 	if opt == "check" {
+C 		fmt.Println(s + " not found " + ln)
+C 	}
+C 	return(-1)
+C }
+
+

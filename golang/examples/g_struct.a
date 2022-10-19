@@ -1,0 +1,95 @@
+----------------------------------------------------------------
+Actor main Non
+----------------------------------------------------------------
+
+C package main
+C 
+C 
+C type Kp interface {
+C 	GetVar(string, string) string
+C 	Doo(KpIts, string, int) int
+C 	RunAct(Kp, int) int
+C }
+C
+
+All comp struct
+
+----------------------------------------------------------------
+Actor struct Comp name = Actor
+----------------------------------------------------------------
+
+D ${name}c struct
+C type Kp${name}c struct {
+C 	Kp
+C 	Kme int
+C 	Fline string
+
+Its parent parent_field
+Its element val_inc
+Its element val_inc2
+Its comp_parent from_to
+
+C 	Kchilds [] Kp
+C }
+C
+
+----------------------------------------------------------------
+Actor struct Comp name != Actor
+----------------------------------------------------------------
+
+D ${name}c struct
+
+Its star star
+
+C type Kp${name}c struct {
+C 	Kp
+C 	Kme int
+C 	Fline string
+
+Its parent parent_field
+Its element val_inc
+Its element val_inc2
+Its comp_parent from_to
+Its element val_inc_d
+
+C }
+C
+
+----------------------------------------------------------------
+Actor star Star
+----------------------------------------------------------------
+
+D 	* ${doc} 
+
+----------------------------------------------------------------
+Actor val_inc_d Element
+----------------------------------------------------------------
+
+D 	${name}l * ${doc} 
+
+----------------------------------------------------------------
+Actor val_inc Element mw = C1 	K${name}l string
+Actor val_inc Element mw = V1 	K${name}l string
+Actor val_inc Element mw = I1 	K${name}l int
+Actor val_inc Element mw = P1 	K${name}l int
+Actor val_inc Element mw = D1 	K${name}l int
+Actor val_inc Element mw = R1 	K${name}l string
+Actor val_inc Element mw = F1 	K${name}l string
+Actor val_inc Element mw = M1 	K${name}l int
+Actor val_inc Element mw = A1 	K${name}l int
+Actor val_inc2 Element mw = R1 	K${name}lP int
+Actor val_inc2 Element mw = F1 	K${name}lP int
+----------------------------------------------------------------
+Actor parent_field Comp
+----------------------------------------------------------------
+
+C 	up *Kp$P{parent.name}c
+C 	parent string
+C 	parentP int
+
+----------------------------------------------------------------
+Actor from_to Comp
+----------------------------------------------------------------
+
+C 	its${name}c [] *Kp${name}c
+

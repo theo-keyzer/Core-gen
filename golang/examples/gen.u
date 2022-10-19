@@ -1,0 +1,198 @@
+:File act.u
+----------------------------------------------------------------
+Comp Comp parent . Find
+----------------------------------------------------------------
+* Loader definition for defining components.
+----------------------------------------------------------------
+
+	Element name   C1 NAME          * of component.
+	Element nop    C1 WORD          * ignored.
+	Element parent R1 COMP          * its parent.
+	Element find   C1 WORD          * if need to be found.
+	Element doc    V1 WORD          * documentation string
+
+Ref parent Comp opt
+
+
+----------------------------------------------------------------
+Comp Star parent Comp
+----------------------------------------------------------------
+* A document tag for a component.
+* This gets inserted into the generated loader class.
+----------------------------------------------------------------
+
+	Element doc V1 WORD   * document string.
+
+----------------------------------------------------------------
+Comp Element parent Comp Find
+----------------------------------------------------------------
+* Loader definition for defining component's elements.
+* R0 is optional relation
+----------------------------------------------------------------
+
+	Element name C1 NAME  * of element
+	Element mw   C1 WORD  * storage type
+	Element mw2  C1 WORD  * action type
+	Element pad  C1 WORD  * separator
+	Element doc  V1 WORD  * documentation string
+
+----------------------------------------------------------------
+Comp Ref parent Comp
+----------------------------------------------------------------
+* Relations on element
+----------------------------------------------------------------
+
+-	Element element F1 REF_ELEMENT   * inline find link to its element
+	Element element F1 _ELEMENT     up link to its element
+	Element comp    R1 COMP          * link to comp
+	Element opt     C1 WORD          * optional or check - error if not found
+	Element var     C1 WORD          * variable to use for find
+	Element doc     V1 WORD          * doc string
+	
+Ref element Element check up
+Ref comp Comp       check
+	
+----------------------------------------------------------------
+Comp Actor parent .
+----------------------------------------------------------------
+* Loader definition for actors.
+* These are like routines the generator calls
+* for generating code.
+----------------------------------------------------------------
+
+	Element name   C1 NAME  * of actor
+	Element parent C1 COMP  * what it belongs to
+	Element attr   C1 WORD  * what to check
+	Element eq     C1 WORD  * to equal
+	Element value  C1 WORD  * this
+	Element cc     V1 WORD  * code to generate.
+
+----------------------------------------------------------------
+Comp D parent Actor
+----------------------------------------------------------------
+* An actor calling type.
+* Print to stdout for documentation
+----------------------------------------------------------------
+
+	Element ds     V1 WORD  * document line to generate
+
+----------------------------------------------------------------
+Comp All parent Actor
+----------------------------------------------------------------
+* An actor calling type.
+* For each component call this actor.
+----------------------------------------------------------------
+
+	Element what  C1 WORD    * what to look for
+	Element actor R1 ACTOR   * what actor to run for it
+
+Ref actor Actor check
+
+----------------------------------------------------------------
+Comp Du parent Actor
+----------------------------------------------------------------
+* An actor calling type.
+* Coditional call to actor
+----------------------------------------------------------------
+
+	Element actor  R1 ACTOR * what actor to run for it
+	Element attr   C1 WORD  * what to check
+	Element eq     C1 WORD  * to equal
+	Element value  C1 WORD  * this
+	
+Ref actor Actor check
+
+----------------------------------------------------------------
+Comp Idu parent Actor
+----------------------------------------------------------------
+* Inline actor
+* Coditional inline code
+----------------------------------------------------------------
+
+	Element attr   C1 WORD  * what to check
+	Element eq     C1 WORD  * to equal
+	Element value  C1 WORD  * this
+	Element cc     V1 WORD  * code to generate.
+
+----------------------------------------------------------------
+Comp Its parent Actor
+----------------------------------------------------------------
+* Call this actor
+* For each child or reference of this def
+----------------------------------------------------------------
+
+	Element what    C1 WORD      * to look for
+	Element actor   R1 ACTOR     * what to do
+	Element name    C1 WORD      * Field name
+	Element op      C1 WORD      * (= >)
+	Element value   V1 WORD      * Data value
+	
+Ref actor Actor check
+	
+----------------------------------------------------------------
+Comp Iits parent Actor
+----------------------------------------------------------------
+* Inline actor - one line, no condition
+* For each child or reference of this def
+----------------------------------------------------------------
+
+	Element what    C1 WORD      * to look for
+	Element cc      V1 WORD      * code to generate.
+	
+----------------------------------------------------------------
+Comp C parent Actor
+----------------------------------------------------------------
+* Output code to file.
+----------------------------------------------------------------
+
+	Element desc   V1 DESC * code to output.
+
+----------------------------------------------------------------
+Comp Break parent Actor
+----------------------------------------------------------------
+* Stop a looping cmd like Its and All
+* When only one of is needed like import
+----------------------------------------------------------------
+
+	Element level    I1 VAL  * Number of levels to break
+	Element desc     V1 DESC * nop
+
+----------------------------------------------------------------
+Comp Return parent Actor
+----------------------------------------------------------------
+* Return out of actor loop
+* Actors process all with the same name
+* Behaves much like a case break
+----------------------------------------------------------------
+
+	Element level    I1 VAL  * Number of levels to drop
+	Element desc     V1 DESC * nop
+
+----------------------------------------------------------------
+Comp Unique parent Actor
+----------------------------------------------------------------
+* Used to not duplicate output.
+* Exit the actor if found
+* Output the code if inline code is provided - does not exit the actor
+*
+* Cmd clear - clears the hashtable.
+* Cmd add   - add to hashtable, ends actor if found.
+* Cmd delete - removes an entry hashtable.
+----------------------------------------------------------------
+
+	Element cmd    C1 WORD  * add / clear
+	Element key    C1 WORD  * compare key
+	Element cc     V1 WORD  * code to generate.
+
+----------------------------------------------------------------
+Comp Collect parent Actor
+----------------------------------------------------------------
+* Add current def to pocket
+* Collect items for later use
+* Does not duplicate
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+	Element key     C1 WORD * optional compare key
+
