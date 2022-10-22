@@ -301,16 +301,7 @@ The `${.actor_name.}` access to the node that the actor has.
 `Break loop` - break the calling loop - if only needing one.
 `Unique` - for not duplication code.
 The `&=` on the actor's match is true is the previous one was true. 
-Its .`actor_name` - use that actor's node instead.
-Reverse links.
-```
-Its Link_to.parent sort_item
-```
-
-The `Link` has a to field `to` pointing to `Node`. This gets the links
-that points to itself. The link's parent is not the same as this one here.
-
-The `_` are reverse links.
+The `Its .actor_name` - use that actor's node instead.
 
 
 # JSON input files
@@ -339,9 +330,7 @@ Small core version that can to be changed as needed.
 Can be ported to other languages - mostly generated.
 The json and group are examples on how to add plugins.
 The `V` version is very simular to this one. The
-`golang` version is older and not so well automated - may need to
-add helper functions for the link references. Has a `$P{name}`
-convention to get the node from the previous actor.
+`golang` version is older and not so well automated.
 
 # Licence
 
