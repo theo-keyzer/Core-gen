@@ -329,8 +329,9 @@ You can run the examples from it.
 Small core version that can to be changed as needed.
 Can be ported to other languages - mostly generated.
 The json and group are examples on how to add plugins.
-The `V` version is very simular to this one. The
-`golang` version is older and not so well automated.
+The `V-lang` version is very simular to this one. The
+`golang` version is older and not as well automated.
+The `Crytal-lang` one is in progress.
 
 # Licence
 
