@@ -4,236 +4,19 @@ class Kp
 	property me : Int32 = -1
 	property line_no : String = ""
 	property names : Hash(String, String) = Hash(String, String).new
-end
-
-class ActT 
-	property index : Hash(String, Int32) = Hash(String, Int32).new
-	property ap_node : Array(KpNode) = Array(KpNode).new
-	property ap_link : Array(KpLink) = Array(KpLink).new
-	property ap_graph : Array(KpGraph) = Array(KpGraph).new
-	property ap_matrix : Array(KpMatrix) = Array(KpMatrix).new
-	property ap_table : Array(KpTable) = Array(KpTable).new
-	property ap_field : Array(KpField) = Array(KpField).new
-	property ap_attr : Array(KpAttr) = Array(KpAttr).new
-	property ap_join : Array(KpJoin) = Array(KpJoin).new
-	property ap_join2 : Array(KpJoin2) = Array(KpJoin2).new
-	property ap_comp : Array(KpComp) = Array(KpComp).new
-	property ap_token : Array(KpToken) = Array(KpToken).new
-	property ap_star : Array(KpStar) = Array(KpStar).new
-	property ap_element : Array(KpElement) = Array(KpElement).new
-	property ap_opt : Array(KpOpt) = Array(KpOpt).new
-	property ap_ref : Array(KpRef) = Array(KpRef).new
-	property ap_ref2 : Array(KpRef2) = Array(KpRef2).new
-	property ap_actor : Array(KpActor) = Array(KpActor).new
-	property ap_all : Array(KpAll) = Array(KpAll).new
-	property ap_du : Array(KpDu) = Array(KpDu).new
-	property ap_set : Array(KpSet) = Array(KpSet).new
-	property ap_its : Array(KpIts) = Array(KpIts).new
-	property ap_c : Array(KpC) = Array(KpC).new
-	property ap_cs : Array(KpCs) = Array(KpCs).new
-	property ap_out : Array(KpOut) = Array(KpOut).new
-	property ap_break : Array(KpBreak) = Array(KpBreak).new
-	property ap_unique : Array(KpUnique) = Array(KpUnique).new
-	property ap_collect : Array(KpCollect) = Array(KpCollect).new
-	property ap_group : Array(KpGroup) = Array(KpGroup).new
-	property ap_json : Array(KpJson) = Array(KpJson).new
-end
-
-def load(act, tok, ln, pos, lno)
-	if tok == "Node"
-		comp = KpNode.new
-		comp.load(act, ln, pos, lno)
-		act.ap_node << comp
+	def do_its(glob, va, lno)
+		puts "Its kp"
 	end
-	if tok == "Link"
-		comp = KpLink.new
-		comp.load(act, ln, pos, lno)
-		act.ap_link << comp
-	end
-	if tok == "Graph"
-		comp = KpGraph.new
-		comp.load(act, ln, pos, lno)
-		act.ap_graph << comp
-	end
-	if tok == "Matrix"
-		comp = KpMatrix.new
-		comp.load(act, ln, pos, lno)
-		act.ap_matrix << comp
-	end
-	if tok == "Table"
-		comp = KpTable.new
-		comp.load(act, ln, pos, lno)
-		act.ap_table << comp
-	end
-	if tok == "Field"
-		comp = KpField.new
-		comp.load(act, ln, pos, lno)
-		act.ap_field << comp
-	end
-	if tok == "Attr"
-		comp = KpAttr.new
-		comp.load(act, ln, pos, lno)
-		act.ap_attr << comp
-	end
-	if tok == "Join"
-		comp = KpJoin.new
-		comp.load(act, ln, pos, lno)
-		act.ap_join << comp
-	end
-	if tok == "Join2"
-		comp = KpJoin2.new
-		comp.load(act, ln, pos, lno)
-		act.ap_join2 << comp
-	end
-	if tok == "Comp"
-		comp = KpComp.new
-		comp.load(act, ln, pos, lno)
-		act.ap_comp << comp
-	end
-	if tok == "Token"
-		comp = KpToken.new
-		comp.load(act, ln, pos, lno)
-		act.ap_token << comp
-	end
-	if tok == "Star"
-		comp = KpStar.new
-		comp.load(act, ln, pos, lno)
-		act.ap_star << comp
-	end
-	if tok == "Element"
-		comp = KpElement.new
-		comp.load(act, ln, pos, lno)
-		act.ap_element << comp
-	end
-	if tok == "Opt"
-		comp = KpOpt.new
-		comp.load(act, ln, pos, lno)
-		act.ap_opt << comp
-	end
-	if tok == "Ref"
-		comp = KpRef.new
-		comp.load(act, ln, pos, lno)
-		act.ap_ref << comp
-	end
-	if tok == "Ref2"
-		comp = KpRef2.new
-		comp.load(act, ln, pos, lno)
-		act.ap_ref2 << comp
-	end
-	if tok == "Actor"
-		comp = KpActor.new
-		comp.load(act, ln, pos, lno)
-		act.ap_actor << comp
-	end
-	if tok == "All"
-		comp = KpAll.new
-		comp.load(act, ln, pos, lno)
-		act.ap_all << comp
-	end
-	if tok == "Du"
-		comp = KpDu.new
-		comp.load(act, ln, pos, lno)
-		act.ap_du << comp
-	end
-	if tok == "Set"
-		comp = KpSet.new
-		comp.load(act, ln, pos, lno)
-		act.ap_set << comp
-	end
-	if tok == "Its"
-		comp = KpIts.new
-		comp.load(act, ln, pos, lno)
-		act.ap_its << comp
-	end
-	if tok == "C"
-		comp = KpC.new
-		comp.load(act, ln, pos, lno)
-		act.ap_c << comp
-	end
-	if tok == "Cs"
-		comp = KpCs.new
-		comp.load(act, ln, pos, lno)
-		act.ap_cs << comp
-	end
-	if tok == "Out"
-		comp = KpOut.new
-		comp.load(act, ln, pos, lno)
-		act.ap_out << comp
-	end
-	if tok == "Break"
-		comp = KpBreak.new
-		comp.load(act, ln, pos, lno)
-		act.ap_break << comp
-	end
-	if tok == "Unique"
-		comp = KpUnique.new
-		comp.load(act, ln, pos, lno)
-		act.ap_unique << comp
-	end
-	if tok == "Collect"
-		comp = KpCollect.new
-		comp.load(act, ln, pos, lno)
-		act.ap_collect << comp
-	end
-	if tok == "Group"
-		comp = KpGroup.new
-		comp.load(act, ln, pos, lno)
-		act.ap_group << comp
-	end
-	if tok == "Json"
-		comp = KpJson.new
-		comp.load(act, ln, pos, lno)
-		act.ap_json << comp
+	def get_var(glob, va, lno)
+		return "Var Kp"
 	end
 end
-
-def refs(act)
-	act.ap_node.each_with_index do |st,i|
-		st.k_parentp = fnd(act, "Node_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
-	end
-	act.ap_link.each_with_index do |st,i|
-		st.k_top = fnd(act, "Node_" + st.names["to"] , st.names["to"],  ".", st.line_no )
-	end
-	act.ap_join.each_with_index do |st,i|
-		st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
-		st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
-		st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
-	end
-	act.ap_join2.each_with_index do |st,i|
-		st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
-		st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
-		st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
-		st.k_attr2p = fnd(act, st.k_field2p.to_s + "_Attr_" + st.names["attr2"] , st.names["attr2"],  "check", st.line_no )
-	end
-	act.ap_comp.each_with_index do |st,i|
-		st.k_parentp = fnd(act, "Comp_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
-	end
-	act.ap_ref.each_with_index do |st,i|
-		st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
-		st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
-	end
-	act.ap_ref2.each_with_index do |st,i|
-		st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
-		st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
-		st.k_element2p = fnd(act, st.parentp.to_s + "_Element_" + st.names["element2"] , st.names["element2"],  "check", st.line_no )
-	end
-	act.ap_all.each_with_index do |st,i|
-		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
-	end
-	act.ap_du.each_with_index do |st,i|
-		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
-	end
-	act.ap_its.each_with_index do |st,i|
-		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
-	end
-end
-
-
 
 class KpNode < Kp 
 	property k_parentp : Int32 = -1
 	property itslink : Array(KpLink) = Array(KpLink).new
 	property childs : Array(Kp) = Array(Kp).new
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -247,11 +30,76 @@ class KpNode < Kp
 		act.index["Node_" + @names["name"]] = @me
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "parent" # app.unit:12, c_struct.act:468
+			if k_parentp >= 0 && va.size > 1
+				return( glob.dats.ap_node[ k_parentp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "Node_parent" && va.size > 1 # app.unit:12, c_struct.act:561
+			glob.dats.ap_node.each do |st|
+				if st.k_parentp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Link_to" && va.size > 1 # app.unit:20, c_struct.act:561
+			glob.dats.ap_link.each do |st|
+				if st.k_top == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Node?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "Link" # app.unit:15, c_struct.act:537
+			itslink.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "parent"
+			if k_parentp >= 0
+				st = glob.dats.ap_node[ k_parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "Node_parent" # app.unit:12, c_struct.act:395
+			glob.dats.ap_node.each do |st|
+				if st.k_parentp == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		if va[0] == "Link_to" # app.unit:20, c_struct.act:395
+			glob.dats.ap_link.each do |st|
+				if st.k_top == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Node," + line_no + "," + lno + "?");
+	end
 end
 
 class KpLink < Kp 
 	property parentp : Int32 = -1
 	property k_top : Int32 = -1
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -266,9 +114,48 @@ class KpLink < Kp
 		act.ap_node[ @parentp ].childs << self
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "to" # app.unit:20, c_struct.act:468
+			if k_top >= 0 && va.size > 1
+				return( glob.dats.ap_node[ k_top ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "parent" # app.unit:2, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_node[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Link?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "parent" # app.unit:2, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_node[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "to"
+			if k_top >= 0
+				st = glob.dats.ap_node[ k_top ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Link," + line_no + "," + lno + "?");
+	end
 end
 
 class KpGraph < Kp 
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -279,9 +166,20 @@ class KpGraph < Kp
 		act.index["Graph_" + @names["name"]] = @me
 	end
 
+	def get_var(glob, va, lno)
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Graph?");
+	end
+
+def do_its(glob, va, lno)
+		puts("?No its " + va[0] + " cmd for Graph," + line_no + "," + lno + "?");
+	end
 end
 
 class KpMatrix < Kp 
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -293,6 +191,16 @@ class KpMatrix < Kp
 		p, @names["search"] = getw(ln, p)
 	end
 
+	def get_var(glob, va, lno)
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Matrix?");
+	end
+
+def do_its(glob, va, lno)
+		puts("?No its " + va[0] + " cmd for Matrix," + line_no + "," + lno + "?");
+	end
 end
 
 class KpTable < Kp 
@@ -300,6 +208,7 @@ class KpTable < Kp
 	property itsjoin : Array(KpJoin) = Array(KpJoin).new
 	property itsjoin2 : Array(KpJoin2) = Array(KpJoin2).new
 	property childs : Array(Kp) = Array(Kp).new
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -310,12 +219,81 @@ class KpTable < Kp
 		act.index["Table_" + @names["name"]] = @me
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "Join_table2" && va.size > 1 # app.unit:80, c_struct.act:561
+			glob.dats.ap_join.each do |st|
+				if st.k_table2p == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Join2_table2" && va.size > 1 # app.unit:95, c_struct.act:561
+			glob.dats.ap_join2.each do |st|
+				if st.k_table2p == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Field"  && va.size > 2 # app.unit:52, c_struct.act:285
+			if en = glob.dats.index[me.to_s + "_Field_" + va[1] ]?
+				return (glob.dats.ap_field[en].get_var(glob, va[2..], lno))
+			end
+			return("?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?")
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Table?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "Field" # app.unit:49, c_struct.act:537
+			itsfield.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "Join" # app.unit:68, c_struct.act:537
+			itsjoin.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "Join2" # app.unit:84, c_struct.act:537
+			itsjoin2.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "Join_table2" # app.unit:80, c_struct.act:395
+			glob.dats.ap_join.each do |st|
+				if st.k_table2p == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		if va[0] == "Join2_table2" # app.unit:95, c_struct.act:395
+			glob.dats.ap_join2.each do |st|
+				if st.k_table2p == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Table," + line_no + "," + lno + "?");
+	end
 end
 
 class KpField < Kp 
 	property parentp : Int32 = -1
 	property itsattr : Array(KpAttr) = Array(KpAttr).new
 	property childs : Array(Kp) = Array(Kp).new
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -335,10 +313,115 @@ class KpField < Kp
 		act.index[s] = @me
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "parent" # app.unit:41, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_table[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if va[0] == "Join_field1" && va.size > 1 # app.unit:79, c_struct.act:561
+			glob.dats.ap_join.each do |st|
+				if st.k_field1p == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Join2_field1" && va.size > 1 # app.unit:94, c_struct.act:561
+			glob.dats.ap_join2.each do |st|
+				if st.k_field1p == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Join_field2" && va.size > 1 # app.unit:81, c_struct.act:581
+			glob.dats.ap_join.each do |st|
+				if st.k_field2p == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Join2_field2" && va.size > 1 # app.unit:96, c_struct.act:581
+			glob.dats.ap_join2.each do |st|
+				if st.k_field2p == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Attr"  && va.size > 2 # app.unit:65, c_struct.act:285
+			if en = glob.dats.index[me.to_s + "_Attr_" + va[1] ]?
+				return (glob.dats.ap_attr[en].get_var(glob, va[2..], lno))
+			end
+			return("?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?")
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Field?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "Attr" # app.unit:62, c_struct.act:537
+			itsattr.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "parent" # app.unit:41, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_table[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "Join_field1" # app.unit:79, c_struct.act:395
+			glob.dats.ap_join.each do |st|
+				if st.k_field1p == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		if va[0] == "Join2_field1" # app.unit:94, c_struct.act:395
+			glob.dats.ap_join2.each do |st|
+				if st.k_field1p == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		if va[0] == "Join_field2" # app.unit:81, c_struct.act:424
+			glob.dats.ap_join.each do |st|
+				if st.k_field2p == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		if va[0] == "Join2_field2" # app.unit:96, c_struct.act:424
+			glob.dats.ap_join2.each do |st|
+				if st.k_field2p == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Field," + line_no + "," + lno + "?");
+	end
 end
 
 class KpAttr < Kp 
 	property parentp : Int32 = -1
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -355,6 +438,47 @@ class KpAttr < Kp
 		act.index[s] = @me
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "parent" # app.unit:49, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_field[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if va[0] == "Join2_attr2" && va.size > 1 # app.unit:97, c_struct.act:581
+			glob.dats.ap_join2.each do |st|
+				if st.k_attr2p == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Attr?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "parent" # app.unit:49, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_field[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "Join2_attr2" # app.unit:97, c_struct.act:424
+			glob.dats.ap_join2.each do |st|
+				if st.k_attr2p == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Attr," + line_no + "," + lno + "?");
+	end
 end
 
 class KpJoin < Kp 
@@ -362,6 +486,7 @@ class KpJoin < Kp
 	property k_field1p : Int32 = -1
 	property k_table2p : Int32 = -1
 	property k_field2p : Int32 = -1
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -380,6 +505,72 @@ class KpJoin < Kp
 		act.ap_table[ @parentp ].childs << self
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "field1" # app.unit:79, c_struct.act:468
+			if k_field1p >= 0 && va.size > 1
+				return( glob.dats.ap_field[ k_field1p ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "table2" # app.unit:80, c_struct.act:468
+			if k_table2p >= 0 && va.size > 1
+				return( glob.dats.ap_table[ k_table2p ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "field2" # app.unit:81, c_struct.act:484
+			if k_field2p >= 0 && va.size > 1
+				return( glob.dats.ap_field[ k_field2p ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "parent" # app.unit:41, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_table[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Join?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "parent" # app.unit:41, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_table[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "field1"
+			if k_field1p >= 0
+				st = glob.dats.ap_field[ k_field1p ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "table2"
+			if k_table2p >= 0
+				st = glob.dats.ap_table[ k_table2p ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "field2"
+			if k_field2p >= 0
+				st = glob.dats.ap_field[ k_field2p ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Join," + line_no + "," + lno + "?");
+	end
 end
 
 class KpJoin2 < Kp 
@@ -388,6 +579,7 @@ class KpJoin2 < Kp
 	property k_table2p : Int32 = -1
 	property k_field2p : Int32 = -1
 	property k_attr2p : Int32 = -1
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -405,6 +597,86 @@ class KpJoin2 < Kp
 		act.ap_table[ @parentp ].childs << self
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "field1" # app.unit:94, c_struct.act:468
+			if k_field1p >= 0 && va.size > 1
+				return( glob.dats.ap_field[ k_field1p ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "table2" # app.unit:95, c_struct.act:468
+			if k_table2p >= 0 && va.size > 1
+				return( glob.dats.ap_table[ k_table2p ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "field2" # app.unit:96, c_struct.act:484
+			if k_field2p >= 0 && va.size > 1
+				return( glob.dats.ap_field[ k_field2p ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "attr2" # app.unit:97, c_struct.act:484
+			if k_attr2p >= 0 && va.size > 1
+				return( glob.dats.ap_attr[ k_attr2p ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "parent" # app.unit:41, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_table[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Join2?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "parent" # app.unit:41, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_table[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "field1"
+			if k_field1p >= 0
+				st = glob.dats.ap_field[ k_field1p ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "table2"
+			if k_table2p >= 0
+				st = glob.dats.ap_table[ k_table2p ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "field2"
+			if k_field2p >= 0
+				st = glob.dats.ap_field[ k_field2p ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "attr2"
+			if k_attr2p >= 0
+				st = glob.dats.ap_attr[ k_attr2p ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Join2," + line_no + "," + lno + "?");
+	end
 end
 
 class KpComp < Kp 
@@ -414,6 +686,7 @@ class KpComp < Kp
 	property itsref : Array(KpRef) = Array(KpRef).new
 	property itsref2 : Array(KpRef2) = Array(KpRef2).new
 	property childs : Array(Kp) = Array(Kp).new
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -426,10 +699,116 @@ class KpComp < Kp
 		act.index["Comp_" + @names["name"]] = @me
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "parent" # gen.unit:16, c_struct.act:468
+			if k_parentp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "Comp_parent" && va.size > 1 # gen.unit:16, c_struct.act:561
+			glob.dats.ap_comp.each do |st|
+				if st.k_parentp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Ref_comp" && va.size > 1 # gen.unit:79, c_struct.act:561
+			glob.dats.ap_ref.each do |st|
+				if st.k_compp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Ref2_comp" && va.size > 1 # gen.unit:97, c_struct.act:561
+			glob.dats.ap_ref2.each do |st|
+				if st.k_compp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Element"  && va.size > 2 # gen.unit:42, c_struct.act:285
+			if en = glob.dats.index[me.to_s + "_Element_" + va[1] ]?
+				return (glob.dats.ap_element[en].get_var(glob, va[2..], lno))
+			end
+			return("?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?")
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Comp?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "Token" # gen.unit:19, c_struct.act:537
+			itstoken.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "Element" # gen.unit:37, c_struct.act:537
+			itselement.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "Ref" # gen.unit:65, c_struct.act:537
+			itsref.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "Ref2" # gen.unit:82, c_struct.act:537
+			itsref2.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "parent"
+			if k_parentp >= 0
+				st = glob.dats.ap_comp[ k_parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "Comp_parent" # gen.unit:16, c_struct.act:395
+			glob.dats.ap_comp.each do |st|
+				if st.k_parentp == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		if va[0] == "Ref_comp" # gen.unit:79, c_struct.act:395
+			glob.dats.ap_ref.each do |st|
+				if st.k_compp == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		if va[0] == "Ref2_comp" # gen.unit:97, c_struct.act:395
+			glob.dats.ap_ref2.each do |st|
+				if st.k_compp == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Comp," + line_no + "," + lno + "?");
+	end
 end
 
 class KpToken < Kp 
 	property parentp : Int32 = -1
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -444,9 +823,34 @@ class KpToken < Kp
 		act.ap_comp[ @parentp ].childs << self
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "parent" # gen.unit:2, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Token?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "parent" # gen.unit:2, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_comp[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Token," + line_no + "," + lno + "?");
+	end
 end
 
 class KpStar < Kp 
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -454,12 +858,23 @@ class KpStar < Kp
 		p, @names["doc"] = getws(ln, p)
 	end
 
+	def get_var(glob, va, lno)
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Star?");
+	end
+
+def do_its(glob, va, lno)
+		puts("?No its " + va[0] + " cmd for Star," + line_no + "," + lno + "?");
+	end
 end
 
 class KpElement < Kp 
 	property parentp : Int32 = -1
 	property itsopt : Array(KpOpt) = Array(KpOpt).new
 	property childs : Array(Kp) = Array(Kp).new
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -480,10 +895,98 @@ class KpElement < Kp
 		act.index[s] = @me
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "parent" # gen.unit:2, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if va[0] == "Ref_element" && va.size > 1 # gen.unit:78, c_struct.act:561
+			glob.dats.ap_ref.each do |st|
+				if st.k_elementp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Ref2_element" && va.size > 1 # gen.unit:96, c_struct.act:561
+			glob.dats.ap_ref2.each do |st|
+				if st.k_elementp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Ref2_element2" && va.size > 1 # gen.unit:98, c_struct.act:561
+			glob.dats.ap_ref2.each do |st|
+				if st.k_element2p == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Opt"  && va.size > 2 # gen.unit:60, c_struct.act:285
+			if en = glob.dats.index[me.to_s + "_Opt_" + va[1] ]?
+				return (glob.dats.ap_opt[en].get_var(glob, va[2..], lno))
+			end
+			return("?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?")
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Element?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "Opt" # gen.unit:54, c_struct.act:537
+			itsopt.each do |st|
+				go_act(glob, st) 
+			end
+			return
+		end
+		if va[0] == "parent" # gen.unit:2, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_comp[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "Ref_element" # gen.unit:78, c_struct.act:395
+			glob.dats.ap_ref.each do |st|
+				if st.k_elementp == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		if va[0] == "Ref2_element" # gen.unit:96, c_struct.act:395
+			glob.dats.ap_ref2.each do |st|
+				if st.k_elementp == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		if va[0] == "Ref2_element2" # gen.unit:98, c_struct.act:395
+			glob.dats.ap_ref2.each do |st|
+				if st.k_element2p == me
+					if va.size > 1
+						return( st.do_its(glob, va[1..], lno) )
+					end
+					return( go_act(glob, st) )
+				end
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Element," + line_no + "," + lno + "?");
+	end
 end
 
 class KpOpt < Kp 
 	property parentp : Int32 = -1
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -502,12 +1005,37 @@ class KpOpt < Kp
 		act.index[s] = @me
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "parent" # gen.unit:37, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_element[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Opt?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "parent" # gen.unit:37, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_element[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Opt," + line_no + "," + lno + "?");
+	end
 end
 
 class KpRef < Kp 
 	property parentp : Int32 = -1
 	property k_elementp : Int32 = -1
 	property k_compp : Int32 = -1
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -526,6 +1054,58 @@ class KpRef < Kp
 		act.ap_comp[ @parentp ].childs << self
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "element" # gen.unit:78, c_struct.act:468
+			if k_elementp >= 0 && va.size > 1
+				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "comp" # gen.unit:79, c_struct.act:468
+			if k_compp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "parent" # gen.unit:2, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Ref?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "parent" # gen.unit:2, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_comp[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "element"
+			if k_elementp >= 0
+				st = glob.dats.ap_element[ k_elementp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "comp"
+			if k_compp >= 0
+				st = glob.dats.ap_comp[ k_compp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Ref," + line_no + "," + lno + "?");
+	end
 end
 
 class KpRef2 < Kp 
@@ -533,6 +1113,7 @@ class KpRef2 < Kp
 	property k_elementp : Int32 = -1
 	property k_compp : Int32 = -1
 	property k_element2p : Int32 = -1
+
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
@@ -552,6 +1133,72 @@ class KpRef2 < Kp
 		act.ap_comp[ @parentp ].childs << self
 	end
 
+	def get_var(glob, va, lno)
+		if va[0] == "element" # gen.unit:96, c_struct.act:468
+			if k_elementp >= 0 && va.size > 1
+				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "comp" # gen.unit:97, c_struct.act:468
+			if k_compp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "element2" # gen.unit:98, c_struct.act:468
+			if k_element2p >= 0 && va.size > 1
+				return( glob.dats.ap_element[ k_element2p ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "parent" # gen.unit:2, c_struct.act:379
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if v = names[ va[0] ]?
+			return( v )
+		end
+		return("?" + va[0] + "?" + line_no + "," + lno + ",Ref2?");
+	end
+
+def do_its(glob, va, lno)
+		if va[0] == "parent" # gen.unit:2, c_struct.act:355
+			if parentp >= 0
+				st = glob.dats.ap_comp[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "element"
+			if k_elementp >= 0
+				st = glob.dats.ap_element[ k_elementp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "comp"
+			if k_compp >= 0
+				st = glob.dats.ap_comp[ k_compp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		if va[0] == "element2"
+			if k_element2p >= 0
+				st = glob.dats.ap_element[ k_element2p ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+		end
+		puts("?No its " + va[0] + " cmd for Ref2," + line_no + "," + lno + "?");
+	end
 end
 
 class KpActor < Kp 
