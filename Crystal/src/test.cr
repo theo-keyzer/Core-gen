@@ -16,12 +16,12 @@ class GlobT
 	property winp : Int32 = -1
 end
 
-#print "xx"
-
 glob = GlobT.new
 
-load_files("tst2.act", glob.acts)
-load_files("tst.def", glob.dats)
+#load_files("tst2.act", glob.acts)
+#load_files("tst.def", glob.dats)
+load_files("c_struct.act", glob.acts)
+load_files("app.unit", glob.dats)
 
 
 def load_files(file, act)
@@ -62,14 +62,31 @@ def go_act(glob, dat)
 	glob.winp = winp
 	glob.wins[winp].dat = dat
 	name = glob.wins[winp].name
+	prev = false
 	glob.acts.ap_actor.each_with_index do |act,i|
 		if act.k_name != name
 			next
 		end
+		if act.k_attr != "E_O_L"
+			v = s_get_var(glob, act.k_attr, dat, act.line_no )
+			ss = strs(glob, act.k_value, dat, act.line_no)
+			if chk( act.k_eq, v, ss, prev) == false 
+				prev = false
+				next
+			end
+			if act.k_cc != ""
+				puts strs(glob, act.k_cc, dat, act.line_no) 
+			end
+		end
+		prev = true
 		glob.wins[winp].cnt += 1
-		go(glob, i, dat)
+		ret = go(glob, i, dat)
+		if ret > 0
+			return(ret-1)
+		end
 	end
 	glob.winp = winp-1
+	return(0)
 end
 
 def go(glob,ca, dat)
@@ -92,21 +109,66 @@ def go(glob,ca, dat)
 			dat.do_its(glob, va, cmd.line_no)
 		end
 		
+		if cmd.is_a?(KpDu)
+			new_act(glob, cmd.k_actor, "", cmd.line_no)
+			go_act(glob,dat)
+		end
+		
 		if cmd.is_a?(KpAll)
 			arg = strs(glob, cmd.k_args, dat, cmd.line_no )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
 			do_all(glob, cmd.k_what, cmd.line_no)
 		end
+		
+		if cmd.is_a?(KpBreak)
+			if cmd.k_what == "E_O_L"
+				return(1)
+			end
+			if cmd.k_what == "actor"
+				return(1)
+			end
+			if cmd.k_what == "loop"
+				return(2)
+			end
+			if cmd.k_what == "loop_actor"
+				return(3)
+			end
+		end
 	end
+	return(0)
 end
 
+def chk( eq, v, ss, prev )
+	if eq == "has" || eq == "in"
+		u = v.split(",") & ss.split(",")
+		if u.size > 0
+			return true
+		end
+		return false
+	end
+	if eq == "="
+		if v == ss
+			return true
+		end
+		return false
+	end
+	if eq == "!="
+		if v == ss
+			return false
+		end
+		return true
+	end
+	return( true )
+end
 
 def s_get_var(glob, s, dat, lno)
+	if s == ""
+		return(dat.line_no + ", " + lno)
+	end
 	va = s.split(".")
-#	puts vs
 	if va[0] == "" && va.size > 1
 		if va[1] == "arg"
-			return( glob.wins[glob.winp].arg )
+			return(glob.wins[glob.winp].arg )
 		end
 		if va[1] == "+"
 			return( (glob.wins[glob.winp].cnt+1).to_s )
@@ -131,7 +193,8 @@ def s_get_var(glob, s, dat, lno)
 		end
 		return( "?" + va[1] + "?")
 	end
-	return( dat.get_var(glob, va, lno) )
+	r, v = dat.get_var(glob, va, lno)
+	return( v )
 end
 
 def strs(glob, s, dat, lno)

@@ -225,22 +225,22 @@ end
 
 def do_all(glob, what, lno)
 	if what == "Node" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_node.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Link" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_link.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Graph" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_graph.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Matrix" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_matrix.each do |st|
 			go_act(glob, st)
 		end
 	end
@@ -250,62 +250,62 @@ def do_all(glob, what, lno)
 		end
 	end
 	if what == "Field" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_field.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Attr" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_attr.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Join" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_join.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Join2" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_join2.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Comp" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_comp.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Token" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_token.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Star" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_star.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Element" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_element.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Opt" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_opt.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Ref" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_ref.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Ref2" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_ref2.each do |st|
 			go_act(glob, st)
 		end
 	end
 	if what == "Actor" 
-		glob.dats.ap_table.each do |st|
+		glob.dats.ap_actor.each do |st|
 			go_act(glob, st)
 		end
 	end
