@@ -20,7 +20,8 @@ glob = GlobT.new
 
 #load_files("tst2.act", glob.acts)
 #load_files("tst.def", glob.dats)
-load_files("c_struct.act", glob.acts)
+#load_files("c_struct.act", glob.acts)
+load_files("c_run.act", glob.acts)
 load_files("app.unit", glob.dats)
 
 
@@ -68,7 +69,8 @@ def go_act(glob, dat)
 			next
 		end
 		if act.k_attr != "E_O_L"
-			v = s_get_var(glob, act.k_attr, dat, act.line_no )
+			va = act.k_attr.split(".")
+			v = s_get_var(glob, va, dat, act.line_no )
 			ss = strs(glob, act.k_value, dat, act.line_no)
 			if chk( act.k_eq, v, ss, prev) == false 
 				prev = false
@@ -161,11 +163,10 @@ def chk( eq, v, ss, prev )
 	return( true )
 end
 
-def s_get_var(glob, s, dat, lno)
-	if s == ""
+def s_get_var(glob, va, dat, lno)
+	if va[0] == "" && va.size == 1
 		return(dat.line_no + ", " + lno)
 	end
-	va = s.split(".")
 	if va[0] == "" && va.size > 1
 		if va[1] == "arg"
 			return(glob.wins[glob.winp].arg )
@@ -190,6 +191,13 @@ def s_get_var(glob, s, dat, lno)
 				return("")
 			end
 			return( va[2] )
+		end
+		i = glob.winp-1
+		while i >= 0 
+		    if glob.wins[i].name == va[1]
+		        return( s_get_var(glob, va[2..], glob.wins[i].dat, lno) )
+		    end
+		    i = i-1
 		end
 		return( "?" + va[1] + "?")
 	end
@@ -227,7 +235,8 @@ def strs(glob, s, dat, lno)
 		end
 		if s[i] == '}'
 			if bp > 0
-				v = s_get_var(glob, s[bp+1..i-1], dat, lno )
+				va = s[bp+1..i-1].split(".")
+				v = s_get_var(glob, va, dat, lno )
 				if l > i+1
 					i += 1
 					v = tocase(v, s[i])

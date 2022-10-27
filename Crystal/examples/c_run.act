@@ -1,0 +1,149 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C require "./*"
+C
+C class ActT 
+C 	property index : Hash(String, Int32) = Hash(String, Int32).new
+
+All Comp ar
+
+C end
+C 
+C def load(act, tok, ln, pos, lno)
+
+All Comp load
+
+C end
+C
+C def refs(act)
+
+All Comp refs
+
+C end
+C
+-C func var_all(_ a: String, _ b:String, _ ln: String) -> (ok: Bool, val: String) {
+-C 	let ss = split(b);
+
+-All Comp var_all
+
+-C 	return(false, "?" + a + "?" + "," + ln + ", var_all?");
+-C }
+C
+
+
+C def do_all(glob, what, lno)
+
+All Comp do_all
+
+-C 	print("? No all " + a + " cmd " + "," + ln + "?");
+-C 	return 0;
+C end
+C
+
+----------------------------------------------------------------
+Actor ar .
+----------------------------------------------------------------
+
+C 	property ap_${name}l : Array(Kp${name}c) = Array(Kp${name}c).new
+
+----------------------------------------------------------------
+Actor load .
+----------------------------------------------------------------
+
+C 	if tok == "${name}c"
+C 		comp = Kp${name}c.new
+C 		comp.load(act, ln, pos, lno)
+C 		act.ap_${name}l << comp
+C 	end
+
+----------------------------------------------------------------
+Actor refs Comp parent = Actor
+----------------------------------------------------------------
+
+Out delay
+
+C 	act.ap_${name}l.each_with_index do |st,i|
+		
+Its Element refs_act_ele
+
+C 	end
+
+Break
+
+----------------------------------------------------------------
+Actor refs .
+----------------------------------------------------------------
+
+Out delay
+
+C 	act.ap_${name}l.each_with_index do |st,i|
+		
+Its Element refs_ele
+
+C 	end
+
+----------------------------------------------------------------
+Actor refs_act_ele . mw = R1
+----------------------------------------------------------------
+
+C 		st.k_${name}lp = fnd(act, "${Ref_element.comp.name}c_" + st.k_${name}l , st.k_${name}l,  ".", st.line_no )
+
+----------------------------------------------------------------
+Actor refs_ele . mw = R1
+----------------------------------------------------------------
+
+C 		st.k_${name}lp = fnd(act, "${Ref_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  ".", st.line_no )
+
+----------------------------------------------------------------
+Actor refs_ele . mw = F1
+----------------------------------------------------------------
+
+C 		st.k_${name}lp = fnd(act, st.parentp.to_s + "_${Ref_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref_element.opt} ", st.line_no )
+
+----------------------------------------------------------------
+Actor refs_ele . mw = L1
+----------------------------------------------------------------
+
+C 		st.k_${name}lp = fnd(act, st.k_${Ref2_element.element2.name}lp.to_s + "_${Ref2_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref2_element.opt} ", st.line_no )
+
+----------------------------------------------------------------
+Actor var_all Comp find = Find
+----------------------------------------------------------------
+
+C 	if a == "${name}c" { // ${} 
+C 		if let en = Dict[ "${name}c_" + ss.a ] {
+C 			let ss2 = split(ss.b);
+C 			return Def.ap_${name}l[en].get_var(ss2.a, ss2.b, ln);
+C 		}
+C 		return(false, "?" + a + "=" + ss.a + "?" + "," + ln + "?");
+C 	}
+	
+----------------------------------------------------------------
+Actor do_all Comp parent != Actor
+----------------------------------------------------------------
+
+C 	if what == "${name}c" 
+C 		glob.dats.ap_${name}l.each do |st|
+C 			go_act(glob, st)
+C 		end
+C 	end
+
+-C 	if a == "${name}c" {  // ${} 
+-C 		for st in Def.ap_${name}l
+-C 		{
+
+-Its Element do_all_ele
+
+-C 			let ret = actor( act, args, st );
+-C 			if ret != 0 { return ret-1; }
+-C 		}
+-C 		return 0;
+-C 	}
+
+----------------------------------------------------------------
+Actor do_all_ele Element name = name
+----------------------------------------------------------------
+
+C 			if b != "" { if st.kname != b { continue; } }
