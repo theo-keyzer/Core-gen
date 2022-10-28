@@ -33,6 +33,178 @@ class ActT
 	property ap_json : Array(KpJson) = Array(KpJson).new
 end
 
+def refs(act)
+	act.ap_node.each_with_index do |st,i|
+		st.k_parentp = fnd(act, "Node_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
+	end
+	act.ap_link.each_with_index do |st,i|
+		st.k_top = fnd(act, "Node_" + st.names["to"] , st.names["to"],  ".", st.line_no )
+	end
+	act.ap_join.each_with_index do |st,i|
+		st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
+		st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
+		st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
+	end
+	act.ap_join2.each_with_index do |st,i|
+		st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
+		st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
+		st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
+		st.k_attr2p = fnd(act, st.k_field2p.to_s + "_Attr_" + st.names["attr2"] , st.names["attr2"],  "check", st.line_no )
+	end
+	act.ap_comp.each_with_index do |st,i|
+		st.k_parentp = fnd(act, "Comp_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
+	end
+	act.ap_ref.each_with_index do |st,i|
+		st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
+		st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
+	end
+	act.ap_ref2.each_with_index do |st,i|
+		st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
+		st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
+		st.k_element2p = fnd(act, st.parentp.to_s + "_Element_" + st.names["element2"] , st.names["element2"],  "check", st.line_no )
+	end
+	act.ap_all.each_with_index do |st,i|
+		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+	end
+	act.ap_du.each_with_index do |st,i|
+		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+	end
+	act.ap_its.each_with_index do |st,i|
+		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+	end
+end
+
+def var_all(glob, va, lno) 
+	if va.size < 3
+		return(false, "?" + va.size.to_s + "<3?" + lno + "?")
+	end
+	if va[0] == "Node" # app.unit:2, c_run.act:118
+		if en = glob.dats.index["Node_" + va[1] ]?
+			return (glob.dats.ap_node[en].get_var(glob, va[2..], lno))
+		end
+		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
+	end
+	if va[0] == "Graph" # app.unit:23, c_run.act:118
+		if en = glob.dats.index["Graph_" + va[1] ]?
+			return (glob.dats.ap_graph[en].get_var(glob, va[2..], lno))
+		end
+		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
+	end
+	if va[0] == "Matrix" # app.unit:31, c_run.act:118
+		if en = glob.dats.index["Matrix_" + va[1] ]?
+			return (glob.dats.ap_matrix[en].get_var(glob, va[2..], lno))
+		end
+		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
+	end
+	if va[0] == "Table" # app.unit:41, c_run.act:118
+		if en = glob.dats.index["Table_" + va[1] ]?
+			return (glob.dats.ap_table[en].get_var(glob, va[2..], lno))
+		end
+		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
+	end
+	if va[0] == "Comp" # gen.unit:2, c_run.act:118
+		if en = glob.dats.index["Comp_" + va[1] ]?
+			return (glob.dats.ap_comp[en].get_var(glob, va[2..], lno))
+		end
+		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
+	end
+	if va[0] == "Actor" # act.unit:2, c_run.act:118
+		if en = glob.dats.index["Actor_" + va[1] ]?
+			return (glob.dats.ap_actor[en].get_var(glob, va[2..], lno))
+		end
+		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
+	end
+	return(false, "?" + va[0] + "?" + lno + "?")
+end
+
+def do_all(glob, what, lno)
+	if what == "Node" 
+		glob.dats.ap_node.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Link" 
+		glob.dats.ap_link.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Graph" 
+		glob.dats.ap_graph.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Matrix" 
+		glob.dats.ap_matrix.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Table" 
+		glob.dats.ap_table.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Field" 
+		glob.dats.ap_field.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Attr" 
+		glob.dats.ap_attr.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Join" 
+		glob.dats.ap_join.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Join2" 
+		glob.dats.ap_join2.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Comp" 
+		glob.dats.ap_comp.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Token" 
+		glob.dats.ap_token.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Star" 
+		glob.dats.ap_star.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Element" 
+		glob.dats.ap_element.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Opt" 
+		glob.dats.ap_opt.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Ref" 
+		glob.dats.ap_ref.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Ref2" 
+		glob.dats.ap_ref2.each do |st|
+			go_act(glob, st)
+		end
+	end
+	if what == "Actor" 
+		glob.dats.ap_actor.each do |st|
+			go_act(glob, st)
+		end
+	end
+end
+
 def load(act, tok, ln, pos, lno)
 	if tok == "Node"
 		comp = KpNode.new
@@ -180,134 +352,3 @@ def load(act, tok, ln, pos, lno)
 		act.ap_json << comp
 	end
 end
-
-def refs(act)
-	act.ap_node.each_with_index do |st,i|
-		st.k_parentp = fnd(act, "Node_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
-	end
-	act.ap_link.each_with_index do |st,i|
-		st.k_top = fnd(act, "Node_" + st.names["to"] , st.names["to"],  ".", st.line_no )
-	end
-	act.ap_join.each_with_index do |st,i|
-		st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
-		st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
-		st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
-	end
-	act.ap_join2.each_with_index do |st,i|
-		st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
-		st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
-		st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
-		st.k_attr2p = fnd(act, st.k_field2p.to_s + "_Attr_" + st.names["attr2"] , st.names["attr2"],  "check", st.line_no )
-	end
-	act.ap_comp.each_with_index do |st,i|
-		st.k_parentp = fnd(act, "Comp_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
-	end
-	act.ap_ref.each_with_index do |st,i|
-		st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
-		st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
-	end
-	act.ap_ref2.each_with_index do |st,i|
-		st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
-		st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
-		st.k_element2p = fnd(act, st.parentp.to_s + "_Element_" + st.names["element2"] , st.names["element2"],  "check", st.line_no )
-	end
-	act.ap_all.each_with_index do |st,i|
-		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
-	end
-	act.ap_du.each_with_index do |st,i|
-		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
-	end
-	act.ap_its.each_with_index do |st,i|
-		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
-	end
-end
-
-
-def do_all(glob, what, lno)
-	if what == "Node" 
-		glob.dats.ap_node.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Link" 
-		glob.dats.ap_link.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Graph" 
-		glob.dats.ap_graph.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Matrix" 
-		glob.dats.ap_matrix.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Table" 
-		glob.dats.ap_table.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Field" 
-		glob.dats.ap_field.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Attr" 
-		glob.dats.ap_attr.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Join" 
-		glob.dats.ap_join.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Join2" 
-		glob.dats.ap_join2.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Comp" 
-		glob.dats.ap_comp.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Token" 
-		glob.dats.ap_token.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Star" 
-		glob.dats.ap_star.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Element" 
-		glob.dats.ap_element.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Opt" 
-		glob.dats.ap_opt.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Ref" 
-		glob.dats.ap_ref.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Ref2" 
-		glob.dats.ap_ref2.each do |st|
-			go_act(glob, st)
-		end
-	end
-	if what == "Actor" 
-		glob.dats.ap_actor.each do |st|
-			go_act(glob, st)
-		end
-	end
-end
-

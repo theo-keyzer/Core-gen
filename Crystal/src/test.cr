@@ -18,11 +18,11 @@ end
 
 glob = GlobT.new
 
-#load_files("tst2.act", glob.acts)
-#load_files("tst.def", glob.dats)
-load_files("c_struct.act", glob.acts)
+load_files("tst2.act", glob.acts)
+load_files("tst.def", glob.dats)
+#load_files("c_struct.act", glob.acts)
 #load_files("c_run.act", glob.acts)
-load_files("app.unit", glob.dats)
+#load_files("app.unit", glob.dats)
 
 
 def load_files(file, act)
@@ -204,7 +204,8 @@ def s_get_var(glob, winp, va, lno)
 		end
 		i = i-1
 	end
-	return(false, "?" + va[1] + "?" + glob.wins[winp].dat.line_no + ", " + lno)
+	return( var_all(glob, va[1..], lno) )
+#	return(false, "?" + va[1] + "?" + glob.wins[winp].dat.line_no + ", " + lno)
 end
 
 def strs(glob, winp, s, lno)
