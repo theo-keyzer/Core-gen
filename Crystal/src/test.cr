@@ -20,8 +20,8 @@ glob = GlobT.new
 
 #load_files("tst2.act", glob.acts)
 #load_files("tst.def", glob.dats)
-#load_files("c_struct.act", glob.acts)
-load_files("c_run.act", glob.acts)
+load_files("c_struct.act", glob.acts)
+#load_files("c_run.act", glob.acts)
 load_files("app.unit", glob.dats)
 
 
@@ -70,19 +70,20 @@ def go_act(glob, dat)
 		end
 		if act.k_attr != "E_O_L"
 			va = act.k_attr.split(".")
-			v = s_get_var(glob, va, dat, act.line_no )
-			ss = strs(glob, act.k_value, dat, act.line_no)
+			r,v = s_get_var(glob, winp, va, act.line_no )
+			r,ss = strs(glob, winp, act.k_value, act.line_no)
 			if chk( act.k_eq, v, ss, prev) == false 
 				prev = false
 				next
 			end
 			if act.k_cc != ""
-				puts strs(glob, act.k_cc, dat, act.line_no) 
+				r,s = strs(glob, winp, act.k_cc, act.line_no)
+				puts s 
 			end
 		end
 		prev = true
 		glob.wins[winp].cnt += 1
-		ret = go(glob, i, dat)
+		ret = go_cmds(glob, i, winp)
 		if ret > 0
 			return(ret-1)
 		end
@@ -91,33 +92,35 @@ def go_act(glob, dat)
 	return(0)
 end
 
-def go(glob,ca, dat)
+def go_cmds(glob, ca, winp)
 
 	a = glob.acts.ap_actor[ca]
 	a.childs.each_with_index do |cmd,i|
 	
 		if cmd.is_a?(KpC)
-			puts strs(glob, cmd.k_desc, dat, cmd.line_no)
+			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
+			puts s
 		end
 		
 		if cmd.is_a?(KpCs)
-			print strs(glob, cmd.k_desc, dat, cmd.line_no)
+			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
+			print s
 		end
 		
 		if cmd.is_a?(KpIts)
-			arg = strs(glob, cmd.k_args, dat, cmd.line_no )
+			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
 			va = cmd.k_what.split(".")
-			dat.do_its(glob, va, cmd.line_no)
+			glob.wins[winp].dat.do_its(glob, va, cmd.line_no)
 		end
 		
 		if cmd.is_a?(KpDu)
 			new_act(glob, cmd.k_actor, "", cmd.line_no)
-			go_act(glob,dat)
+			go_act(glob,glob.wins[winp].dat)
 		end
 		
 		if cmd.is_a?(KpAll)
-			arg = strs(glob, cmd.k_args, dat, cmd.line_no )
+			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
 			do_all(glob, cmd.k_what, cmd.line_no)
 		end
@@ -163,49 +166,49 @@ def chk( eq, v, ss, prev )
 	return( true )
 end
 
-def s_get_var(glob, va, dat, lno)
-	if va[0] == "" && va.size == 1
-		return(dat.line_no + ", " + lno)
+def s_get_var(glob, winp, va, lno)
+	if va[0] != ""
+		return( glob.wins[winp].dat.get_var(glob, va, lno) )
 	end
-	if va[0] == "" && va.size > 1
-		if va[1] == "arg"
-			return(glob.wins[glob.winp].arg )
-		end
-		if va[1] == "+"
-			return( (glob.wins[glob.winp].cnt+1).to_s )
-		end
-		if va[1] == "-"
-			return( (glob.wins[glob.winp].cnt).to_s )
-		end
-		if va.size < 3
-			return( "?" + va[1] + "?")
-		end
-		if va[1] == "0"
-			if glob.wins[glob.winp].cnt != 0
-				return("")
-			end
-			return( va[2] )
-		end
-		if va[1] == "1"
-			if glob.wins[glob.winp].cnt == 0
-				return("")
-			end
-			return( va[2] )
-		end
-		i = glob.winp-1
-		while i >= 0 
-		    if glob.wins[i].name == va[1]
-		        return( s_get_var(glob, va[2..], glob.wins[i].dat, lno) )
-		    end
-		    i = i-1
-		end
-		return( "?" + va[1] + "?")
+	if va.size == 1
+		return(true, glob.wins[winp].dat.line_no + ", " + lno)
 	end
-	r, v = dat.get_var(glob, va, lno)
-	return( v )
+	if va[1] == "arg"
+		return(true, glob.wins[glob.winp].arg )
+	end
+	if va[1] == "+"
+		return(true, (glob.wins[glob.winp].cnt+1).to_s )
+	end
+	if va[1] == "-"
+		return(true, (glob.wins[glob.winp].cnt).to_s )
+	end
+	if va.size < 3
+		return(false, "?" + va[1] + "?" + glob.wins[winp].dat.line_no + ", " + lno)
+	end
+	if va[1] == "0"
+		if glob.wins[glob.winp].cnt != 0
+			return(true, "")
+		end
+		return(true, va[2] )
+	end
+	if va[1] == "1"
+		if glob.wins[glob.winp].cnt == 0
+			return(true, "")
+		end
+		return(true,  va[2] )
+	end
+	i = glob.winp-1
+	while i >= 0 
+		if glob.wins[i].name == va[1]
+			return( s_get_var(glob, i , va[2..], lno) )
+		end
+		i = i-1
+	end
+	return(false, "?" + va[1] + "?" + glob.wins[winp].dat.line_no + ", " + lno)
 end
 
-def strs(glob, s, dat, lno)
+def strs(glob, winp, s, lno)
+	ok = true
 	l = s.size
 	ret = ""
 	pos = 0
@@ -236,10 +239,15 @@ def strs(glob, s, dat, lno)
 		if s[i] == '}'
 			if bp > 0
 				va = s[bp+1..i-1].split(".")
-				v = s_get_var(glob, va, dat, lno )
+				r,v = s_get_var(glob, winp, va, lno )
+				if r == false
+					ok = false
+				end
 				if l > i+1
 					i += 1
-					v = tocase(v, s[i])
+					if r != false
+						v = tocase(v, s[i])
+					end
 				end
 				ret += v
 				pos = i+1
@@ -252,7 +260,7 @@ def strs(glob, s, dat, lno)
 	if pos < l
 		ret += s[pos..l]
 	end
-	return(ret)
+	return(ok, ret)
 end
 
 def tocase(s, c)
