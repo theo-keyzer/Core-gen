@@ -1,5 +1,20 @@
 require "./*"
 
+glob = GlobT.new
+
+#load_files("tst2.act", glob.acts)
+#load_files("node.act", glob.acts)
+#load_files("tst.def", glob.dats)
+load_files("c_struct.act", glob.acts)
+#load_files("c_run.act", glob.acts)
+load_files("app.unit", glob.dats)
+
+if glob.acts.ap_actor.size > 0
+	new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1")
+	kp = Kp.new
+	go_act(glob, kp)
+end
+
 class WinT
 
 	property name : String = ""
@@ -7,6 +22,12 @@ class WinT
 	property dat : Kp = Kp.new
 	property arg : String = ""
 	property flno : String = ""
+	property is_on : Bool = false
+	property is_trig : Bool = false
+	property is_prev : Bool = false
+	property on_pos : Int32 = 0
+	property cur_pos : Int32 = 0
+	property cur_act : Int32 = 0
 end
 
 class GlobT
@@ -16,13 +37,6 @@ class GlobT
 	property winp : Int32 = -1
 end
 
-glob = GlobT.new
-
-load_files("tst2.act", glob.acts)
-load_files("tst.def", glob.dats)
-#load_files("c_struct.act", glob.acts)
-#load_files("c_run.act", glob.acts)
-#load_files("app.unit", glob.dats)
 
 
 def load_files(file, act)
@@ -50,13 +64,23 @@ def new_act(glob, actn, arg, flno)
 	glob.wins[winp].cnt = -1
 	glob.wins[winp].arg = arg
 	glob.wins[winp].flno = flno
+	glob.wins[winp].is_prev = false
+	if winp == 0
+		return
+	end
+    	if glob.wins[winp-1].is_on || glob.wins[winp-1].is_prev
+        	if glob.wins[winp-1].is_trig == false 
+			glob.wins[winp].is_prev = true
+        	end
+	end
 end
 
-if glob.acts.ap_actor.size > 0
-	new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1")
-	kp = Kp.new
-	go_act(glob, kp)
+def set_act(glob, winp)
+    glob.wins[winp].is_on   = false
+    glob.wins[winp].is_trig = false
+#    glob.wins[winp].is_prev = false
 end
+
 
 def go_act(glob, dat)
 	winp = glob.winp+1
@@ -82,9 +106,11 @@ def go_act(glob, dat)
 			end
 		end
 		prev = true
+		glob.wins[winp].cur_act = i;
 		glob.wins[winp].cnt += 1
 		ret = go_cmds(glob, i, winp)
 		if ret > 0
+			glob.winp = winp-1
 			return(ret-1)
 		end
 	end
@@ -94,15 +120,26 @@ end
 
 def go_cmds(glob, ca, winp)
 
+	set_act(glob,winp)
 	a = glob.acts.ap_actor[ca]
 	a.childs.each_with_index do |cmd,i|
 	
+		glob.wins[winp].cur_pos = i
+		
 		if cmd.is_a?(KpC)
+			if glob.wins[winp].is_on && glob.wins[winp].is_trig == false
+				next
+			end
+			trig(glob,winp)
 			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
 			puts s
 		end
 		
 		if cmd.is_a?(KpCs)
+			if glob.wins[winp].is_on && glob.wins[winp].is_trig == false
+				next
+			end
+			trig(glob,winp)
 			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
 			print s
 		end
@@ -139,8 +176,60 @@ def go_cmds(glob, ca, winp)
 				return(3)
 			end
 		end
+		if cmd.is_a?(KpOut)
+			if cmd.k_what == "delay"
+				glob.wins[winp].is_on = true
+				glob.wins[winp].on_pos = i
+			end
+			if cmd.k_what == "normal"
+				glob.wins[winp].is_on = false
+				glob.wins[winp].is_trig = false
+			end
+		end
 	end
 	return(0)
+end
+
+def trig(glob, winp)
+	if glob.wins[winp].is_prev == false
+		return
+	end
+	glob.wins[winp].is_prev = false
+	prev = winp - 1
+	if prev < 0
+		return
+	end
+    	if glob.wins[ prev ].is_on == false && glob.wins[ prev ].is_prev == false
+#	if glob.wins[ prev ].is_on == false 
+		return
+	end
+	if glob.wins[ prev ].is_trig == true 
+		return
+	end
+	glob.wins[ prev ].is_trig = true
+	
+	goo_re(glob, prev )
+end
+
+def goo_re(glob,winp)
+#puts " - ", glob.wins[winp].cur_act
+
+	trig(glob,winp)
+	a = glob.acts.ap_actor[ glob.wins[winp].cur_act ]
+	i = glob.wins[winp].on_pos
+	while i < glob.wins[winp].cur_pos
+		cmd = a.childs[i]
+		if cmd.is_a?(KpC)
+			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
+			puts s
+		end
+		
+		if cmd.is_a?(KpCs)
+			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
+			print s
+		end
+		i += 1
+	end
 end
 
 def chk( eq, v, ss, prev )
@@ -174,25 +263,25 @@ def s_get_var(glob, winp, va, lno)
 		return(true, glob.wins[winp].dat.line_no + ", " + lno)
 	end
 	if va[1] == "arg"
-		return(true, glob.wins[glob.winp].arg )
+		return(true, glob.wins[winp].arg )
 	end
 	if va[1] == "+"
-		return(true, (glob.wins[glob.winp].cnt+1).to_s )
+		return(true, (glob.wins[winp].cnt+1).to_s )
 	end
 	if va[1] == "-"
-		return(true, (glob.wins[glob.winp].cnt).to_s )
+		return(true, (glob.wins[winp].cnt).to_s )
 	end
 	if va.size < 3
 		return(false, "?" + va[1] + "?" + glob.wins[winp].dat.line_no + ", " + lno)
 	end
 	if va[1] == "0"
-		if glob.wins[glob.winp].cnt != 0
+		if glob.wins[winp].cnt != 0
 			return(true, "")
 		end
 		return(true, va[2] )
 	end
 	if va[1] == "1"
-		if glob.wins[glob.winp].cnt == 0
+		if glob.wins[winp].cnt == 0
 			return(true, "")
 		end
 		return(true,  va[2] )
