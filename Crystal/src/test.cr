@@ -1,5 +1,20 @@
 require "./*"
 
+glob = GlobT.new
+
+#load_files("tst2.act", glob.acts)
+#load_files("node.act", glob.acts)
+#load_files("tst.def", glob.dats)
+load_files("c_struct.act", glob.acts)
+#load_files("c_run.act", glob.acts)
+load_files("app.unit", glob.dats)
+
+if glob.acts.ap_actor.size > 0
+	new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1")
+	kp = Kp.new
+	go_act(glob, kp)
+end
+
 class WinT
 
 	property name : String = ""
@@ -22,13 +37,6 @@ class GlobT
 	property winp : Int32 = -1
 end
 
-glob = GlobT.new
-
-#load_files("tst2.act", glob.acts)
-#load_files("tst.def", glob.dats)
-load_files("c_struct.act", glob.acts)
-#load_files("c_run.act", glob.acts)
-load_files("app.unit", glob.dats)
 
 
 def load_files(file, act)
@@ -73,11 +81,6 @@ def set_act(glob, winp)
 #    glob.wins[winp].is_prev = false
 end
 
-if glob.acts.ap_actor.size > 0
-	new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1")
-	kp = Kp.new
-	go_act(glob, kp)
-end
 
 def go_act(glob, dat)
 	winp = glob.winp+1
@@ -107,6 +110,7 @@ def go_act(glob, dat)
 		glob.wins[winp].cnt += 1
 		ret = go_cmds(glob, i, winp)
 		if ret > 0
+			glob.winp = winp-1
 			return(ret-1)
 		end
 	end
@@ -195,6 +199,10 @@ def trig(glob, winp)
 	if prev < 0
 		return
 	end
+    	if glob.wins[ prev ].is_on == false && glob.wins[ prev ].is_prev == false
+#	if glob.wins[ prev ].is_on == false 
+		return
+	end
 	if glob.wins[ prev ].is_trig == true 
 		return
 	end
@@ -204,6 +212,8 @@ def trig(glob, winp)
 end
 
 def goo_re(glob,winp)
+#puts " - ", glob.wins[winp].cur_act
+
 	trig(glob,winp)
 	a = glob.acts.ap_actor[ glob.wins[winp].cur_act ]
 	i = glob.wins[winp].on_pos
@@ -253,25 +263,25 @@ def s_get_var(glob, winp, va, lno)
 		return(true, glob.wins[winp].dat.line_no + ", " + lno)
 	end
 	if va[1] == "arg"
-		return(true, glob.wins[glob.winp].arg )
+		return(true, glob.wins[winp].arg )
 	end
 	if va[1] == "+"
-		return(true, (glob.wins[glob.winp].cnt+1).to_s )
+		return(true, (glob.wins[winp].cnt+1).to_s )
 	end
 	if va[1] == "-"
-		return(true, (glob.wins[glob.winp].cnt).to_s )
+		return(true, (glob.wins[winp].cnt).to_s )
 	end
 	if va.size < 3
 		return(false, "?" + va[1] + "?" + glob.wins[winp].dat.line_no + ", " + lno)
 	end
 	if va[1] == "0"
-		if glob.wins[glob.winp].cnt != 0
+		if glob.wins[winp].cnt != 0
 			return(true, "")
 		end
 		return(true, va[2] )
 	end
 	if va[1] == "1"
-		if glob.wins[glob.winp].cnt == 0
+		if glob.wins[winp].cnt == 0
 			return(true, "")
 		end
 		return(true,  va[2] )
