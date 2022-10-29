@@ -7,12 +7,6 @@ class WinT
 	property dat : Kp = Kp.new
 	property arg : String = ""
 	property flno : String = ""
-	property is_on : Bool = false
-	property is_trig : Bool = false
-	property is_prev : Bool = false
-	property on_pos : Int32 = 0
-	property cur_pos : Int32 = 0
-	property cur_act : Int32 = 0
 end
 
 class GlobT
@@ -24,11 +18,11 @@ end
 
 glob = GlobT.new
 
-#load_files("tst2.act", glob.acts)
-#load_files("tst.def", glob.dats)
-load_files("c_struct.act", glob.acts)
+load_files("tst2.act", glob.acts)
+load_files("tst.def", glob.dats)
+#load_files("c_struct.act", glob.acts)
 #load_files("c_run.act", glob.acts)
-load_files("app.unit", glob.dats)
+#load_files("app.unit", glob.dats)
 
 
 def load_files(file, act)
@@ -56,21 +50,6 @@ def new_act(glob, actn, arg, flno)
 	glob.wins[winp].cnt = -1
 	glob.wins[winp].arg = arg
 	glob.wins[winp].flno = flno
-	glob.wins[winp].is_prev = false
-	if winp == 0
-		return
-	end
-    	if glob.wins[winp-1].is_on || glob.wins[winp-1].is_prev
-        	if glob.wins[winp-1].is_trig == false 
-			glob.wins[winp].is_prev = true
-        	end
-	end
-end
-
-def set_act(glob, winp)
-    glob.wins[winp].is_on   = false
-    glob.wins[winp].is_trig = false
-#    glob.wins[winp].is_prev = false
 end
 
 if glob.acts.ap_actor.size > 0
@@ -103,7 +82,6 @@ def go_act(glob, dat)
 			end
 		end
 		prev = true
-		glob.wins[winp].cur_act = i;
 		glob.wins[winp].cnt += 1
 		ret = go_cmds(glob, i, winp)
 		if ret > 0
@@ -116,26 +94,15 @@ end
 
 def go_cmds(glob, ca, winp)
 
-	set_act(glob,winp)
 	a = glob.acts.ap_actor[ca]
 	a.childs.each_with_index do |cmd,i|
 	
-		glob.wins[winp].cur_pos = i
-		
 		if cmd.is_a?(KpC)
-			if glob.wins[winp].is_on && glob.wins[winp].is_trig == false
-				next
-			end
-			trig(glob,winp)
 			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
 			puts s
 		end
 		
 		if cmd.is_a?(KpCs)
-			if glob.wins[winp].is_on && glob.wins[winp].is_trig == false
-				next
-			end
-			trig(glob,winp)
 			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
 			print s
 		end
@@ -172,54 +139,8 @@ def go_cmds(glob, ca, winp)
 				return(3)
 			end
 		end
-		if cmd.is_a?(KpOut)
-			if cmd.k_what == "delay"
-				glob.wins[winp].is_on = true
-				glob.wins[winp].on_pos = i
-			end
-			if cmd.k_what == "normal"
-				glob.wins[winp].is_on = false
-				glob.wins[winp].is_trig = false
-			end
-		end
 	end
 	return(0)
-end
-
-def trig(glob, winp)
-	if glob.wins[winp].is_prev == false
-		return
-	end
-	glob.wins[winp].is_prev = false
-	prev = winp - 1
-	if prev < 0
-		return
-	end
-	if glob.wins[ prev ].is_trig == true 
-		return
-	end
-	glob.wins[ prev ].is_trig = true
-	
-	goo_re(glob, prev )
-end
-
-def goo_re(glob,winp)
-	trig(glob,winp)
-	a = glob.acts.ap_actor[ glob.wins[winp].cur_act ]
-	i = glob.wins[winp].on_pos
-	while i < glob.wins[winp].cur_pos
-		cmd = a.childs[i]
-		if cmd.is_a?(KpC)
-			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
-			puts s
-		end
-		
-		if cmd.is_a?(KpCs)
-			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
-			print s
-		end
-		i += 1
-	end
 end
 
 def chk( eq, v, ss, prev )
