@@ -117,92 +117,162 @@ def var_all(glob, va, lno)
 	return(false, "?" + va[0] + "?" + lno + "?")
 end
 
-def do_all(glob, what, lno)
-	if what == "Node" 
+def do_all(glob, va, lno)
+	if va[0] == "Node" 
 		glob.dats.ap_node.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Link" 
+	if va[0] == "Link" 
 		glob.dats.ap_link.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Graph" 
+	if va[0] == "Graph" 
 		glob.dats.ap_graph.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Matrix" 
+	if va[0] == "Matrix" 
 		glob.dats.ap_matrix.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Table" 
+	if va[0] == "Table" 
 		glob.dats.ap_table.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Field" 
+	if va[0] == "Field" 
 		glob.dats.ap_field.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Attr" 
+	if va[0] == "Attr" 
 		glob.dats.ap_attr.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Join" 
+	if va[0] == "Join" 
 		glob.dats.ap_join.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Join2" 
+	if va[0] == "Join2" 
 		glob.dats.ap_join2.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Comp" 
+	if va[0] == "Comp" 
 		glob.dats.ap_comp.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Token" 
+	if va[0] == "Token" 
 		glob.dats.ap_token.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Star" 
+	if va[0] == "Star" 
 		glob.dats.ap_star.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Element" 
+	if va[0] == "Element" 
 		glob.dats.ap_element.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Opt" 
+	if va[0] == "Opt" 
 		glob.dats.ap_opt.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Ref" 
+	if va[0] == "Ref" 
 		glob.dats.ap_ref.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Ref2" 
+	if va[0] == "Ref2" 
 		glob.dats.ap_ref2.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
-	if what == "Actor" 
+	if va[0] == "Actor" 
 		glob.dats.ap_actor.each do |st|
-			go_act(glob, st)
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
 		end
+		return(0)
 	end
+	puts "?No all " + va[0] + " cmd " + "," + lno + "?"
+	return 0
 end
 
 def load(act, tok, ln, pos, lno)

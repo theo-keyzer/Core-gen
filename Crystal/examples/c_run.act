@@ -31,12 +31,12 @@ C end
 C
 
 
-C def do_all(glob, what, lno)
+C def do_all(glob, va, lno)
 
 All Comp do_all
 
--C 	print("? No all " + a + " cmd " + "," + ln + "?");
--C 	return 0;
+C 	puts "?No all " + va[0] + " cmd " + "," + lno + "?"
+C 	return 0
 C end
 C
 C def load(act, tok, ln, pos, lno)
@@ -126,23 +126,16 @@ C 	end
 Actor do_all Comp parent != Actor
 ----------------------------------------------------------------
 
-C 	if what == "${name}c" 
+C 	if va[0] == "${name}c" 
 C 		glob.dats.ap_${name}l.each do |st|
-C 			go_act(glob, st)
+C 			ret = go_act(glob, st)
+C 			if ret != 0
+C 				return(ret)
+C 			end
 C 		end
+C 		return(0)
 C 	end
 
--C 	if a == "${name}c" {  // ${} 
--C 		for st in Def.ap_${name}l
--C 		{
-
--Its Element do_all_ele
-
--C 			let ret = actor( act, args, st );
--C 			if ret != 0 { return ret-1; }
--C 		}
--C 		return 0;
--C 	}
 
 ----------------------------------------------------------------
 Actor do_all_ele Element name = name

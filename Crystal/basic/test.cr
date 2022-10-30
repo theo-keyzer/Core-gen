@@ -2,12 +2,15 @@ require "./*"
 
 glob = GlobT.new
 
-#load_files("tst2.act", glob.acts)
-#load_files("node.act", glob.acts)
 #load_files("tst.def", glob.dats)
+#load_files("tst2.act", glob.acts)
+#load_files("json.act", glob.acts)
+#load_files("json2.act", glob.acts)
+#load_files("node.act", glob.acts)
+
+load_files("app.unit", glob.dats)
 load_files("c_struct.act", glob.acts)
 #load_files("c_run.act", glob.acts)
-load_files("app.unit", glob.dats)
 
 if glob.acts.ap_actor.size > 0
 	new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1")
@@ -35,6 +38,7 @@ class GlobT
 	property dats : ActT = ActT.new
 	property wins : Array(WinT) = Array(WinT).new
 	property winp : Int32 = -1
+	property jsons : Hash(String, KpIjson) = Hash(String, KpIjson).new
 end
 
 
@@ -78,7 +82,6 @@ end
 def set_act(glob, winp)
     glob.wins[winp].is_on   = false
     glob.wins[winp].is_trig = false
-#    glob.wins[winp].is_prev = false
 end
 
 
@@ -109,10 +112,14 @@ def go_act(glob, dat)
 		glob.wins[winp].cur_act = i;
 		glob.wins[winp].cnt += 1
 		ret = go_cmds(glob, i, winp)
-		if ret > 0
-			glob.winp = winp-1
-			return(ret-1)
+		if ret == 0
+			next
 		end
+		glob.winp = winp-1
+		if ret == 1
+			return(ret)
+		end
+		return(0)
 	end
 	glob.winp = winp-1
 	return(0)
@@ -148,32 +155,55 @@ def go_cmds(glob, ca, winp)
 			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
 			va = cmd.k_what.split(".")
-			glob.wins[winp].dat.do_its(glob, va, cmd.line_no)
+			if va[0] == "" && va.size > 1
+				i = glob.winp-1
+				while i >= 0 
+					if glob.wins[i].name == va[1]
+						ret = glob.wins[i].dat.do_its(glob, va[2..], cmd.line_no)
+						if ret > 1
+							return(ret)
+						end
+					end
+					i = i-1
+				end
+			end
+			ret = glob.wins[winp].dat.do_its(glob, va, cmd.line_no)
+			if ret > 1
+				return(ret)
+			end
 		end
 		
 		if cmd.is_a?(KpDu)
 			new_act(glob, cmd.k_actor, "", cmd.line_no)
-			go_act(glob,glob.wins[winp].dat)
+			ret = go_act(glob,glob.wins[winp].dat)
+			if ret != 0
+				return(ret)
+			end
 		end
 		
 		if cmd.is_a?(KpAll)
 			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
-			do_all(glob, cmd.k_what, cmd.line_no)
+			va = cmd.k_what.split(".")
+			if va[0] == "Json"
+				ret = json_all(glob, va, cmd.line_no)
+				if ret > 1
+					return(ret)
+				end
+				next
+			end
+			ret = do_all(glob, va, cmd.line_no)
+			if ret > 1
+				return(ret)
+			end
 		end
 		
 		if cmd.is_a?(KpBreak)
-			if cmd.k_what == "E_O_L"
-				return(1)
-			end
-			if cmd.k_what == "actor"
-				return(1)
-			end
-			if cmd.k_what == "loop"
+			if cmd.k_what == "E_O_L" || cmd.k_what == "actor"
 				return(2)
 			end
-			if cmd.k_what == "loop_actor"
-				return(3)
+			if cmd.k_what == "loop"
+				return(1)
 			end
 		end
 		if cmd.is_a?(KpOut)
@@ -185,6 +215,10 @@ def go_cmds(glob, ca, winp)
 				glob.wins[winp].is_on = false
 				glob.wins[winp].is_trig = false
 			end
+		end
+		
+		if cmd.is_a?(KpJson)
+		    json_cmd(glob,winp,cmd)
 		end
 	end
 	return(0)
@@ -200,7 +234,6 @@ def trig(glob, winp)
 		return
 	end
     	if glob.wins[ prev ].is_on == false && glob.wins[ prev ].is_prev == false
-#	if glob.wins[ prev ].is_on == false 
 		return
 	end
 	if glob.wins[ prev ].is_trig == true 
@@ -208,12 +241,10 @@ def trig(glob, winp)
 	end
 	glob.wins[ prev ].is_trig = true
 	
-	goo_re(glob, prev )
+	re_go_cmds(glob, prev )
 end
 
-def goo_re(glob,winp)
-#puts " - ", glob.wins[winp].cur_act
-
+def re_go_cmds(glob,winp)
 	trig(glob,winp)
 	a = glob.acts.ap_actor[ glob.wins[winp].cur_act ]
 	i = glob.wins[winp].on_pos
@@ -293,8 +324,12 @@ def s_get_var(glob, winp, va, lno)
 		end
 		i = i-1
 	end
+	if va[1] == "Json" && va.size > 3
+		if v = glob.jsons[ va[2] ]?
+			return( v.get_var(glob, va[3..], lno) )
+		end
+	end
 	return( var_all(glob, va[1..], lno) )
-#	return(false, "?" + va[1] + "?" + glob.wins[winp].dat.line_no + ", " + lno)
 end
 
 def strs(glob, winp, s, lno)

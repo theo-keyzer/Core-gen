@@ -2,14 +2,15 @@ require "./*"
 
 glob = GlobT.new
 
+#load_files("tst.def", glob.dats)
 #load_files("tst2.act", glob.acts)
 #load_files("json.act", glob.acts)
-load_files("json2.act", glob.acts)
+#load_files("json2.act", glob.acts)
 #load_files("node.act", glob.acts)
-load_files("tst.def", glob.dats)
-#load_files("c_struct.act", glob.acts)
+
+load_files("app.unit", glob.dats)
+load_files("c_struct.act", glob.acts)
 #load_files("c_run.act", glob.acts)
-#load_files("app.unit", glob.dats)
 
 if glob.acts.ap_actor.size > 0
 	new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1")
@@ -111,10 +112,14 @@ def go_act(glob, dat)
 		glob.wins[winp].cur_act = i;
 		glob.wins[winp].cnt += 1
 		ret = go_cmds(glob, i, winp)
-		if ret > 0
-			glob.winp = winp-1
-			return(ret-1)
+		if ret == 0
+			next
 		end
+		glob.winp = winp-1
+		if ret == 1
+			return(ret)
+		end
+		return(0)
 	end
 	glob.winp = winp-1
 	return(0)
@@ -154,17 +159,26 @@ def go_cmds(glob, ca, winp)
 				i = glob.winp-1
 				while i >= 0 
 					if glob.wins[i].name == va[1]
-						glob.wins[i].dat.do_its(glob, va[2..], cmd.line_no)
+						ret = glob.wins[i].dat.do_its(glob, va[2..], cmd.line_no)
+						if ret > 1
+							return(ret)
+						end
 					end
 					i = i-1
 				end
 			end
-			glob.wins[winp].dat.do_its(glob, va, cmd.line_no)
+			ret = glob.wins[winp].dat.do_its(glob, va, cmd.line_no)
+			if ret > 1
+				return(ret)
+			end
 		end
 		
 		if cmd.is_a?(KpDu)
 			new_act(glob, cmd.k_actor, "", cmd.line_no)
-			go_act(glob,glob.wins[winp].dat)
+			ret = go_act(glob,glob.wins[winp].dat)
+			if ret != 0
+				return(ret)
+			end
 		end
 		
 		if cmd.is_a?(KpAll)
@@ -172,24 +186,24 @@ def go_cmds(glob, ca, winp)
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
 			va = cmd.k_what.split(".")
 			if va[0] == "Json"
-			    json_all(glob, va, cmd.line_no)
-			    next
+				ret = json_all(glob, va, cmd.line_no)
+				if ret > 1
+					return(ret)
+				end
+				next
 			end
-			do_all(glob, cmd.k_what, cmd.line_no)
+			ret = do_all(glob, va, cmd.line_no)
+			if ret > 1
+				return(ret)
+			end
 		end
 		
 		if cmd.is_a?(KpBreak)
-			if cmd.k_what == "E_O_L"
-				return(1)
-			end
-			if cmd.k_what == "actor"
-				return(1)
-			end
-			if cmd.k_what == "loop"
+			if cmd.k_what == "E_O_L" || cmd.k_what == "actor"
 				return(2)
 			end
-			if cmd.k_what == "loop_actor"
-				return(3)
+			if cmd.k_what == "loop"
+				return(1)
 			end
 		end
 		if cmd.is_a?(KpOut)

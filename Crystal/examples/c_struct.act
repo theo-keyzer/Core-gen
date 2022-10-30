@@ -305,13 +305,13 @@ C 				if st.k_${element.name}lp == me
 C 					if va.size > 1
 C 						ret = st.do_its(glob, va[1..], lno)
 C 						if ret > 0
-C 							return(ret-1)
+C 							return(ret)
 C 						end
 C 						next
 C 					end
 C 					ret = go_act(glob, st)
 C 					if ret > 0
-C 						return(ret-1)
+C 						return(ret)
 C 					end
 C 				end
 C 			end
@@ -328,13 +328,13 @@ C 				if st.k_${element.name}lp == me
 C 					if va.size > 1
 C 						ret = st.do_its(glob, va[1..], lno)
 C 						if ret > 0
-C 							return(ret-1)
+C 							return(ret)
 C 						end
 C 						next
 C 					end
 C 					ret = go_act(glob, st)
 C 					if ret > 0
-C 						return(ret-1)
+C 						return(ret)
 C 					end
 C 				end
 C 			end
@@ -404,7 +404,7 @@ C 		if va[0] == "${name}c" # ${}
 C 			its${name}l.each do |st|
 C 				ret = go_act(glob, st)
 C 				if ret > 0
-C 					return(ret-1)
+C 					return(ret)
 C 				end
 C 			end
 C 			return(0)

@@ -62,7 +62,7 @@ class KpNode < Kp
 			itslink.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -83,13 +83,13 @@ class KpNode < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -101,13 +101,13 @@ class KpNode < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -278,7 +278,7 @@ class KpTable < Kp
 			itsfield.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -287,7 +287,7 @@ class KpTable < Kp
 			itsjoin.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -296,7 +296,7 @@ class KpTable < Kp
 			itsjoin2.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -307,13 +307,13 @@ class KpTable < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -325,13 +325,13 @@ class KpTable < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -417,7 +417,7 @@ class KpField < Kp
 			itsattr.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -438,13 +438,13 @@ class KpField < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -456,13 +456,13 @@ class KpField < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -474,13 +474,13 @@ class KpField < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -492,13 +492,13 @@ class KpField < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -564,13 +564,13 @@ class KpAttr < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -854,7 +854,7 @@ class KpComp < Kp
 			itstoken.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -863,7 +863,7 @@ class KpComp < Kp
 			itselement.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -872,7 +872,7 @@ class KpComp < Kp
 			itsref.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -881,7 +881,7 @@ class KpComp < Kp
 			itsref2.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -902,13 +902,13 @@ class KpComp < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -920,13 +920,13 @@ class KpComp < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -938,13 +938,13 @@ class KpComp < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -1091,7 +1091,7 @@ class KpElement < Kp
 			itsopt.each do |st|
 				ret = go_act(glob, st)
 				if ret > 0
-					return(ret-1)
+					return(ret)
 				end
 			end
 			return(0)
@@ -1112,13 +1112,13 @@ class KpElement < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -1130,13 +1130,13 @@ class KpElement < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
@@ -1148,13 +1148,13 @@ class KpElement < Kp
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret > 0
-							return(ret-1)
+							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
 					if ret > 0
-						return(ret-1)
+						return(ret)
 					end
 				end
 			end
