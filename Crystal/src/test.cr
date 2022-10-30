@@ -3,11 +3,12 @@ require "./*"
 glob = GlobT.new
 
 #load_files("tst2.act", glob.acts)
+load_files("json.act", glob.acts)
 #load_files("node.act", glob.acts)
-#load_files("tst.def", glob.dats)
-load_files("c_struct.act", glob.acts)
+load_files("tst.def", glob.dats)
+#load_files("c_struct.act", glob.acts)
 #load_files("c_run.act", glob.acts)
-load_files("app.unit", glob.dats)
+#load_files("app.unit", glob.dats)
 
 if glob.acts.ap_actor.size > 0
 	new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1")
@@ -35,6 +36,8 @@ class GlobT
 	property dats : ActT = ActT.new
 	property wins : Array(WinT) = Array(WinT).new
 	property winp : Int32 = -1
+	property jsons : Hash(String, KpIjson) = Hash(String, KpIjson).new
+#	property json : KpIjson = KpIjson.new
 end
 
 
@@ -159,6 +162,11 @@ def go_cmds(glob, ca, winp)
 		if cmd.is_a?(KpAll)
 			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
+			va = cmd.k_what.split(".")
+			if va[0] == "Json"
+			    json_all(glob, va, cmd.line_no)
+			    next
+			end
 			do_all(glob, cmd.k_what, cmd.line_no)
 		end
 		
@@ -185,6 +193,10 @@ def go_cmds(glob, ca, winp)
 				glob.wins[winp].is_on = false
 				glob.wins[winp].is_trig = false
 			end
+		end
+		
+		if cmd.is_a?(KpJson)
+		    json_cmd(glob,winp,cmd)
 		end
 	end
 	return(0)
@@ -293,8 +305,12 @@ def s_get_var(glob, winp, va, lno)
 		end
 		i = i-1
 	end
+	if va[1] == "Json" && va.size > 3
+		if v = glob.jsons[ va[2] ]?
+			return( v.get_var(glob, va[3..], lno) )
+		end
+	end
 	return( var_all(glob, va[1..], lno) )
-#	return(false, "?" + va[1] + "?" + glob.wins[winp].dat.line_no + ", " + lno)
 end
 
 def strs(glob, winp, s, lno)
