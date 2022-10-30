@@ -26,21 +26,14 @@ class KpIjson < Kp
 			end
 		end
 
-#		if va.size < 1
-#			return(0)
-#		end
-#		x = json.raw
-#		if x.is_a?(Hash)
-#			if j = json[ va[0] ]?
-#				ijson = KpIjson.new(j)
-#				go_act(glob, ijson)
-#			end
-#		end
 		return(0)
 	end
 	
 	def get_var(glob, va, lno)
 		js, va2 = json_eval(json,va)
+		if va2.size > 0 && va2[va2.size-1] != "*"
+			return(false, "?" + va2[va2.size-1] + "?")
+		end
 		x = js.raw
 		if x.is_a?(String)
 			return(true, x.to_s )

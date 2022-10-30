@@ -3,7 +3,8 @@ require "./*"
 glob = GlobT.new
 
 #load_files("tst2.act", glob.acts)
-load_files("json.act", glob.acts)
+#load_files("json.act", glob.acts)
+load_files("json2.act", glob.acts)
 #load_files("node.act", glob.acts)
 load_files("tst.def", glob.dats)
 #load_files("c_struct.act", glob.acts)
@@ -37,7 +38,6 @@ class GlobT
 	property wins : Array(WinT) = Array(WinT).new
 	property winp : Int32 = -1
 	property jsons : Hash(String, KpIjson) = Hash(String, KpIjson).new
-#	property json : KpIjson = KpIjson.new
 end
 
 
@@ -81,7 +81,6 @@ end
 def set_act(glob, winp)
     glob.wins[winp].is_on   = false
     glob.wins[winp].is_trig = false
-#    glob.wins[winp].is_prev = false
 end
 
 
@@ -151,6 +150,15 @@ def go_cmds(glob, ca, winp)
 			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
 			va = cmd.k_what.split(".")
+			if va[0] == "" && va.size > 1
+				i = glob.winp-1
+				while i >= 0 
+					if glob.wins[i].name == va[1]
+						glob.wins[i].dat.do_its(glob, va[2..], cmd.line_no)
+					end
+					i = i-1
+				end
+			end
 			glob.wins[winp].dat.do_its(glob, va, cmd.line_no)
 		end
 		
@@ -212,7 +220,6 @@ def trig(glob, winp)
 		return
 	end
     	if glob.wins[ prev ].is_on == false && glob.wins[ prev ].is_prev == false
-#	if glob.wins[ prev ].is_on == false 
 		return
 	end
 	if glob.wins[ prev ].is_trig == true 
@@ -220,12 +227,10 @@ def trig(glob, winp)
 	end
 	glob.wins[ prev ].is_trig = true
 	
-	goo_re(glob, prev )
+	re_go_cmds(glob, prev )
 end
 
-def goo_re(glob,winp)
-#puts " - ", glob.wins[winp].cur_act
-
+def re_go_cmds(glob,winp)
 	trig(glob,winp)
 	a = glob.acts.ap_actor[ glob.wins[winp].cur_act ]
 	i = glob.wins[winp].on_pos
