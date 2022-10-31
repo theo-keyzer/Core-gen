@@ -1,6 +1,42 @@
 require "./*"
 require "json"
 
+def collect_cmd(glob,winp,cmd)
+	if cmd.k_cmd == "clear"
+		glob.collect = Hash( String, Array(Kp) ).new
+	end
+	if cmd.k_cmd == "add"
+		if glob.collect[cmd.k_pocket]?
+			glob.collect[cmd.k_pocket] << glob.wins[winp].dat
+		else
+			ar = Array(Kp).new
+			ar << glob.wins[winp].dat
+			glob.collect[cmd.k_pocket] = ar
+		end
+	end
+end
+
+def collect_all(glob, va, lno)
+	glob.collect.each do |key, value|
+		if va.size > 1 && va[1] != ""
+			if key != va[1]
+				next
+			end
+		end
+		val = value
+		if va.size > 2 && va[2] == "reverse"
+			val = value.reverse
+		end
+		val.each do |kp|
+			ret = go_act(glob, kp)
+			if ret != 0
+				return(ret)
+			end
+		end
+	end
+	return(0)
+end
+
 class KpIjson < Kp
 	property pocket : String = ""
 
@@ -92,6 +128,11 @@ end
 
 def json_all(glob, va, lno)
 	glob.jsons.each do |key, value|
+		if va.size > 1 && va[1] != ""
+			if key != va[1]
+				next
+			end
+		end
 		ret = go_act(glob, value)
 		if ret != 0
 			return(ret)

@@ -2,15 +2,16 @@ require "./*"
 
 glob = GlobT.new
 
-load_files("tst.def", glob.dats)
+#load_files("tst.def", glob.dats)
 #load_files("tst2.act", glob.acts)
 #load_files("json.act", glob.acts)
 #load_files("json2.act", glob.acts)
 #load_files("node.act", glob.acts)
-load_files("dag.act", glob.acts)
+#load_files("dag.act", glob.acts)
+#load_files("dag2.act", glob.acts)
 
-#load_files("app.unit", glob.dats)
-#load_files("c_struct.act", glob.acts)
+load_files("app.unit", glob.dats)
+load_files("c_struct.act", glob.acts)
 #load_files("c_run.act", glob.acts)
 
 if glob.acts.ap_actor.size > 0
@@ -169,6 +170,7 @@ def go_cmds(glob, ca, winp)
 					end
 					i = i-1
 				end
+				next
 			end
 			ret = glob.wins[winp].dat.do_its(glob, va, cmd.line_no)
 			if ret > 1
@@ -196,13 +198,9 @@ def go_cmds(glob, ca, winp)
 				next
 			end
 			if va[0] == "Collect"
-				glob.collect.each do |key, value|
-					value.each do |kp|
-						ret = go_act(glob, kp)
-						if ret != 0
-							return(ret)
-						end
-					end
+				ret = collect_all(glob, va, cmd.line_no)
+				if ret > 1
+					return(ret)
 				end
 				next
 			end
@@ -212,19 +210,32 @@ def go_cmds(glob, ca, winp)
 			end
 		end
 		
+		if cmd.is_a?(KpBreak)
+			if cmd.k_what == "E_O_L" || cmd.k_what == "actor"
+				return(2)
+			end
+			if cmd.k_what == "loop"
+				return(1)
+			end
+		end
+		
+		if cmd.is_a?(KpOut)
+			if cmd.k_what == "delay"
+				glob.wins[winp].is_on = true
+				glob.wins[winp].on_pos = i
+			end
+			if cmd.k_what == "normal"
+				glob.wins[winp].is_on = false
+				glob.wins[winp].is_trig = false
+			end
+		end
+		
 		if cmd.is_a?(KpCollect)
-			if cmd.k_cmd == "clear"
-				 glob.collect = Hash( String, Array(Kp) ).new
-			end
-			if cmd.k_cmd == "add"
-				if glob.collect[cmd.k_pocket]?
-					glob.collect[cmd.k_pocket] << glob.wins[winp].dat
-				else
-					ar = Array(Kp).new
-					ar << glob.wins[winp].dat
-					glob.collect[cmd.k_pocket] = ar
-				end
-			end
+			collect_cmd(glob,winp,cmd)
+		end
+		
+		if cmd.is_a?(KpJson)
+		    json_cmd(glob,winp,cmd)
 		end
 		
 		if cmd.is_a?(KpUnique)
@@ -233,9 +244,7 @@ def go_cmds(glob, ca, winp)
 				if a = glob.unq[cmd.k_key]?
 					if a.index(arg)
 						break
-					else
 					end
-				else
 				end
 			end
 			if cmd.k_cmd == "clear"
@@ -253,28 +262,6 @@ def go_cmds(glob, ca, winp)
 					glob.unq[cmd.k_key] = aru
 				end
 			end
-		end
-		if cmd.is_a?(KpBreak)
-			if cmd.k_what == "E_O_L" || cmd.k_what == "actor"
-				return(2)
-			end
-			if cmd.k_what == "loop"
-				return(1)
-			end
-		end
-		if cmd.is_a?(KpOut)
-			if cmd.k_what == "delay"
-				glob.wins[winp].is_on = true
-				glob.wins[winp].on_pos = i
-			end
-			if cmd.k_what == "normal"
-				glob.wins[winp].is_on = false
-				glob.wins[winp].is_trig = false
-			end
-		end
-		
-		if cmd.is_a?(KpJson)
-		    json_cmd(glob,winp,cmd)
 		end
 	end
 	return(0)
