@@ -2,16 +2,17 @@ require "./*"
 
 glob = GlobT.new
 
-#load_files("tst.def", glob.dats)
+load_files("tst.def", glob.dats)
 #load_files("tst2.act", glob.acts)
 #load_files("json.act", glob.acts)
 #load_files("json2.act", glob.acts)
 #load_files("node.act", glob.acts)
 #load_files("dag.act", glob.acts)
 #load_files("dag2.act", glob.acts)
+load_files("tbl.act", glob.acts)
 
-load_files("app.unit", glob.dats)
-load_files("c_struct.act", glob.acts)
+#load_files("app.unit", glob.dats)
+#load_files("c_struct.act", glob.acts)
 #load_files("c_run.act", glob.acts)
 
 if glob.acts.ap_actor.size > 0

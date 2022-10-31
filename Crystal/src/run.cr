@@ -119,7 +119,23 @@ end
 
 def do_all(glob, va, lno)
 	if va[0] == "Node" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Node_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_node[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_node[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_node.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -128,7 +144,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Link" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Link_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_link[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_link[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_link.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -137,7 +169,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Graph" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Graph_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_graph[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_graph[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_graph.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -146,7 +194,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Matrix" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Matrix_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_matrix[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_matrix[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_matrix.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -155,7 +219,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Table" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Table_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_table[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_table[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_table.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -164,7 +244,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Field" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Field_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_field[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_field[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_field.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -173,7 +269,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Attr" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Attr_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_attr[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_attr[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_attr.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -182,7 +294,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Join" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Join_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_join[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_join[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_join.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -191,7 +319,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Join2" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Join2_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_join2[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_join2[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_join2.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -200,7 +344,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Comp" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Comp_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_comp[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_comp[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_comp.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -209,7 +369,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Token" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Token_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_token[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_token[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_token.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -218,7 +394,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Star" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Star_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_star[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_star[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_star.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -227,7 +419,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Element" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Element_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_element[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_element[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_element.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -236,7 +444,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Opt" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Opt_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_opt[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_opt[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_opt.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -245,7 +469,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Ref" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Ref_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_ref[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_ref[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_ref.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -254,7 +494,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Ref2" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Ref2_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_ref2[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_ref2[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_ref2.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
@@ -263,7 +519,23 @@ def do_all(glob, va, lno)
 		return(0)
 	end
 	if va[0] == "Actor" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Actor_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_actor[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_actor[en]) )
+			end
+			return(0)
+		end
 		glob.dats.ap_actor.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
 			ret = go_act(glob, st)
 			if ret != 0
 				return(ret)
