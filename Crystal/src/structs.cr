@@ -37,14 +37,14 @@ class KpNode < Kp
 				return( glob.dats.ap_node[ k_parentp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "Node_parent" && va.size > 1 # app.unit:12, c_struct.act:417
+		if va[0] == "Node_parent" && va.size > 1 # app.unit:12, c_struct.act:424
 			glob.dats.ap_node.each do |st|
 				if st.k_parentp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Link_to" && va.size > 1 # app.unit:20, c_struct.act:417
+		if va[0] == "Link_to" && va.size > 1 # app.unit:20, c_struct.act:424
 			glob.dats.ap_link.each do |st|
 				if st.k_top == me
 					return (st.get_var(glob, va[1..], lno) )
@@ -60,8 +60,15 @@ class KpNode < Kp
 	def do_its(glob, va, lno)
 		if va[0] == "Link" # app.unit:15, c_struct.act:403
 			itslink.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -82,13 +89,13 @@ class KpNode < Kp
 				if st.k_parentp == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -100,13 +107,13 @@ class KpNode < Kp
 				if st.k_top == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -247,14 +254,14 @@ class KpTable < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "Join_table2" && va.size > 1 # app.unit:80, c_struct.act:417
+		if va[0] == "Join_table2" && va.size > 1 # app.unit:80, c_struct.act:424
 			glob.dats.ap_join.each do |st|
 				if st.k_table2p == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Join2_table2" && va.size > 1 # app.unit:95, c_struct.act:417
+		if va[0] == "Join2_table2" && va.size > 1 # app.unit:95, c_struct.act:424
 			glob.dats.ap_join2.each do |st|
 				if st.k_table2p == me
 					return (st.get_var(glob, va[1..], lno) )
@@ -276,8 +283,15 @@ class KpTable < Kp
 	def do_its(glob, va, lno)
 		if va[0] == "Field" # app.unit:49, c_struct.act:403
 			itsfield.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -285,8 +299,15 @@ class KpTable < Kp
 		end
 		if va[0] == "Join" # app.unit:68, c_struct.act:403
 			itsjoin.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -294,8 +315,15 @@ class KpTable < Kp
 		end
 		if va[0] == "Join2" # app.unit:84, c_struct.act:403
 			itsjoin2.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -306,13 +334,13 @@ class KpTable < Kp
 				if st.k_table2p == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -324,13 +352,13 @@ class KpTable < Kp
 				if st.k_table2p == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -372,28 +400,28 @@ class KpField < Kp
 				return( glob.dats.ap_table[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "Join_field1" && va.size > 1 # app.unit:79, c_struct.act:417
+		if va[0] == "Join_field1" && va.size > 1 # app.unit:79, c_struct.act:424
 			glob.dats.ap_join.each do |st|
 				if st.k_field1p == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Join2_field1" && va.size > 1 # app.unit:94, c_struct.act:417
+		if va[0] == "Join2_field1" && va.size > 1 # app.unit:94, c_struct.act:424
 			glob.dats.ap_join2.each do |st|
 				if st.k_field1p == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Join_field2" && va.size > 1 # app.unit:81, c_struct.act:429
+		if va[0] == "Join_field2" && va.size > 1 # app.unit:81, c_struct.act:436
 			glob.dats.ap_join.each do |st|
 				if st.k_field2p == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Join2_field2" && va.size > 1 # app.unit:96, c_struct.act:429
+		if va[0] == "Join2_field2" && va.size > 1 # app.unit:96, c_struct.act:436
 			glob.dats.ap_join2.each do |st|
 				if st.k_field2p == me
 					return (st.get_var(glob, va[1..], lno) )
@@ -415,8 +443,15 @@ class KpField < Kp
 	def do_its(glob, va, lno)
 		if va[0] == "Attr" # app.unit:62, c_struct.act:403
 			itsattr.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -437,13 +472,13 @@ class KpField < Kp
 				if st.k_field1p == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -455,13 +490,13 @@ class KpField < Kp
 				if st.k_field1p == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -473,13 +508,13 @@ class KpField < Kp
 				if st.k_field2p == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -491,13 +526,13 @@ class KpField < Kp
 				if st.k_field2p == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -534,7 +569,7 @@ class KpAttr < Kp
 				return( glob.dats.ap_field[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "Join2_attr2" && va.size > 1 # app.unit:97, c_struct.act:429
+		if va[0] == "Join2_attr2" && va.size > 1 # app.unit:97, c_struct.act:436
 			glob.dats.ap_join2.each do |st|
 				if st.k_attr2p == me
 					return (st.get_var(glob, va[1..], lno) )
@@ -563,13 +598,13 @@ class KpAttr < Kp
 				if st.k_attr2p == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -816,21 +851,21 @@ class KpComp < Kp
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "Comp_parent" && va.size > 1 # gen.unit:16, c_struct.act:417
+		if va[0] == "Comp_parent" && va.size > 1 # gen.unit:16, c_struct.act:424
 			glob.dats.ap_comp.each do |st|
 				if st.k_parentp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref_comp" && va.size > 1 # gen.unit:79, c_struct.act:417
+		if va[0] == "Ref_comp" && va.size > 1 # gen.unit:79, c_struct.act:424
 			glob.dats.ap_ref.each do |st|
 				if st.k_compp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref2_comp" && va.size > 1 # gen.unit:97, c_struct.act:417
+		if va[0] == "Ref2_comp" && va.size > 1 # gen.unit:97, c_struct.act:424
 			glob.dats.ap_ref2.each do |st|
 				if st.k_compp == me
 					return (st.get_var(glob, va[1..], lno) )
@@ -852,8 +887,15 @@ class KpComp < Kp
 	def do_its(glob, va, lno)
 		if va[0] == "Token" # gen.unit:19, c_struct.act:403
 			itstoken.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -861,8 +903,15 @@ class KpComp < Kp
 		end
 		if va[0] == "Element" # gen.unit:37, c_struct.act:403
 			itselement.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -870,8 +919,15 @@ class KpComp < Kp
 		end
 		if va[0] == "Ref" # gen.unit:65, c_struct.act:403
 			itsref.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -879,8 +935,15 @@ class KpComp < Kp
 		end
 		if va[0] == "Ref2" # gen.unit:82, c_struct.act:403
 			itsref2.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -901,13 +964,13 @@ class KpComp < Kp
 				if st.k_parentp == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -919,13 +982,13 @@ class KpComp < Kp
 				if st.k_compp == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -937,13 +1000,13 @@ class KpComp < Kp
 				if st.k_compp == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -1053,21 +1116,21 @@ class KpElement < Kp
 				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "Ref_element" && va.size > 1 # gen.unit:78, c_struct.act:417
+		if va[0] == "Ref_element" && va.size > 1 # gen.unit:78, c_struct.act:424
 			glob.dats.ap_ref.each do |st|
 				if st.k_elementp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref2_element" && va.size > 1 # gen.unit:96, c_struct.act:417
+		if va[0] == "Ref2_element" && va.size > 1 # gen.unit:96, c_struct.act:424
 			glob.dats.ap_ref2.each do |st|
 				if st.k_elementp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref2_element2" && va.size > 1 # gen.unit:98, c_struct.act:417
+		if va[0] == "Ref2_element2" && va.size > 1 # gen.unit:98, c_struct.act:424
 			glob.dats.ap_ref2.each do |st|
 				if st.k_element2p == me
 					return (st.get_var(glob, va[1..], lno) )
@@ -1089,8 +1152,15 @@ class KpElement < Kp
 	def do_its(glob, va, lno)
 		if va[0] == "Opt" # gen.unit:54, c_struct.act:403
 			itsopt.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
 				ret = go_act(glob, st)
-				if ret > 0
+				if ret != 0
 					return(ret)
 				end
 			end
@@ -1111,13 +1181,13 @@ class KpElement < Kp
 				if st.k_elementp == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -1129,13 +1199,13 @@ class KpElement < Kp
 				if st.k_elementp == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end
@@ -1147,13 +1217,13 @@ class KpElement < Kp
 				if st.k_element2p == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
-						if ret > 0
+						if ret != 0
 							return(ret)
 						end
 						next
 					end
 					ret = go_act(glob, st)
-					if ret > 0
+					if ret != 0
 						return(ret)
 					end
 				end

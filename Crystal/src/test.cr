@@ -2,14 +2,15 @@ require "./*"
 
 glob = GlobT.new
 
-#load_files("tst.def", glob.dats)
+load_files("tst.def", glob.dats)
 #load_files("tst2.act", glob.acts)
 #load_files("json.act", glob.acts)
 #load_files("json2.act", glob.acts)
 #load_files("node.act", glob.acts)
+load_files("dag.act", glob.acts)
 
-load_files("app.unit", glob.dats)
-load_files("c_struct.act", glob.acts)
+#load_files("app.unit", glob.dats)
+#load_files("c_struct.act", glob.acts)
 #load_files("c_run.act", glob.acts)
 
 if glob.acts.ap_actor.size > 0
@@ -39,6 +40,8 @@ class GlobT
 	property wins : Array(WinT) = Array(WinT).new
 	property winp : Int32 = -1
 	property jsons : Hash(String, KpIjson) = Hash(String, KpIjson).new
+	property unq : Hash( String, Array(String) ) = Hash( String, Array(String) ).new
+	property collect : Hash( String, Array(Kp) ) = Hash( String, Array(Kp) ).new
 end
 
 
@@ -192,12 +195,65 @@ def go_cmds(glob, ca, winp)
 				end
 				next
 			end
+			if va[0] == "Collect"
+				glob.collect.each do |key, value|
+					value.each do |kp|
+						ret = go_act(glob, kp)
+						if ret != 0
+							return(ret)
+						end
+					end
+				end
+				next
+			end
 			ret = do_all(glob, va, cmd.line_no)
 			if ret > 1
 				return(ret)
 			end
 		end
 		
+		if cmd.is_a?(KpCollect)
+			if cmd.k_cmd == "clear"
+				 glob.collect = Hash( String, Array(Kp) ).new
+			end
+			if cmd.k_cmd == "add"
+				if glob.collect[cmd.k_pocket]?
+					glob.collect[cmd.k_pocket] << glob.wins[winp].dat
+				else
+					ar = Array(Kp).new
+					ar << glob.wins[winp].dat
+					glob.collect[cmd.k_pocket] = ar
+				end
+			end
+		end
+		
+		if cmd.is_a?(KpUnique)
+			r,arg = strs(glob, winp, cmd.k_value, cmd.line_no )
+			if cmd.k_cmd == "check"
+				if a = glob.unq[cmd.k_key]?
+					if a.index(arg)
+						break
+					else
+					end
+				else
+				end
+			end
+			if cmd.k_cmd == "clear"
+				 glob.unq = Hash( String, Array(String) ).new
+			end
+			if cmd.k_cmd == "add"
+				if a = glob.unq[cmd.k_key]?
+					if a.index(arg)
+						break
+					end
+					glob.unq[cmd.k_key] << arg
+				else
+					aru = Array(String).new
+					aru << arg
+					glob.unq[cmd.k_key] = aru
+				end
+			end
+		end
 		if cmd.is_a?(KpBreak)
 			if cmd.k_what == "E_O_L" || cmd.k_what == "actor"
 				return(2)

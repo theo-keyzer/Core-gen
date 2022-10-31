@@ -304,13 +304,13 @@ C 			glob.dats.ap_${parent.name}l.each do |st|
 C 				if st.k_${element.name}lp == me
 C 					if va.size > 1
 C 						ret = st.do_its(glob, va[1..], lno)
-C 						if ret > 0
+C 						if ret != 0
 C 							return(ret)
 C 						end
 C 						next
 C 					end
 C 					ret = go_act(glob, st)
-C 					if ret > 0
+C 					if ret != 0
 C 						return(ret)
 C 					end
 C 				end
@@ -327,13 +327,13 @@ C 			glob.dats.ap_${parent.name}l.each do |st|
 C 				if st.k_${element.name}lp == me
 C 					if va.size > 1
 C 						ret = st.do_its(glob, va[1..], lno)
-C 						if ret > 0
+C 						if ret != 0
 C 							return(ret)
 C 						end
 C 						next
 C 					end
 C 					ret = go_act(glob, st)
-C 					if ret > 0
+C 					if ret != 0
 C 						return(ret)
 C 					end
 C 				end
@@ -402,8 +402,15 @@ Actor from_to_doo Comp
 
 C 		if va[0] == "${name}c" # ${}
 C 			its${name}l.each do |st|
+C 				if va.size > 1
+C 					ret = st.do_its(glob, va[1..], lno)
+C 					if ret != 0
+C 						return(ret)
+C 					end
+C 					next
+C 				end
 C 				ret = go_act(glob, st)
-C 				if ret > 0
+C 				if ret != 0
 C 					return(ret)
 C 				end
 C 			end
