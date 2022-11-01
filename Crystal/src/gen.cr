@@ -189,7 +189,8 @@ def go_cmds(glob, ca, winp)
 		if cmd.is_a?(KpAll)
 			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
-			va = cmd.k_what.split(".")
+			r,what = strs(glob, winp, cmd.k_what, cmd.line_no )
+			va = what.split(".")
 			if va[0] == "Json"
 				ret = json_all(glob, va, cmd.line_no)
 				if ret > 1
