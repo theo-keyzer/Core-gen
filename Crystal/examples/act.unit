@@ -100,7 +100,14 @@ Comp Break parent Actor
 * To not do the default one
 ----------------------------------------------------------------
 
-	Element what    C1 WORD      * to break
+	Element what    C1 WORD      * what to break
+		Opt actor             * continue with calling actor - break actor case.
+		Opt loop              * continue after calling All, Its cmd - break loop chain.
+		Opt cmd               * continue with actor case - break cmd list.
+	Element on      C1 WORD       * on what condition.
+		Opt on_error          * if var has errors.
+		Opt no_error          * if var has no errors.
+	Element vars    V1 WORD       * var strings to eval - ${a}  ${b}
 
 ----------------------------------------------------------------
 Comp Unique parent Actor

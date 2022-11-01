@@ -1642,12 +1642,16 @@ end
 class KpBreak < Kp 
 	property parentp : Int32 = -1
 	property k_what : String = ""
+	property k_on : String = ""
+	property k_vars : String = ""
 	property childs : Array(Kp) = Array(Kp).new
 	def load(act, ln, pos, lno)
 		p = pos
 		@line_no = lno
 		@me = act.ap_break.size
 		p, @k_what = getw(ln, p)
+		p, @k_on = getw(ln, p)
+		p, @k_vars = getws(ln, p)
 		@parentp = act.ap_actor.size-1;
 		if @parentp < 0  
 			puts lno + " Break has no Actor parent" 
