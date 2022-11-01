@@ -13,7 +13,11 @@ C 		puts "Its kp"
 C 		return(0)
 C 	end
 C 	def get_var(glob, va, lno)
-C 		return(false, "Var Kp")
+C 		if v = names[ va[0] ]?
+C 			return(true, v )
+C 		end
+C 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Kp?");
+-C 		return(false, "Var Kp")
 C 	end
 C end
 C

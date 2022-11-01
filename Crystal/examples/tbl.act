@@ -2,6 +2,8 @@
 Actor arg
 ----------------------------------------------------------------
 
+C Arg: ${0}  ${0}
+
 All Table            tbl from Table
 All Table.tb1        tbl from Table.tb1
 All Table..Field     fld from Table..Field
