@@ -331,7 +331,7 @@ Can be ported to other languages - mostly generated.
 The json and group are examples on how to add plugins.
 The `V-lang` version is very simular to this one. The
 `golang` version is older and not as well automated.
-The `Crytal-lang` one is in progress.
+The `Crytal-lang` one is newer.
 
 # Licence
 
