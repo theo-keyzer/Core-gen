@@ -40,6 +40,7 @@ class GlobT
 	property jsons : Hash(String, KpIjson) = Hash(String, KpIjson).new
 	property unq : Hash( String, Array(String) ) = Hash( String, Array(String) ).new
 	property collect : Hash( String, Array(Kp) ) = Hash( String, Array(Kp) ).new
+	property group : Hash( String, Hash( String, Array(String) ) ) = Hash( String, Hash( String, Array(String) ) ).new
 end
 
 
@@ -205,6 +206,13 @@ def go_cmds(glob, ca, winp)
 				end
 				next
 			end
+			if va[0] == "Group"
+				ret = group_all(glob, va, cmd.line_no)
+				if ret > 1
+					return(ret)
+				end
+				next
+			end
 			if va[0] == "Unique"
 				ret = unique_all(glob, va, cmd.line_no)
 				if ret > 1
@@ -247,43 +255,22 @@ def go_cmds(glob, ca, winp)
 			end
 		end
 		
+		if cmd.is_a?(KpGroup)
+			group_cmd(glob,winp,cmd)
+		end
+		
 		if cmd.is_a?(KpCollect)
 			collect_cmd(glob,winp,cmd)
 		end
 		
 		if cmd.is_a?(KpJson)
-		    json_cmd(glob,winp,cmd)
+			json_cmd(glob,winp,cmd)
 		end
 		
 		if cmd.is_a?(KpUnique)
-			r,arg = strs(glob, winp, cmd.k_value, cmd.line_no )
-			if cmd.k_cmd == "check"
-				if a = glob.unq[cmd.k_key]?
-					if a.index(arg)
-						break
-					end
-				end
-			end
-			if cmd.k_cmd == "clear"
-				if cmd.k_key != "E_O_L"
-					if a = glob.unq[cmd.k_key]?
-						glob.unq[cmd.k_key] = Array(String).new
-					end
-					next
-				end
-				glob.unq = Hash( String, Array(String) ).new
-			end
-			if cmd.k_cmd == "add"
-				if a = glob.unq[cmd.k_key]?
-					if a.index(arg)
-						break
-					end
-					glob.unq[cmd.k_key] << arg
-				else
-					aru = Array(String).new
-					aru << arg
-					glob.unq[cmd.k_key] = aru
-				end
+			ret = unique_cmd(glob,winp,cmd)
+			if ret != 0
+				break
 			end
 		end
 	end

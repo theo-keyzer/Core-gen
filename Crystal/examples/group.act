@@ -1,0 +1,22 @@
+----------------------------------------------------------------
+Actor arg
+----------------------------------------------------------------
+
+Group add A B zab1
+Group add A B ab1
+Group add A C ac1
+Group add A C ac2
+Group add A B ab3
+Group add B B ab4
+Group add A C ac3
+Group add A C ac4
+
+
+All Group pr
+
+----------------------------------------------------------------
+Actor pr
+----------------------------------------------------------------
+
+C ${pocket}  ${key}  ${value}
+

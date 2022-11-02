@@ -2,12 +2,16 @@
 Actor arg
 ----------------------------------------------------------------
 
+C xx ${.Table.tb2.Field.t2f1.Attr.t2f1a1.name}
+C yy ${.Table.tbx2.name}u
+
 All Table table_sel tb2
 
 ----------------------------------------------------------------
 Actor table_sel Table
 ----------------------------------------------------------------
 
+-C tst ${Field.t2f1.name} 
 Out delay
 
 Cs Select (

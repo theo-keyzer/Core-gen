@@ -43,6 +43,107 @@ def collect_all(glob, va, lno)
 	return(0)
 end
 
+
+def group_cmd(glob,winp,cmd)
+	if cmd.k_cmd == "clear" || cmd.k_cmd == "remove"
+		if cmd.k_pocket != "E_O_L"
+			if glob.group[cmd.k_pocket]?
+				if cmd.k_key != "E_O_L"
+					if glob.group[cmd.k_pocket][cmd.k_key]?
+#						glob.group[cmd.k_pocket][cmd.k_key].clear()  # = Array(String).new
+						glob.group[cmd.k_pocket].delete(cmd.k_key)
+						return
+					end
+				end
+				glob.group[cmd.k_pocket] = Hash( String, Array(String) ).new
+				return
+			end
+		end
+		glob.group = Hash( String, Hash( String, Array(String) ) ).new
+	end
+	if cmd.k_cmd == "add"
+		r,vs = strs(glob, winp, cmd.k_value, cmd.line_no )
+		r,ks = strs(glob, winp, cmd.k_key, cmd.line_no )
+		r,ps = strs(glob, winp, cmd.k_pocket, cmd.line_no )
+		if glob.group[ps]?
+			if glob.group[ps][ks]?
+				if glob.group[ps][ks].index(vs)
+					return
+				end
+				glob.group[ps][ks] << vs
+#				puts "a", glob.group[ps][ks]
+				return
+			end
+			glob.group[ps][ks] = [vs]
+#			puts "b", glob.group[ps][ks]
+			return
+		end
+		x = Hash(String,Array(String)).new
+		x[ks] = [vs]
+		glob.group[ps] = x
+#		puts "n", glob.group[ps][ks]
+	end
+end
+
+def group_all(glob, va, lno)
+	glob.group.each do |poc, value|
+		if va.size > 1 && va[1] != ""
+			if poc != va[1]
+				next
+			end
+		end
+		value.each do |key,val|
+			if va.size > 2 && va[2] != ""
+				if key != va[2]
+					next
+				end
+			end
+			kp = Kp.new()
+			kp.names["pocket"] = poc
+			kp.names["key"] = key
+			kp.names["value"] = val.sort.join(",")
+			ret = go_act(glob, kp)
+			if ret != 0
+				return(ret)
+			end
+		end
+	end
+	return(0)
+end
+
+def unique_cmd(glob,winp,cmd)
+	r,arg = strs(glob, winp, cmd.k_value, cmd.line_no )
+	if cmd.k_cmd == "check"
+		if a = glob.unq[cmd.k_key]?
+			if a.index(arg)
+				return(1)
+			end
+		end
+	end
+	if cmd.k_cmd == "clear"
+		if cmd.k_key != "E_O_L"
+			if a = glob.unq[cmd.k_key]?
+				glob.unq[cmd.k_key] = Array(String).new
+			end
+			return(0)
+		end
+		glob.unq = Hash( String, Array(String) ).new
+	end
+	if cmd.k_cmd == "add"
+		if a = glob.unq[cmd.k_key]?
+			if a.index(arg)
+				return(1)
+			end
+			glob.unq[cmd.k_key] << arg
+		else
+			aru = Array(String).new
+			aru << arg
+			glob.unq[cmd.k_key] = aru
+		end
+	end
+	return(0)
+end
+
 def unique_all(glob, va, lno)
 	glob.unq.each do |key, value|
 		if va.size > 1 && va[1] != ""
