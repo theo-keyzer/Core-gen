@@ -9,6 +9,7 @@ All Table.tb1             tbl from Table.tb1
 All Table..Field          fld from Table..Field
 All Table.tb2.Field       fld from Table.tb2.Field
 All Table.tb2.Field.Attr  atr from Table.tb2.Field.Attr
+All Table..Field.Attr     atr from Table..Field.Attr
 All Table.${2}            tbl from Table.$${2}
 All Table.${2}n.Field     fld from Table.$${2}n.Field
 

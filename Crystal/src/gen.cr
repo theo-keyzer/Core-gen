@@ -205,6 +205,13 @@ def go_cmds(glob, ca, winp)
 				end
 				next
 			end
+			if va[0] == "Unique"
+				ret = unique_all(glob, va, cmd.line_no)
+				if ret > 1
+					return(ret)
+				end
+				next
+			end
 			ret = do_all(glob, va, cmd.line_no)
 			if ret > 1
 				return(ret)
@@ -212,11 +219,20 @@ def go_cmds(glob, ca, winp)
 		end
 		
 		if cmd.is_a?(KpBreak)
+			if cmd.k_on != "E_O_L"
+				r,arg = strs(glob, winp, cmd.k_vars, cmd.line_no )
+				if (r == false && cmd.k_on == "on_ok") || (r == true && cmd.k_on == "on_error")
+					next
+				end
+			end
 			if cmd.k_what == "E_O_L" || cmd.k_what == "actor"
 				return(2)
 			end
 			if cmd.k_what == "loop"
 				return(1)
+			end
+			if cmd.k_what == "cmd"
+				break
 			end
 		end
 		
@@ -249,7 +265,13 @@ def go_cmds(glob, ca, winp)
 				end
 			end
 			if cmd.k_cmd == "clear"
-				 glob.unq = Hash( String, Array(String) ).new
+				if cmd.k_key != "E_O_L"
+					if a = glob.unq[cmd.k_key]?
+						glob.unq[cmd.k_key] = Array(String).new
+					end
+					next
+				end
+				glob.unq = Hash( String, Array(String) ).new
 			end
 			if cmd.k_cmd == "add"
 				if a = glob.unq[cmd.k_key]?

@@ -3,7 +3,15 @@ Actor arg
 ----------------------------------------------------------------
 
 All Node sort
-All Collect disp_col
+All Collect.S disp_col
+All Unique disp_unique
+Unique clear A
+
+C
+
+All Unique disp_unique
+
+C
 
 ----------------------------------------------------------------
 Actor sort Node
@@ -17,9 +25,7 @@ Actor sort_item Node
 ----------------------------------------------------------------
 
 Unique add D ${name}
-
 Its Link_to.parent sort_item
-
 Collect add S
 
 ----------------------------------------------------------------
@@ -39,10 +45,18 @@ Its Link.to disp_col ${.arg}
 C ${.arg}  }
 
 ----------------------------------------------------------------
-E_O_F
+Actor disp_unique
 ----------------------------------------------------------------
 
-In:
+Cs ${.0.Unique: } ${.1., } ${key} :${value}
+
+Break loop on_error ${key}
+
+----------------------------------------------------------------
+
+E_O_F
+
+In tst.def:
 
 Node n1  parent  . v = 9
 Node n11 parent n1 v = 9
@@ -71,3 +85,7 @@ Out dag.a:
  }
  n12 - v = 9
  n2 - v = 9
+ 
+Unique: D:n1, D:n221, D:n11, D:n21, D:n12, D:n2, D:n22, A:n221, A:n1, A:n21, A:n11, A:n22, A:n12, A:n2
+Unique: D:n1, D:n221, D:n11, D:n21, D:n12, D:n2, D:n22
+

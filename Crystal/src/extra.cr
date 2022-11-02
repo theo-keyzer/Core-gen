@@ -3,6 +3,12 @@ require "json"
 
 def collect_cmd(glob,winp,cmd)
 	if cmd.k_cmd == "clear"
+		if cmd.k_pocket != "E_O_L"
+			if glob.collect[cmd.k_pocket]?
+				glob.collect[cmd.k_pocket] = Array(Kp).new
+			end
+			return
+		end
 		glob.collect = Hash( String, Array(Kp) ).new
 	end
 	if cmd.k_cmd == "add"
@@ -28,6 +34,30 @@ def collect_all(glob, va, lno)
 			val = value.reverse
 		end
 		val.each do |kp|
+			ret = go_act(glob, kp)
+			if ret != 0
+				return(ret)
+			end
+		end
+	end
+	return(0)
+end
+
+def unique_all(glob, va, lno)
+	glob.unq.each do |key, value|
+		if va.size > 1 && va[1] != ""
+			if key != va[1]
+				next
+			end
+		end
+		val = value
+		if va.size > 2 && va[2] == "reverse"
+			val = value.reverse
+		end
+		val.each do |val|
+			kp = Kp.new()
+			kp.names["key"] = key
+			kp.names["value"] = val
 			ret = go_act(glob, kp)
 			if ret != 0
 				return(ret)
