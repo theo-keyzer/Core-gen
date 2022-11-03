@@ -2,32 +2,46 @@
 Actor arg
 ----------------------------------------------------------------
 
-All Table tbl
+Json add P per.json
+
+C  Arg : ${.Json.P.menu.id} 
+
+All Json list
+
+C Hash : ${.Hash.A.Close.onclick}
 
 ----------------------------------------------------------------
-Actor tbl
+Actor list
 ----------------------------------------------------------------
 
-C - table ${name}
+C List : ${menu.id} 
 
-Its Child child
-
-----------------------------------------------------------------
-Actor child Field comp = Field
-----------------------------------------------------------------
-
-C - field ${name}
+-Its menu menu
+-Its menu.popup popup
+Its menu.popup.menuitem menuitem
 
 ----------------------------------------------------------------
-Actor child Join comp = Join
+Actor menu
 ----------------------------------------------------------------
 
-C - join ${field1}
+C Menu: ${value} 
+
+Its popup popup
 
 ----------------------------------------------------------------
-Actor child Join2 comp = Join2
+Actor popup
 ----------------------------------------------------------------
 
-C - join2 ${field1}
+C Popup :
+
+Its menuitem menuitem
+
+----------------------------------------------------------------
+Actor menuitem
+----------------------------------------------------------------
+
+C Addr: ${onclick} 
+
+Hash add A ${value}
 
 

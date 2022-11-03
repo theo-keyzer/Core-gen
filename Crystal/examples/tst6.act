@@ -49,7 +49,7 @@ Actor graph_all Kp value = A-C,C-A,C-B
 
 C  all ${pocket}  ${key}  ${value} 
 
-Its value aa
+Its value.split., aa
 Break
 
 -----------------------------------------------------------------

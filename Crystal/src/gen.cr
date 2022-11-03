@@ -1,5 +1,6 @@
 require "./*"
 
+
 # Usage: gen  c_struct.act  app.unit,gen.unit,act.unit  >struct.cr
 
 if ARGV.size > 1
@@ -9,7 +10,7 @@ if ARGV.size > 1
 
 	if glob.acts.ap_actor.size > 0
 		new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1")
-		kp = Kp.new
+		kp = KpExtra.new
 		ARGV.each_with_index do |arg,i|
 			kp.names[ i.to_s ] = arg
 		end
@@ -41,6 +42,7 @@ class GlobT
 	property unq : Hash( String, Array(String) ) = Hash( String, Array(String) ).new
 	property collect : Hash( String, Array(Kp) ) = Hash( String, Array(Kp) ).new
 	property group : Hash( String, Hash( String, Array(String) ) ) = Hash( String, Hash( String, Array(String) ) ).new
+	property hash : Hash( String, Hash( String, Kp ) ) = Hash( String, Hash( String, Kp ) ).new
 end
 
 
@@ -255,6 +257,10 @@ def go_cmds(glob, ca, winp)
 			end
 		end
 		
+		if cmd.is_a?(KpHash)
+			hash_cmd(glob,winp,cmd)
+		end
+		
 		if cmd.is_a?(KpGroup)
 			group_cmd(glob,winp,cmd)
 		end
@@ -380,6 +386,13 @@ def s_get_var(glob, winp, va, lno)
 	if va[1] == "Json" && va.size > 3
 		if v = glob.jsons[ va[2] ]?
 			return( v.get_var(glob, va[3..], lno) )
+		end
+	end
+	if va[1] == "Hash" && va.size > 4
+		if h = glob.hash[ va[2] ]?
+			if kp = h[ va[3] ]?
+				return( kp.get_var(glob, va[4..], lno) )
+			end
 		end
 	end
 	return( var_all(glob, va[1..], lno) )

@@ -21,7 +21,7 @@ class ActT
 	property ap_actor : Array(KpActor) = Array(KpActor).new
 	property ap_all : Array(KpAll) = Array(KpAll).new
 	property ap_du : Array(KpDu) = Array(KpDu).new
-	property ap_set : Array(KpSet) = Array(KpSet).new
+	property ap_var : Array(KpVar) = Array(KpVar).new
 	property ap_its : Array(KpIts) = Array(KpIts).new
 	property ap_c : Array(KpC) = Array(KpC).new
 	property ap_cs : Array(KpCs) = Array(KpCs).new
@@ -29,6 +29,7 @@ class ActT
 	property ap_break : Array(KpBreak) = Array(KpBreak).new
 	property ap_unique : Array(KpUnique) = Array(KpUnique).new
 	property ap_collect : Array(KpCollect) = Array(KpCollect).new
+	property ap_hash : Array(KpHash) = Array(KpHash).new
 	property ap_group : Array(KpGroup) = Array(KpGroup).new
 	property ap_json : Array(KpJson) = Array(KpJson).new
 end
@@ -643,10 +644,10 @@ def load(act, tok, ln, pos, lno)
 		comp.load(act, ln, pos, lno)
 		act.ap_du << comp
 	end
-	if tok == "Set"
-		comp = KpSet.new
+	if tok == "Var"
+		comp = KpVar.new
 		comp.load(act, ln, pos, lno)
-		act.ap_set << comp
+		act.ap_var << comp
 	end
 	if tok == "Its"
 		comp = KpIts.new
@@ -682,6 +683,11 @@ def load(act, tok, ln, pos, lno)
 		comp = KpCollect.new
 		comp.load(act, ln, pos, lno)
 		act.ap_collect << comp
+	end
+	if tok == "Hash"
+		comp = KpHash.new
+		comp.load(act, ln, pos, lno)
+		act.ap_hash << comp
 	end
 	if tok == "Group"
 		comp = KpGroup.new

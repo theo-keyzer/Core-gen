@@ -1,0 +1,93 @@
+Actor main
+
+All Comp comps
+
+-----------
+Actor comps
+-----------
+
+Its Element ele
+
+-----------
+Actor ele Element mw in L1,F1
+-----------
+
+Its Ref_element ref_ele_in
+-----------
+Actor ele Element mw in R1,F1
+-----------
+Du ele_ref
+
+-----------
+Actor ele_ref Element Ref_element.element.mw in R1,F1
+-----------
+-C has
+Break
+-----------
+Actor ele_ref Element
+-----------
+C Element ${name}  does not have a Ref   ${} 
+-----------
+Actor ele Element mw = R1
+-----------
+
+Its Ref_element ref_ele_r
+
+-----------
+Actor ele Element mw = V1
+-----------
+
+Its Ref_element ref_ele_v
+
+-----------
+Actor ele Element mw in C1,V1,R1,L1,F1
+-----------
+
+Break
+
+-----------
+Actor ele
+-----------
+
+C Element ${name}  , mw not in C1,V1,R1,L1,F1   ${} 
+
+-----------
+Actor ref_ele_in Ref comp.find = FindIn
+-----------
+
+Break
+
+-----------
+Actor ref_ele_in Ref
+-----------
+
+C Element ${.Def.ele.name}  does not Ref a FindIn ${} 
+
+-----------
+Actor ref_ele_r Ref comp.find = Find
+-----------
+
+-C ref_ ${comp.find} 
+
+Break
+
+-----------
+Actor ref_ele_r
+-----------
+
+C Element ${.Def.ele.name}  does not Ref a Find ${} 
+
+-----------
+Actor ref_ele_v Ref2 comp.find = FindIn
+-----------
+
+Break
+
+-----------
+Actor ref_ele_v Ref2
+-----------
+
+C Element ${.Def.ele.name}  does not Ref2 a FindIn ${} 
+
+
+

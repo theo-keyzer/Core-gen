@@ -42,7 +42,7 @@ Comp Du parent Actor
 Ref actor Actor check
 
 ----------------------------------------------------------------
-Comp Set parent Actor
+Comp Var parent Actor
 ----------------------------------------------------------------
 * Set variable to value
 ----------------------------------------------------------------
@@ -116,10 +116,10 @@ Comp Unique parent Actor
 * Exit the actor if found
 * Add value to key
 *
-* Cmd clear  - clears the keys
-* Cmd check  - ends actor if there, does not add
-* Cmd add    - add to key, ends actor if found.
-* Cmd delete - removes a key
+* Cmd add   (key) - add to key, ends actor if found.
+* Cmd check (key) - ends actor if there, does not add
+* Cmd clear (key) - removes a key entry
+* Cmd clear       - clears the keys
 ----------------------------------------------------------------
 
 	Element cmd    C1 WORD  * add / clear
@@ -137,11 +137,24 @@ Comp Collect parent Actor
 	Element pocket  C1 WORD * where to add
 
 ----------------------------------------------------------------
+Comp Hash parent Actor
+----------------------------------------------------------------
+* Set current def to pocket key
+* Collect items for later use
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+	Element key     C1 WORD * key
+	Element value   V1 WORD * value
+
+----------------------------------------------------------------
 Comp Group parent Actor
 ----------------------------------------------------------------
 * Add key to pocket and value to key
 * Group items for later use
 * Does not duplicate
+* Could be as Set
 ----------------------------------------------------------------
 	
 	Element cmd     C1 WORD * add / clear

@@ -1,6 +1,53 @@
 require "./*"
 require "json"
 
+class KpExtra < Kp
+	def do_its(glob, va, lno)
+		if v = names[ va[0] ]?
+			if va.size < 3
+				kp = Kp.new()
+				kp.names["value"] = v
+				return( go_act(glob, kp) )
+			end
+			va = v.split( va[2] )
+			va.each do |val|
+				kp = Kp.new()
+				kp.names["value"] = val
+				ret = go_act(glob, kp)
+				if ret != 0
+					return(ret)
+				end
+			end
+			return(0)
+		end
+		puts("?No its " + va[0] + " cmd for Kp," + lno + "?");
+		return(0)
+	end
+end
+
+def hash_cmd(glob,winp,cmd)
+	if cmd.k_cmd == "clear"
+		if cmd.k_pocket != "E_O_L"
+			if glob.hash[cmd.k_pocket]?
+				glob.hash[cmd.k_pocket] = Hash( String, Kp ).new
+			end
+			return
+		end
+		glob.hash = Hash( String, Hash( String, Kp ) ).new
+	end
+	if cmd.k_cmd == "add"
+		r,ks = strs(glob, winp, cmd.k_key, cmd.line_no )
+		r,ps = strs(glob, winp, cmd.k_pocket, cmd.line_no )
+		if glob.hash[ps]?
+			glob.hash[ps][ks] = glob.wins[winp].dat
+		else
+			ha = Hash( String, Kp ).new
+			ha[ks] = glob.wins[winp].dat
+			glob.hash[ps] = ha
+		end
+	end
+end
+
 def collect_cmd(glob,winp,cmd)
 	if cmd.k_cmd == "clear"
 		if cmd.k_pocket != "E_O_L"
@@ -98,7 +145,7 @@ def group_all(glob, va, lno)
 					next
 				end
 			end
-			kp = Kp.new()
+			kp = KpExtra.new()
 			kp.names["pocket"] = poc
 			kp.names["key"] = key
 			kp.names["value"] = val.sort.join(",")
