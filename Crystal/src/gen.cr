@@ -104,9 +104,9 @@ def go_act(glob, dat)
 		end
 		if act.k_attr != "E_O_L"
 			va = act.k_attr.split(".")
-			r,v = s_get_var(glob, winp, va, act.line_no )
-			r,ss = strs(glob, winp, act.k_value, act.line_no)
-			if chk( act.k_eq, v, ss, prev) == false 
+			rv,v = s_get_var(glob, winp, va, act.line_no )
+			rs,ss = strs(glob, winp, act.k_value, act.line_no)
+			if chk( act.k_eq, v, ss, prev,rv,rs) == false 
 				prev = false
 				next
 			end
@@ -322,7 +322,7 @@ def re_go_cmds(glob,winp)
 	end
 end
 
-def chk( eq, v, ss, prev )
+def chk( eq, v, ss, prev, rv, rs )
 	if eq == "has" || eq == "in"
 		u = v.split(",") & ss.split(",")
 		if u.size > 0
@@ -341,6 +341,26 @@ def chk( eq, v, ss, prev )
 			return false
 		end
 		return true
+	end
+	if eq == "regex"               # var_value regex exp
+	 	if rs == false
+	 		return( false )
+	 	end
+		rx = Regex.new(ss)
+		if rx.match(v)
+			return( true )
+		end
+		return( false )
+	end
+	if eq == "exreg"               # var_exp exreg value
+	 	if rv == false
+	 		return( false )
+	 	end
+		rx = Regex.new(v)
+		if rx.match(ss)
+			return( true )
+		end
+		return( false )
 	end
 	return( true )
 end
