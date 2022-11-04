@@ -229,10 +229,6 @@ class KpIjson < Kp
 	def do_its(glob, va, lno)
 		js, va2 = json_eval(json,va)
 		x = js.raw
-		if x.is_a?(Hash)
-			ijson = KpIjson.new(js)
-			return( go_act(glob, ijson) )
-		end
 		if x.is_a?(Array)
 			x.each do |value|
 				ijson = KpIjson.new(value)
@@ -241,6 +237,23 @@ class KpIjson < Kp
 					return(ret)
 				end
 			end
+			return(0)
+		end
+		if x.is_a?(Hash)
+			if va2.size > 0 && va2[0] == "*"
+				x.each do |key, value|
+					ijson = KpIjson.new(value)
+					ijson.names["parent_key"] = key
+					ret = go_act(glob, ijson)
+					if ret != 0
+						return(ret)
+					end
+				end
+				return(0)
+			end
+
+			ijson = KpIjson.new(js)
+			return( go_act(glob, ijson) )
 		end
 
 		return(0)
@@ -249,6 +262,9 @@ class KpIjson < Kp
 	def get_var(glob, va, lno)
 		js, va2 = json_eval(json,va)
 		if va2.size > 0 && va2[va2.size-1] != "*"
+			if v = names[ va[0] ]?
+				return(true, v )
+			end
 			return(false, "?" + va2[va2.size-1] + "?")
 		end
 		x = js.raw

@@ -16,7 +16,8 @@ C List : ${menu.id}
 
 -Its menu menu
 -Its menu.popup popup
-Its menu.popup.menuitem menuitem
+-Its menu.popup.menuitem menuitem
+Its * menu
 
 ----------------------------------------------------------------
 Actor menu
