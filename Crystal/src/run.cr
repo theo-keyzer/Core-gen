@@ -32,6 +32,8 @@ class ActT
 	property ap_hash : Array(KpHash) = Array(KpHash).new
 	property ap_group : Array(KpGroup) = Array(KpGroup).new
 	property ap_json : Array(KpJson) = Array(KpJson).new
+	property ap_yaml : Array(KpYaml) = Array(KpYaml).new
+	property ap_xml : Array(KpXml) = Array(KpXml).new
 end
 
 def refs(act)
@@ -698,5 +700,15 @@ def load(act, tok, ln, pos, lno)
 		comp = KpJson.new
 		comp.load(act, ln, pos, lno)
 		act.ap_json << comp
+	end
+	if tok == "Yaml"
+		comp = KpYaml.new
+		comp.load(act, ln, pos, lno)
+		act.ap_yaml << comp
+	end
+	if tok == "Xml"
+		comp = KpXml.new
+		comp.load(act, ln, pos, lno)
+		act.ap_xml << comp
 	end
 end

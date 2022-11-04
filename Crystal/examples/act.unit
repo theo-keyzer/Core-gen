@@ -173,4 +173,26 @@ Comp Json parent Actor
 	Element pocket  C1 WORD * where to add
 	Element file    V1 WORD * file name
 
+----------------------------------------------------------------
+Comp Yaml parent Actor
+----------------------------------------------------------------
+* Add yaml file to pocket
+* Group items for later use
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+	Element file    V1 WORD * file name
+
+----------------------------------------------------------------
+Comp Xml parent Actor
+----------------------------------------------------------------
+* Add xml file to pocket
+* Group items for later use
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+	Element file    V1 WORD * file name
+
 

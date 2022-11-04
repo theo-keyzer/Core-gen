@@ -39,6 +39,7 @@ class GlobT
 	property wins : Array(WinT) = Array(WinT).new
 	property winp : Int32 = -1
 	property jsons : Hash(String, KpIjson) = Hash(String, KpIjson).new
+	property yamls : Hash(String, KpIyaml) = Hash(String, KpIyaml).new
 	property unq : Hash( String, Array(String) ) = Hash( String, Array(String) ).new
 	property collect : Hash( String, Array(Kp) ) = Hash( String, Array(Kp) ).new
 	property group : Hash( String, Hash( String, Array(String) ) ) = Hash( String, Hash( String, Array(String) ) ).new
@@ -201,6 +202,13 @@ def go_cmds(glob, ca, winp)
 				end
 				next
 			end
+			if va[0] == "Yaml"
+				ret = yaml_all(glob, va, cmd.line_no)
+				if ret > 1
+					return(ret)
+				end
+				next
+			end
 			if va[0] == "Collect"
 				ret = collect_all(glob, va, cmd.line_no)
 				if ret > 1
@@ -271,6 +279,10 @@ def go_cmds(glob, ca, winp)
 		
 		if cmd.is_a?(KpJson)
 			json_cmd(glob,winp,cmd)
+		end
+		
+		if cmd.is_a?(KpYaml)
+			yaml_cmd(glob,winp,cmd)
 		end
 		
 		if cmd.is_a?(KpUnique)
@@ -405,6 +417,11 @@ def s_get_var(glob, winp, va, lno)
 	end
 	if va[1] == "Json" && va.size > 3
 		if v = glob.jsons[ va[2] ]?
+			return( v.get_var(glob, va[3..], lno) )
+		end
+	end
+	if va[1] == "Yaml" && va.size > 3
+		if v = glob.yamls[ va[2] ]?
 			return( v.get_var(glob, va[3..], lno) )
 		end
 	end

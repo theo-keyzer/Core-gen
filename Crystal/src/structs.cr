@@ -1933,3 +1933,49 @@ class KpJson < Kp
 	end
 end
 
+class KpYaml < Kp 
+	property parentp : Int32 = -1
+	property k_cmd : String = ""
+	property k_pocket : String = ""
+	property k_file : String = ""
+	property childs : Array(Kp) = Array(Kp).new
+	def load(act, ln, pos, lno)
+		p = pos
+		@comp = "Yaml"
+		@line_no = lno
+		@me = act.ap_yaml.size
+		p, @k_cmd = getw(ln, p)
+		p, @k_pocket = getw(ln, p)
+		p, @k_file = getws(ln, p)
+		@parentp = act.ap_actor.size-1;
+		if @parentp < 0  
+			puts lno + " Yaml has no Actor parent" 
+			return
+		end
+		act.ap_actor[ @parentp ].childs << self
+	end
+end
+
+class KpXml < Kp 
+	property parentp : Int32 = -1
+	property k_cmd : String = ""
+	property k_pocket : String = ""
+	property k_file : String = ""
+	property childs : Array(Kp) = Array(Kp).new
+	def load(act, ln, pos, lno)
+		p = pos
+		@comp = "Xml"
+		@line_no = lno
+		@me = act.ap_xml.size
+		p, @k_cmd = getw(ln, p)
+		p, @k_pocket = getw(ln, p)
+		p, @k_file = getws(ln, p)
+		@parentp = act.ap_actor.size-1;
+		if @parentp < 0  
+			puts lno + " Xml has no Actor parent" 
+			return
+		end
+		act.ap_actor[ @parentp ].childs << self
+	end
+end
+
