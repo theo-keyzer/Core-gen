@@ -285,6 +285,10 @@ def go_cmds(glob, ca, winp)
 			yaml_cmd(glob,winp,cmd)
 		end
 		
+		if cmd.is_a?(KpVar)
+			glob.wins[winp].dat.names[cmd.k_attr] = cmd.k_value
+		end
+		
 		if cmd.is_a?(KpUnique)
 			ret = unique_cmd(glob,winp,cmd)
 			if ret != 0

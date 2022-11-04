@@ -9,6 +9,7 @@ C  Arg : ${.Json.P.menu.id}
 All Json list
 
 C Hash : ${.Hash.A.Close.onclick}
+C Hash : ${.Hash.A.Open.foo}
 
 ----------------------------------------------------------------
 Actor list
@@ -42,6 +43,7 @@ Actor menuitem
 
 C Addr: ${onclick} 
 
+Var foo = bar
 Hash add A ${value}
 
 

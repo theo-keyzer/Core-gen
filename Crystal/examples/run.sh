@@ -13,3 +13,7 @@
 ./gen tst4.act tst.def
 ./gen tst5.act tst.def
 ./gen tst6.act tst.def
+./gen json3.act tst.def
+./gen json4.act tst.def
+./gen json5.act tst.def
+./gen yaml.act tst.def
