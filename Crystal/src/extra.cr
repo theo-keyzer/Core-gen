@@ -349,6 +349,49 @@ class KpIxml < Kp
 		@xml
 	end
 
+	def get_var(glob, va, lno)
+		xs,va2 = xml_eval_var(xml, va)
+		if xs.is_a?(String)
+			return(true, xs )
+		end
+		if v = names[ va[0] ]?
+			return(true, v )
+		end
+		return(false, "?" + va[0] + "?")
+	end
+	
+	def xml_eval_var(xs, va)
+		if va[0] == "*"
+			return(xs.content, va[1..])
+		end
+		if v = xs[ va[0] ]?
+			return( v, va[1..] )
+		end
+		xs.children.each do |child|
+			if va[0] == child.name
+				if va.size > 1
+					return( xml_eval_var(child, va[1..] ) )
+				end
+				return(child.content, va[1..])
+			end
+		end
+		return(xs,va)
+	end
+	
+	def do_its(glob, va, lno)
+#		xs,va2 = xml_eval_its(xml, va)
+		xml.children.select(&.element?).each do |child|
+			if va[0] == "*" || va[0] == child.name
+				ixml = KpIxml.new(child)
+				ixml.names["parent_key"] = child.name
+				ret = go_act(glob, ixml)
+				if ret != 0
+					return(ret)
+				end
+		 	end
+		end
+		return(0)
+	end
 end
 	
 def xml_cmd(glob,winp,cmd)
@@ -356,7 +399,29 @@ def xml_cmd(glob,winp,cmd)
 	if cmd.k_cmd == "add" 
 		lns = File.read( cmd.k_file )
 		value = XML.parse(lns)
+		xml = value.first_element_child
+		if xml
+			ixml = KpIxml.new(xml)
+			ixml.pocket = cmd.k_pocket
+			glob.xmls[ cmd.k_pocket] = ixml
+		end
 	end
+end
+
+def xml_all(glob, va, lno)
+	glob.xmls.each do |key, value|
+		if va.size > 1 && va[1] != ""
+			if key != va[1]
+				next
+			end
+		end
+		ret = go_act(glob, value)
+		if ret != 0
+			return(ret)
+		end
+#		puts key
+	end
+	return(0)
 end
 
 class KpIyaml < Kp

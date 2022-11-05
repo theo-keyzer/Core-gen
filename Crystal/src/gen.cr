@@ -203,6 +203,13 @@ def go_cmds(glob, ca, winp)
 				end
 				next
 			end
+			if va[0] == "Xml"
+				ret = xml_all(glob, va, cmd.line_no)
+				if ret > 1
+					return(ret)
+				end
+				next
+			end
 			if va[0] == "Yaml"
 				ret = yaml_all(glob, va, cmd.line_no)
 				if ret > 1
@@ -432,6 +439,11 @@ def s_get_var(glob, winp, va, lno)
 	end
 	if va[1] == "Yaml" && va.size > 3
 		if v = glob.yamls[ va[2] ]?
+			return( v.get_var(glob, va[3..], lno) )
+		end
+	end
+	if va[1] == "Xml" && va.size > 3
+		if v = glob.xmls[ va[2] ]?
 			return( v.get_var(glob, va[3..], lno) )
 		end
 	end
