@@ -298,8 +298,23 @@ def go_cmds(glob, ca, winp)
 		end
 		
 		if cmd.is_a?(KpVar)
-			r,v = strs(glob, winp, cmd.k_value, cmd.line_no )
-			glob.wins[winp].dat.names[cmd.k_attr] = v
+			ra,sa = strs(glob, winp, cmd.k_attr, cmd.line_no )
+			rv,sv = strs(glob, winp, cmd.k_value, cmd.line_no )
+			if cmd.k_eq == "regex"
+				if rv == true
+					rx = Regex.new(sv)
+					md = rx.match(sa)
+					if md
+						md.named_captures.each do |key,val|
+							if val
+								glob.wins[winp].dat.names[key] = val
+							end
+						end
+					end
+				end
+				next
+			end
+			glob.wins[winp].dat.names[sa] = sv
 		end
 		
 		if cmd.is_a?(KpUnique)
