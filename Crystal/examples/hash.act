@@ -11,6 +11,19 @@ All Json list
 C Hash : ${.Hash.A.Close.onclick}
 C Hash : ${.Hash.A.Open.foo}
 
+Var val = 45
+Var dat = $${val}
+
+C ${val}  ${dat}
+C ${val}  ${dat}$
+
+Var val = 47
+
+C ${val}  ${dat}$
+C ${val}  ${dat}
+
+C ${foo}
+
 ----------------------------------------------------------------
 Actor list
 ----------------------------------------------------------------
@@ -41,7 +54,7 @@ Its menuitem menuitem
 Actor menuitem
 ----------------------------------------------------------------
 
-C Addr: ${onclick} 
+C Addr: ${value}  ${onclick} 
 
 Var foo = bar
 Hash add A ${value}

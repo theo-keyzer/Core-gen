@@ -40,6 +40,7 @@ class GlobT
 	property winp : Int32 = -1
 	property jsons : Hash(String, KpIjson) = Hash(String, KpIjson).new
 	property yamls : Hash(String, KpIyaml) = Hash(String, KpIyaml).new
+	property xmls : Hash(String, KpIxml) = Hash(String, KpIxml).new
 	property unq : Hash( String, Array(String) ) = Hash( String, Array(String) ).new
 	property collect : Hash( String, Array(Kp) ) = Hash( String, Array(Kp) ).new
 	property group : Hash( String, Hash( String, Array(String) ) ) = Hash( String, Hash( String, Array(String) ) ).new
@@ -285,8 +286,13 @@ def go_cmds(glob, ca, winp)
 			yaml_cmd(glob,winp,cmd)
 		end
 		
+		if cmd.is_a?(KpXml)
+			xml_cmd(glob,winp,cmd)
+		end
+		
 		if cmd.is_a?(KpVar)
-			glob.wins[winp].dat.names[cmd.k_attr] = cmd.k_value
+			r,v = strs(glob, winp, cmd.k_value, cmd.line_no )
+			glob.wins[winp].dat.names[cmd.k_attr] = v
 		end
 		
 		if cmd.is_a?(KpUnique)
@@ -478,7 +484,11 @@ def strs(glob, winp, s, lno)
 				if l > i+1
 					i += 1
 					if r != false
-						v = tocase(v, s[i])
+						if s[i] == '$'
+							sr,v = strs(glob, winp, v, lno)
+						else
+							v = tocase(v, s[i])
+						end
 					end
 				end
 				ret += v

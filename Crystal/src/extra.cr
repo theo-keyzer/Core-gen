@@ -1,6 +1,7 @@
 require "./*"
 require "json"
 require "yaml"
+require "xml"
 
 class KpExtra < Kp
 	def do_its(glob, va, lno)
@@ -335,6 +336,27 @@ def json_all(glob, va, lno)
 #		puts key
 	end
 	return(0)
+end
+
+class KpIxml < Kp
+	property pocket : String = ""
+
+	def initialize(xml : XML::Node)
+		@xml = xml
+	end
+
+	def xml
+		@xml
+	end
+
+end
+	
+def xml_cmd(glob,winp,cmd)
+
+	if cmd.k_cmd == "add" 
+		lns = File.read( cmd.k_file )
+		value = XML.parse(lns)
+	end
 end
 
 class KpIyaml < Kp
