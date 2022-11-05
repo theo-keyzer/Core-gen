@@ -379,14 +379,20 @@ class KpIxml < Kp
 	end
 	
 	def do_its(glob, va, lno)
-#		xs,va2 = xml_eval_its(xml, va)
 		xml.children.select(&.element?).each do |child|
 			if va[0] == "*" || va[0] == child.name
 				ixml = KpIxml.new(child)
 				ixml.names["parent_key"] = child.name
-				ret = go_act(glob, ixml)
-				if ret != 0
-					return(ret)
+				if va.size > 1
+					ret = ixml.do_its(glob, va[1..], lno) 
+					if ret != 0
+						return(ret)
+					end
+				else
+					ret = go_act(glob, ixml)
+					if ret != 0
+						return(ret)
+					end
 				end
 		 	end
 		end
