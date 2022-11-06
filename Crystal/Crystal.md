@@ -79,12 +79,13 @@ loop through all actors with this name.
 
 All comand line arguments are store in the starting node instance as named entries.
 They are `${0}, ${1}` variables. To access these variables else where, prefix it with
-the starting actor's name like `${.arg.1}`.
+the starting actor's name like `${.main.1}`.
 
 # Variables
 
 The `${name} ` gets replaced by the value of the variable `name`. To escape the `${`, use `$${`
-The case conversion letter `${name}c`, `c`, captilize the variable value.
+The case conversion letter `c` like `${name}c`, captilize the variable's value.
+The `${.arg}` is the value of the argument passed from the previous actor.
 The `${eval}$`, it replaces the eval with the `strs` function of the value of `eval`.
 That is to get a code block from a separate file and print it `C ${code_block}$`.
 
