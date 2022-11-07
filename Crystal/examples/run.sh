@@ -15,5 +15,10 @@
 ./gen tst6.act tst.def
 ./gen json3.act tst.def
 ./gen json4.act tst.def
+echo json5:
+
 ./gen json5.act tst.def
+if [ $? != 0 ]; then echo json5.act has errors; fi
+
+echo yaml:
 ./gen yaml.act tst.def

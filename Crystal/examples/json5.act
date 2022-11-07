@@ -14,8 +14,8 @@ Actor list
 Its * topic
 
 ----------------------------------------------------------------
-Actor topic . parent_key regex q\d
--Actor topic . parent_key exreg q2
+Actor topic . parent_key? regex q\d
+-Actor topic . parent_key regex q\d
 ----------------------------------------------------------------
 
 C Question: ${parent_key}  ${question}  ${answer}
