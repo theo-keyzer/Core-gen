@@ -40,9 +40,7 @@ The `Du` should inherit this value, but does not.
 
 The errors land up in the generated code to track down the error.
 Some commands make use of the `s_get_var, strs` functions that would return
-the error, but the commands ignore them. They do not land up in the output.
-Best is to pass a flag to the functions to print the error. The generator
-also need an exit code to indicate that there was errors.
+the error, but the commands ignore them. 
 
 # Loader errors
 
@@ -56,12 +54,12 @@ May need some more work here.
 
 # Collections
 
-These are extra to make interesting test cases.
+These are to collect data for later use.
 
 The `Collect` and `Hash`, store the current node's instance.
-The `Unique` and `Group` store strings.
+The `Unique` and `Group` store strings - does not duplicate.
 
-The `Hash` can be accessed as a var, the others by the `All` command.
+The `Hash` can be accessed as a var `${.Hash.A.Open.foo}`, the others by the `All` command.
 
 
 # Var command
@@ -71,7 +69,7 @@ Also has a `regex` that breaks down the string as named entries.
 
 # Startup
 
-The generator takes a `,` separated list of actor file followed
+The generator takes a `,` separated list of actor files followed
 by a `,` separated list of def input files. They each are all lumped together.
 
 The first actor's name, is the starting actor. The `go_act` function
@@ -88,6 +86,19 @@ The case conversion letter `c` like `${name}c`, captilize the variable's value.
 The `${.arg}` is the value of the argument passed from the previous actor.
 The `${eval}$`, it replaces the eval with the `strs` function of the value of `eval`.
 That is to get a code block from a separate file and print it `C ${code_block}$`.
+
+# Actor match
+
+Actor have a case like match on all the actors of the same name.
+
+`Actor list_act Node name = tb1`, here it matches the varable `name` to `tb1`
+The `&=` would be false if the previous one failed. The `|=` would be true if the previous one was true.
+The variable has a `?` option like `name? = tb1`. This would fail if `name` does not exist.
+No error is printed and the global errors flag is not updated - not seen as an error.
+
+
+
+
 
 
 
