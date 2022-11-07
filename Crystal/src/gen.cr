@@ -25,6 +25,7 @@ if ARGV.size > 1
 	if glob.load_errs == true || glob.run_errs == true
 		puts "Load error = " + glob.load_errs.to_s
 		puts "Run error = " + glob.run_errs.to_s
+		exit(status = 1) 
 	end
 end
 
@@ -124,15 +125,28 @@ def go_act(glob, dat)
 			next
 		end
 		if act.k_attr != "E_O_L"
-			va = act.k_attr.split(".")
+			is_opt = false
+			attr = act.k_attr
+			if attr.size > 1 && attr[attr.size-1] == '?'
+				attr = attr[..-2]
+				is_opt = true
+			end
+			va = attr.split(".")
 			rv,v = s_get_var(glob, winp, va, act.line_no )
-			rs,ss = strs(glob, winp, act.k_value, act.line_no)
+			if rv == false && is_opt == false
+				puts v
+				glob.run_errs = true
+			end
+			if rv == false && is_opt == true
+				next
+			end
+			rs,ss = strs(glob, winp, act.k_value, act.line_no, true,true)
 			if chk( act.k_eq, v, ss, prev,rv,rs) == false 
 				prev = false
 				next
 			end
 			if act.k_cc != ""
-				r,s = strs(glob, winp, act.k_cc, act.line_no)
+				r,s = strs(glob, winp, act.k_cc, act.line_no, true,true)
 				puts s 
 			end
 		end
@@ -166,7 +180,7 @@ def go_cmds(glob, ca, winp)
 				next
 			end
 			trig(glob,winp)
-			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
+			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true)
 			puts s
 		end
 		
@@ -175,12 +189,12 @@ def go_cmds(glob, ca, winp)
 				next
 			end
 			trig(glob,winp)
-			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
+			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true)
 			print s
 		end
 		
 		if cmd.is_a?(KpIts)
-			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no )
+			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no, true,true )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
 			va = cmd.k_what.split(".")
 			if va[0] == "" && va.size > 1
@@ -211,9 +225,9 @@ def go_cmds(glob, ca, winp)
 		end
 		
 		if cmd.is_a?(KpAll)
-			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no )
+			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no, true,true )
 			new_act(glob, cmd.k_actor, arg, cmd.line_no)
-			r,what = strs(glob, winp, cmd.k_what, cmd.line_no )
+			r,what = strs(glob, winp, cmd.k_what, cmd.line_no, true,true )
 			va = what.split(".")
 			if va[0] == "Json"
 				ret = json_all(glob, va, cmd.line_no)
@@ -265,7 +279,7 @@ def go_cmds(glob, ca, winp)
 		
 		if cmd.is_a?(KpBreak)
 			if cmd.k_on != "E_O_L"
-				r,arg = strs(glob, winp, cmd.k_vars, cmd.line_no )
+				r,arg = strs(glob, winp, cmd.k_vars, cmd.line_no, false,false )
 				if (r == false && cmd.k_on == "on_ok") || (r == true && cmd.k_on == "on_error")
 					next
 				end
@@ -317,8 +331,8 @@ def go_cmds(glob, ca, winp)
 		end
 		
 		if cmd.is_a?(KpVar)
-			ra,sa = strs(glob, winp, cmd.k_attr, cmd.line_no )
-			rv,sv = strs(glob, winp, cmd.k_value, cmd.line_no )
+			ra,sa = strs(glob, winp, cmd.k_attr, cmd.line_no, true,true )
+			rv,sv = strs(glob, winp, cmd.k_value, cmd.line_no, true,true )
 			if cmd.k_eq == "regex"
 				if rv == true
 					rx = Regex.new(sv)
@@ -373,12 +387,12 @@ def re_go_cmds(glob,winp)
 	while i < glob.wins[winp].cur_pos
 		cmd = a.childs[i]
 		if cmd.is_a?(KpC)
-			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
+			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true)
 			puts s
 		end
 		
 		if cmd.is_a?(KpCs)
-			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no)
+			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true)
 			print s
 		end
 		i += 1
@@ -491,7 +505,7 @@ def s_get_var(glob, winp, va, lno)
 	return( var_all(glob, va[1..], lno) )
 end
 
-def strs(glob, winp, s, lno)
+def strs(glob, winp, s, lno, pr_err, is_err)
 	ok = true
 	l = s.size
 	ret = ""
@@ -526,12 +540,18 @@ def strs(glob, winp, s, lno)
 				r,v = s_get_var(glob, winp, va, lno )
 				if r == false
 					ok = false
+					if pr_err == true
+						puts v
+					end
+					if is_err
+						glob.run_errs = true
+					end
 				end
 				if l > i+1
 					i += 1
 					if r != false
 						if s[i] == '$'
-							sr,v = strs(glob, winp, v, lno)
+							sr,v = strs(glob, winp, v, lno, pr_err, is_err)
 						else
 							v = tocase(v, s[i])
 						end
