@@ -5,8 +5,14 @@ require "./*"
 
 if ARGV.size > 1
 	glob = GlobT.new
-	load_files(ARGV[0], glob.acts)
-	load_files(ARGV[1], glob.dats)
+	r = load_files(ARGV[0], glob.acts)
+	if r == true
+		glob.load_errs = true
+	end
+	r = load_files(ARGV[1], glob.dats)
+	if r == true
+		glob.load_errs = true
+	end
 
 	if glob.acts.ap_actor.size > 0
 		new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1")
@@ -15,6 +21,10 @@ if ARGV.size > 1
 			kp.names[ i.to_s ] = arg
 		end
 		go_act(glob, kp)
+	end
+	if glob.load_errs == true || glob.run_errs == true
+		puts "Load error = " + glob.load_errs.to_s
+		puts "Run error = " + glob.run_errs.to_s
 	end
 end
 
@@ -34,6 +44,8 @@ class WinT
 end
 
 class GlobT
+	property load_errs : Bool = false
+	property run_errs : Bool = false
 	property acts : ActT = ActT.new
 	property dats : ActT = ActT.new
 	property wins : Array(WinT) = Array(WinT).new
@@ -51,20 +63,27 @@ end
 
 def load_files(files, act)
 
+	errs = false
 	fa = files.split(",")
 	fa.each do |file|
 		lns = File.read_lines(file)
-
 		lns.each_with_index do |ln,i|
 			lno = file + ":" + (i+1).to_s
 			p, s = getw(ln, 0)
 			if s == "E_O_F"
 				break
 			end
-			load(act, s, ln, p, lno)
+			r = load(act, s, ln, p, lno)
+			if r == true
+				errs = true
+			end
 		end
 	end
-	refs(act)
+	r = refs(act)
+	if r == true
+		errs = true
+	end
+	return(errs)
 end
 
 def new_act(glob, actn, arg, flno)
@@ -550,13 +569,13 @@ end
 
 def fnd(act, s, f, chk, lno)
 	if f == chk
-		return(-1)
+		return(true, -1)
 	end
 	if v = act.index[s]?
-		return( v )
+		return(true, v )
 	end
 	puts s + " not found " + lno
-	return(-1)
+	return(false, -1)
 end
 
 def getws(ln, pos)

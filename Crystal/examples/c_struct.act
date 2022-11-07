@@ -10,18 +10,6 @@ C 	property comp : String = "Kp"
 C 	property line_no : String = ""
 C 	property names : Hash(String, String) = Hash(String, String).new
 C 	def do_its(glob, va, lno)
--C 		if v = names[ va[0] ]?
--C 			va = v.split(",")
--C 			va.each do |val|
--C 				kp = Kp.new()
--C 				kp.names["value"] = val
--C 				ret = go_act(glob, kp)
--C 				if ret != 0
--C 					return(ret)
--C 				end
--C 			end
--C 			return(0)
--C 		end
 C 		puts("?No its " + va[0] + " cmd for Kp," + lno + "?");
 C 		return(0)
 C 	end
@@ -61,6 +49,7 @@ Its Element ele_act
 Its parent parent_field_p
 Du index_act
 
+C 		return true
 C 	end
 C end
 C
@@ -89,6 +78,7 @@ C 		@me = act.ap_${name}l.size
 Its Element ele_act
 Its parent parent_field_p
 
+C 		return true
 C 	end
 C end
 C
@@ -119,6 +109,7 @@ Its Element ele
 Its parent parent_field_p
 Du index
 
+C 		return true
 C 	end
 C
 C 	def get_var(glob, va, lno)
@@ -185,7 +176,7 @@ Actor parent_field_p Comp name = Actor
 C 		@parentp = act.ap_${name}l.size-1;
 C 		if @parentp < 0  
 C 			puts lno + " ${.struct.name}c has no ${name}c parent" 
-C 			return
+C 			return false
 C 		end
 C 		act.ap_${name}l[ @parentp ].childs << self
 
@@ -196,7 +187,7 @@ Actor parent_field_p Comp name != Actor
 C 		@parentp = act.ap_${name}l.size-1;
 C 		if @parentp < 0  
 C 			puts lno + " ${.struct.name}c has no ${name}c parent" 
-C 			return
+C 			return false
 C 		end
 C 		act.ap_${name}l[ @parentp ].its${.struct.name}l << self
 C 		act.ap_${name}l[ @parentp ].childs << self

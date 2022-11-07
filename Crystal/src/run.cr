@@ -37,81 +37,137 @@ class ActT
 end
 
 def refs(act)
+	errs = false
 	act.ap_node.each_with_index do |st,i|
-		st.k_parentp = fnd(act, "Node_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
+		r, st.k_parentp = fnd(act, "Node_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
 	act.ap_link.each_with_index do |st,i|
-		st.k_top = fnd(act, "Node_" + st.names["to"] , st.names["to"],  ".", st.line_no )
+		r, st.k_top = fnd(act, "Node_" + st.names["to"] , st.names["to"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
 	act.ap_join.each_with_index do |st,i|
-		st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
-		st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
-		st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
+		r, st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+		r, st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
+		r, st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
 	act.ap_join2.each_with_index do |st,i|
-		st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
-		st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
-		st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
-		st.k_attr2p = fnd(act, st.k_field2p.to_s + "_Attr_" + st.names["attr2"] , st.names["attr2"],  "check", st.line_no )
+		r, st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+		r, st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
+		r, st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+		r, st.k_attr2p = fnd(act, st.k_field2p.to_s + "_Attr_" + st.names["attr2"] , st.names["attr2"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
 	act.ap_comp.each_with_index do |st,i|
-		st.k_parentp = fnd(act, "Comp_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
+		r, st.k_parentp = fnd(act, "Comp_" + st.names["parent"] , st.names["parent"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
 	act.ap_ref.each_with_index do |st,i|
-		st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
-		st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
+		r, st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
 	act.ap_ref2.each_with_index do |st,i|
-		st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
-		st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
-		st.k_element2p = fnd(act, st.parentp.to_s + "_Element_" + st.names["element2"] , st.names["element2"],  "check", st.line_no )
+		r, st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
+		r, st.k_element2p = fnd(act, st.parentp.to_s + "_Element_" + st.names["element2"] , st.names["element2"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
 	act.ap_all.each_with_index do |st,i|
-		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+		r, st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
 	act.ap_du.each_with_index do |st,i|
-		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+		r, st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
 	act.ap_its.each_with_index do |st,i|
-		st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+		r, st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+		if r == false
+			errs = true
+		end
 	end
+	return(errs)
 end
 
 def var_all(glob, va, lno) 
 	if va.size < 3
 		return(false, "?" + va.size.to_s + "<3?" + lno + "?")
 	end
-	if va[0] == "Node" # app.unit:2, c_run.act:118
+	if va[0] == "Node" # app.unit:2, c_run.act:137
 		if en = glob.dats.index["Node_" + va[1] ]?
 			return (glob.dats.ap_node[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Graph" # app.unit:23, c_run.act:118
+	if va[0] == "Graph" # app.unit:23, c_run.act:137
 		if en = glob.dats.index["Graph_" + va[1] ]?
 			return (glob.dats.ap_graph[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Matrix" # app.unit:31, c_run.act:118
+	if va[0] == "Matrix" # app.unit:31, c_run.act:137
 		if en = glob.dats.index["Matrix_" + va[1] ]?
 			return (glob.dats.ap_matrix[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Table" # app.unit:41, c_run.act:118
+	if va[0] == "Table" # app.unit:41, c_run.act:137
 		if en = glob.dats.index["Table_" + va[1] ]?
 			return (glob.dats.ap_table[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Comp" # gen.unit:2, c_run.act:118
+	if va[0] == "Comp" # gen.unit:2, c_run.act:137
 		if en = glob.dats.index["Comp_" + va[1] ]?
 			return (glob.dats.ap_comp[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Actor" # act.unit:2, c_run.act:118
+	if va[0] == "Actor" # act.unit:2, c_run.act:137
 		if en = glob.dats.index["Actor_" + va[1] ]?
 			return (glob.dats.ap_actor[en].get_var(glob, va[2..], lno))
 		end
@@ -551,164 +607,262 @@ def do_all(glob, va, lno)
 end
 
 def load(act, tok, ln, pos, lno)
+	errs = false
 	if tok == "Node"
 		comp = KpNode.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_node << comp
 	end
 	if tok == "Link"
 		comp = KpLink.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_link << comp
 	end
 	if tok == "Graph"
 		comp = KpGraph.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_graph << comp
 	end
 	if tok == "Matrix"
 		comp = KpMatrix.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_matrix << comp
 	end
 	if tok == "Table"
 		comp = KpTable.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_table << comp
 	end
 	if tok == "Field"
 		comp = KpField.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_field << comp
 	end
 	if tok == "Attr"
 		comp = KpAttr.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_attr << comp
 	end
 	if tok == "Join"
 		comp = KpJoin.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_join << comp
 	end
 	if tok == "Join2"
 		comp = KpJoin2.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_join2 << comp
 	end
 	if tok == "Comp"
 		comp = KpComp.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_comp << comp
 	end
 	if tok == "Token"
 		comp = KpToken.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_token << comp
 	end
 	if tok == "Star"
 		comp = KpStar.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_star << comp
 	end
 	if tok == "Element"
 		comp = KpElement.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_element << comp
 	end
 	if tok == "Opt"
 		comp = KpOpt.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_opt << comp
 	end
 	if tok == "Ref"
 		comp = KpRef.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_ref << comp
 	end
 	if tok == "Ref2"
 		comp = KpRef2.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_ref2 << comp
 	end
 	if tok == "Actor"
 		comp = KpActor.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_actor << comp
 	end
 	if tok == "All"
 		comp = KpAll.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_all << comp
 	end
 	if tok == "Du"
 		comp = KpDu.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_du << comp
 	end
 	if tok == "Var"
 		comp = KpVar.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_var << comp
 	end
 	if tok == "Its"
 		comp = KpIts.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_its << comp
 	end
 	if tok == "C"
 		comp = KpC.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_c << comp
 	end
 	if tok == "Cs"
 		comp = KpCs.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_cs << comp
 	end
 	if tok == "Out"
 		comp = KpOut.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_out << comp
 	end
 	if tok == "Break"
 		comp = KpBreak.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_break << comp
 	end
 	if tok == "Unique"
 		comp = KpUnique.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_unique << comp
 	end
 	if tok == "Collect"
 		comp = KpCollect.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_collect << comp
 	end
 	if tok == "Hash"
 		comp = KpHash.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_hash << comp
 	end
 	if tok == "Group"
 		comp = KpGroup.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_group << comp
 	end
 	if tok == "Json"
 		comp = KpJson.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_json << comp
 	end
 	if tok == "Yaml"
 		comp = KpYaml.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_yaml << comp
 	end
 	if tok == "Xml"
 		comp = KpXml.new
-		comp.load(act, ln, pos, lno)
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
 		act.ap_xml << comp
 	end
+	return(errs)
 end
