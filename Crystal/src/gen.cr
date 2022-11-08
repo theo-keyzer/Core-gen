@@ -399,7 +399,23 @@ def re_go_cmds(glob,winp)
 	end
 end
 
-def chk( eq, v, ss, prev, rv, rs )
+def chk( eqs, v, ss, prev, rv, rs )
+	eq = eqs
+	if eqs.size > 1
+		if eqs[0] == '&'
+			if prev == false
+				return false
+			end
+		end
+		if eqs[0] == '|'
+			if prev == true
+				return true
+			end
+		end
+		if eqs[0] == '&' || eqs[0] == '|'
+			eq = eqs[1..]
+		end
+	end
 	if eq == "has" || eq == "in"
 		u = v.split(",") & ss.split(",")
 		if u.size > 0
