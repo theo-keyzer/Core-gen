@@ -40,12 +40,14 @@ The `Du` should inherit this value, but does not.
 
 The errors land up in the generated code to track down the error.
 Some commands make use of the `s_get_var, strs` functions that would return
-the error, but the commands ignore them. 
+the error, but the commands ignore them. The errors are printed though.
+
+This to get as much done as posible. The exit code is 1 for errors.
 
 # Loader errors
 
 The input file loader, prints errors as it goes along, mainly the parent and refs.
-The run time only checks, but does not generate errors.
+The run time only checks these, but does not generate errors.
 
 # Other input files.
 
@@ -61,11 +63,18 @@ The `Unique` and `Group` store strings - does not duplicate.
 
 The `Hash` can be accessed as a var `${.Hash.A.Open.foo}`, the others by the `All` command.
 
-
+These denormalizes the input to be more elegant for the generator.
+ 
 # Var command
 
 This creates a named entry in the the current node's instance.
-Also has a `regex` that breaks down the string as named entries.
+The `Var foo = bar`, sets the variable. To access it, `${foo}`
+The `Var G.foo = gbar`, set the global variable. To access it, `${.G.foo}`
+The `Var .list_act.foo = abar`, set the variable in the node instance that is current
+in the `list_act`. The current actors are on the stack. To access it, `${.list_act.foo}`,
+or when on that node instance (back to the list_act), `${foo}`.
+
+Also has a `regex` that can break down the string as named entries.
 
 # Startup
 
