@@ -22,6 +22,7 @@ Var val = 47
 C ${val}  ${dat}$
 C ${val}  ${dat}
 
+C ${fos}
 -C ${foo}
 
 ----------------------------------------------------------------
@@ -57,6 +58,8 @@ Actor menuitem
 C Addr: ${value}  ${onclick} 
 
 Var foo = bar
+Var .main.fos = bar
+
 Hash add A ${value}
 
 

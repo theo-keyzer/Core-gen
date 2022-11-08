@@ -347,6 +347,18 @@ def go_cmds(glob, ca, winp)
 				end
 				next
 			end
+			va = sa.split(".")
+			if va[0] == "" && va.size > 2
+				i = glob.winp-1
+				while i >= 0 
+					if glob.wins[i].name == va[1]
+						glob.wins[i].dat.names[ va[2] ] = sv
+						break
+					end
+					i = i-1
+				end
+				next
+			end
 			glob.wins[winp].dat.names[sa] = sv
 		end
 		
