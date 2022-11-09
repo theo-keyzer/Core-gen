@@ -205,6 +205,7 @@ def go_cmds(glob, ca, winp)
 						if ret > 1
 							return(ret)
 						end
+						break
 					end
 					i = i-1
 				end

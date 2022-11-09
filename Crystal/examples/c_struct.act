@@ -138,7 +138,13 @@ Its Ref ref_func
 Its Ref2 ref_func2
 Its Ref_comp other_func
 Its Ref2_comp other_func2
+
+C 		if va[0] == "Child" # ${}
+
 Its Comp_parent childs_func
+
+C 			return(0)
+C 		end
 
 C 		puts("?No its " + va[0] + " cmd for ${name} ," + line_no + "," + lno + "?");
 C 		return(0)
@@ -150,7 +156,7 @@ C
 Actor childs_func Comp name != Actor
 ----------------------------------------------------------------
 
-C 		if va[0] == "Child" # ${}
+-C 		if va[0] == "Child" # ${}
 C 			childs.each do |st|
 C 				if va.size > 1
 C 					ret = st.do_its(glob, va[1..], lno)
@@ -164,8 +170,8 @@ C 				if ret != 0
 C 					return(ret)
 C 				end
 C 			end
-C 			return(0)
-C 		end
+-C 			return(0)
+-C 		end
 
 Break loop
 

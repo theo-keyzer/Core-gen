@@ -38,8 +38,8 @@ def hash_cmd(glob,winp,cmd)
 		glob.hash = Hash( String, Hash( String, Kp ) ).new
 	end
 	if cmd.k_cmd == "add"
-		r,ks = strs(glob, winp, cmd.k_key, cmd.line_no )
-		r,ps = strs(glob, winp, cmd.k_pocket, cmd.line_no )
+		r,ks = strs(glob, winp, cmd.k_key, cmd.line_no, true,true )
+		r,ps = strs(glob, winp, cmd.k_pocket, cmd.line_no, true,true )
 		if glob.hash[ps]?
 			glob.hash[ps][ks] = glob.wins[winp].dat
 		else
@@ -111,9 +111,9 @@ def group_cmd(glob,winp,cmd)
 		glob.group = Hash( String, Hash( String, Array(String) ) ).new
 	end
 	if cmd.k_cmd == "add"
-		r,vs = strs(glob, winp, cmd.k_value, cmd.line_no )
-		r,ks = strs(glob, winp, cmd.k_key, cmd.line_no )
-		r,ps = strs(glob, winp, cmd.k_pocket, cmd.line_no )
+		r,vs = strs(glob, winp, cmd.k_value, cmd.line_no, true,true )
+		r,ks = strs(glob, winp, cmd.k_key, cmd.line_no, true,true )
+		r,ps = strs(glob, winp, cmd.k_pocket, cmd.line_no, true,true )
 		if glob.group[ps]?
 			if glob.group[ps][ks]?
 				if glob.group[ps][ks].index(vs)
@@ -161,7 +161,7 @@ def group_all(glob, va, lno)
 end
 
 def unique_cmd(glob,winp,cmd)
-	r,arg = strs(glob, winp, cmd.k_value, cmd.line_no )
+	r,arg = strs(glob, winp, cmd.k_value, cmd.line_no, true,true )
 	if cmd.k_cmd == "check"
 		if a = glob.unq[cmd.k_key]?
 			if a.index(arg)
