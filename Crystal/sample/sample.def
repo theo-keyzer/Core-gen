@@ -1,0 +1,19 @@
+--------------------------------------------------------
+Type User User
+--------------------------------------------------------
+
+Attr .                   K pk_id               NUMBER   22 NNNNN
+Attr User_typ            S user_type             CHAR    1 NYEYD User type
+Attr .                   . first_name        VARCHAR2  200 NYYYD First name
+Attr .                   . last_name         VARCHAR2  200 NYYYD Last name
+Attr Location            D location_id         NUMBER   22 NYYYD Location
+Attr .                   . nt_id             VARCHAR2  255 NYYYD NT id
+Attr .                   . phone             VARCHAR2  255 YNNYY Phone
+Attr .                   . email             VARCHAR2  255 YNNYY Email
+Attr Activ               S active                CHAR    1 NYYYY Active
+Attr Employee            L employee_id       VARCHAR2  200 YYYYD Employee number
+Attr Employee            V employee_name     VARCHAR2  200 YYYDD Employee name
+Attr Contractor_employee L contractor_id     VARCHAR2  200 YYYYD Contractor reference number
+Attr Contractor_employee V contractor_name   VARCHAR2  200 YYYDD Contractor name
+Attr Contractor_company  D company_id          NUMBER   22 YYYYD Company name
+
