@@ -46,5 +46,6 @@ echo var.act:
 echo xml.act:
 ./gen xml.act tst.def
 echo def2json.act
-./gen def2json.act app.unit,tst.def
+./gen def2json.act app.unit,tst.def >tst_def.json
+
 

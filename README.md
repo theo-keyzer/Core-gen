@@ -333,10 +333,6 @@ The `V-lang` version is very simular to this one. The
 `golang` version is older and not as well automated.
 The `Crytal-lang` one is newer.
 
-# TODO
-
-Make it work in reverse.
-
 # Contribution
 
 You can clone repository to contribute.
