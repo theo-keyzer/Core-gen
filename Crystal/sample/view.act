@@ -1,0 +1,116 @@
+---------------------------------
+Actor main .
+---------------------------------
+
+All Type.${2} view
+
+---------------------------------
+Actor view
+---------------------------------
+
+C -----------------------------------------------------
+C    CREATE OR REPLACE VIEW ${name}u_VIEW
+C    (
+Cs  
+
+Its Attr var
+
+C    , CREATED_BY, DATE_MODIFIED, UPDATE_CNT, ACTIVE_IND, ACTIVE_STATUS
+C    )
+C    AS
+C    SELECT 
+Cs  
+
+Its Attr sel
+
+C    , CREATED_BY, DATE_MODIFIED, UPDATE_CNT, ACTIVE_IND, DECODE(ACTIVE_IND, 'Y', 'Active', 'Inactive') AS ACTIVE_STATUS
+C    FROM ${name}u a 
+C 
+C 
+
+----------------------------------
+Actor var . relation in .,pk
+----------------------------------
+
+C    ${.1.,}  ${name}u
+
+Du var_date
+
+Actor var_date . mytype = DATE
+
+C    ${.var..1.,}  ${name}u_FLD
+
+----------------------------------
+Actor var . relation in dropdown,select,lookup,viewed
+----------------------------------
+
+C    ${.1.,}  ${name}u, ${table}u
+
+----------------------------------
+Actor var . relation = view
+----------------------------------
+
+C    ${.1.,}  ${name}u
+
+----------------------------------
+Actor sel . relation in .,pk
+----------------------------------
+
+C    ${.1.,}  ${name}u 
+
+Du sel_date
+
+Actor sel_date  . mytype = DATE
+
+C    ${.sel..1.,}  TO_CHAR(${name}u, 'YYYY/MM/DD') AS ${name}u_FLD
+
+----------------------------------
+Actor sel . relation in dropdown,lookup
+----------------------------------
+
+C    ${.1.,}  ${name}u, (Select ${Where_name.value}  from ${table}u where ${Where_name.from_id}u = a.${Where_name.id}u) ${table}u
+
+----------------------------------
+Actor sel . relation = view
+----------------------------------
+
+Cs    ${.1.,}  
+
+Du sel_foreign ref = foreign
+Du sel_local   ref = local
+
+----------------------------------
+Actor sel_local . table = .
+----------------------------------
+
+C $FWV as ${name}u
+
+----------------------------------
+Actor sel_foreign . table != .
+----------------------------------
+
+C (Select ${Where_name.value}  from ${table}u where ${Where_name.from_id}u = a.${Where_name.id}u) ${name}u
+
+----------------------------------
+Actor sel . relation = viewed
+----------------------------------
+
+C    ${.1.,}  ${name}u, (Select ${Where_name.value} from ${table}u where ID = a.${Where_name.name}u) ${name}u
+C    ${.1.,}  ${name}u, (Select ${table}u from $FRNu_VIEW where ID = a.${name}u) ${table}u
+
+----------------------------------
+Actor sel . relation = select
+----------------------------------
+
+Cs    ${.1.,}  ${name}u, DECODE(a.${name}u 
+
+Its table.Data decode
+
+C ) ${table}u
+
+----------------------------------
+Actor decode
+----------------------------------
+
+Cs ${.1.,}  '${name}', '${value}'
+

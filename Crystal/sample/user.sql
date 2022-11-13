@@ -1,0 +1,39 @@
+-----------------------------------------------------
+   CREATE OR REPLACE VIEW USER_VIEW
+   (
+     PK_ID
+   , USER_TYPE, USER_TYP
+   , FIRST_NAME
+   , LAST_NAME
+   , LOCATION_ID, LOCATION
+   , NT_ID
+   , PHONE
+   , EMAIL
+   , ACTIVE, ACTIV
+   , EMPLOYEE_ID, EMPLOYEE
+   , EMPLOYEE_NAME
+   , CONTRACTOR_ID, CONTRACTOR_EMPLOYEE
+   , CONTRACTOR_NAME
+   , COMPANY_ID, CONTRACTOR_COMPANY
+   , CREATED_BY, DATE_MODIFIED, UPDATE_CNT, ACTIVE_IND, ACTIVE_STATUS
+   )
+   AS
+   SELECT 
+     PK_ID 
+   , USER_TYPE, DECODE(a.USER_TYPE  '1, 'Employee, '2, 'Contractor employee, '3, 'Contractor company) USER_TYP
+   , FIRST_NAME 
+   , LAST_NAME 
+   , LOCATION_ID, (Select location_name from LOCATION where ID = a.LOCATION_ID) LOCATION
+   , NT_ID 
+   , PHONE 
+   , EMAIL 
+   , ACTIVE, DECODE(a.ACTIVE  'Y, 'Yes, 'N, 'No) ACTIV
+   , EMPLOYEE_ID, (Select ID from EMPLOYEE where ID = a.EMPLOYEE_ID) EMPLOYEE
+   , (Select LAST_NAME || ' '  || FIRST_NAME from EMPLOYEE where ID = a.EMPLOYEE_ID) EMPLOYEE_NAME
+   , CONTRACTOR_ID, (Select id_number from CONTRACTOR_EMPLOYEE where ID_NUMBER = a.CONTRACTOR_ID) CONTRACTOR_EMPLOYEE
+   , (Select last_name || ' ' || first_name from CONTRACTOR_EMPLOYEE where ID_NUMBER = a.CONTRACTOR_ID) CONTRACTOR_NAME
+   , COMPANY_ID, (Select company_name from CONTRACTOR_COMPANY where PK_ID = a.COMPANY_ID) CONTRACTOR_COMPANY
+   , CREATED_BY, DATE_MODIFIED, UPDATE_CNT, ACTIVE_IND, DECODE(ACTIVE_IND, 'Y', 'Active', 'Inactive') AS ACTIVE_STATUS
+   FROM USER a 
+
+

@@ -2,18 +2,101 @@
 Type User User
 --------------------------------------------------------
 
-Attr .                   K pk_id               NUMBER   22 NNNNN
-Attr User_typ            S user_type             CHAR    1 NYEYD User type
-Attr .                   . first_name        VARCHAR2  200 NYYYD First name
-Attr .                   . last_name         VARCHAR2  200 NYYYD Last name
-Attr Location            D location_id         NUMBER   22 NYYYD Location
-Attr .                   . nt_id             VARCHAR2  255 NYYYD NT id
-Attr .                   . phone             VARCHAR2  255 YNNYY Phone
-Attr .                   . email             VARCHAR2  255 YNNYY Email
-Attr Activ               S active                CHAR    1 NYYYY Active
-Attr Employee            L employee_id       VARCHAR2  200 YYYYD Employee number
-Attr Employee            V employee_name     VARCHAR2  200 YYYDD Employee name
-Attr Contractor_employee L contractor_id     VARCHAR2  200 YYYYD Contractor reference number
-Attr Contractor_employee V contractor_name   VARCHAR2  200 YYYDD Contractor name
-Attr Contractor_company  D company_id          NUMBER   22 YYYYD Company name
+Attr .                         pk pk_id               NUMBER   22 NNNNN
+Attr User_typ              select user_type             CHAR    1 NYEYD User type
+Attr .                          . first_name        VARCHAR2  200 NYYYD First name
+Attr .                          . last_name         VARCHAR2  200 NYYYD Last name
+Attr Location            dropdown location_id         NUMBER   22 NYYYD Location
+Attr .                          . nt_id             VARCHAR2  255 NYYYD NT id
+Attr .                          . phone             VARCHAR2  255 YNNYY Phone
+Attr .                          . email             VARCHAR2  255 YNNYY Email
+Attr Activ                 select active                CHAR    1 NYYYY Active
+Attr Employee              lookup employee_id       VARCHAR2  200 YYYYD Employee number
+Attr Employee                view employee_name     VARCHAR2  200 YYYDD Employee name
+Attr Contractor_employee   lookup contractor_id     VARCHAR2  200 YYYYD Contractor reference number
+Attr Contractor_employee     view contractor_name   VARCHAR2  200 YYYDD Contractor name
+Attr Contractor_company  dropdown company_id          NUMBER   22 YYYYD Company name
 
+Where contractor_id    id_number = contractor_id     = id_number
+Where contractor_name  id_number = contractor_id  like last_name || ' ' || first_name
+Where company_id           pk_id = company_id     like company_name
+Where employee_name           id = employee_id    like LAST_NAME || ' '  || FIRST_NAME
+Where employee_id             id = employee_id       = ID
+Where location_id             id = location_id       = location_name
+
+---------------------------------------------
+Type User_typ
+---------------------------------------------
+
+Data 1 = Employee
+Data 2 = Contractor employee
+Data 3 = Contractor company
+
+--------------------------------------------------------
+Type Location
+--------------------------------------------------------
+
+Attr .   pk id                  NUMBER   22 NNNNN
+Attr .    . location_name     VARCHAR2 4000 NYYYY
+Attr .    . allowance_allowed   NUMBER   22 NNNNN
+Attr .    . friendly_name     VARCHAR2  255 NNNNN
+Attr . view display_fld       VARCHAR2   80 NNNNN
+
+---------------------------------------------
+Type Activ
+---------------------------------------------
+
+Data Y = Yes
+Data N = No
+
+--------------------------------------------------------
+Type Employee security
+--------------------------------------------------------
+
+Attr .               pk id                VARCHAR2  200 NNNNN
+Attr .                . first_name        VARCHAR2  200 NNNNN First name
+Attr .                . last_name         VARCHAR2  200 NNNNN Last name
+Attr .                . sap_id            VARCHAR2 4000 NNNNN SAP id
+Attr .                . bp_level          VARCHAR2 4000 NNNNN Level
+Attr Location  dropdown location_id         NUMBER   22 NNNNN Location
+Attr .                . manager_id          NUMBER   22 NNNNN Manager id
+Attr .                . nt_id             VARCHAR2  255 NNNNN NT id
+Attr .                . reports_to        VARCHAR2  255 NNNNN Reports to
+Attr .                . active              NUMBER   22 NNNNN Active
+
+---------------------------------------------
+Type Contractor_employee Contractor Employee
+---------------------------------------------
+
+Attr .                         pk pk_id                 NUMBER  22 NNNNN
+Attr .                          . id_number           VARCHAR2  80 NYEYY Reference number
+Attr .                          . first_name          VARCHAR2  70 NYYYY First name
+Attr .                          . last_name           VARCHAR2  70 NYYYY Surname
+Attr Contractor_company  dropdown company_id            NUMBER  22 NYYYD Company name
+Attr Location            dropdown location_id           NUMBER  22 NYYYY Location
+Attr .                          . job_description         TEXT 900 NNNYY Job description
+Attr .                       view display_fld         VARCHAR2  70 NNNNN
+
+---------------------------------------------
+Type Contractor_company Contractor Company
+---------------------------------------------
+
+Attr .                    pk pk_id              NUMBER  22 NNNNN
+Attr .                  none company_name     VARCHAR2  80 NYEYY Company name
+Attr Location       dropdown location_id        NUMBER  22 NYYYY Location
+Attr Company_rating dropdown company_rating_id  NUMBER  22 NYYYY Risk rating
+Attr .                     . email_address    VARCHAR2  50 YNNYY Email address
+Attr .                     . contact_person   VARCHAR2  80 YNNYY Contact person
+Attr .                     . service              TEXT 900 YNNYY Service
+Attr .                  view display_fld      VARCHAR2  80 NNNNN
+
+---------------------------------------------
+Type Company_rating Company Risk Rating
+---------------------------------------------
+
+Attr .                pk pk_id              NUMBER  22 NNNNN
+Attr .              none description      VARCHAR2  80 NYEYY Rating description
+Attr .              view display_fld      VARCHAR2  80 NNNNN
+
+
+--------------------------------------------------------
