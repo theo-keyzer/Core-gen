@@ -68,6 +68,7 @@ Comp Attr parent Type FindIn
 	Element mytype   C1 WORD             * Data type.
 	Element len      C1 WORD             * Default length.
 	Element null     C1 WORD             * Not null.
+	Element flags    C1 WORD             * Input flags
 	Element desc     V1 WORD             * Documentation.
 
 Ref table Type check
