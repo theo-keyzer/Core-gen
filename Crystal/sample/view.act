@@ -76,8 +76,8 @@ Actor sel . relation = view
 
 Cs    ${.1.,}  
 
-Du sel_foreign ref = foreign
-Du sel_local   ref = local
+Du sel_foreign table != .
+Du sel_local   table = .
 
 ----------------------------------
 Actor sel_local . table = .
