@@ -218,6 +218,27 @@ def go_cmds(glob, ca, winp)
 		end
 		
 		if cmd.is_a?(KpDu)
+			if cmd.k_attr != "E_O_L"
+				is_opt = false
+				attr = cmd.k_attr
+				if attr.size > 1 && attr[attr.size-1] == '?'
+					attr = attr[..-2]
+					is_opt = true
+				end
+				vaa = attr.split(".")
+				rv,v = s_get_var(glob, winp, vaa, cmd.line_no )
+				if rv == false && is_opt == false
+					puts v
+					glob.run_errs = true
+				end
+				if rv == false && is_opt == true
+					next
+				end
+				rs,ss = strs(glob, winp, cmd.k_value, cmd.line_no, true,true)
+				if chk( cmd.k_eq, v, ss, true,rv,rs) == false 
+					next
+				end
+			end
 			new_act(glob, cmd.k_actor, "", cmd.line_no)
 			ret = go_act(glob,glob.wins[winp].dat)
 			if ret != 0

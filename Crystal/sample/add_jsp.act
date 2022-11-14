@@ -68,15 +68,15 @@ Actor fld . relation = lookup
 Du fld_var
 
 ----------------------------------------------------------------
-Actor fld . relation in none,name
+Actor fld . relation in none,name,.
 ----------------------------------------------------------------
 
-Du fld_var    Mytype = CHAR
-Du fld_text   Mytype = TEXT
-Du fld_var    Mytype = VARCHAR2
-Du fld_number Mytype = NUMBER
-Du fld_number Mytype = FLOAT
-Du fld_date   Mytype = DATE
+Du fld_var    mytype = CHAR
+Du fld_text   mytype = TEXT
+Du fld_var    mytype = VARCHAR2
+Du fld_number mytype = NUMBER
+Du fld_number mytype = FLOAT
+Du fld_date   mytype = DATE
 
 ----------------------------------------------------------------
 Actor fld_var .
@@ -100,8 +100,8 @@ Actor fld_date .
 C 			<tr>
 C 				<td class="portlet-form-field-label"><spring:message code="${desc} "/>&nbsp;&nbsp;</td>
 C 				<td>
-C 					<form:input cssClass="portlet-form-input-field" id="$CANl" path="${parent.name}l.${name}l" size="30" />
-C 					<img src="<html:imagesPath/>dtp.gif" title='Click Here' alt='Click Here' onclick=" scwShow(scwID('$CANl'),event);" />
+C 					<form:input cssClass="portlet-form-input-field" id="${name}l" path="${parent.name}l.${name}l" size="30" />
+C 					<img src="<html:imagesPath/>dtp.gif" title='Click Here' alt='Click Here' onclick=" scwShow(scwID('${name}l'),event);" />
 C 				</td>					
 C 			</tr>
 
