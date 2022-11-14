@@ -20,7 +20,7 @@ C 	</portlet:actionURL>
 C
 Cs 	<form:form id="${name}lForm" name="${name}lForm" commandName="${name}lForm" method="post" action="$${submitActionUrl}" 
 
-Its Attr multipart
+Its Attr multipart flags regex ..Y.
 
 C >
 C 		
@@ -32,7 +32,9 @@ C 		<div><form:errors cssClass="portlet-msg-error" path="*" /></div>
 C 		
 C 		<table border="0" cellpadding="4">
 
-Its Attr fld_flag
+-Its Attr fld_flag
+
+Its Attr fld flags regex ..Y.
 
 C 		</table>
 C	
