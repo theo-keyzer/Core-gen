@@ -19,7 +19,7 @@ if ARGV.size > 1
 		ARGV.each_with_index do |arg,i|
 			kp.names[ i.to_s ] = arg
 		end
-		new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1", kp)
+		new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1", "", "", "")
 		go_act(glob, kp)
 	end
 	if glob.load_errs == true || glob.run_errs == true
@@ -30,11 +30,12 @@ if ARGV.size > 1
 end
 
 class WinT
-
 	property name : String = ""
 	property cnt : Int32 = -1
 	property dat : Kp = Kp.new
-	property from : Kp = Kp.new
+	property attr : String = ""
+	property eq : String = ""
+	property value : String = ""
 	property arg : String = ""
 	property flno : String = ""
 	property is_on : Bool = false
@@ -88,7 +89,7 @@ def load_files(files, act)
 	return(errs)
 end
 
-def new_act(glob, actn, arg, flno, from)
+def new_act(glob, actn, arg, flno, attr, eq, value)
 
 	winp = glob.winp+1
 	if glob.wins.size <= winp
@@ -98,7 +99,9 @@ def new_act(glob, actn, arg, flno, from)
 	glob.wins[winp].cnt = -1
 	glob.wins[winp].arg = arg
 	glob.wins[winp].flno = flno
-	glob.wins[winp].from = from
+	glob.wins[winp].attr = attr
+	glob.wins[winp].eq = eq
+	glob.wins[winp].value = value
 	glob.wins[winp].is_prev = false
 	if winp == 0
 		return
@@ -120,30 +123,27 @@ def go_act(glob, dat)
 	winp = glob.winp+1
 	glob.winp = winp
 	glob.wins[winp].dat = dat
-	cmd = glob.wins[winp].from
-	if cmd.is_a?(KpIts)
-		if cmd.k_attr != "E_O_L" && cmd.k_attr != "."
-			is_opt = false
-			attr = cmd.k_attr
-			if attr.size > 1 && attr[attr.size-1] == '?'
-				attr = attr[..-2]
-				is_opt = true
-			end
-			vaa = attr.split(".")
-			rv,v = s_get_var(glob, winp, vaa, cmd.line_no )
-			if rv == false && is_opt == false
-				puts v
-				glob.run_errs = true
-			end
-			if rv == false && is_opt == true
-				glob.winp = winp-1
-				return(0)
-			end
-			rs,ss = strs(glob, winp, cmd.k_value, cmd.line_no, true,true)
-			if chk( cmd.k_eq, v, ss, true,rv,rs) == false 
-				glob.winp = winp-1
-				return(0)
-			end
+	attr = glob.wins[winp].attr
+	if attr != "E_O_L" && attr != "."  && attr != ""
+		is_opt = false
+		if attr.size > 1 && attr[attr.size-1] == '?'
+			attr = attr[..-2]
+			is_opt = true
+		end
+		vaa = attr.split(".")
+		rv,v = s_get_var(glob, winp, vaa, glob.wins[winp].flno )
+		if rv == false && is_opt == false
+			puts v
+			glob.run_errs = true
+		end
+		if rv == false && is_opt == true
+			glob.winp = winp-1
+			return(0)
+		end
+#		rs,ss = strs(glob, winp, cmd.k_value, cmd.line_no, true,true)
+		if chk( glob.wins[winp].eq, v, glob.wins[winp].value, true,rv,true) == false 
+			glob.winp = winp-1
+			return(0)
 		end
 	end
 	name = glob.wins[winp].name
@@ -222,8 +222,9 @@ def go_cmds(glob, ca, winp)
 		end
 		
 		if cmd.is_a?(KpIts)
+			r,val = strs(glob, winp, cmd.k_value, cmd.line_no, true,true )
 			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no, true,true )
-			new_act(glob, cmd.k_actor, arg, cmd.line_no, cmd)
+			new_act(glob, cmd.k_actor, arg, cmd.line_no, cmd.k_attr, cmd.k_eq, val)
 			va = cmd.k_what.split(".")
 			if va[0] == "" && va.size > 1
 				i = glob.winp-1
@@ -246,28 +247,10 @@ def go_cmds(glob, ca, winp)
 		end
 		
 		if cmd.is_a?(KpDu)
-			if cmd.k_attr != "E_O_L"
-				is_opt = false
-				attr = cmd.k_attr
-				if attr.size > 1 && attr[attr.size-1] == '?'
-					attr = attr[..-2]
-					is_opt = true
-				end
-				vaa = attr.split(".")
-				rv,v = s_get_var(glob, winp, vaa, cmd.line_no )
-				if rv == false && is_opt == false
-					puts v
-					glob.run_errs = true
-				end
-				if rv == false && is_opt == true
-					next
-				end
-				rs,ss = strs(glob, winp, cmd.k_value, cmd.line_no, true,true)
-				if chk( cmd.k_eq, v, ss, true,rv,rs) == false 
-					next
-				end
-			end
-			new_act(glob, cmd.k_actor, "", cmd.line_no,cmd)
+			r,val = strs(glob, winp, cmd.k_value, cmd.line_no, true,true )
+			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no, true,true )
+			new_act(glob, cmd.k_actor, arg, cmd.line_no, cmd.k_attr, cmd.k_eq, val)
+			glob.wins[winp+1].cnt = glob.wins[winp].cnt-1 				# use same loop counter
 			ret = go_act(glob,glob.wins[winp].dat)
 			if ret != 0
 				return(ret)
@@ -275,8 +258,9 @@ def go_cmds(glob, ca, winp)
 		end
 		
 		if cmd.is_a?(KpAll)
+			r,val = strs(glob, winp, cmd.k_value, cmd.line_no, true,true )
 			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no, true,true )
-			new_act(glob, cmd.k_actor, arg, cmd.line_no,cmd)
+			new_act(glob, cmd.k_actor, arg, cmd.line_no, cmd.k_attr, cmd.k_eq, val)
 			r,what = strs(glob, winp, cmd.k_what, cmd.line_no, true,true )
 			va = what.split(".")
 			if va[0] == "Json"

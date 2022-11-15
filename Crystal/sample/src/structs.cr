@@ -397,6 +397,9 @@ class KpAll < Kp
 	property parentp : Int32 = -1
 	property k_what : String = ""
 	property k_actor : String = ""
+	property k_attr : String = ""
+	property k_eq : String = ""
+	property k_value : String = ""
 	property k_args : String = ""
 	property k_actorp : Int32 = -1
 	property childs : Array(Kp) = Array(Kp).new
@@ -407,6 +410,9 @@ class KpAll < Kp
 		@me = act.ap_all.size
 		p, @k_what = getw(ln, p)
 		p, @k_actor = getw(ln, p)
+		p, @k_attr = getw(ln, p)
+		p, @k_eq = getw(ln, p)
+		p, @k_value = getw(ln, p)
 		p, @k_args = getws(ln, p)
 		@parentp = act.ap_actor.size-1;
 		if @parentp < 0  
@@ -424,6 +430,7 @@ class KpDu < Kp
 	property k_attr : String = ""
 	property k_eq : String = ""
 	property k_value : String = ""
+	property k_args : String = ""
 	property k_actorp : Int32 = -1
 	property childs : Array(Kp) = Array(Kp).new
 	def load(act, ln, pos, lno)
@@ -435,6 +442,7 @@ class KpDu < Kp
 		p, @k_attr = getw(ln, p)
 		p, @k_eq = getw(ln, p)
 		p, @k_value = getw(ln, p)
+		p, @k_args = getws(ln, p)
 		@parentp = act.ap_actor.size-1;
 		if @parentp < 0  
 			puts lno + " Du has no Actor parent" 
