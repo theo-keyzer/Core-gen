@@ -4,7 +4,7 @@ Actor main
 
 Cs {
 
-All Comp comps  
+All Comp comps . . .  
 
 C
 C }
@@ -17,7 +17,7 @@ C ${.1.,}
 C ${.arg}  "${name} ": 
 Cs ${.arg}  [
 
-All ${name} list ${.arg}   
+All ${name} list . . . ${.arg}   
 
 C
 Cs ${.arg}  ]
@@ -29,8 +29,8 @@ Actor list
 C ${.1.,}
 C ${.arg} {
 
-Its .comps.Element ele ${.arg}  
-Its Child list2 ${.arg}  
+Its .comps.Element ele . . . ${.arg}  
+Its Child list2 . . . ${.arg}  
 
 C
 Cs ${.arg} }
@@ -53,7 +53,7 @@ C ,
 C ${.arg}  "${comp} ": 
 Cs ${.arg}  [
 
-All Comp.${comp} comps2 ${.arg}   
+All Comp.${comp} comps2 . . . ${.arg}   
 
 C
 Cs ${.arg}  ]
@@ -65,8 +65,8 @@ Actor comps2
 C ${.1.,}
 C ${.arg} {
 
-Its Element 2ele ${.arg}  
-Its .list2.Child list2 ${.arg}  
+Its Element 2ele . . . ${.arg}  
+Its .list2.Child list2 . . . ${.arg}  
 
 C
 Cs ${.arg} }
@@ -79,24 +79,5 @@ Var a = $${.list2.${name} }
 
 C ${.1.,}
 Cs ${.arg}  "${name} ": "${a}$"
-
-----------------------------------------------------------------
-Actor list3x
-----------------------------------------------------------------
-
-C ${.arg}  {
-
--Its .comps.Element ele2 ${.arg}  
-
-C ${.arg}  }
-
-----------------------------------------------------------------
-Actor ele2x
-----------------------------------------------------------------
-
-Var a = $${.list2.${name} }
-
-C ${.arg}  "${name} ": = "${a}$"
-
 
 

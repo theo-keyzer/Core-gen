@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Actor arg
+Actor main
 ----------------------------------------------------------------
 
 C ${.Table.tb1.value}
 
-All Node base_node  
+All Node base_node . . .  
 
 
 ----------------------------------------------------------------
@@ -18,7 +18,7 @@ Out delay
 
 C {
 
-Its Node_parent x  
+Its Node_parent x . . .  
 
 C }
 
@@ -32,7 +32,7 @@ Out delay
 
 C ${.arg} {
 
-Its Node_parent x ${.arg}  
+Its Node_parent x . . . ${.arg}  
 
 C ${.arg} }
 
@@ -48,7 +48,7 @@ Out delay
 
 C ${.arg} {
 
-Its Node_parent x ${.arg}  
+Its Node_parent x . . . ${.arg}  
 
 C ${.arg} }
 

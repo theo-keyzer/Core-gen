@@ -1,5 +1,5 @@
 ----------------------------------------------------------------
-Actor arg
+Actor main
 ----------------------------------------------------------------
 
 Json add I id.json
@@ -20,7 +20,7 @@ Actor list2
 
 C ID: ${_id}  - ${parent}
 
-Its .list_act.* list3 ${parent}
+Its .list_act.* list3 . . . ${parent}
 Its children list4
 
 ----------------------------------------------------------------
@@ -35,7 +35,7 @@ Actor list4
 
 C       child ID:  ${*}
 
-Its .list_act.* list5 ${*}
+Its .list_act.* list5 . . . ${*}
 
 ----------------------------------------------------------------
 Actor list5 . _id = ${.arg}

@@ -2,10 +2,10 @@
 Actor main
 ----------------------------------------------------------------
 
-All Matrix mat_collect ${2}
+All Matrix mat_collect . . . ${2}
 All Group.M mat_all
 
-All Group.G graph_all ${2}
+All Group.G graph_all . . . ${2}
 
 Group pr M
 C
@@ -33,7 +33,7 @@ Actor mat_items
 
 C  ${value}
 
-All Graph graph_collect ${value}
+All Graph graph_collect . . . ${value}
 
 ---------------------------------------------------------------
 -Actor graph_collect Graph name = ${.arg}

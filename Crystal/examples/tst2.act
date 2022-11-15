@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Actor arg
+Actor main
 ----------------------------------------------------------------
 
 C xx ${.Table.tb2.Field.t2f1.Attr.t2f1a1.name}
 C yy ${.Table.tbx2.name}u
 
-All Table table_sel tb2
+All Table table_sel . . . tb2
 
 ----------------------------------------------------------------
 Actor table_sel Table
@@ -35,7 +35,7 @@ Cs ${.1., } ${parent.value} .${name}
 Actor join_sel Join
 ----------------------------------------------------------------
 
-Its table2.Field join_field_sel ${.+}
+Its table2.Field join_field_sel . . . ${.+}
 
 ----------------------------------------------------------------
 Actor join_field_sel Field use has grid

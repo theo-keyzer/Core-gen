@@ -1,5 +1,5 @@
 ----------------------------------------------------------------
-Actor arg
+Actor main
 ----------------------------------------------------------------
 
 Json add P per.json
@@ -41,8 +41,8 @@ Actor menuitem
 
 C Addr: ${onclick} 
 
-All Table all_table ${value}
-All Table.${value} all_table ${value}
+All Table all_table . . . ${value}
+All Table.${value} all_table . . . ${value}
 
 ----------------------------------------------------------------
 Actor all_table Table name = ${.arg}

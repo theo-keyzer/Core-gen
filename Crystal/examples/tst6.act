@@ -4,10 +4,10 @@ Actor main
 
 C ${1}  ${2}
 
-All Matrix mat_collect 1,2,3,4,5,6,7
--All Matrix mat_collect ${3}
+All Matrix mat_collect . . . 1,2,3,4,5,6,7
+-All Matrix mat_collect . . . ${3}
 Group remove 2 3
-All Group graph_all check
+All Group graph_all . . . check
 
 Group pr
 
@@ -16,8 +16,8 @@ Group pr
 Actor mat_collect Matrix search in ${.arg}
 ----------------------------------------------------------------
 
-All Graph graph_collect ${a} -${b}
-All Graph graph_collect ${b} -${c}
+All Graph graph_collect . . . ${a} -${b}
+All Graph graph_collect . . . ${b} -${c}
 
 ---------------------------------------------------------------
 Actor graph_collect Graph name = ${.arg}

@@ -1,5 +1,5 @@
 ----------------------------------------------------------------
-Actor arg
+Actor main
 ----------------------------------------------------------------
 
 All Node sort
@@ -40,7 +40,7 @@ Out delay
 
 C ${.arg}  {
 
-Its Link.to disp_col ${.arg}  
+Its Link.to disp_col . . . ${.arg}  
 
 C ${.arg}  }
 
