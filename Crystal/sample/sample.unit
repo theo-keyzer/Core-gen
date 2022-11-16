@@ -73,4 +73,21 @@ Comp Attr parent Type FindIn
 
 Ref table Type check
 
+----------------------------------------------------------------
+Comp Logic parent Type
+----------------------------------------------------------------
+* Rule logic code block
+* Dedicated code for this type. 
+* Its Logic BL - from type
+* Its Logic_attr BL - from attr
+* Actor BL . code = USER_DOC
+----------------------------------------------------------------
+
+	Element attr    F1 WORD      * Field name
+	Element op      C1 WORD      * (=)
+	Element code    C1 WORD      * Code block name
+
+Ref attr Attr .
+
+
 
