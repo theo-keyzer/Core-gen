@@ -4,23 +4,26 @@ Actor main
 
 C ${1}  ${2}
 
-All Matrix mat_collect . . . 1,2,3,4,5,6,7
--All Matrix mat_collect . . . ${3}
+Var check = true
+All Matrix mat_collect search in 1,2,3,4,5,6,7
+-All Matrix mat_collect search in ${3}
 Group remove 2 3
-All Group graph_all . . . check
+All Group graph_all
 
 Group pr
 
 
 ---------------------------------------------------------------
-Actor mat_collect Matrix search in ${.arg}
+Actor mat_collect Matrix
 ----------------------------------------------------------------
 
-All Graph graph_collect . . . ${a} -${b}
-All Graph graph_collect . . . ${b} -${c}
+Var ab = ${a} -${b}
+Var bc = ${b} -${c}
+All Graph graph_collect name = ${ab}
+All Graph graph_collect name = ${bc}
 
 ---------------------------------------------------------------
-Actor graph_collect Graph name = ${.arg}
+Actor graph_collect Graph
 ----------------------------------------------------------------
 
 -C Add: ${.mat_collect.search}  ${search}  ${name}u
@@ -53,11 +56,11 @@ Its value.split., aa
 Break
 
 -----------------------------------------------------------------
-Actor graph_all Kp .arg = check
+Actor graph_all Kp .main.check = true
 -Actor graph_all Kp
 ----------------------------------------------------------------
 
-C  no  ${pocket}  ${key}  ${value}  ${.arg} 
+C  no  ${pocket}  ${key}  ${value}
 
 ----------------------------------------------------------------
 Actor aa Kp

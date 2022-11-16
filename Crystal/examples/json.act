@@ -41,12 +41,13 @@ Actor menuitem
 
 C Addr: ${onclick} 
 
-All Table all_table . . . ${value}
+-All Table all_table . . . ${value}
 All Table.${value} all_table . . . ${value}
+All Table all_table name = ${value} ${value}
 
 ----------------------------------------------------------------
-Actor all_table Table name = ${.arg}
--Actor all_table Table
+-Actor all_table Table name = ${.arg}
+Actor all_table Table
 ----------------------------------------------------------------
 
 C Arg: ${.arg}  ${name} 

@@ -20,11 +20,13 @@ Actor list2
 
 C ID: ${_id}  - ${parent}
 
-Its .list_act.* list3 . . . ${parent}
+-Its .list_act.* list3 . . . ${parent}
+Its .list_act.* list3 _id = ${parent}
 Its children list4
 
 ----------------------------------------------------------------
-Actor list3 . _id = ${.arg}
+-Actor list3 . _id = ${.arg}
+Actor list3
 ----------------------------------------------------------------
 
 C   par ID:   ${_id}  - ${parent}
@@ -35,10 +37,12 @@ Actor list4
 
 C       child ID:  ${*}
 
-Its .list_act.* list5 . . . ${*}
+-Its .list_act.* list5 . . . ${*}
+Its .list_act.* list5 _id = ${*}
 
 ----------------------------------------------------------------
-Actor list5 . _id = ${.arg}
+-Actor list5 . _id = ${.arg}
+Actor list5
 ----------------------------------------------------------------
 
 C          info ID: ${_id}  - ${parent}
