@@ -34,7 +34,7 @@ The `All, Its` command calls `new_act` first that sets the next actor's counter 
 The loop calls the `go_act` function, that increments the counter on match.
 The `${.-}` is the counter value and `${.+}`, the counter +1.
 Also `${.0.string}` for first (if counter is 0) and `${.1.string}` for rest. The value is `string`
-The `Du` should inherit this value, but does not.
+The `Du` inherits this value.
  
 # Variable errors
 
@@ -104,6 +104,22 @@ The `&=` would be false if the previous one failed. The `|=` would be true if th
 The variable has a `?` option like `name? = tb1`. This would fail if `name` does not exist.
 No error is printed and the global errors flag is not updated - not seen as an error.
 
+# Actor calls
+
+The `All, Its and Du` commands, calls the `new_act` function to set up
+a new actor window on the stack. It passes the match data `(variable, eq, value)` and `arg` string.
+The value is evaluated from the current node instance.
+The `Du` command calls `go_act` with the current node instance, the others, the generated code that call `go_act`.
+The `go_act` function uses the new node instance. The match uses this instance
+and return if the match failed. Then it loops through all actors with its given name.
+Each of these actors, have there own match data and skips the ones that do not match.
+
+# Input files
+
+The input files are word based separated by tabs or spaces. The last column
+can be a variable string `(V1)`, that is the string to the end of the line.
+There is one whitespace between the previous word and it. Use a padding word
+before it to get all the columns alligned if needed.
 
 
 
