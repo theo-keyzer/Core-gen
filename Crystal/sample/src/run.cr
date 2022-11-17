@@ -6,6 +6,7 @@ class ActT
 	property ap_data : Array(KpData) = Array(KpData).new
 	property ap_where : Array(KpWhere) = Array(KpWhere).new
 	property ap_attr : Array(KpAttr) = Array(KpAttr).new
+	property ap_logic : Array(KpLogic) = Array(KpLogic).new
 	property ap_actor : Array(KpActor) = Array(KpActor).new
 	property ap_all : Array(KpAll) = Array(KpAll).new
 	property ap_du : Array(KpDu) = Array(KpDu).new
@@ -34,6 +35,12 @@ def refs(act)
 	end
 	act.ap_attr.each_with_index do |st,i|
 		r, st.k_tablep = fnd(act, "Type_" + st.names["table"] , st.names["table"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
+	end
+	act.ap_logic.each_with_index do |st,i|
+		r, st.k_attrp = fnd(act, st.parentp.to_s + "_Attr_" + st.names["attr"] , st.names["attr"],  ".", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -179,6 +186,31 @@ def do_all(glob, va, lno)
 		end
 		return(0)
 	end
+	if va[0] == "Logic" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Logic_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_logic[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_logic[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_logic.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
 	if va[0] == "Actor" 
 		if va.size > 1 && va[1] != ""
 			if en = glob.dats.index["Actor_" + va[1] ]?
@@ -241,6 +273,14 @@ def load(act, tok, ln, pos, lno)
 			errs = true
 		end
 		act.ap_attr << comp
+	end
+	if tok == "Logic"
+		comp = KpLogic.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_logic << comp
 	end
 	if tok == "Actor"
 		comp = KpActor.new

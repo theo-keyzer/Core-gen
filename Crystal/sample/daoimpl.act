@@ -1,0 +1,436 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All Type.${2} ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+C package pkg.impl;
+C
+C import java.sql.Types;
+C import java.util.List;
+C import java.util.Date;
+C import java.util.Calendar;
+C import java.text.SimpleDateFormat;
+
+
+C
+C
+C /**
+C  * Database access layer
+C  * 
+C  */
+C public class ${name}cDAOImpl extends DAOUtils implements ${name}cDAO
+C {
+C 	private static final long serialVersionUID = 1L;
+Cs 	private static final String CREATE =  "Insert into ${name}u (created_by, 
+
+Its Attr flds
+
+Cs ) values (?, 
+
+Its Attr args
+
+C )";
+
+Its Attr del
+Its Attr get
+Its Attr update
+
+C 	private static final String LIST = "Select * from ${name}u ";
+C 	private static final String VIEW = "Select * from ${name}u_VIEW  ";
+C 	private static final String SEARCH = "Select * from ${name}u_VIEW where ACTIVE_IND = 'Y' ";
+C 	private static final String DUP_CHECK = "Select * from ${name}u_VIEW where ACTIVE_IND = ACTIVE_IND ";
+C
+C 	public int create${name}c(${name}c ${name}l)
+C 	{
+C 		SimpleDateFormat sdf  = new SimpleDateFormat("yyyy/MM/dd");
+
+-Its Attr create_lob
+Its Attr create_date
+Its Attr.Logic_attr default
+
+C 		getJdbcTemplate().update(CREATE
+Cs 			, new Object[] {${name}l.getCreatedBy(), 
+
+Its Attr create
+
+C }
+Cs 			, new int[] {Types.INTEGER,
+
+Its Attr create_types
+
+C });
+C 		return(0);
+C 	}
+C
+C 	public List<${name}c> list${name}c()
+C 	{
+C 		return getJdbcTemplate().query(LIST, new ${name}cRowMapper());
+C 	}
+C
+C 	public List<${name}cView> dupCheck${name}c(${name}cView ${name}l, Long rowFrom, Long rowTo)
+C 	{
+C 		Long n;
+C 		String s;
+C 		String sql = DUP_CHECK;
+
+Its Attr where_dup
+
+C 		return getJdbcTemplate().query(sql, new ${name}cViewRowMapper());
+C 	}
+C
+C 	public List<${name}cView> search${name}c(${name}cView ${name}l, Long rowFrom, Long rowTo)
+C 	{
+C 		Long n;
+C 		String s;
+C 		String sql = SEARCH;
+
+Its Attr where
+Its Logic BL_order
+
+C 		return getJdbcTemplate().query(sql, new ${name}cViewRowMapper());
+C 	}
+C
+C 	public List<${name}cView> view${name}c(String filter, Long id, String flags)
+C 	{
+C 		String s = "ACTIVE_IND = 'Y'";
+C 		if(filter != null && filter.length() != 0) s = s + " and " + filter;
+C 		if(id != null && id != 0) s = " pk_id = '" + id + "' or ( " + s + " )";
+C 		return getJdbcTemplate().query(VIEW + " where " + s + " " + flags, new ${name}cViewRowMapper());
+C 	}
+C
+
+Its Attr func
+
+C 	
+C 	public static Date parseDate(String dateValue, SimpleDateFormat sdf) {
+C 		
+C 		Date newDate = null;
+C 		
+C 		if (dateValue != null) 
+C 		{
+C 			try 
+C 			{
+C 				newDate = sdf.parse(dateValue);
+C 			} 
+C 			catch (Exception pe) 
+C 			{
+C 			}
+C 		}
+C 		return newDate;
+C 	}
+C }
+
+----------------------------------------------------------------
+Actor default . code = Y
+----------------------------------------------------------------
+
+C 		if( ${parent.name}l.get${attr}c() == null || ${attr}l.get${attr}c().equals("") ) ${parent.name}l.set${attr}c( "Y" );
+
+----------------------------------------------------------------
+Actor default . code = N
+----------------------------------------------------------------
+
+C 		if( ${parent.name}l.get${attr}c() == null || ${attr}l.get${attr}c().equals("") ) ${parent.name}l.set${attr}c( "N" );
+
+----------------------------------------------------------------
+Actor BL_order . code = ORDER
+----------------------------------------------------------------
+
+Cs 		sql = sql + " order by ACTIVE_STATUS
+
+Its parent.Attr.Logic_attr order_BL
+
+C ";
+
+----------------------------------------------------------------
+Actor order_BL . code = ORDER_BY
+----------------------------------------------------------------
+
+Cs , ${attr}u
+
+----------------------------------------------------------------
+Actor where_dup . relation = pk
+----------------------------------------------------------------
+
+C 		n = ${parent.name}l.get${name}c();
+C 		if(n != null && (n != 0) ) sql = sql + "and ${name}u != '" + n + "' ";
+
+- update check duplicated
+
+----------------------------------------------------------------
+Actor where_dup . relation = dropdown
+----------------------------------------------------------------
+
+C 		n = ${parent.name}l.get${name}c();
+C 		if(n != null && (n != 0) ) sql = sql + "and ${name}u = '" + n + "' ";
+
+----------------------------------------------------------------
+Actor where_dup . relation = select
+----------------------------------------------------------------
+
+C 		s = ${parent.name}l.get${name}c();
+C 		if(s != null && (!s.equals(""))  ) sql = sql + "and ${name}u = '" + s + "' ";
+
+----------------------------------------------------------------
+Actor where_dup . relation = lookup
+----------------------------------------------------------------
+
+C 		s = ${parent.name}l.get${table.name}c();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${table.name}u ${Where_name.op}  '" + s + "' ";
+C 		s = ${parent.name}l.get${name}c();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${name}u ${Where_name.op}  '" + s + "' ";
+
+----------------------------------------------------------------
+Actor where_dup . relation = view
+----------------------------------------------------------------
+
+
+----------------------------------------------------------------
+Actor where_dup . relation = viewed
+----------------------------------------------------------------
+
+
+----------------------------------------------------------------
+Actor where_dup . relation in none,name,.
+----------------------------------------------------------------
+
+Du where_none_dup mytype = VARCHAR2
+
+Actor where_none_dup
+
+C 		s = ${parent.name}l.get${name}c();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and UPPER(${name}u) = UPPER('" + s + "') ";
+
+----------------------------------------------------------------
+Actor where . relation = pk
+----------------------------------------------------------------
+
+C 		n = ${parent.name}l.get${name}c();
+C 		if(n != null && (n != 0) ) sql = sql + "and ${name}u = '" + n + "' ";
+
+----------------------------------------------------------------
+Actor where . relation = dropdown
+----------------------------------------------------------------
+
+C 		n = ${parent.name}l.get${name}c();
+C 		if(n != null && (n != 0) ) sql = sql + "and ${name}u = '" + n + "' ";
+
+----------------------------------------------------------------
+Actor where . relation = select
+----------------------------------------------------------------
+
+C 		s = ${parent.name}l.get${name}c();
+C 		if(s != null && (!s.equals(""))  ) sql = sql + "and ${name}u = '" + s + "' ";
+
+----------------------------------------------------------------
+Actor where . relation = lookup
+----------------------------------------------------------------
+
+C 		s = ${parent.name}l.get${table.name}c();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${table.name}u ${Where_name.op}  '" + s + "' ";
+C 		s = ${parent.name}l.get${name}c();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${name}u ${Where_name.op}  '" + s + "' ";
+
+----------------------------------------------------------------
+Actor where . relation = view
+----------------------------------------------------------------
+
+C 		s = ${parent.name}l.get${name}c();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and UPPER(${name}u) like UPPER('" + s + "%') ";
+
+-C 		if(s != null && (!s.equals("")) ) sql = sql + "and UPPER(${name}u) ${Where_name.op}  UPPER('" + s + "') ";
+
+----------------------------------------------------------------
+Actor where . relation = viewed
+----------------------------------------------------------------
+
+C 		n = ${parent.name}l.get${name}c();
+C 		if(n != null && (n != 0) ) sql = sql + "and ${name}u = '" + n + "' ";
+
+----------------------------------------------------------------
+Actor where . relation in none,name,.
+----------------------------------------------------------------
+
+Du where_none mytype = VARCHAR2
+
+Actor where_none
+
+C 		s = ${parent.name}l.get${name}c();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and UPPER(${name}u) = UPPER('" + s + "') ";
+
+----------------------------------------------------------------
+Actor where . relation = where
+----------------------------------------------------------------
+
+Du where_where
+
+-Its Logic_attr BL
+
+-C 		s = ${parent.name}l.get${name}c();
+-C //		if(s != null && (!s.equals("")) ) sql = sql + "and ${Where_name.value}u ${Where_name.op}  '" + s + "' ";
+
+Actor where_where . mytype = VARCHAR2
+C 		s = ${parent.name}l.get${name}c();
+
+Actor where_where . mytype = DATE
+C 		s = ${parent.name}l.get${name}cFld();
+
+Actor where_where . mytype = NUMBER
+C 		n = ${parent.name}l.get${name}c();
+
+
+----------------------------------------------------------------
+Actor name . relation = name
+----------------------------------------------------------------
+
+C s, String ${name}l
+
+----------------------------------------------------------------
+Actor func . relation = pk
+----------------------------------------------------------------
+
+Cs 	public ${parent.name}c read${parent.name}c(
+
+Du var    mytype = VARCHAR2
+Du number mytype = NUMBER
+
+C ${name}l)
+C 	{
+C 		List<${parent.name}c> list =  getJdbcTemplate().query(READ, new Object[]{${name}l}, new ${name}cRowMapper());
+C 		if(list != null && list.size() > 0)
+C 		{
+C 			return list.get(0);
+C 		}
+C 		return null;
+C 	}
+C
+C 	public int update${parent.name}c(${parent.name}c ${parent.name}l)
+C 	{
+C 		SimpleDateFormat sdf  = new SimpleDateFormat("yyyy/MM/dd");
+
+Its parent.Attr create_date
+Its parent.Attr.Logic_attr default
+
+C 		Long newUpdateCnt = ${parent.name}l.getUpdateCnt() + 1;
+Cs 		return( getJdbcTemplate().update(UPDATE, new Object[]{ new Date(), ${parent.name}l.getModifiedBy(), newUpdateCnt
+
+Its parent.Attr upd2
+
+C , ${parent.name}l.get${name}c(), ${parent.name}l.getUpdateCnt()}));
+C 	}
+C
+C 	public int delete${parent.name}c(${parent.name}c ${parent.name}l)
+C 	{
+C 		Long newUpdateCnt = ${parent.name}l.getUpdateCnt() + 1;
+C 		return( getJdbcTemplate().update(DELETE, new Object[] { new Date(), ${parent.name}l.getModifiedBy(), newUpdateCnt, ${parent.name}l.get${name}c(), ${parent.name}l.getUpdateCnt()}));
+C 	}
+
+Actor var
+Cs String 
+Actor number
+Cs Long 
+
+----------------------------------------------------------------
+Actor create_date . mytype = DATE
+----------------------------------------------------------------
+
+C 		${parent.name}l.set${name}c( parseDate( ${parent.name}l.get${name}cFld(), sdf ) );
+
+----------------------------------------------------------------
+Actor create . mytype != BLOB
+----------------------------------------------------------------
+
+Cs ${.1.,} ${parent.name}l.get${name}c()
+
+----------------------------------------------------------------
+Actor create_types . mytype = BLOB
+----------------------------------------------------------------
+
+Cs ${.1.,} Types.BLOB
+
+----------------------------------------------------------------
+Actor create_types . mytype = VARCHAR2
+----------------------------------------------------------------
+
+Cs ${.1.,} Types.VARCHAR
+
+----------------------------------------------------------------
+Actor create_types . mytype = TEXT
+----------------------------------------------------------------
+
+Cs ${.1.,} Types.VARCHAR
+
+----------------------------------------------------------------
+Actor create_types . mytype = CHAR
+----------------------------------------------------------------
+
+Cs ${.1.,} Types.VARCHAR
+
+----------------------------------------------------------------
+Actor create_types . mytype = DATE
+----------------------------------------------------------------
+
+Cs ${.1.,} Types.DATE
+
+----------------------------------------------------------------
+Actor create_types . mytype = NUMBER
+----------------------------------------------------------------
+
+Cs ${.1.,} Types.INTEGER
+
+----------------------------------------------------------------
+Actor create_types . mytype = FLOAT
+----------------------------------------------------------------
+
+Cs ${.1.,} Types.FLOAT
+
+----------------------------------------------------------------
+Actor del . relation = pk
+----------------------------------------------------------------
+
+C 	private static final String DELETE = "Update ${name}u set ACTIVE_IND = 'N', DATE_MODIFIED = ?, MODIFIED_BY = ?, UPDATE_CNT = ? where ${name} = ? and UPDATE_CNT = ?";
+
+----------------------------------------------------------------
+Actor get . relation = pk
+----------------------------------------------------------------
+
+C 	private static final String READ = "Select * from ${name}u where ${name} = ?";
+
+----------------------------------------------------------------
+Actor update . relation = pk
+----------------------------------------------------------------
+
+Cs 	private static final String UPDATE = "Update ${name}u set ACTIVE_IND = 'Y', DATE_MODIFIED = ?, MODIFIED_BY = ?, UPDATE_CNT = ?
+
+Its parent.Attr upd
+
+C  where ${name} = ? and UPDATE_CNT = ?";
+
+----------------------------------------------------------------
+Actor upd . mytype != BLOB
+----------------------------------------------------------------
+
+Cs , ${name} = ?
+
+----------------------------------------------------------------
+Actor upd2 . mytype != BLOB
+----------------------------------------------------------------
+
+Cs , ${parent.name}l.get${name}c()
+
+----------------------------------------------------------------
+Actor flds .
+----------------------------------------------------------------
+
+Cs ${.1.,} ${name}
+
+----------------------------------------------------------------
+Actor args .
+----------------------------------------------------------------
+
+Cs ${.1.,} ?
+
