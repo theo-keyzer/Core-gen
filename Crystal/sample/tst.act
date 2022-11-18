@@ -1,0 +1,18 @@
+---------------------------------
+Actor main .
+---------------------------------
+
+All Type.User tbls
+
+---------------------------------
+Actor tbls .
+---------------------------------
+
+Its Attr attr
+
+---------------------------------
+Actor attr . relation in dropdown,lookup,view
+---------------------------------
+
+C ${name}  ${Where_name.from_id}  ${Where_name.from_id.desc}  ${Where_name.from_id.parent.name}
+

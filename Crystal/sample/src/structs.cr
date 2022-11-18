@@ -20,8 +20,8 @@ end
 
 class KpType < Kp 
 	property itsdata : Array(KpData) = Array(KpData).new
-	property itswhere : Array(KpWhere) = Array(KpWhere).new
 	property itsattr : Array(KpAttr) = Array(KpAttr).new
+	property itswhere : Array(KpWhere) = Array(KpWhere).new
 	property itslogic : Array(KpLogic) = Array(KpLogic).new
 	property childs : Array(Kp) = Array(Kp).new
 
@@ -37,14 +37,14 @@ class KpType < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "Attr_table" && va.size > 1 # sample.unit:74, c_struct.act:462
+		if va[0] == "Attr_table" && va.size > 1 # sample.unit:58, c_struct.act:523
 			glob.dats.ap_attr.each do |st|
 				if st.k_tablep == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Attr"  && va.size > 2 # sample.unit:67, c_struct.act:274
+		if va[0] == "Attr"  && va.size > 2 # sample.unit:51, c_struct.act:285
 			if en = glob.dats.index[me.to_s + "_Attr_" + va[1] ]?
 				return (glob.dats.ap_attr[en].get_var(glob, va[2..], lno))
 			end
@@ -60,7 +60,7 @@ class KpType < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "Data" # sample.unit:13, c_struct.act:441
+		if va[0] == "Data" # sample.unit:13, c_struct.act:502
 			itsdata.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -76,23 +76,7 @@ class KpType < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Where" # sample.unit:24, c_struct.act:441
-			itswhere.each do |st|
-				if va.size > 1
-					ret = st.do_its(glob, va[1..], lno)
-					if ret != 0
-						return(ret)
-					end
-					next
-				end
-				ret = go_act(glob, st)
-				if ret != 0
-					return(ret)
-				end
-			end
-			return(0)
-		end
-		if va[0] == "Attr" # sample.unit:40, c_struct.act:441
+		if va[0] == "Attr" # sample.unit:24, c_struct.act:502
 			itsattr.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -108,7 +92,23 @@ class KpType < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Logic" # sample.unit:77, c_struct.act:441
+		if va[0] == "Where" # sample.unit:61, c_struct.act:502
+			itswhere.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
+				ret = go_act(glob, st)
+				if ret != 0
+					return(ret)
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Logic" # sample.unit:79, c_struct.act:502
 			itslogic.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -124,7 +124,7 @@ class KpType < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Attr_table" # sample.unit:74, c_struct.act:340
+		if va[0] == "Attr_table" # sample.unit:58, c_struct.act:366
 			glob.dats.ap_attr.each do |st|
 				if st.k_tablep == me
 					if va.size > 1
@@ -142,7 +142,7 @@ class KpType < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # sample.unit:13, c_struct.act:153
+		if va[0] == "Child" # sample.unit:2, c_struct.act:146
 			childs.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -159,6 +159,7 @@ class KpType < Kp
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for Type," + line_no + "," + lno + "?");
+		glob.run_errs = true
 		return(0)
 	end
 end
@@ -185,7 +186,7 @@ class KpData < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "parent" # sample.unit:2, c_struct.act:330
+		if va[0] == "parent" # sample.unit:2, c_struct.act:356
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_type[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -200,7 +201,7 @@ class KpData < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # sample.unit:2, c_struct.act:315
+		if va[0] == "parent" # sample.unit:2, c_struct.act:341
 			if parentp >= 0
 				st = glob.dats.ap_type[ parentp ]
 				if va.size > 1
@@ -208,80 +209,13 @@ class KpData < Kp
 				end
 				return( go_act(glob, st) )
 			end
+			return(0)
+		end
+		if va[0] == "Child" # sample.unit:13, c_struct.act:146
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for Data," + line_no + "," + lno + "?");
-		return(0)
-	end
-end
-
-class KpWhere < Kp 
-	property parentp : Int32 = -1
-	property k_namep : Int32 = -1
-
-	def load(act, ln, pos, lno)
-		p = pos
-		@comp = "Where"
-		@line_no = lno
-		@me = act.ap_where.size
-		p, @names["name"] = getw(ln, p)
-		p, @names["from_id"] = getw(ln, p)
-		p, @names["eq"] = getw(ln, p)
-		p, @names["id"] = getw(ln, p)
-		p, @names["op"] = getw(ln, p)
-		p, @names["value"] = getws(ln, p)
-		@parentp = act.ap_type.size-1;
-		if @parentp < 0  
-			puts lno + " Where has no Type parent" 
-			return false
-		end
-		act.ap_type[ @parentp ].itswhere << self
-		act.ap_type[ @parentp ].childs << self
-		return true
-	end
-
-	def get_var(glob, va, lno)
-		if va[0] == "name" # sample.unit:37, c_struct.act:386
-			if k_namep >= 0 && va.size > 1
-				return( glob.dats.ap_attr[ k_namep ].get_var(glob, va[1..], lno) )
-			end
-		end
-		if va[0] == "parent" # sample.unit:2, c_struct.act:330
-			if parentp >= 0 && va.size > 1
-				return( glob.dats.ap_type[ parentp ].get_var(glob, va[1..],lno) )
-			end
-		end
-		if v = names[ va[0] ]?
-			return(true, v )
-		end
-		if va[0] == "comp"
-			return(true, comp )
-		end
-		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Where?");
-	end
-
-	def do_its(glob, va, lno)
-		if va[0] == "parent" # sample.unit:2, c_struct.act:315
-			if parentp >= 0
-				st = glob.dats.ap_type[ parentp ]
-				if va.size > 1
-					return( st.do_its(glob, va[1..], lno) )
-				end
-				return( go_act(glob, st) )
-			end
-			return(0)
-		end
-		if va[0] == "name"
-			if k_namep >= 0
-				st = glob.dats.ap_attr[ k_namep ]
-				if va.size > 1
-					return( st.do_its(glob, va[1..], lno) )
-				end
-				return( go_act(glob, st) )
-			end
-			return(0)
-		end
-		puts("?No its " + va[0] + " cmd for Where," + line_no + "," + lno + "?");
+		glob.run_errs = true
 		return(0)
 	end
 end
@@ -316,26 +250,40 @@ class KpAttr < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "table" # sample.unit:74, c_struct.act:386
+		if va[0] == "table" # sample.unit:58, c_struct.act:435
 			if k_tablep >= 0 && va.size > 1
 				return( glob.dats.ap_type[ k_tablep ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # sample.unit:2, c_struct.act:330
+		if va[0] == "parent" # sample.unit:2, c_struct.act:356
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_type[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "Where_name" && va.size > 1 # sample.unit:37, c_struct.act:462
+		if va[0] == "Where_name" && va.size > 1 # sample.unit:74, c_struct.act:523
 			glob.dats.ap_where.each do |st|
 				if st.k_namep == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Logic_attr" && va.size > 1 # sample.unit:90, c_struct.act:462
+		if va[0] == "Where_id" && va.size > 1 # sample.unit:75, c_struct.act:523
+			glob.dats.ap_where.each do |st|
+				if st.k_idp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Logic_attr" && va.size > 1 # sample.unit:92, c_struct.act:523
 			glob.dats.ap_logic.each do |st|
 				if st.k_attrp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Where_from_id" && va.size > 1 # sample.unit:76, c_struct.act:547
+			glob.dats.ap_where.each do |st|
+				if st.k_from_idp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
@@ -350,7 +298,7 @@ class KpAttr < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # sample.unit:2, c_struct.act:315
+		if va[0] == "parent" # sample.unit:2, c_struct.act:341
 			if parentp >= 0
 				st = glob.dats.ap_type[ parentp ]
 				if va.size > 1
@@ -370,7 +318,7 @@ class KpAttr < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Where_name" # sample.unit:37, c_struct.act:340
+		if va[0] == "Where_name" # sample.unit:74, c_struct.act:366
 			glob.dats.ap_where.each do |st|
 				if st.k_namep == me
 					if va.size > 1
@@ -388,7 +336,25 @@ class KpAttr < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Logic_attr" # sample.unit:90, c_struct.act:340
+		if va[0] == "Where_id" # sample.unit:75, c_struct.act:366
+			glob.dats.ap_where.each do |st|
+				if st.k_idp == me
+					if va.size > 1
+						ret = st.do_its(glob, va[1..], lno)
+						if ret != 0
+							return(ret)
+						end
+						next
+					end
+					ret = go_act(glob, st)
+					if ret != 0
+						return(ret)
+					end
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Logic_attr" # sample.unit:92, c_struct.act:366
 			glob.dats.ap_logic.each do |st|
 				if st.k_attrp == me
 					if va.size > 1
@@ -406,7 +372,136 @@ class KpAttr < Kp
 			end
 			return(0)
 		end
+		if va[0] == "Where_from_id" # sample.unit:76, c_struct.act:412
+			glob.dats.ap_where.each do |st|
+				if st.k_from_idp == me
+					if va.size > 1
+						ret = st.do_its(glob, va[1..], lno)
+						if ret != 0
+							return(ret)
+						end
+						next
+					end
+					ret = go_act(glob, st)
+					if ret != 0
+						return(ret)
+					end
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Child" # sample.unit:24, c_struct.act:146
+			return(0)
+		end
 		puts("?No its " + va[0] + " cmd for Attr," + line_no + "," + lno + "?");
+		glob.run_errs = true
+		return(0)
+	end
+end
+
+class KpWhere < Kp 
+	property parentp : Int32 = -1
+	property k_namep : Int32 = -1
+	property k_from_idp : Int32 = -1
+	property k_idp : Int32 = -1
+
+	def load(act, ln, pos, lno)
+		p = pos
+		@comp = "Where"
+		@line_no = lno
+		@me = act.ap_where.size
+		p, @names["name"] = getw(ln, p)
+		p, @names["from_id"] = getw(ln, p)
+		p, @names["eq"] = getw(ln, p)
+		p, @names["id"] = getw(ln, p)
+		p, @names["op"] = getw(ln, p)
+		p, @names["value"] = getws(ln, p)
+		@parentp = act.ap_type.size-1;
+		if @parentp < 0  
+			puts lno + " Where has no Type parent" 
+			return false
+		end
+		act.ap_type[ @parentp ].itswhere << self
+		act.ap_type[ @parentp ].childs << self
+		return true
+	end
+
+	def get_var(glob, va, lno)
+		if va[0] == "name" # sample.unit:74, c_struct.act:435
+			if k_namep >= 0 && va.size > 1
+				return( glob.dats.ap_attr[ k_namep ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "id" # sample.unit:75, c_struct.act:435
+			if k_idp >= 0 && va.size > 1
+				return( glob.dats.ap_attr[ k_idp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "from_id" # sample.unit:76, c_struct.act:455
+			if k_from_idp >= 0 && va.size > 1
+				return( glob.dats.ap_attr[ k_from_idp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "parent" # sample.unit:2, c_struct.act:356
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_type[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if v = names[ va[0] ]?
+			return(true, v )
+		end
+		if va[0] == "comp"
+			return(true, comp )
+		end
+		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Where?");
+	end
+
+	def do_its(glob, va, lno)
+		if va[0] == "parent" # sample.unit:2, c_struct.act:341
+			if parentp >= 0
+				st = glob.dats.ap_type[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+			return(0)
+		end
+		if va[0] == "name"
+			if k_namep >= 0
+				st = glob.dats.ap_attr[ k_namep ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+			return(0)
+		end
+		if va[0] == "id"
+			if k_idp >= 0
+				st = glob.dats.ap_attr[ k_idp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+			return(0)
+		end
+		if va[0] == "from_id"
+			if k_from_idp >= 0
+				st = glob.dats.ap_attr[ k_from_idp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+			return(0)
+		end
+		if va[0] == "Child" # sample.unit:61, c_struct.act:146
+			return(0)
+		end
+		puts("?No its " + va[0] + " cmd for Where," + line_no + "," + lno + "?");
+		glob.run_errs = true
 		return(0)
 	end
 end
@@ -434,12 +529,12 @@ class KpLogic < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "attr" # sample.unit:90, c_struct.act:386
+		if va[0] == "attr" # sample.unit:92, c_struct.act:435
 			if k_attrp >= 0 && va.size > 1
 				return( glob.dats.ap_attr[ k_attrp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # sample.unit:2, c_struct.act:330
+		if va[0] == "parent" # sample.unit:2, c_struct.act:356
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_type[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -454,7 +549,7 @@ class KpLogic < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # sample.unit:2, c_struct.act:315
+		if va[0] == "parent" # sample.unit:2, c_struct.act:341
 			if parentp >= 0
 				st = glob.dats.ap_type[ parentp ]
 				if va.size > 1
@@ -474,7 +569,11 @@ class KpLogic < Kp
 			end
 			return(0)
 		end
+		if va[0] == "Child" # sample.unit:79, c_struct.act:146
+			return(0)
+		end
 		puts("?No its " + va[0] + " cmd for Logic," + line_no + "," + lno + "?");
+		glob.run_errs = true
 		return(0)
 	end
 end

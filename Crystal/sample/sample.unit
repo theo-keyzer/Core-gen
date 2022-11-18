@@ -21,22 +21,6 @@ Comp Data parent Type
 	Element value   V1 WORD      * Data value
 
 ----------------------------------------------------------------
-Comp Where parent Type
-----------------------------------------------------------------
-* View select data (V)
-* View where clauses (V,W)
-----------------------------------------------------------------
-
-	Element name     F1 WORD      * Field name
-	Element from_id  C1 WORD      * From id
-	Element eq       C1 WORD      * =
-	Element id       C1 WORD      * id
-	Element op       C1 WORD      * (=, >, like)
-	Element value    V1 WORD      * Select value
-
-Ref name Attr check
-
-----------------------------------------------------------------
 Comp Attr parent Type FindIn
 ----------------------------------------------------------------
 * Database colomns names.
@@ -72,6 +56,24 @@ Comp Attr parent Type FindIn
 	Element desc     V1 WORD             * Documentation.
 
 Ref table Type check
+
+----------------------------------------------------------------
+Comp Where parent Type
+----------------------------------------------------------------
+* View select data (V)
+* View where clauses (V,W)
+----------------------------------------------------------------
+
+	Element name     F1 WORD      * Field name
+	Element from_id  M1 WORD      * From id
+	Element eq       C1 WORD      * =
+	Element id       F1 WORD      * id
+	Element op       C1 WORD      * (=, >, like)
+	Element value    V1 WORD      * Select value
+
+Ref     name Attr check
+Ref       id Attr check
+Ref3 from_id Attr name table check
 
 ----------------------------------------------------------------
 Comp Logic parent Type

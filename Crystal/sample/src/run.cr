@@ -4,8 +4,8 @@ class ActT
 	property index : Hash(String, Int32) = Hash(String, Int32).new
 	property ap_type : Array(KpType) = Array(KpType).new
 	property ap_data : Array(KpData) = Array(KpData).new
-	property ap_where : Array(KpWhere) = Array(KpWhere).new
 	property ap_attr : Array(KpAttr) = Array(KpAttr).new
+	property ap_where : Array(KpWhere) = Array(KpWhere).new
 	property ap_logic : Array(KpLogic) = Array(KpLogic).new
 	property ap_actor : Array(KpActor) = Array(KpActor).new
 	property ap_all : Array(KpAll) = Array(KpAll).new
@@ -27,14 +27,35 @@ end
 
 def refs(act)
 	errs = false
+	act.ap_attr.each_with_index do |st,i|
+		r, st.k_tablep = fnd(act, "Type_" + st.names["table"] , st.names["table"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
+	end
 	act.ap_where.each_with_index do |st,i|
 		r, st.k_namep = fnd(act, st.parentp.to_s + "_Attr_" + st.names["name"] , st.names["name"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
-	end
-	act.ap_attr.each_with_index do |st,i|
-		r, st.k_tablep = fnd(act, "Type_" + st.names["table"] , st.names["table"],  ".", st.line_no )
+		r, ap = fnd(act, st.parentp.to_s + "_Attr_" + st.names["name"] , st.names["name"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+		tp = -1
+		if ap >= 0
+			tp = act.ap_attr[ap].k_tablep
+		end
+		if tp >= 0
+			r, st.k_from_idp = fnd(act, tp.to_s + "_Attr_" + st.names["from_id"] , st.names["from_id"],  "check", st.line_no )
+			if r == false
+				errs = true
+			end
+		else
+			puts "ref error " + st.line_no
+			errs = true
+		end
+		r, st.k_idp = fnd(act, st.parentp.to_s + "_Attr_" + st.names["id"] , st.names["id"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -70,13 +91,13 @@ def var_all(glob, va, lno)
 	if va.size < 3
 		return(false, "?" + va.size.to_s + "<3?" + lno + "?")
 	end
-	if va[0] == "Type" # sample.unit:2, c_run.act:137
+	if va[0] == "Type" # sample.unit:2, c_run.act:159
 		if en = glob.dats.index["Type_" + va[1] ]?
 			return (glob.dats.ap_type[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Actor" # act.unit:2, c_run.act:137
+	if va[0] == "Actor" # act.unit:2, c_run.act:159
 		if en = glob.dats.index["Actor_" + va[1] ]?
 			return (glob.dats.ap_actor[en].get_var(glob, va[2..], lno))
 		end
@@ -136,17 +157,17 @@ def do_all(glob, va, lno)
 		end
 		return(0)
 	end
-	if va[0] == "Where" 
+	if va[0] == "Attr" 
 		if va.size > 1 && va[1] != ""
-			if en = glob.dats.index["Where_" + va[1] ]?
+			if en = glob.dats.index["Attr_" + va[1] ]?
 				if va.size > 2
-					return( glob.dats.ap_where[en].do_its(glob, va[2..], lno) )
+					return( glob.dats.ap_attr[en].do_its(glob, va[2..], lno) )
 				end
-				return( go_act(glob, glob.dats.ap_where[en]) )
+				return( go_act(glob, glob.dats.ap_attr[en]) )
 			end
 			return(0)
 		end
-		glob.dats.ap_where.each do |st|
+		glob.dats.ap_attr.each do |st|
 			if va.size > 2
 				ret = st.do_its(glob, va[2..], lno)
 				if ret != 0
@@ -161,17 +182,17 @@ def do_all(glob, va, lno)
 		end
 		return(0)
 	end
-	if va[0] == "Attr" 
+	if va[0] == "Where" 
 		if va.size > 1 && va[1] != ""
-			if en = glob.dats.index["Attr_" + va[1] ]?
+			if en = glob.dats.index["Where_" + va[1] ]?
 				if va.size > 2
-					return( glob.dats.ap_attr[en].do_its(glob, va[2..], lno) )
+					return( glob.dats.ap_where[en].do_its(glob, va[2..], lno) )
 				end
-				return( go_act(glob, glob.dats.ap_attr[en]) )
+				return( go_act(glob, glob.dats.ap_where[en]) )
 			end
 			return(0)
 		end
-		glob.dats.ap_attr.each do |st|
+		glob.dats.ap_where.each do |st|
 			if va.size > 2
 				ret = st.do_its(glob, va[2..], lno)
 				if ret != 0
@@ -258,14 +279,6 @@ def load(act, tok, ln, pos, lno)
 		end
 		act.ap_data << comp
 	end
-	if tok == "Where"
-		comp = KpWhere.new
-		r = comp.load(act, ln, pos, lno)
-		if r == false
-			errs = true
-		end
-		act.ap_where << comp
-	end
 	if tok == "Attr"
 		comp = KpAttr.new
 		r = comp.load(act, ln, pos, lno)
@@ -273,6 +286,14 @@ def load(act, tok, ln, pos, lno)
 			errs = true
 		end
 		act.ap_attr << comp
+	end
+	if tok == "Where"
+		comp = KpWhere.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_where << comp
 	end
 	if tok == "Logic"
 		comp = KpLogic.new
