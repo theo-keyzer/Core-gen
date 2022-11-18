@@ -113,7 +113,29 @@ C 			errs = true
 C 		end
 
 ----------------------------------------------------------------
-Actor refs_ele . mw = F1
+Actor refs_ele . mw = M1
+----------------------------------------------------------------
+
+C 		r, ap = fnd(act, st.parentp.to_s + "_${Ref3_element.comp.name}c_" + st.names["${Ref3_element.element2.name}l"] , st.names["${Ref3_element.element2.name}l"],  "${Ref3_element.opt} ", st.line_no )
+C 		if r == false
+C 			errs = true
+C 		end
+C 		tp = -1
+C 		if ap >= 0
+C 			tp = act.ap_${Ref3_element.comp.name}l[ap].k_${Ref3_element.attr.name}lp
+C 		end
+C 		if tp >= 0
+C 			r, st.k_${name}lp = fnd(act, tp.to_s + "_${Ref3_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref3_element.opt} ", st.line_no )
+C 			if r == false
+C 				errs = true
+C 			end
+C 		else
+C 			puts "ref error " + st.line_no
+C 			errs = true
+C 		end
+
+----------------------------------------------------------------
+Actor refs_ele . mw in F1
 ----------------------------------------------------------------
 
 C 		r, st.k_${name}lp = fnd(act, st.parentp.to_s + "_${Ref_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref_element.opt} ", st.line_no )
