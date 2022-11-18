@@ -40,7 +40,7 @@ Actor ele Element mw = V1
 Its Ref_element ref_ele_v
 
 -----------
-Actor ele Element mw in C1,V1,R1,L1,F1
+Actor ele Element mw in C1,V1,R1,L1,F1,M1
 -----------
 
 Break
@@ -49,7 +49,7 @@ Break
 Actor ele
 -----------
 
-C Element ${name}  , mw not in C1,V1,R1,L1,F1   ${} 
+C Element ${name}  , mw not in C1,V1,R1,L1,F1,M1   ${} 
 
 -----------
 Actor ref_ele_in Ref comp.find = FindIn

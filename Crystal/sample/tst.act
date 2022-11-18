@@ -11,8 +11,24 @@ Actor tbls .
 Its Attr attr
 
 ---------------------------------
-Actor attr . relation in dropdown,lookup,view
+Actor attr Attr relation in dropdown,lookup,view
 ---------------------------------
 
 C ${name}  ${Where_name.from_id}  ${Where_name.from_id.desc}  ${Where_name.from_id.parent.name}
+
+Its Where_name.from_id attr_from
+
+---------------------------------
+Actor attr_from Attr
+---------------------------------
+
+C  From : ${name}    ${desc}  ${parent.name}
+
+Its Where_from_id.name attr_from_where
+
+---------------------------------
+Actor attr_from_where Attr
+---------------------------------
+
+C   From where : ${name}    ${desc}  ${parent.name}
 
