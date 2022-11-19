@@ -180,9 +180,9 @@ Actor where_dup . relation = lookup
 ----------------------------------------------------------------
 
 C 		s = ${parent.name}l.get${table.name}c();
-C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${table.name}u ${Where_name.op}  '" + s + "' ";
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${table.name}u ${Where_attr.op}  '" + s + "' ";
 C 		s = ${parent.name}l.get${name}c();
-C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${name}u ${Where_name.op}  '" + s + "' ";
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${name}u ${Where_attr.op}  '" + s + "' ";
 
 ----------------------------------------------------------------
 Actor where_dup . relation = view
@@ -231,9 +231,9 @@ Actor where . relation = lookup
 ----------------------------------------------------------------
 
 C 		s = ${parent.name}l.get${table.name}c();
-C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${table.name}u ${Where_name.op}  '" + s + "' ";
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${table.name}u ${Where_attr.op}  '" + s + "' ";
 C 		s = ${parent.name}l.get${name}c();
-C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${name}u ${Where_name.op}  '" + s + "' ";
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and ${name}u ${Where_attr.op}  '" + s + "' ";
 
 ----------------------------------------------------------------
 Actor where . relation = view
@@ -242,7 +242,7 @@ Actor where . relation = view
 C 		s = ${parent.name}l.get${name}c();
 C 		if(s != null && (!s.equals("")) ) sql = sql + "and UPPER(${name}u) like UPPER('" + s + "%') ";
 
--C 		if(s != null && (!s.equals("")) ) sql = sql + "and UPPER(${name}u) ${Where_name.op}  UPPER('" + s + "') ";
+-C 		if(s != null && (!s.equals("")) ) sql = sql + "and UPPER(${name}u) ${Where_attr.op}  UPPER('" + s + "') ";
 
 ----------------------------------------------------------------
 Actor where . relation = viewed
@@ -271,7 +271,7 @@ Du where_where
 -Its Logic_attr BL
 
 -C 		s = ${parent.name}l.get${name}c();
--C //		if(s != null && (!s.equals("")) ) sql = sql + "and ${Where_name.value}u ${Where_name.op}  '" + s + "' ";
+-C //		if(s != null && (!s.equals("")) ) sql = sql + "and ${Where_attr.value}u ${Where_attr.op}  '" + s + "' ";
 
 Actor where_where . mytype = VARCHAR2
 C 		s = ${parent.name}l.get${name}c();
