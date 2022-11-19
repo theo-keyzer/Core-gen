@@ -154,7 +154,7 @@ C 				<td>
 C 					<form:select cssClass="portlet-form-input-field" path="${parent.name}l.${name}l" multiple="false" style="width: 18em;" size="1">
 C 						<form:option value=""> </form:option>
 C 						<c:forEach var="${table.name}lItem" items="$${${table.name}lItems}">
-C 							<form:option value="$${${table.name}lItem.${Where_name.from_id}l}">$${${table.name}lItem.displayFld}</form:option>
+C 							<form:option value="$${${table.name}lItem.${Where_attr.from_id}l}">$${${table.name}lItem.displayFld}</form:option>
 C 						</c:forEach>
 C 					</form:select>
 C 				</td>

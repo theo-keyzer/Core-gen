@@ -1000,9 +1000,16 @@ class KpComp < Kp
 				end
 			end
 		end
-		if va[0] == "Ref3_comp" && va.size > 1 # gen.unit:117, c_struct.act:523
+		if va[0] == "Ref3_comp" && va.size > 1 # gen.unit:118, c_struct.act:523
 			glob.dats.ap_ref3.each do |st|
 				if st.k_compp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Ref3_comp_ref" && va.size > 1 # gen.unit:119, c_struct.act:523
+			glob.dats.ap_ref3.each do |st|
+				if st.k_comp_refp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
@@ -1167,9 +1174,27 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref3_comp" # gen.unit:117, c_struct.act:366
+		if va[0] == "Ref3_comp" # gen.unit:118, c_struct.act:366
 			glob.dats.ap_ref3.each do |st|
 				if st.k_compp == me
+					if va.size > 1
+						ret = st.do_its(glob, va[1..], lno)
+						if ret != 0
+							return(ret)
+						end
+						next
+					end
+					ret = go_act(glob, st)
+					if ret != 0
+						return(ret)
+					end
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Ref3_comp_ref" # gen.unit:119, c_struct.act:366
+			glob.dats.ap_ref3.each do |st|
+				if st.k_comp_refp == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret != 0
@@ -1346,14 +1371,14 @@ class KpElement < Kp
 				end
 			end
 		end
-		if va[0] == "Ref3_element" && va.size > 1 # gen.unit:116, c_struct.act:523
+		if va[0] == "Ref3_element" && va.size > 1 # gen.unit:117, c_struct.act:523
 			glob.dats.ap_ref3.each do |st|
 				if st.k_elementp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref3_element2" && va.size > 1 # gen.unit:118, c_struct.act:523
+		if va[0] == "Ref3_element2" && va.size > 1 # gen.unit:120, c_struct.act:523
 			glob.dats.ap_ref3.each do |st|
 				if st.k_element2p == me
 					return (st.get_var(glob, va[1..], lno) )
@@ -1456,7 +1481,7 @@ class KpElement < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref3_element" # gen.unit:116, c_struct.act:366
+		if va[0] == "Ref3_element" # gen.unit:117, c_struct.act:366
 			glob.dats.ap_ref3.each do |st|
 				if st.k_elementp == me
 					if va.size > 1
@@ -1474,7 +1499,7 @@ class KpElement < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref3_element2" # gen.unit:118, c_struct.act:366
+		if va[0] == "Ref3_element2" # gen.unit:120, c_struct.act:366
 			glob.dats.ap_ref3.each do |st|
 				if st.k_element2p == me
 					if va.size > 1
@@ -1774,6 +1799,7 @@ class KpRef3 < Kp
 	property k_elementp : Int32 = -1
 	property k_compp : Int32 = -1
 	property k_element2p : Int32 = -1
+	property k_comp_refp : Int32 = -1
 
 	def load(act, ln, pos, lno)
 		p = pos
@@ -1783,7 +1809,8 @@ class KpRef3 < Kp
 		p, @names["element"] = getw(ln, p)
 		p, @names["comp"] = getw(ln, p)
 		p, @names["element2"] = getw(ln, p)
-		p, @names["attr"] = getw(ln, p)
+		p, @names["comp_ref"] = getw(ln, p)
+		p, @names["element3"] = getw(ln, p)
 		p, @names["opt"] = getw(ln, p)
 		p, @names["var"] = getw(ln, p)
 		p, @names["doc"] = getws(ln, p)
@@ -1798,17 +1825,22 @@ class KpRef3 < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "element" # gen.unit:116, c_struct.act:435
+		if va[0] == "element" # gen.unit:117, c_struct.act:435
 			if k_elementp >= 0 && va.size > 1
 				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "comp" # gen.unit:117, c_struct.act:435
+		if va[0] == "comp" # gen.unit:118, c_struct.act:435
 			if k_compp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "element2" # gen.unit:118, c_struct.act:435
+		if va[0] == "comp_ref" # gen.unit:119, c_struct.act:435
+			if k_comp_refp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ k_comp_refp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "element2" # gen.unit:120, c_struct.act:435
 			if k_element2p >= 0 && va.size > 1
 				return( glob.dats.ap_element[ k_element2p ].get_var(glob, va[1..], lno) )
 			end
@@ -1851,6 +1883,16 @@ class KpRef3 < Kp
 		if va[0] == "comp"
 			if k_compp >= 0
 				st = glob.dats.ap_comp[ k_compp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+			return(0)
+		end
+		if va[0] == "comp_ref"
+			if k_comp_refp >= 0
+				st = glob.dats.ap_comp[ k_comp_refp ]
 				if va.size > 1
 					return( st.do_its(glob, va[1..], lno) )
 				end

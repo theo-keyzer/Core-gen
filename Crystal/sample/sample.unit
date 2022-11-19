@@ -64,16 +64,16 @@ Comp Where parent Type
 * View where clauses (V,W)
 ----------------------------------------------------------------
 
-	Element name     F1 WORD      * Field name
-	Element from_id  M1 WORD      * From id
+	Element attr     F1 Attr      * Field name
+	Element from_id  M1 Attr      * From id
 	Element eq       C1 WORD      * =
-	Element id       F1 WORD      * id
+	Element id       F1 Attr      * id
 	Element op       C1 WORD      * (=, >, like)
 	Element value    V1 WORD      * Select value
 
-Ref     name Attr check
+Ref     attr Attr check
 Ref       id Attr check
-Ref3 from_id Attr name table check
+Ref3 from_id Attr attr Attr table check
 
 ----------------------------------------------------------------
 Comp Logic parent Type

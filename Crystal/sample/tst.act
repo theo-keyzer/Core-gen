@@ -14,9 +14,9 @@ Its Attr attr
 Actor attr Attr relation in dropdown,lookup,view
 ---------------------------------
 
-C ${name}  ${Where_name.from_id}  ${Where_name.from_id.desc}  ${Where_name.from_id.parent.name}
+C ${name}  ${Where_attr.from_id}  ${Where_attr.from_id.desc}  ${Where_attr.from_id.parent.name}
 
-Its Where_name.from_id attr_from
+Its Where_attr.from_id attr_from
 
 ---------------------------------
 Actor attr_from Attr
@@ -24,7 +24,7 @@ Actor attr_from Attr
 
 C  From : ${name}    ${desc}  ${parent.name}
 
-Its Where_from_id.name attr_from_where
+Its Where_from_id.attr attr_from_where
 
 ---------------------------------
 Actor attr_from_where Attr

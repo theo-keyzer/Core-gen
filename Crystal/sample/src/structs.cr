@@ -260,9 +260,9 @@ class KpAttr < Kp
 				return( glob.dats.ap_type[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "Where_name" && va.size > 1 # sample.unit:74, c_struct.act:523
+		if va[0] == "Where_attr" && va.size > 1 # sample.unit:74, c_struct.act:523
 			glob.dats.ap_where.each do |st|
-				if st.k_namep == me
+				if st.k_attrp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
@@ -318,9 +318,9 @@ class KpAttr < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Where_name" # sample.unit:74, c_struct.act:366
+		if va[0] == "Where_attr" # sample.unit:74, c_struct.act:366
 			glob.dats.ap_where.each do |st|
-				if st.k_namep == me
+				if st.k_attrp == me
 					if va.size > 1
 						ret = st.do_its(glob, va[1..], lno)
 						if ret != 0
@@ -401,7 +401,7 @@ end
 
 class KpWhere < Kp 
 	property parentp : Int32 = -1
-	property k_namep : Int32 = -1
+	property k_attrp : Int32 = -1
 	property k_from_idp : Int32 = -1
 	property k_idp : Int32 = -1
 
@@ -410,7 +410,7 @@ class KpWhere < Kp
 		@comp = "Where"
 		@line_no = lno
 		@me = act.ap_where.size
-		p, @names["name"] = getw(ln, p)
+		p, @names["attr"] = getw(ln, p)
 		p, @names["from_id"] = getw(ln, p)
 		p, @names["eq"] = getw(ln, p)
 		p, @names["id"] = getw(ln, p)
@@ -427,9 +427,9 @@ class KpWhere < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "name" # sample.unit:74, c_struct.act:435
-			if k_namep >= 0 && va.size > 1
-				return( glob.dats.ap_attr[ k_namep ].get_var(glob, va[1..], lno) )
+		if va[0] == "attr" # sample.unit:74, c_struct.act:435
+			if k_attrp >= 0 && va.size > 1
+				return( glob.dats.ap_attr[ k_attrp ].get_var(glob, va[1..], lno) )
 			end
 		end
 		if va[0] == "id" # sample.unit:75, c_struct.act:435
@@ -467,9 +467,9 @@ class KpWhere < Kp
 			end
 			return(0)
 		end
-		if va[0] == "name"
-			if k_namep >= 0
-				st = glob.dats.ap_attr[ k_namep ]
+		if va[0] == "attr"
+			if k_attrp >= 0
+				st = glob.dats.ap_attr[ k_attrp ]
 				if va.size > 1
 					return( st.do_its(glob, va[1..], lno) )
 				end

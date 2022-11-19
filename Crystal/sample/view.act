@@ -68,7 +68,7 @@ C    ${.sel..1.,}  TO_CHAR(${name}u, 'YYYY/MM/DD') AS ${name}u_FLD
 Actor sel . relation in dropdown,lookup
 ----------------------------------
 
-C    ${.1.,}  ${name}u, (Select ${Where_name.value}  from ${table}u where ${Where_name.from_id}u = a.${Where_name.id}u) ${table}u
+C    ${.1.,}  ${name}u, (Select ${Where_attr.value}  from ${table}u where ${Where_attr.from_id}u = a.${Where_attr.id}u) ${table}u
 
 ----------------------------------
 Actor sel . relation = view
@@ -89,13 +89,13 @@ C $FWV as ${name}u
 Actor sel_foreign . table != .
 ----------------------------------
 
-C (Select ${Where_name.value}  from ${table}u where ${Where_name.from_id}u = a.${Where_name.id}u) ${name}u
+C (Select ${Where_attr.value}  from ${table}u where ${Where_attr.from_id}u = a.${Where_attr.id}u) ${name}u
 
 ----------------------------------
 Actor sel . relation = viewed
 ----------------------------------
 
-C    ${.1.,}  ${name}u, (Select ${Where_name.value} from ${table}u where ID = a.${Where_name.name}u) ${name}u
+C    ${.1.,}  ${name}u, (Select ${Where_attr.value} from ${table}u where ID = a.${Where_attr.name}u) ${name}u
 C    ${.1.,}  ${name}u, (Select ${table}u from $FRNu_VIEW where ID = a.${name}u) ${table}u
 
 ----------------------------------

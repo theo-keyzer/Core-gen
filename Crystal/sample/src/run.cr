@@ -34,14 +34,11 @@ def refs(act)
 		end
 	end
 	act.ap_where.each_with_index do |st,i|
-		r, st.k_namep = fnd(act, st.parentp.to_s + "_Attr_" + st.names["name"] , st.names["name"],  "check", st.line_no )
+		r, st.k_attrp = fnd(act, st.parentp.to_s + "_Attr_" + st.names["attr"] , st.names["attr"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
-		r, ap = fnd(act, st.parentp.to_s + "_Attr_" + st.names["name"] , st.names["name"],  "check", st.line_no )
-		if r == false
-			errs = true
-		end
+		ap = st.k_attrp
 		tp = -1
 		if ap >= 0
 			tp = act.ap_attr[ap].k_tablep
@@ -91,13 +88,13 @@ def var_all(glob, va, lno)
 	if va.size < 3
 		return(false, "?" + va.size.to_s + "<3?" + lno + "?")
 	end
-	if va[0] == "Type" # sample.unit:2, c_run.act:159
+	if va[0] == "Type" # sample.unit:2, c_run.act:160
 		if en = glob.dats.index["Type_" + va[1] ]?
 			return (glob.dats.ap_type[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Actor" # act.unit:2, c_run.act:159
+	if va[0] == "Actor" # act.unit:2, c_run.act:160
 		if en = glob.dats.index["Actor_" + va[1] ]?
 			return (glob.dats.ap_actor[en].get_var(glob, va[2..], lno))
 		end
