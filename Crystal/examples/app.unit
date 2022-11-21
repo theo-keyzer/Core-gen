@@ -49,6 +49,7 @@ Comp Table parent . Find
 Comp Field parent Table FindIn
 ----------------------------------------------------------------
 
+	Element type     R1 TYPE       * Pointer to (Type).
 	Element name     C1 WORD       * a field name
 	Element dt       C1 WORD       * data type
 	Element pad      C1 WORD       * padding
@@ -58,12 +59,26 @@ Comp Field parent Table FindIn
 		Opt search                 * popup search window for value on capture screen
 		Opt normal                 * normal input text
 
+Ref type Type .
+
 ----------------------------------------------------------------
-Comp Attr parent Field FindIn
+Comp Attrs parent Field FindIn
 ----------------------------------------------------------------
 
 	Element name     C1 WORD       * a attr name
 	
+----------------------------------------------------------------
+Comp Of parent Table
+----------------------------------------------------------------
+
+	Element field    F1 Field     * Field name
+	Element attr     M1 Attr      * Attr name
+	Element op       C1 WORD      * (=, >, like)
+	Element value    V1 WORD      * Select value
+
+Ref    field Field check
+Ref3   attr  Attr  field Field type ?
+
 ----------------------------------------------------------------
 Comp Join parent Table
 ----------------------------------------------------------------
@@ -91,9 +106,65 @@ Comp Join2 parent Table
 	Element attr2  L1 Table.Field.Attr  * link to other field's attr
 
 
-Ref  field1 Field check
-Ref  table2 Table check
-Ref2 field2 Field table2 check
-Ref2 attr2   Attr  field2 check
+Ref  field1 Field  check
+Ref  table2 Table  check
+Ref2 field2 Field  table2 check
+Ref2 attr2  Attrs  field2 check
+
+----------------------------------------------------------------
+Comp Type parent . Find
+----------------------------------------------------------------
+
+	Element name C1 NAME             * Its name.
+	Element desc V1 WORD             * Description.
+
+----------------------------------------------------------------
+Comp Data parent Type
+----------------------------------------------------------------
+
+	Element name    C1 WORD      * Field name
+	Element op      C1 WORD      * (= >)
+	Element value   V1 WORD      * Data value
+
+----------------------------------------------------------------
+Comp Attr parent Type FindIn
+----------------------------------------------------------------
+
+	Element table    R1 TABLE            * Pointer to (Table).
+	Element relation C1 WORD             * Relation type
+	Element name     C1 NAME             * Colomn name.
+	Element mytype   C1 WORD             * Data type.
+	Element len      C1 WORD             * Default length.
+	Element null     C1 WORD             * Not null.
+	Element flags    C1 WORD             * Input flags - search,grid,edit,modify
+	Element desc     V1 WORD             * Documentation.
+
+Ref table Type check
+
+----------------------------------------------------------------
+Comp Where parent Type
+----------------------------------------------------------------
+
+	Element attr     F1 Attr      * Field name
+	Element from_id  M1 Attr      * From id
+	Element eq       C1 WORD      * =
+	Element id       F1 Attr      * id
+	Element op       C1 WORD      * (=, >, like)
+	Element value    V1 WORD      * Select value
+
+Ref     attr Attr check
+Ref       id Attr check
+Ref3 from_id Attr attr Attr table .
+
+----------------------------------------------------------------
+Comp Logic parent Type
+----------------------------------------------------------------
+
+	Element attr    F1 WORD      * Field name
+	Element op      C1 WORD      * (=)
+	Element code    C1 WORD      * Code block name
+
+Ref attr Attr .
+
 
 

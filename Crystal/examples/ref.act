@@ -1,0 +1,11 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+C xx ${.Table.Open.Field.user.name}
+C yy ${.Table.Open.Field.user.Of_field.value}
+C yy ${.Table.Open.Field.user.Of_field.attr.name}
+C yy ${.Table.Open.Field.user.Of_field.attr.Where_attr.value}
+C yy ${.Table.Open.Field.user.Of_field.attr.Where_attr.from_id.name}
+C yy ${.Table.Open.Field.user.Of_field.attr.Where_attr.from_id.flags}
+

@@ -36,8 +36,8 @@ Node n221 parent n22 v = 9
 Table tb1 as a
 ----------------------------------------------------------------
 
-Field t1f1 NUM   display dropdown
-Field t1f2 FLOAT dispaly normal,grid
+Field . t1f1 NUM   display dropdown
+Field . t1f2 FLOAT display normal,grid
 
 Join2 t1f2 tb2 t2f1 t2f1a1
 
@@ -45,8 +45,8 @@ Join2 t1f2 tb2 t2f1 t2f1a1
 Table tb2 as b
 ----------------------------------------------------------------
 
-Field t2f1 VAR display normal,grid
- Attr t2f1a1
+Field . t2f1 VAR display normal,grid
+ Attrs t2f1a1
 
 Join t2f1 tb1 t1f1 for grid
 Join t2f1 tb1 t1f1 for grid
@@ -54,4 +54,36 @@ Join t2f1 tb1 t1f1 for grid
 ----------------------------------------------------------------
 Table Open as op
 ----------------------------------------------------------------
+
+Field User user VAR
+
+Of user location_id = test
+
+--------------------------------------------------------
+Type User User
+--------------------------------------------------------
+
+Attr .                         pk pk_id               NUMBER   22 N NNNN
+Attr User_typ              select user_type             CHAR    1 N YEYD User type
+Attr .                          . first_name        VARCHAR2  200 N YYYD First name
+Attr .                          . last_name         VARCHAR2  200 N YYYD Last name
+Attr Location            dropdown location_id         NUMBER   22 N YYYD Location
+
+Where location_id             id = location_id       = location_name
+
+--------------------------------------------------------
+Type Location
+--------------------------------------------------------
+
+Attr .   pk id                  NUMBER   22 N NNNN
+Attr .    . location_name     VARCHAR2 4000 N YYYY
+
+---------------------------------------------
+Type User_typ
+---------------------------------------------
+
+Data 1 = Employee
+
+
+
 

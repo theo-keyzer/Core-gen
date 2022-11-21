@@ -165,6 +165,10 @@ The `Its` cmd will get them all, The variables will get the first one.
 The `L1` is a simpler model of this, it uses the `R1` instead of the `F1` to get to the parent.
 The `F1` share the same parent. The `R1` finds the parent - top level nodes.
 
+The `check` on the refs, means it is an error if it does find the link. A `(.)` here,
+means it is optional link. The value then also need to be a `(.)` if it is optional.
+If the value if different, then it is an error if not found. A `(?)` here means
+link if can, but no error if not.
 
 
 

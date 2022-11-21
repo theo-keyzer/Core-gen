@@ -8,9 +8,15 @@ class ActT
 	property ap_matrix : Array(KpMatrix) = Array(KpMatrix).new
 	property ap_table : Array(KpTable) = Array(KpTable).new
 	property ap_field : Array(KpField) = Array(KpField).new
-	property ap_attr : Array(KpAttr) = Array(KpAttr).new
+	property ap_attrs : Array(KpAttrs) = Array(KpAttrs).new
+	property ap_of : Array(KpOf) = Array(KpOf).new
 	property ap_join : Array(KpJoin) = Array(KpJoin).new
 	property ap_join2 : Array(KpJoin2) = Array(KpJoin2).new
+	property ap_type : Array(KpType) = Array(KpType).new
+	property ap_data : Array(KpData) = Array(KpData).new
+	property ap_attr : Array(KpAttr) = Array(KpAttr).new
+	property ap_where : Array(KpWhere) = Array(KpWhere).new
+	property ap_logic : Array(KpLogic) = Array(KpLogic).new
 	property ap_comp : Array(KpComp) = Array(KpComp).new
 	property ap_token : Array(KpToken) = Array(KpToken).new
 	property ap_star : Array(KpStar) = Array(KpStar).new
@@ -51,6 +57,32 @@ def refs(act)
 			errs = true
 		end
 	end
+	act.ap_field.each_with_index do |st,i|
+		r, st.k_typep = fnd(act, "Type_" + st.names["type"] , st.names["type"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
+	end
+	act.ap_of.each_with_index do |st,i|
+		r, st.k_fieldp = fnd(act, st.parentp.to_s + "_Field_" + st.names["field"] , st.names["field"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+		tp = -1
+		ap = st.k_fieldp
+		if ap >= 0
+			tp = act.ap_field[ap].k_typep
+		end
+		if tp >= 0
+			r, st.k_attrp = fnd(act, tp.to_s + "_Attr_" + st.names["attr"] , st.names["attr"],  "?", st.line_no )
+			if r == false
+				errs = true
+			end
+		elsif "?" != "?" && st.names["attr"] != "?"
+			puts "ref error " + st.line_no
+			errs = true
+		end
+	end
 	act.ap_join.each_with_index do |st,i|
 		r, st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
 		if r == false
@@ -78,7 +110,43 @@ def refs(act)
 		if r == false
 			errs = true
 		end
-		r, st.k_attr2p = fnd(act, st.k_field2p.to_s + "_Attr_" + st.names["attr2"] , st.names["attr2"],  "check", st.line_no )
+		r, st.k_attr2p = fnd(act, st.k_field2p.to_s + "_Attrs_" + st.names["attr2"] , st.names["attr2"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+	end
+	act.ap_attr.each_with_index do |st,i|
+		r, st.k_tablep = fnd(act, "Type_" + st.names["table"] , st.names["table"],  ".", st.line_no )
+		if r == false
+			errs = true
+		end
+	end
+	act.ap_where.each_with_index do |st,i|
+		r, st.k_attrp = fnd(act, st.parentp.to_s + "_Attr_" + st.names["attr"] , st.names["attr"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+		tp = -1
+		ap = st.k_attrp
+		if ap >= 0
+			tp = act.ap_attr[ap].k_tablep
+		end
+		if tp >= 0
+			r, st.k_from_idp = fnd(act, tp.to_s + "_Attr_" + st.names["from_id"] , st.names["from_id"],  ".", st.line_no )
+			if r == false
+				errs = true
+			end
+		elsif "." != "?" && st.names["from_id"] != "."
+			puts "ref error " + st.line_no
+			errs = true
+		end
+		r, st.k_idp = fnd(act, st.parentp.to_s + "_Attr_" + st.names["id"] , st.names["id"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+	end
+	act.ap_logic.each_with_index do |st,i|
+		r, st.k_attrp = fnd(act, st.parentp.to_s + "_Attr_" + st.names["attr"] , st.names["attr"],  ".", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -156,37 +224,43 @@ def var_all(glob, va, lno)
 	if va.size < 3
 		return(false, "?" + va.size.to_s + "<3?" + lno + "?")
 	end
-	if va[0] == "Node" # app.unit:2, c_run.act:160
+	if va[0] == "Node" # app.unit:2, c_run.act:156
 		if en = glob.dats.index["Node_" + va[1] ]?
 			return (glob.dats.ap_node[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Graph" # app.unit:23, c_run.act:160
+	if va[0] == "Graph" # app.unit:23, c_run.act:156
 		if en = glob.dats.index["Graph_" + va[1] ]?
 			return (glob.dats.ap_graph[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Matrix" # app.unit:31, c_run.act:160
+	if va[0] == "Matrix" # app.unit:31, c_run.act:156
 		if en = glob.dats.index["Matrix_" + va[1] ]?
 			return (glob.dats.ap_matrix[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Table" # app.unit:41, c_run.act:160
+	if va[0] == "Table" # app.unit:41, c_run.act:156
 		if en = glob.dats.index["Table_" + va[1] ]?
 			return (glob.dats.ap_table[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Comp" # gen.unit:2, c_run.act:160
+	if va[0] == "Type" # app.unit:115, c_run.act:156
+		if en = glob.dats.index["Type_" + va[1] ]?
+			return (glob.dats.ap_type[en].get_var(glob, va[2..], lno))
+		end
+		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
+	end
+	if va[0] == "Comp" # gen.unit:2, c_run.act:156
 		if en = glob.dats.index["Comp_" + va[1] ]?
 			return (glob.dats.ap_comp[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Actor" # act.unit:2, c_run.act:160
+	if va[0] == "Actor" # act.unit:2, c_run.act:156
 		if en = glob.dats.index["Actor_" + va[1] ]?
 			return (glob.dats.ap_actor[en].get_var(glob, va[2..], lno))
 		end
@@ -346,17 +420,42 @@ def do_all(glob, va, lno)
 		end
 		return(0)
 	end
-	if va[0] == "Attr" 
+	if va[0] == "Attrs" 
 		if va.size > 1 && va[1] != ""
-			if en = glob.dats.index["Attr_" + va[1] ]?
+			if en = glob.dats.index["Attrs_" + va[1] ]?
 				if va.size > 2
-					return( glob.dats.ap_attr[en].do_its(glob, va[2..], lno) )
+					return( glob.dats.ap_attrs[en].do_its(glob, va[2..], lno) )
 				end
-				return( go_act(glob, glob.dats.ap_attr[en]) )
+				return( go_act(glob, glob.dats.ap_attrs[en]) )
 			end
 			return(0)
 		end
-		glob.dats.ap_attr.each do |st|
+		glob.dats.ap_attrs.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
+	if va[0] == "Of" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Of_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_of[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_of[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_of.each do |st|
 			if va.size > 2
 				ret = st.do_its(glob, va[2..], lno)
 				if ret != 0
@@ -407,6 +506,131 @@ def do_all(glob, va, lno)
 			return(0)
 		end
 		glob.dats.ap_join2.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
+	if va[0] == "Type" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Type_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_type[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_type[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_type.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
+	if va[0] == "Data" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Data_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_data[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_data[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_data.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
+	if va[0] == "Attr" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Attr_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_attr[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_attr[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_attr.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
+	if va[0] == "Where" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Where_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_where[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_where[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_where.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
+	if va[0] == "Logic" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Logic_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_logic[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_logic[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_logic.each do |st|
 			if va.size > 2
 				ret = st.do_its(glob, va[2..], lno)
 				if ret != 0
@@ -700,13 +924,21 @@ def load(act, tok, ln, pos, lno)
 		end
 		act.ap_field << comp
 	end
-	if tok == "Attr"
-		comp = KpAttr.new
+	if tok == "Attrs"
+		comp = KpAttrs.new
 		r = comp.load(act, ln, pos, lno)
 		if r == false
 			errs = true
 		end
-		act.ap_attr << comp
+		act.ap_attrs << comp
+	end
+	if tok == "Of"
+		comp = KpOf.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_of << comp
 	end
 	if tok == "Join"
 		comp = KpJoin.new
@@ -723,6 +955,46 @@ def load(act, tok, ln, pos, lno)
 			errs = true
 		end
 		act.ap_join2 << comp
+	end
+	if tok == "Type"
+		comp = KpType.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_type << comp
+	end
+	if tok == "Data"
+		comp = KpData.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_data << comp
+	end
+	if tok == "Attr"
+		comp = KpAttr.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_attr << comp
+	end
+	if tok == "Where"
+		comp = KpWhere.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_where << comp
+	end
+	if tok == "Logic"
+		comp = KpLogic.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_logic << comp
 	end
 	if tok == "Comp"
 		comp = KpComp.new

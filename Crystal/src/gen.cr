@@ -656,6 +656,9 @@ def fnd(act, s, f, chk, lno)
 	if v = act.index[s]?
 		return(true, v )
 	end
+	if chk == "?"
+		return(true, -1)
+	end
 	puts s + " not found " + lno
 	return(false, -1)
 end

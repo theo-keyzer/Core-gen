@@ -2,8 +2,8 @@
 Actor main
 ----------------------------------------------------------------
 
-C xx ${.Table.tb2.Field.t2f1.Attr.t2f1a1.name}
-C yy ${.Table.tbx2.name}u
+C xx ${.Table.tb2.Field.t2f1.Attrs.t2f1a1.name}
+C yy ${.Table.tb2.name}u
 
 All Table table_sel . . . tb2
 

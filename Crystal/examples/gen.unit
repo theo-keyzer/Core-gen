@@ -46,6 +46,7 @@ Comp Element parent Comp FindIn
 		Opt F1            * link to local comp - same parent - needs a Ref.
 		Opt R1            * link to top level comp - Find - needs a Ref.
 		Opt L1            * link to child of previous link - R1 for first, L1 for chain - needs a Ref2.
+		Opt M1            * link more of L1
 	Element mw2  C1 WORD  * data type - not used
 	Element pad  C1 WORD  * separator
 	Element doc  V1 WORD  * documentation string
@@ -70,8 +71,9 @@ Comp Ref parent Comp
 	Element element F1 ELEMENT       * link to local element
 	Element comp    R1 COMP          * link to comp
 	Element opt     C1 WORD          * optional or check - error if not found
-		Opt check                    * check
-		Opt .                        * optional value to use
+		Opt check                    * check - error if not found
+		Opt .                        * optional, if value is also a (.)
+		Opt ?                        * no error if not found
 	Element var     C1 WORD          * not used
 	Element doc     V1 WORD          * doc string
 	
