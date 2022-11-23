@@ -57,32 +57,7 @@ Table Open as op
 
 Field User user VAR
 
-Of user location_id = test
-
---------------------------------------------------------
-Type User User
---------------------------------------------------------
-
-Attr .                         pk pk_id               NUMBER   22 N NNNN
-Attr User_typ              select user_type             CHAR    1 N YEYD User type
-Attr .                          . first_name        VARCHAR2  200 N YYYD First name
-Attr .                          . last_name         VARCHAR2  200 N YYYD Last name
-Attr Location            dropdown location_id         NUMBER   22 N YYYD Location
-
-Where location_id             id = location_id       = location_name
-
---------------------------------------------------------
-Type Location
---------------------------------------------------------
-
-Attr .   pk id                  NUMBER   22 N NNNN
-Attr .    . location_name     VARCHAR2 4000 N YYYY
-
----------------------------------------------
-Type User_typ
----------------------------------------------
-
-Data 1 = Employee
+Of user location_id location_name = test
 
 
 

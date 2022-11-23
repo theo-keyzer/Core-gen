@@ -21,7 +21,7 @@ echo hash2.act:
 echo hash.act:
 ./gen hash.act tst.def
 echo s_check.act:
-./gen s_check.act app.unit
+./gen s_check.act app.unit,sample.unit
 echo tst3.act:
 ./gen tst3.act tst.def
 echo tst4.act:
@@ -46,6 +46,8 @@ echo var.act:
 echo xml.act:
 ./gen xml.act tst.def
 echo def2json.act
-./gen def2json.act app.unit,tst.def >tst_def.json
+./gen def2json.act app.unit,sample.unit,tst.def,sample.def >tst_def.json
+echo ref.act
+./gen ref.act tst.def,sample.def
 
 

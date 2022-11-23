@@ -8,4 +8,17 @@ C yy ${.Table.Open.Field.user.Of_field.attr.name}
 C yy ${.Table.Open.Field.user.Of_field.attr.Where_attr.value}
 C yy ${.Table.Open.Field.user.Of_field.attr.Where_attr.from_id.name}
 C yy ${.Table.Open.Field.user.Of_field.attr.Where_attr.from_id.flags}
+C yy ${.Table.Open.Field.user.Of_field.attr.Where_attr.from_id.parent.name}
+C zz ${.Table.Open.Field.user.Of_field.from.name}
+C zz ${.Table.Open.Field.user.Of_field.from.flags}
+
+C ${.Type.Location.Attr.id.flags}
+C ${.Type.Location.Attr.id.Where_from_id.value}
+C ${.Type.Location.Attr.id.Where_from_id.attr.name}
+C ${.Type.Location.Attr.id.Where_from_id.attr.Of_attr.value}
+C ${.Type.Location.Attr.id.Where_from_id.attr.Of_attr.field.name}
+C ${.Type.Location.Attr.id.Where_from_id.attr.Of_attr.field.parent.name}
+
+C ${.Type.Location.Attr.location_name.Of_from.field.name}
+
 

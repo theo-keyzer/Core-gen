@@ -16,6 +16,7 @@ C def refs(act)
 C 	errs = false
 
 All Comp refs
+All Comp refs2
 
 C 	return(errs)
 C end
@@ -95,6 +96,18 @@ Its Element refs_ele
 C 	end
 
 ----------------------------------------------------------------
+Actor refs2 .
+----------------------------------------------------------------
+
+Out delay
+
+C 	act.ap_${name}l.each_with_index do |st,i|
+		
+Its Element refs_ele2
+
+C 	end
+
+----------------------------------------------------------------
 Actor refs_act_ele . mw = R1
 ----------------------------------------------------------------
 
@@ -107,13 +120,13 @@ C 		end
 Actor refs_ele . mw = R1
 ----------------------------------------------------------------
 
-C 		r, st.k_${name}lp = fnd(act, "${Ref_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  ".", st.line_no )
+C 		r, st.k_${name}lp = fnd(act, "${Ref_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref_element.opt} ", st.line_no )
 C 		if r == false
 C 			errs = true
 C 		end
 
 ----------------------------------------------------------------
-Actor refs_ele . mw = M1
+Actor refs_ele2 . mw = M1
 ----------------------------------------------------------------
 
 C 		tp = -1
@@ -141,7 +154,7 @@ C 			errs = true
 C 		end
 
 ----------------------------------------------------------------
-Actor refs_ele . mw = L1
+Actor refs_ele2 . mw = L1
 ----------------------------------------------------------------
 
 C 		r, st.k_${name}lp = fnd(act, st.k_${Ref2_element.element2.name}lp.to_s + "_${Ref2_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref2_element.opt} ", st.line_no )

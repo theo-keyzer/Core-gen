@@ -52,13 +52,13 @@ def refs(act)
 		end
 	end
 	act.ap_link.each_with_index do |st,i|
-		r, st.k_top = fnd(act, "Node_" + st.names["to"] , st.names["to"],  ".", st.line_no )
+		r, st.k_top = fnd(act, "Node_" + st.names["to"] , st.names["to"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
 	end
 	act.ap_field.each_with_index do |st,i|
-		r, st.k_typep = fnd(act, "Type_" + st.names["type"] , st.names["type"],  ".", st.line_no )
+		r, st.k_typep = fnd(act, "Type_" + st.names["type"] , st.names["type"],  "?", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -68,31 +68,13 @@ def refs(act)
 		if r == false
 			errs = true
 		end
-		tp = -1
-		ap = st.k_fieldp
-		if ap >= 0
-			tp = act.ap_field[ap].k_typep
-		end
-		if tp >= 0
-			r, st.k_attrp = fnd(act, tp.to_s + "_Attr_" + st.names["attr"] , st.names["attr"],  "?", st.line_no )
-			if r == false
-				errs = true
-			end
-		elsif "?" != "?" && st.names["attr"] != "?"
-			puts "ref error " + st.line_no
-			errs = true
-		end
 	end
 	act.ap_join.each_with_index do |st,i|
 		r, st.k_field1p = fnd(act, st.parentp.to_s + "_Field_" + st.names["field1"] , st.names["field1"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
-		r, st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
-		if r == false
-			errs = true
-		end
-		r, st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
+		r, st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -102,15 +84,7 @@ def refs(act)
 		if r == false
 			errs = true
 		end
-		r, st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  ".", st.line_no )
-		if r == false
-			errs = true
-		end
-		r, st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
-		if r == false
-			errs = true
-		end
-		r, st.k_attr2p = fnd(act, st.k_field2p.to_s + "_Attrs_" + st.names["attr2"] , st.names["attr2"],  "check", st.line_no )
+		r, st.k_table2p = fnd(act, "Table_" + st.names["table2"] , st.names["table2"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -124,20 +98,6 @@ def refs(act)
 	act.ap_where.each_with_index do |st,i|
 		r, st.k_attrp = fnd(act, st.parentp.to_s + "_Attr_" + st.names["attr"] , st.names["attr"],  "check", st.line_no )
 		if r == false
-			errs = true
-		end
-		tp = -1
-		ap = st.k_attrp
-		if ap >= 0
-			tp = act.ap_attr[ap].k_tablep
-		end
-		if tp >= 0
-			r, st.k_from_idp = fnd(act, tp.to_s + "_Attr_" + st.names["from_id"] , st.names["from_id"],  ".", st.line_no )
-			if r == false
-				errs = true
-			end
-		elsif "." != "?" && st.names["from_id"] != "."
-			puts "ref error " + st.line_no
 			errs = true
 		end
 		r, st.k_idp = fnd(act, st.parentp.to_s + "_Attr_" + st.names["id"] , st.names["id"],  "check", st.line_no )
@@ -162,7 +122,7 @@ def refs(act)
 		if r == false
 			errs = true
 		end
-		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
+		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -172,7 +132,7 @@ def refs(act)
 		if r == false
 			errs = true
 		end
-		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
+		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -186,7 +146,7 @@ def refs(act)
 		if r == false
 			errs = true
 		end
-		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  ".", st.line_no )
+		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -194,7 +154,7 @@ def refs(act)
 		if r == false
 			errs = true
 		end
-		r, st.k_comp_refp = fnd(act, "Comp_" + st.names["comp_ref"] , st.names["comp_ref"],  ".", st.line_no )
+		r, st.k_comp_refp = fnd(act, "Comp_" + st.names["comp_ref"] , st.names["comp_ref"],  "check", st.line_no )
 		if r == false
 			errs = true
 		end
@@ -217,6 +177,68 @@ def refs(act)
 			errs = true
 		end
 	end
+	act.ap_of.each_with_index do |st,i|
+		tp = -1
+		ap = st.k_fieldp
+		if ap >= 0
+			tp = act.ap_field[ap].k_typep
+		end
+		if tp >= 0
+			r, st.k_attrp = fnd(act, tp.to_s + "_Attr_" + st.names["attr"] , st.names["attr"],  "?", st.line_no )
+			if r == false
+				errs = true
+			end
+		elsif "?" != "?" && st.names["attr"] != "?"
+			puts "ref error " + st.line_no
+			errs = true
+		end
+		tp = -1
+		ap = st.k_attrp
+		if ap >= 0
+			tp = act.ap_attr[ap].k_tablep
+		end
+		if tp >= 0
+			r, st.k_fromp = fnd(act, tp.to_s + "_Attr_" + st.names["from"] , st.names["from"],  "?", st.line_no )
+			if r == false
+				errs = true
+			end
+		elsif "?" != "?" && st.names["from"] != "?"
+			puts "ref error " + st.line_no
+			errs = true
+		end
+	end
+	act.ap_join.each_with_index do |st,i|
+		r, st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+	end
+	act.ap_join2.each_with_index do |st,i|
+		r, st.k_field2p = fnd(act, st.k_table2p.to_s + "_Field_" + st.names["field2"] , st.names["field2"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+		r, st.k_attr2p = fnd(act, st.k_field2p.to_s + "_Attrs_" + st.names["attr2"] , st.names["attr2"],  "check", st.line_no )
+		if r == false
+			errs = true
+		end
+	end
+	act.ap_where.each_with_index do |st,i|
+		tp = -1
+		ap = st.k_attrp
+		if ap >= 0
+			tp = act.ap_attr[ap].k_tablep
+		end
+		if tp >= 0
+			r, st.k_from_idp = fnd(act, tp.to_s + "_Attr_" + st.names["from_id"] , st.names["from_id"],  "check", st.line_no )
+			if r == false
+				errs = true
+			end
+		elsif "check" != "?" && st.names["from_id"] != "check"
+			puts "ref error " + st.line_no
+			errs = true
+		end
+	end
 	return(errs)
 end
 
@@ -224,43 +246,43 @@ def var_all(glob, va, lno)
 	if va.size < 3
 		return(false, "?" + va.size.to_s + "<3?" + lno + "?")
 	end
-	if va[0] == "Node" # app.unit:2, c_run.act:156
+	if va[0] == "Node" # app.unit:2, c_run.act:169
 		if en = glob.dats.index["Node_" + va[1] ]?
 			return (glob.dats.ap_node[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Graph" # app.unit:23, c_run.act:156
+	if va[0] == "Graph" # app.unit:23, c_run.act:169
 		if en = glob.dats.index["Graph_" + va[1] ]?
 			return (glob.dats.ap_graph[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Matrix" # app.unit:31, c_run.act:156
+	if va[0] == "Matrix" # app.unit:31, c_run.act:169
 		if en = glob.dats.index["Matrix_" + va[1] ]?
 			return (glob.dats.ap_matrix[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Table" # app.unit:41, c_run.act:156
+	if va[0] == "Table" # app.unit:41, c_run.act:169
 		if en = glob.dats.index["Table_" + va[1] ]?
 			return (glob.dats.ap_table[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Type" # app.unit:115, c_run.act:156
+	if va[0] == "Type" # sample.unit:2, c_run.act:169
 		if en = glob.dats.index["Type_" + va[1] ]?
 			return (glob.dats.ap_type[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Comp" # gen.unit:2, c_run.act:156
+	if va[0] == "Comp" # gen.unit:2, c_run.act:169
 		if en = glob.dats.index["Comp_" + va[1] ]?
 			return (glob.dats.ap_comp[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Actor" # act.unit:2, c_run.act:156
+	if va[0] == "Actor" # act.unit:2, c_run.act:169
 		if en = glob.dats.index["Actor_" + va[1] ]?
 			return (glob.dats.ap_actor[en].get_var(glob, va[2..], lno))
 		end

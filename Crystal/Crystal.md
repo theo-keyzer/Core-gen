@@ -156,7 +156,7 @@ The `Ref3` uses the `M1` field `from_id`. The link goes to node of type `Attr`.
 It uses the `attr` field to get to `Attr` node. In that node it uses the `table` field
 to be used as the parent `(Type)` to find the `Attr` in.
 The `from_id, attr` can be different node types.
-The refs run in a sequence at `Element` level. So the `F1, R1` must be before the `M1`.
+The refs run in a sequence at `Element` level. First it does the `F1, R1` ones, then the the `M1, L1` ones.
 
 To use the links from the `Where` node, use `attr,from_id,id`. To use it from the `Attr` node,
 use `Where_attr, Where_from_id, Where_id`. These are the reverse links that loops to match.

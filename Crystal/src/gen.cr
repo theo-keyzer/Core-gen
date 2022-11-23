@@ -650,13 +650,13 @@ def tocase(s, c)
 end
 
 def fnd(act, s, f, chk, lno)
-	if f == chk
-		return(true, -1)
-	end
 	if v = act.index[s]?
 		return(true, v )
 	end
 	if chk == "?"
+		return(true, -1)
+	end
+	if f == chk
 		return(true, -1)
 	end
 	puts s + " not found " + lno
