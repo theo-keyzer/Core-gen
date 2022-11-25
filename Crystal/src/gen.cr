@@ -505,6 +505,17 @@ def chk( eqs, v, ss, prev, rv, rs )
 end
 
 def s_get_var(glob, winp, va, lno)
+	if va.size == 1 && va[0].size > 0 
+		if va[0][0] == ' ' || va[0][0] == '	'
+			ret = ""
+			i = 0
+			while i < winp
+				ret += va[0]
+				i += 1
+			end
+			return(true, ret)
+		end
+	end
 	if va[0] != ""
 		return( glob.wins[winp].dat.get_var(glob, va, lno) )
 	end

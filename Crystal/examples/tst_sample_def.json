@@ -1,0 +1,1133 @@
+{
+   "Node": 
+   [
+    {
+       "me_id": 0,
+       "name": "n1",
+       "pad": "parent",
+       "parent": ".", "parent_id": "-1",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
+       "me_id": 1,
+       "name": "n11",
+       "pad": "parent",
+       "parent": "n1", "parent_id": "0",
+       "var": "v",
+       "eq": "=",
+       "value": "9",
+       "Link": 
+        {
+           "parent_id": 1,
+           "me_id": 0,
+           "to": "n22", "to_id": 5
+        }
+    },
+    {
+       "me_id": 2,
+       "name": "n12",
+       "pad": "parent",
+       "parent": "n1", "parent_id": "0",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
+       "me_id": 3,
+       "name": "n2",
+       "pad": "parent",
+       "parent": ".", "parent_id": "-1",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
+       "me_id": 4,
+       "name": "n21",
+       "pad": "parent",
+       "parent": "n2", "parent_id": "3",
+       "var": "v",
+       "eq": "=",
+       "value": "9",
+       "Link": 
+        {
+           "parent_id": 4,
+           "me_id": 1,
+           "to": "n11", "to_id": 1
+        }
+    },
+    {
+       "me_id": 5,
+       "name": "n22",
+       "pad": "parent",
+       "parent": "n2", "parent_id": "3",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
+       "me_id": 6,
+       "name": "n221",
+       "pad": "parent",
+       "parent": "n22", "parent_id": "5",
+       "var": "v",
+       "eq": "=",
+       "value": "9",
+       "Link": 
+        {
+           "parent_id": 6,
+           "me_id": 2,
+           "to": "n1", "to_id": 0
+        }
+    }
+   ],
+   "Graph": 
+   [
+    {
+       "me_id": 0,
+       "name": "B-C",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 1,
+       "name": "C-A",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 2,
+       "name": "C-A",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 3,
+       "name": "C-B",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 4,
+       "name": "A-B",
+       "pad": "for",
+       "search": "3"
+    },
+    {
+       "me_id": 5,
+       "name": "A-C",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 6,
+       "name": "A-B",
+       "pad": "for",
+       "search": "4"
+    },
+    {
+       "me_id": 7,
+       "name": "B-A",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 8,
+       "name": "B-C",
+       "pad": "for",
+       "search": "4"
+    },
+    {
+       "me_id": 9,
+       "name": "B-C",
+       "pad": "for",
+       "search": "3"
+    },
+    {
+       "me_id": 10,
+       "name": "B-C",
+       "pad": "for",
+       "search": "5"
+    }
+   ],
+   "Matrix": 
+   [
+    {
+       "me_id": 0,
+       "a": "A",
+       "b": "B",
+       "c": "C",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 1,
+       "a": "C",
+       "b": "C",
+       "c": "C",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 2,
+       "a": "A",
+       "b": "A",
+       "c": "C",
+       "pad": "for",
+       "search": "3"
+    },
+    {
+       "me_id": 3,
+       "a": "C",
+       "b": "B",
+       "c": "A",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 4,
+       "a": "A",
+       "b": "B",
+       "c": "C",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 5,
+       "a": "A",
+       "b": "C",
+       "c": "C",
+       "pad": "for",
+       "search": "3"
+    },
+    {
+       "me_id": 6,
+       "a": "A",
+       "b": "C",
+       "c": "B",
+       "pad": "for",
+       "search": "4"
+    },
+    {
+       "me_id": 7,
+       "a": "C",
+       "b": "A",
+       "c": "C",
+       "pad": "for",
+       "search": "5"
+    },
+    {
+       "me_id": 8,
+       "a": "C",
+       "b": "C",
+       "c": "A",
+       "pad": "for",
+       "search": "4"
+    }
+   ],
+   "Table": 
+   [
+    {
+       "me_id": 0,
+       "name": "tb1",
+       "pad": "as",
+       "value": "a",
+       "Field": 
+        {
+           "parent_id": 0,
+           "me_id": 0,
+           "type": ".", "type_id": -1,
+           "name": "t1f1",
+           "dt": "NUM",
+           "pad": "display",
+           "use": "dropdown"
+        },
+       "Field": 
+        {
+           "parent_id": 0,
+           "me_id": 1,
+           "type": ".", "type_id": -1,
+           "name": "t1f2",
+           "dt": "FLOAT",
+           "pad": "display",
+           "use": "normal,grid"
+        },
+       "Join2": 
+        {
+           "parent_id": 0,
+           "me_id": 0,
+           "field1": "t1f2", "field1_id": 1,
+           "table2": "tb2", "table2_id": 1,
+           "field2": "t2f1", "field2_id": 2,
+           "attr2": "t2f1a1", "attr2_id": 0
+        }
+    },
+    {
+       "me_id": 1,
+       "name": "tb2",
+       "pad": "as",
+       "value": "b",
+       "Field": 
+        {
+           "parent_id": 1,
+           "me_id": 2,
+           "type": ".", "type_id": -1,
+           "name": "t2f1",
+           "dt": "VAR",
+           "pad": "display",
+           "use": "normal,grid",
+           "Attrs": 
+            {
+               "parent_id": 2,
+               "me_id": 0,
+               "name": "t2f1a1"
+            }
+        },
+       "Join": 
+        {
+           "parent_id": 1,
+           "me_id": 0,
+           "field1": "t2f1", "field1_id": 2,
+           "table2": "tb1", "table2_id": 0,
+           "field2": "t1f1", "field2_id": 0,
+           "pad": "for",
+           "use": "grid"
+        },
+       "Join": 
+        {
+           "parent_id": 1,
+           "me_id": 1,
+           "field1": "t2f1", "field1_id": 2,
+           "table2": "tb1", "table2_id": 0,
+           "field2": "t1f1", "field2_id": 0,
+           "pad": "for",
+           "use": "grid"
+        }
+    },
+    {
+       "me_id": 2,
+       "name": "Open",
+       "pad": "as",
+       "value": "op",
+       "Field": 
+        {
+           "parent_id": 2,
+           "me_id": 3,
+           "type": "User", "type_id": 0,
+           "name": "user",
+           "dt": "VAR",
+           "pad": "E_O_L",
+           "use": "E_O_L"
+        },
+       "Of": 
+        {
+           "parent_id": 2,
+           "me_id": 0,
+           "field": "user", "field_id": 3,
+           "attr": "location_id", "attr_id": 4,
+           "from": "location_name", "from_id": 15,
+           "op": "=",
+           "value": "test"
+        }
+    }
+   ],
+   "Type": 
+   [
+    {
+       "me_id": 0,
+       "name": "User",
+       "desc": "User",
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 0,
+           "table": ".", "table_id": -1,
+           "relation": "pk",
+           "name": "pk_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 1,
+           "table": "User_typ", "table_id": 1,
+           "relation": "select",
+           "name": "user_type",
+           "mytype": "CHAR",
+           "len": "1",
+           "null": "N",
+           "flags": "YEYD",
+           "desc": "User type"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 2,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "first_name",
+           "mytype": "VARCHAR2",
+           "len": "200",
+           "null": "N",
+           "flags": "YYYD",
+           "desc": "First name"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 3,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "last_name",
+           "mytype": "VARCHAR2",
+           "len": "200",
+           "null": "N",
+           "flags": "YYYD",
+           "desc": "Last name"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 4,
+           "table": "Location", "table_id": 2,
+           "relation": "dropdown",
+           "name": "location_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "YYYD",
+           "desc": "Location"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 5,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "nt_id",
+           "mytype": "VARCHAR2",
+           "len": "255",
+           "null": "N",
+           "flags": "YYYD",
+           "desc": "NT id"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 6,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "phone",
+           "mytype": "VARCHAR2",
+           "len": "255",
+           "null": "Y",
+           "flags": "NNYY",
+           "desc": "Phone"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 7,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "email",
+           "mytype": "VARCHAR2",
+           "len": "255",
+           "null": "Y",
+           "flags": "NNYY",
+           "desc": "Email"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 8,
+           "table": "Activ", "table_id": 3,
+           "relation": "select",
+           "name": "active",
+           "mytype": "CHAR",
+           "len": "1",
+           "null": "N",
+           "flags": "YYYY",
+           "desc": "Active"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 9,
+           "table": "Employee", "table_id": 4,
+           "relation": "lookup",
+           "name": "employee_id",
+           "mytype": "VARCHAR2",
+           "len": "200",
+           "null": "Y",
+           "flags": "YYYD",
+           "desc": "Employee number"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 10,
+           "table": "Employee", "table_id": 4,
+           "relation": "view",
+           "name": "employee_name",
+           "mytype": "VARCHAR2",
+           "len": "200",
+           "null": "Y",
+           "flags": "YYDD",
+           "desc": "Employee name"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 11,
+           "table": "Contractor_employee", "table_id": 5,
+           "relation": "lookup",
+           "name": "contractor_id",
+           "mytype": "VARCHAR2",
+           "len": "200",
+           "null": "Y",
+           "flags": "YYYD",
+           "desc": "Contractor reference number"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 12,
+           "table": "Contractor_employee", "table_id": 5,
+           "relation": "view",
+           "name": "contractor_name",
+           "mytype": "VARCHAR2",
+           "len": "200",
+           "null": "Y",
+           "flags": "YYDD",
+           "desc": "Contractor name"
+        },
+       "Attr": 
+        {
+           "parent_id": 0,
+           "me_id": 13,
+           "table": "Contractor_company", "table_id": 6,
+           "relation": "dropdown",
+           "name": "company_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "Y",
+           "flags": "YYYD",
+           "desc": "Company name"
+        },
+       "Where": 
+        {
+           "parent_id": 0,
+           "me_id": 0,
+           "attr": "contractor_id", "attr_id": 11,
+           "from_id": "id_number", "from_id_id": 30,
+           "eq": "=",
+           "id": "contractor_id", "id_id": 11,
+           "op": "=",
+           "value": "id_number"
+        },
+       "Where": 
+        {
+           "parent_id": 0,
+           "me_id": 1,
+           "attr": "contractor_name", "attr_id": 12,
+           "from_id": "id_number", "from_id_id": 30,
+           "eq": "=",
+           "id": "contractor_id", "id_id": 11,
+           "op": "like",
+           "value": "last_name || ' ' || first_name"
+        },
+       "Where": 
+        {
+           "parent_id": 0,
+           "me_id": 2,
+           "attr": "company_id", "attr_id": 13,
+           "from_id": "pk_id", "from_id_id": 37,
+           "eq": "=",
+           "id": "company_id", "id_id": 13,
+           "op": "like",
+           "value": "company_name"
+        },
+       "Where": 
+        {
+           "parent_id": 0,
+           "me_id": 3,
+           "attr": "employee_name", "attr_id": 10,
+           "from_id": "id", "from_id_id": 19,
+           "eq": "=",
+           "id": "employee_id", "id_id": 9,
+           "op": "like",
+           "value": "LAST_NAME || ' '  || FIRST_NAME"
+        },
+       "Where": 
+        {
+           "parent_id": 0,
+           "me_id": 4,
+           "attr": "employee_id", "attr_id": 9,
+           "from_id": "id", "from_id_id": 19,
+           "eq": "=",
+           "id": "employee_id", "id_id": 9,
+           "op": "=",
+           "value": "ID"
+        },
+       "Where": 
+        {
+           "parent_id": 0,
+           "me_id": 5,
+           "attr": "location_id", "attr_id": 4,
+           "from_id": "id", "from_id_id": 14,
+           "eq": "=",
+           "id": "location_id", "id_id": 4,
+           "op": "=",
+           "value": "location_name"
+        },
+       "Logic": 
+        {
+           "parent_id": 0,
+           "me_id": 0,
+           "attr": ".", "attr_id": -1,
+           "op": "=",
+           "code": "ORDER"
+        },
+       "Logic": 
+        {
+           "parent_id": 0,
+           "me_id": 1,
+           "attr": "nt_id", "attr_id": 5,
+           "op": "=",
+           "code": "ORDER_BY"
+        },
+       "Logic": 
+        {
+           "parent_id": 0,
+           "me_id": 2,
+           "attr": "active", "attr_id": 8,
+           "op": "=",
+           "code": "Y"
+        }
+    },
+    {
+       "me_id": 1,
+       "name": "User_typ",
+       "desc": "",
+       "Data": 
+        {
+           "parent_id": 1,
+           "me_id": 0,
+           "name": "1",
+           "op": "=",
+           "value": "Employee"
+        },
+       "Data": 
+        {
+           "parent_id": 1,
+           "me_id": 1,
+           "name": "2",
+           "op": "=",
+           "value": "Contractor employee"
+        },
+       "Data": 
+        {
+           "parent_id": 1,
+           "me_id": 2,
+           "name": "3",
+           "op": "=",
+           "value": "Contractor company"
+        }
+    },
+    {
+       "me_id": 2,
+       "name": "Location",
+       "desc": "",
+       "Attr": 
+        {
+           "parent_id": 2,
+           "me_id": 14,
+           "table": ".", "table_id": -1,
+           "relation": "pk",
+           "name": "id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        },
+       "Attr": 
+        {
+           "parent_id": 2,
+           "me_id": 15,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "location_name",
+           "mytype": "VARCHAR2",
+           "len": "4000",
+           "null": "N",
+           "flags": "YYYY",
+           "desc": ""
+        },
+       "Attr": 
+        {
+           "parent_id": 2,
+           "me_id": 16,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "allowance_allowed",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        },
+       "Attr": 
+        {
+           "parent_id": 2,
+           "me_id": 17,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "friendly_name",
+           "mytype": "VARCHAR2",
+           "len": "255",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        },
+       "Attr": 
+        {
+           "parent_id": 2,
+           "me_id": 18,
+           "table": ".", "table_id": -1,
+           "relation": "view",
+           "name": "display_fld",
+           "mytype": "VARCHAR2",
+           "len": "80",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        }
+    },
+    {
+       "me_id": 3,
+       "name": "Activ",
+       "desc": "",
+       "Data": 
+        {
+           "parent_id": 3,
+           "me_id": 3,
+           "name": "Y",
+           "op": "=",
+           "value": "Yes"
+        },
+       "Data": 
+        {
+           "parent_id": 3,
+           "me_id": 4,
+           "name": "N",
+           "op": "=",
+           "value": "No"
+        }
+    },
+    {
+       "me_id": 4,
+       "name": "Employee",
+       "desc": "security",
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 19,
+           "table": ".", "table_id": -1,
+           "relation": "pk",
+           "name": "id",
+           "mytype": "VARCHAR2",
+           "len": "200",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        },
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 20,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "first_name",
+           "mytype": "VARCHAR2",
+           "len": "200",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": "First name"
+        },
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 21,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "last_name",
+           "mytype": "VARCHAR2",
+           "len": "200",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": "Last name"
+        },
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 22,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "sap_id",
+           "mytype": "VARCHAR2",
+           "len": "4000",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": "SAP id"
+        },
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 23,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "bp_level",
+           "mytype": "VARCHAR2",
+           "len": "4000",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": "Level"
+        },
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 24,
+           "table": "Location", "table_id": 2,
+           "relation": "dropdown",
+           "name": "location_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": "Location"
+        },
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 25,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "manager_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": "Manager id"
+        },
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 26,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "nt_id",
+           "mytype": "VARCHAR2",
+           "len": "255",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": "NT id"
+        },
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 27,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "reports_to",
+           "mytype": "VARCHAR2",
+           "len": "255",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": "Reports to"
+        },
+       "Attr": 
+        {
+           "parent_id": 4,
+           "me_id": 28,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "active",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": "Active"
+        }
+    },
+    {
+       "me_id": 5,
+       "name": "Contractor_employee",
+       "desc": "Contractor Employee",
+       "Attr": 
+        {
+           "parent_id": 5,
+           "me_id": 29,
+           "table": ".", "table_id": -1,
+           "relation": "pk",
+           "name": "pk_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        },
+       "Attr": 
+        {
+           "parent_id": 5,
+           "me_id": 30,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "id_number",
+           "mytype": "VARCHAR2",
+           "len": "80",
+           "null": "N",
+           "flags": "YEYY",
+           "desc": "Reference number"
+        },
+       "Attr": 
+        {
+           "parent_id": 5,
+           "me_id": 31,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "first_name",
+           "mytype": "VARCHAR2",
+           "len": "70",
+           "null": "N",
+           "flags": "YYYY",
+           "desc": "First name"
+        },
+       "Attr": 
+        {
+           "parent_id": 5,
+           "me_id": 32,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "last_name",
+           "mytype": "VARCHAR2",
+           "len": "70",
+           "null": "N",
+           "flags": "YYYY",
+           "desc": "Surname"
+        },
+       "Attr": 
+        {
+           "parent_id": 5,
+           "me_id": 33,
+           "table": "Contractor_company", "table_id": 6,
+           "relation": "dropdown",
+           "name": "company_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "YYYD",
+           "desc": "Company name"
+        },
+       "Attr": 
+        {
+           "parent_id": 5,
+           "me_id": 34,
+           "table": "Location", "table_id": 2,
+           "relation": "dropdown",
+           "name": "location_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "YYYY",
+           "desc": "Location"
+        },
+       "Attr": 
+        {
+           "parent_id": 5,
+           "me_id": 35,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "job_description",
+           "mytype": "TEXT",
+           "len": "900",
+           "null": "N",
+           "flags": "NNYY",
+           "desc": "Job description"
+        },
+       "Attr": 
+        {
+           "parent_id": 5,
+           "me_id": 36,
+           "table": ".", "table_id": -1,
+           "relation": "view",
+           "name": "display_fld",
+           "mytype": "VARCHAR2",
+           "len": "70",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        }
+    },
+    {
+       "me_id": 6,
+       "name": "Contractor_company",
+       "desc": "Contractor Company",
+       "Attr": 
+        {
+           "parent_id": 6,
+           "me_id": 37,
+           "table": ".", "table_id": -1,
+           "relation": "pk",
+           "name": "pk_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        },
+       "Attr": 
+        {
+           "parent_id": 6,
+           "me_id": 38,
+           "table": ".", "table_id": -1,
+           "relation": "none",
+           "name": "company_name",
+           "mytype": "VARCHAR2",
+           "len": "80",
+           "null": "N",
+           "flags": "YEYY",
+           "desc": "Company name"
+        },
+       "Attr": 
+        {
+           "parent_id": 6,
+           "me_id": 39,
+           "table": "Location", "table_id": 2,
+           "relation": "dropdown",
+           "name": "location_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "YYYY",
+           "desc": "Location"
+        },
+       "Attr": 
+        {
+           "parent_id": 6,
+           "me_id": 40,
+           "table": "Company_rating", "table_id": 7,
+           "relation": "dropdown",
+           "name": "company_rating_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "YYYY",
+           "desc": "Risk rating"
+        },
+       "Attr": 
+        {
+           "parent_id": 6,
+           "me_id": 41,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "email_address",
+           "mytype": "VARCHAR2",
+           "len": "50",
+           "null": "Y",
+           "flags": "NNYY",
+           "desc": "Email address"
+        },
+       "Attr": 
+        {
+           "parent_id": 6,
+           "me_id": 42,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "contact_person",
+           "mytype": "VARCHAR2",
+           "len": "80",
+           "null": "Y",
+           "flags": "NNYY",
+           "desc": "Contact person"
+        },
+       "Attr": 
+        {
+           "parent_id": 6,
+           "me_id": 43,
+           "table": ".", "table_id": -1,
+           "relation": ".",
+           "name": "service",
+           "mytype": "TEXT",
+           "len": "900",
+           "null": "Y",
+           "flags": "NNYY",
+           "desc": "Service"
+        },
+       "Attr": 
+        {
+           "parent_id": 6,
+           "me_id": 44,
+           "table": ".", "table_id": -1,
+           "relation": "view",
+           "name": "display_fld",
+           "mytype": "VARCHAR2",
+           "len": "80",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        }
+    },
+    {
+       "me_id": 7,
+       "name": "Company_rating",
+       "desc": "Company Risk Rating",
+       "Attr": 
+        {
+           "parent_id": 7,
+           "me_id": 45,
+           "table": ".", "table_id": -1,
+           "relation": "pk",
+           "name": "pk_id",
+           "mytype": "NUMBER",
+           "len": "22",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        },
+       "Attr": 
+        {
+           "parent_id": 7,
+           "me_id": 46,
+           "table": ".", "table_id": -1,
+           "relation": "none",
+           "name": "description",
+           "mytype": "VARCHAR2",
+           "len": "80",
+           "null": "N",
+           "flags": "YEYY",
+           "desc": "Rating description"
+        },
+       "Attr": 
+        {
+           "parent_id": 7,
+           "me_id": 47,
+           "table": ".", "table_id": -1,
+           "relation": "view",
+           "name": "display_fld",
+           "mytype": "VARCHAR2",
+           "len": "80",
+           "null": "N",
+           "flags": "NNNN",
+           "desc": ""
+        }
+    }
+   ]
+}

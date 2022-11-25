@@ -104,6 +104,8 @@ C 		p = pos
 C 		@comp = "${name}c"
 C 		@line_no = lno
 C 		@me = act.ap_${name}l.size
+C 		@names["k_me"] = @me.to_s
+C 		@names["k_parent"] = "-1"
 
 Its Element ele
 Its parent parent_field_p
@@ -196,6 +198,7 @@ Actor parent_field_p Comp name != Actor
 ----------------------------------------------------------------
 
 C 		@parentp = act.ap_${name}l.size-1;
+C 		@names["k_parent"] = @parentp.to_s
 C 		if @parentp < 0  
 C 			puts lno + " ${.struct.name}c has no ${name}c parent" 
 C 			return false
