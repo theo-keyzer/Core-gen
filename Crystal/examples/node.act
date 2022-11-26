@@ -4,7 +4,7 @@ Actor main
 
 C ${.Table.tb1.value}
 
-All Node base_node . . .  
+All Node base_node
 
 
 ----------------------------------------------------------------
@@ -26,15 +26,15 @@ C }
 Actor x . name = n12
 ----------------------------------------------------------------
 
-C ${.arg} child ${name}   is 12
+C ${ } child ${name}   is 12
 
 Out delay
 
-C ${.arg} {
+C ${ } {
 
-Its Node_parent x . . . ${.arg}  
+Its Node_parent x
 
-C ${.arg} }
+C ${ } }
 
 Break 
 
@@ -42,14 +42,14 @@ Break
 Actor x
 ----------------------------------------------------------------
 
-C ${.arg} child ${name}   not 12
+C ${ } child ${name}   not 12
 
 Out delay
 
-C ${.arg} {
+C ${ } {
 
-Its Node_parent x . . . ${.arg}  
+Its Node_parent x
 
-C ${.arg} }
+C ${ } }
 
 

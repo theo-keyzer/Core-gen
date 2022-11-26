@@ -4,7 +4,7 @@ Actor main
 
 Cs {
 
-All Comp comps . . .  
+All Comp comps
 
 C
 C }
@@ -14,26 +14,26 @@ Actor comps Comp parent = .
 ----------------------------------------------------------------
 
 C ${.1.,}
-C ${.arg}  "${name} ": 
-Cs ${.arg}  [
+C ${  }  "${name} ": 
+Cs ${  }  [
 
-All ${name} list . . . ${.arg}   
+All ${name} list 
 
 C
-Cs ${.arg}  ]
+Cs ${  }  ]
 
 ----------------------------------------------------------------
 Actor list
 ----------------------------------------------------------------
 
 C ${.1.,}
-C ${.arg} {
+C ${  } {
 
-Its .comps.Element ele . . . ${.arg}  
-Its Child list2 . . . ${.arg}  
+Its .comps.Element ele
+Its Child list2
 
 C
-Cs ${.arg} }
+Cs ${  } }
 
 ----------------------------------------------------------------
 Actor ele
@@ -42,7 +42,7 @@ Actor ele
 Var a = $${.list.${name} }
 
 C ${.1.,}
-Cs ${.arg}  "${name} ": "${a}$"
+Cs ${  }  "${name} ": "${a}$"
 
 
 ----------------------------------------------------------------
@@ -50,26 +50,26 @@ Actor list2
 ----------------------------------------------------------------
 
 C ,
-C ${.arg}  "${comp} ": 
-Cs ${.arg}  [
+C ${  }  "${k_comp} ": 
+Cs ${  }  [
 
-All Comp.${comp} comps2 . . . ${.arg}   
+All Comp.${k_comp} comps2
 
 C
-Cs ${.arg}  ]
+Cs ${  }  ]
 
 ----------------------------------------------------------------
 Actor comps2
 ----------------------------------------------------------------
 
 C ${.1.,}
-C ${.arg} {
+C ${  } {
 
-Its Element 2ele . . . ${.arg}  
-Its .list2.Child list2 . . . ${.arg}  
+Its Element 2ele
+Its .list2.Child list2
 
 C
-Cs ${.arg} }
+Cs ${  } }
 
 ----------------------------------------------------------------
 Actor 2ele
@@ -78,6 +78,6 @@ Actor 2ele
 Var a = $${.list2.${name} }
 
 C ${.1.,}
-Cs ${.arg}  "${name} ": "${a}$"
+Cs ${  }  "${name} ": "${a}$"
 
 

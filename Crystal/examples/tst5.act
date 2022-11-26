@@ -2,17 +2,16 @@
 Actor main
 ----------------------------------------------------------------
 
-All Matrix mat_collect . . . ${2}
+All Matrix mat_collect search in 1,2,3,4,5,6,7
 All Group.M mat_all
 
-All Group.G graph_all . . . ${2}
+All Group.G graph_all . . . check
 
 Group pr M
 C
 Group pr G
 
 ---------------------------------------------------------------
--Actor mat_collect Matrix search in ${.arg}
 Actor mat_collect Matrix
 ----------------------------------------------------------------
 
@@ -23,24 +22,23 @@ Group add M ${search} ${b} -${c}
 Actor mat_all
 ----------------------------------------------------------------
 
-C  ${value}
+C  a ${value}
 
-Its value mat_items
+Its value.split., mat_items
 
 ----------------------------------------------------------------
 Actor mat_items
 ----------------------------------------------------------------
 
-C  ${value}
+C   b ${value}
 
-All Graph graph_collect . . . ${value}
+All Graph graph_collect name = ${value}
 
 ---------------------------------------------------------------
--Actor graph_collect Graph name = ${.arg}
 Actor graph_collect Graph
 ----------------------------------------------------------------
 
--C ${search}
+C    s ${search}   ${name}
 
 Group add G ${search} ${name}
 
@@ -69,8 +67,7 @@ C  all ${key}  ${value}
 Break
 
 -----------------------------------------------------------------
--Actor graph_all Group ${.arg} = check
-Actor graph_all .
+Actor graph_all Group .arg = check
 ----------------------------------------------------------------
 
 C  no  ${key}  ${value}  ${.arg} 

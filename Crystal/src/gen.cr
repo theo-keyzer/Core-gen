@@ -469,6 +469,13 @@ def chk( eqs, v, ss, prev, rv, rs )
 		end
 		return false
 	end
+	if eq == "!has" || eq == "!in"
+		u = v.split(",") & ss.split(",")
+		if u.size > 0
+			return false
+		end
+		return true
+	end
 	if eq == "="
 		if v == ss
 			return true

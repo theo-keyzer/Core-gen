@@ -4,23 +4,55 @@ Actor main
 
 Cs {
 
-All Comp comps
+All Comp comps 
 
 C
 C }
 
 ----------------------------------------------------------------
-Actor comps Comp parent = .
+Actor comps Comp name !in Comp,Star,Token,Ref,Ref2,Ref3,Token,Element,Opt
 ----------------------------------------------------------------
 
 C ${.1.,}
 C ${  }  "${name} ": 
-Cs ${  }  [
+Cs ${  }  {
 
-All ${name} list
+-All ${name} list
+-Its Element ele
+Its Child childs
+-All Comp childs parent = ${name}
+-Du list
 
 C
-Cs ${  }  ]
+Cs ${  }  }
+
+----------------------------------------------------------------
+Actor childs
+----------------------------------------------------------------
+
+C ${.1.,}
+C ${  } "${k_comp} ":
+Cs ${  } {
+
+All Comp.${k_comp}n.Element childs2
+
+C
+Cs ${  } }
+
+Var a = $${k_comp}
+
+-C All ${.comps.name}n.childs
+-All comp childs
+
+----------------------------------------------------------------
+Actor childs2
+----------------------------------------------------------------
+
+Var a = $${.childs.${name} }
+-Var a = $${${name} }
+
+C ${.1.,}
+Cs ${  } "${name} ": "${a}$"
 
 ----------------------------------------------------------------
 Actor list
@@ -32,7 +64,7 @@ C ${  } {
 Cs ${  }    "me_id": ${k_me} 
 
 Its .comps.Element ele
-Its Child list2
+-Its Child list2
 
 C
 Cs ${  } }
@@ -41,7 +73,8 @@ Cs ${  } }
 Actor ele
 ----------------------------------------------------------------
 
-Var a = $${.list.${name} }
+-Var a = $${.list.${name} }
+Var a = $${${name} }
 
 -C ${.1.,}
 C ,
@@ -60,10 +93,10 @@ Actor list2
 ----------------------------------------------------------------
 
 C ,
-Cs ${  }  "${k_comp} ": 
+Cs ${  }  "${comp} ": 
 -Cs ${  }  [
 
-All Comp.${k_comp} comps2
+All Comp.${comp} comps2
 
 -C
 -Cs ${  }  ]

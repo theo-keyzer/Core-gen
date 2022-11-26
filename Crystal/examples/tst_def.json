@@ -1,323 +1,351 @@
 {
-  "Node": 
-  [
-   {
+   "Node": 
+   [
+    {
 
-     "name": "n1",
-     "pad": "parent",
-     "parent": ".",
-     "var": "v",
-     "eq": "=",
-     "value": "9"
-   },
-   {
+       "name": "n1",
+       "pad": "parent",
+       "parent": ".",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
 
-     "name": "n11",
-     "pad": "parent",
-     "parent": "n1",
-     "var": "v",
-     "eq": "=",
-     "value": "9",
-     "Link": 
-     [
-      {
+       "name": "n11",
+       "pad": "parent",
+       "parent": "n1",
+       "var": "v",
+       "eq": "=",
+       "value": "9",
+       "Link": 
+       [
+        {
 
-        "to": "n22"
-      }
-     ]
-   },
-   {
+           "to": "n22"
+        }
+       ]
+    },
+    {
 
-     "name": "n12",
-     "pad": "parent",
-     "parent": "n1",
-     "var": "v",
-     "eq": "=",
-     "value": "9"
-   },
-   {
+       "name": "n12",
+       "pad": "parent",
+       "parent": "n1",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
 
-     "name": "n2",
-     "pad": "parent",
-     "parent": ".",
-     "var": "v",
-     "eq": "=",
-     "value": "9"
-   },
-   {
+       "name": "n2",
+       "pad": "parent",
+       "parent": ".",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
 
-     "name": "n21",
-     "pad": "parent",
-     "parent": "n2",
-     "var": "v",
-     "eq": "=",
-     "value": "9",
-     "Link": 
-     [
-      {
+       "name": "n21",
+       "pad": "parent",
+       "parent": "n2",
+       "var": "v",
+       "eq": "=",
+       "value": "9",
+       "Link": 
+       [
+        {
 
-        "to": "n11"
-      }
-     ]
-   },
-   {
+           "to": "n11"
+        }
+       ]
+    },
+    {
 
-     "name": "n22",
-     "pad": "parent",
-     "parent": "n2",
-     "var": "v",
-     "eq": "=",
-     "value": "9"
-   },
-   {
+       "name": "n22",
+       "pad": "parent",
+       "parent": "n2",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
 
-     "name": "n221",
-     "pad": "parent",
-     "parent": "n22",
-     "var": "v",
-     "eq": "=",
-     "value": "9",
-     "Link": 
-     [
-      {
+       "name": "n221",
+       "pad": "parent",
+       "parent": "n22",
+       "var": "v",
+       "eq": "=",
+       "value": "9",
+       "Link": 
+       [
+        {
 
-        "to": "n1"
-      }
-     ]
-   }
-  ],
-  "Graph": 
-  [
-   {
+           "to": "n1"
+        }
+       ]
+    }
+   ],
+   "Graph": 
+   [
+    {
 
-     "name": "B-C",
-     "pad": "for",
-     "search": "1"
-   },
-   {
+       "name": "B-C",
+       "pad": "for",
+       "search": "1"
+    },
+    {
 
-     "name": "C-A",
-     "pad": "for",
-     "search": "2"
-   },
-   {
+       "name": "C-A",
+       "pad": "for",
+       "search": "2"
+    },
+    {
 
-     "name": "C-A",
-     "pad": "for",
-     "search": "1"
-   },
-   {
+       "name": "C-A",
+       "pad": "for",
+       "search": "1"
+    },
+    {
 
-     "name": "C-B",
-     "pad": "for",
-     "search": "2"
-   },
-   {
+       "name": "C-B",
+       "pad": "for",
+       "search": "2"
+    },
+    {
 
-     "name": "A-B",
-     "pad": "for",
-     "search": "3"
-   },
-   {
+       "name": "A-B",
+       "pad": "for",
+       "search": "3"
+    },
+    {
 
-     "name": "A-C",
-     "pad": "for",
-     "search": "2"
-   },
-   {
+       "name": "A-C",
+       "pad": "for",
+       "search": "2"
+    },
+    {
 
-     "name": "A-B",
-     "pad": "for",
-     "search": "4"
-   },
-   {
+       "name": "A-B",
+       "pad": "for",
+       "search": "4"
+    },
+    {
 
-     "name": "B-A",
-     "pad": "for",
-     "search": "1"
-   },
-   {
+       "name": "B-A",
+       "pad": "for",
+       "search": "1"
+    },
+    {
 
-     "name": "B-C",
-     "pad": "for",
-     "search": "4"
-   },
-   {
+       "name": "B-C",
+       "pad": "for",
+       "search": "4"
+    },
+    {
 
-     "name": "B-C",
-     "pad": "for",
-     "search": "3"
-   },
-   {
+       "name": "B-C",
+       "pad": "for",
+       "search": "3"
+    },
+    {
 
-     "name": "B-C",
-     "pad": "for",
-     "search": "5"
-   }
-  ],
-  "Matrix": 
-  [
-   {
+       "name": "B-C",
+       "pad": "for",
+       "search": "5"
+    }
+   ],
+   "Matrix": 
+   [
+    {
 
-     "a": "A",
-     "b": "B",
-     "c": "C",
-     "pad": "for",
-     "search": "1"
-   },
-   {
+       "a": "A",
+       "b": "B",
+       "c": "C",
+       "pad": "for",
+       "search": "1"
+    },
+    {
 
-     "a": "C",
-     "b": "C",
-     "c": "C",
-     "pad": "for",
-     "search": "2"
-   },
-   {
+       "a": "C",
+       "b": "C",
+       "c": "C",
+       "pad": "for",
+       "search": "2"
+    },
+    {
 
-     "a": "A",
-     "b": "A",
-     "c": "C",
-     "pad": "for",
-     "search": "3"
-   },
-   {
+       "a": "A",
+       "b": "A",
+       "c": "C",
+       "pad": "for",
+       "search": "3"
+    },
+    {
 
-     "a": "C",
-     "b": "B",
-     "c": "A",
-     "pad": "for",
-     "search": "1"
-   },
-   {
+       "a": "C",
+       "b": "B",
+       "c": "A",
+       "pad": "for",
+       "search": "1"
+    },
+    {
 
-     "a": "A",
-     "b": "B",
-     "c": "C",
-     "pad": "for",
-     "search": "2"
-   },
-   {
+       "a": "A",
+       "b": "B",
+       "c": "C",
+       "pad": "for",
+       "search": "2"
+    },
+    {
 
-     "a": "A",
-     "b": "C",
-     "c": "C",
-     "pad": "for",
-     "search": "3"
-   },
-   {
+       "a": "A",
+       "b": "C",
+       "c": "C",
+       "pad": "for",
+       "search": "3"
+    },
+    {
 
-     "a": "A",
-     "b": "C",
-     "c": "B",
-     "pad": "for",
-     "search": "4"
-   },
-   {
+       "a": "A",
+       "b": "C",
+       "c": "B",
+       "pad": "for",
+       "search": "4"
+    },
+    {
 
-     "a": "C",
-     "b": "A",
-     "c": "C",
-     "pad": "for",
-     "search": "5"
-   },
-   {
+       "a": "C",
+       "b": "A",
+       "c": "C",
+       "pad": "for",
+       "search": "5"
+    },
+    {
 
-     "a": "C",
-     "b": "C",
-     "c": "A",
-     "pad": "for",
-     "search": "4"
-   }
-  ],
-  "Table": 
-  [
-   {
+       "a": "C",
+       "b": "C",
+       "c": "A",
+       "pad": "for",
+       "search": "4"
+    }
+   ],
+   "Table": 
+   [
+    {
 
-     "name": "tb1",
-     "pad": "as",
-     "value": "a",
-     "Field": 
-     [
-      {
+       "name": "tb1",
+       "pad": "as",
+       "value": "a",
+       "Field": 
+       [
+        {
 
-        "name": "t1f1",
-        "dt": "NUM",
-        "pad": "display",
-        "use": "dropdown"
-      }
-     ],
-     "Field": 
-     [
-      {
+           "type": ".",
+           "name": "t1f1",
+           "dt": "NUM",
+           "pad": "display",
+           "use": "dropdown"
+        }
+       ],
+       "Field": 
+       [
+        {
 
-        "name": "t1f2",
-        "dt": "FLOAT",
-        "pad": "dispaly",
-        "use": "normal,grid"
-      }
-     ],
-     "Join2": 
-     [
-      {
+           "type": ".",
+           "name": "t1f2",
+           "dt": "FLOAT",
+           "pad": "display",
+           "use": "normal,grid"
+        }
+       ],
+       "Join2": 
+       [
+        {
 
-        "field1": "t1f2",
-        "table2": "tb2",
-        "field2": "t2f1",
-        "attr2": "t2f1a1"
-      }
-     ]
-   },
-   {
+           "field1": "t1f2",
+           "table2": "tb2",
+           "field2": "t2f1",
+           "attr2": "t2f1a1"
+        }
+       ]
+    },
+    {
 
-     "name": "tb2",
-     "pad": "as",
-     "value": "b",
-     "Field": 
-     [
-      {
+       "name": "tb2",
+       "pad": "as",
+       "value": "b",
+       "Field": 
+       [
+        {
 
-        "name": "t2f1",
-        "dt": "VAR",
-        "pad": "display",
-        "use": "normal,grid",
-        "Attr": 
-        [
-         {
+           "type": ".",
+           "name": "t2f1",
+           "dt": "VAR",
+           "pad": "display",
+           "use": "normal,grid",
+           "Attrs": 
+           [
+            {
 
-           "name": "t2f1a1"
-         }
-        ]
-      }
-     ],
-     "Join": 
-     [
-      {
+               "name": "t2f1a1"
+            }
+           ]
+        }
+       ],
+       "Join": 
+       [
+        {
 
-        "field1": "t2f1",
-        "table2": "tb1",
-        "field2": "t1f1",
-        "pad": "for",
-        "use": "grid"
-      }
-     ],
-     "Join": 
-     [
-      {
+           "field1": "t2f1",
+           "table2": "tb1",
+           "field2": "t1f1",
+           "pad": "for",
+           "use": "grid"
+        }
+       ],
+       "Join": 
+       [
+        {
 
-        "field1": "t2f1",
-        "table2": "tb1",
-        "field2": "t1f1",
-        "pad": "for",
-        "use": "grid"
-      }
-     ]
-   },
-   {
+           "field1": "t2f1",
+           "table2": "tb1",
+           "field2": "t1f1",
+           "pad": "for",
+           "use": "grid"
+        }
+       ]
+    },
+    {
 
-     "name": "Open",
-     "pad": "as",
-     "value": "op"
-   }
-  ]
+       "name": "Open",
+       "pad": "as",
+       "value": "op",
+       "Field": 
+       [
+        {
+
+           "type": "User",
+           "name": "user",
+           "dt": "VAR",
+           "pad": "E_O_L",
+           "use": "E_O_L"
+        }
+       ],
+       "Of": 
+       [
+        {
+
+           "field": "user",
+           "attr": "location_id",
+           "from": "location_name",
+           "op": "=",
+           "value": "test"
+        }
+       ]
+    }
+   ],
+   "Type": 
+   [
+   ]
 }

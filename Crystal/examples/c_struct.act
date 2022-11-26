@@ -128,7 +128,7 @@ Its Comp_parent find
 C 		if v = names[ va[0] ]?
 C 			return(true, v )
 C 		end
-C 		if va[0] == "comp"
+C 		if va[0] == "k_comp"
 C 			return(true, comp )
 C 		end
 C 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",${name} ?");

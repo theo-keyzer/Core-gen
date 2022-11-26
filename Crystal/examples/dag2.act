@@ -26,15 +26,15 @@ Actor disp_col Node
 
 Unique add A ${name}
 
-C ${.arg}  ${name}  - ${var}  ${eq}  ${value}
+C ${  }  ${name}  - ${var}  ${eq}  ${value}
 
 Out delay
 
-C ${.arg}  {
+C ${  }  {
 
-Its Link.to disp_col . . . ${.arg}  
+Its Link.to disp_col
 
-C ${.arg}  }
+C ${  }  }
 
 ----------------------------------------------------------------
 E_O_F

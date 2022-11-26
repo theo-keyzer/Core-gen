@@ -49,6 +49,8 @@ echo def2json.act
 ./gen def2json.act app.unit,sample.unit,tst.def >tst_def.json
 echo def2json2.act
 ./gen def2json2.act app.unit,sample.unit,tst.def,sample.def >tst_sample_def.json
+echo def2json3.act
+./gen def2json3.act gen.unit,app.unit,sample.unit >tst_sample_unit.json
 echo ref.act
 ./gen ref.act tst.def,sample.def
 

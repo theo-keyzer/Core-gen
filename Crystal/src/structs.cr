@@ -63,7 +63,7 @@ class KpNode < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Node?");
@@ -191,7 +191,7 @@ class KpLink < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Link?");
@@ -247,7 +247,7 @@ class KpGraph < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Graph?");
@@ -284,7 +284,7 @@ class KpMatrix < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Matrix?");
@@ -345,7 +345,7 @@ class KpTable < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Table?");
@@ -560,7 +560,7 @@ class KpField < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Field?");
@@ -755,7 +755,7 @@ class KpAttrs < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Attrs?");
@@ -852,7 +852,7 @@ class KpOf < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Of?");
@@ -961,7 +961,7 @@ class KpJoin < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Join?");
@@ -1075,7 +1075,7 @@ class KpJoin2 < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Join2?");
@@ -1185,7 +1185,7 @@ class KpType < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Type?");
@@ -1347,7 +1347,7 @@ class KpData < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Data?");
@@ -1461,7 +1461,7 @@ class KpAttr < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Attr?");
@@ -1659,7 +1659,7 @@ class KpWhere < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Where?");
@@ -1754,7 +1754,7 @@ class KpLogic < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Logic?");
@@ -1865,7 +1865,7 @@ class KpComp < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Comp?");
@@ -2105,7 +2105,7 @@ class KpToken < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Token?");
@@ -2148,7 +2148,7 @@ class KpStar < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Star?");
@@ -2244,7 +2244,7 @@ class KpElement < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Element?");
@@ -2424,7 +2424,7 @@ class KpOpt < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Opt?");
@@ -2497,7 +2497,7 @@ class KpRef < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Ref?");
@@ -2597,7 +2597,7 @@ class KpRef2 < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Ref2?");
@@ -2715,7 +2715,7 @@ class KpRef3 < Kp
 		if v = names[ va[0] ]?
 			return(true, v )
 		end
-		if va[0] == "comp"
+		if va[0] == "k_comp"
 			return(true, comp )
 		end
 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Ref3?");
