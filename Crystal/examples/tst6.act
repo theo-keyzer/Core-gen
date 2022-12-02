@@ -18,9 +18,10 @@ Actor mat_collect Matrix
 ----------------------------------------------------------------
 
 Var ab = ${a} -${b}
-Var bc = ${b} -${c}
+-Var bc = ${b} -${c}
+
 All Graph graph_collect name = ${ab}
-All Graph graph_collect name = ${bc}
+All Graph graph_collect name = ${b}n-${c}
 
 ---------------------------------------------------------------
 Actor graph_collect Graph

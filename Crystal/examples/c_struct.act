@@ -106,6 +106,7 @@ C 		@line_no = lno
 C 		@me = act.ap_${name}l.size
 C 		@names["k_me"] = @me.to_s
 C 		@names["k_parent"] = "-1"
+C 		@names["k_comp"] = "${name}c"
 
 Its Element ele
 Its parent parent_field_p
@@ -128,9 +129,9 @@ Its Comp_parent find
 C 		if v = names[ va[0] ]?
 C 			return(true, v )
 C 		end
-C 		if va[0] == "k_comp"
-C 			return(true, comp )
-C 		end
+-C 		if va[0] == "k_comp"
+-C 			return(true, comp )
+-C 		end
 C 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",${name} ?");
 C 	end
 C
@@ -290,6 +291,14 @@ C 			if en = glob.dats.index[me.to_s + "_${.find.name}c_" + va[1] ]?
 C 				return (glob.dats.ap_${.find.name}l[en].get_var(glob, va[2..], lno))
 C 			end
 C 			return(false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?")
+C 		end
+
+----------------------------------------------------------------
+Actor find Comp find != FindIn
+----------------------------------------------------------------
+
+C 		if va[0] == "${name}c"  && va.size > 2 && its${name}l.size > 0 # ${} 
+C 			return (its${name}l[0].get_var(glob, va[1..], lno))
 C 		end
 
 ----------------------------------------------------------------
