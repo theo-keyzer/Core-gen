@@ -1,0 +1,28 @@
+----------------------------------------------------------------
+Comp Model parent . Find
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+	Element pad        C1 WORD       * padding
+	Element info       V1 WORD       * info
+
+----------------------------------------------------------------
+Comp Frame parent Model FindIn
+----------------------------------------------------------------
+
+	Element pos        C1 WORD       * frame grid pos
+	Element name       C1 WORD       * frame name
+	Element pad        C1 WORD       * padding
+	Element info       V1 WORD       * info
+
+----------------------------------------------------------------
+Comp A parent Frame
+----------------------------------------------------------------
+
+	Element model      R1 WORD       * ref to model
+	Element pad        C1 WORD       * padding
+	Element info       V1 WORD       * info
+
+Ref model Model ?
+
+

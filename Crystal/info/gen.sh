@@ -1,0 +1,7 @@
+../test3/gen ../test3/c_struct.act note.unit,../test3/act.unit >src/structs.cr
+if [ $? != 0 ]; then echo c_struct.act has errors; fi
+
+../test3/gen ../test3/c_run.act note.unit,../test3/act.unit >src/run.cr
+if [ $? != 0 ]; then echo c_run.act has errors; fi
+
+
