@@ -1,0 +1,71 @@
+note.act
+
+notes - map of note taking app
+
+  1a) purpose - use cases
+    A idea - list of ideas
+    A design - some designs 
+    A todo - todo items
+    A info - data collected
+    A model - build models
+
+model - define map of model
+
+  1a) model - the model elements
+    A name - model name
+    A pad - padding
+    A info - info
+  2a) frame - the frame elements
+    A pos - frame, n dim grid pos
+    A name - frame name
+    A pad - padding
+    A info - info
+  3a) a - the a elements
+    A model - ref to model
+    A pad - padding
+    A info - info
+
+match - map how to match
+
+  1a) input - list of model names
+    A find - find the a's of these names
+    A join - join with the ref to other models
+    A end - end if all the models are reached, print maps.
+  1b) navigate - navigate the map
+    A each - for each a, move to next grid
+    A join - join that grid a's to other models
+    A get - get shortest path to get to all the models
+    A print - print path, maps
+  2a) gen - generate matching app
+    A build - build actors to test use cases
+    A design - design app
+    A gen - generate app
+m.act
+    A model model info - info
+    B model model name - model name
+    A model frame info - info
+    B model frame name - frame name
+m2.act
+    A model model info - info
+      B model model name - model name
+      B model frame name - frame name
+m3.act
+    A notes purpose info - data collected
+      B model model name - model name
+      B model frame name - frame name
+    A model a info - info
+      B model model name - model name
+      B model frame name - frame name
+m4.act
+    A notes purpose info - data collected
+      B notes purpose model - build models
+      B model a model - ref to model
+    A model a info - info
+      B notes purpose model - build models
+      B model a model - ref to model
+m5.act
+    A model frame pos - frame, n dim grid pos
+      B notes purpose todo - todo items
+m6.act
+    A notes purpose todo - todo items
+      B model frame pos - frame, n dim grid pos
