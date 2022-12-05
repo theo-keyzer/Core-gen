@@ -10,13 +10,19 @@ All A a model = ${2}
 Actor a
 ----------------------------------------------------------------
 
+Unique add A ${k_me}
+Out delay
+
+C     A ${parent.parent.name}  ${parent.name}  ${model}  - ${info}
+
 All A b parent.name = ${parent.name}
 
 ----------------------------------------------------------------
 Actor b . model = ${.main.3}
 ----------------------------------------------------------------
 
-C     A ${.a.model}  - ${.a.info}
-C     B ${model}  - ${info}
+Unique add B ${k_me}
+
+C     B ${parent.parent.name}  ${parent.name}  ${model}  - ${info}
 
 

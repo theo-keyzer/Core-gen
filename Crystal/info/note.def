@@ -51,4 +51,9 @@ A join  * join that grid a's to other models
 A get   * get shortest path to get to all the models
 A print * print path, maps
 
+Frame 2a gen - generate matching app
+
+A build  * build actors to test use cases
+A design * design app
+A gen    * generate app
 

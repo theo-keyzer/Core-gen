@@ -12,6 +12,10 @@ Actor a
 * all items in its frame
 ----------------------------------------------------------------
 
+Out delay
+
+C     A ${parent.parent.name}  ${parent.name}  ${model}  - ${info}
+
 Its parent.A fa
 
 ----------------------------------------------------------------
@@ -19,6 +23,8 @@ Actor fa
 ----------------------------------------------------------------
 * all items in its model
 ----------------------------------------------------------------
+
+Unique add FA ${model} - ${.a.parent.name}
 
 All A b parent.parent.name = ${model}
 
@@ -28,7 +34,6 @@ Actor b . model = ${.main.3}
 * find item 2
 ----------------------------------------------------------------
 
-C     A ${.fa.model}  - ${.fa.info}
-C     B ${model}  - ${info}
+C       B ${parent.parent.name}  ${parent.name}  ${model}  - ${info}
 
 

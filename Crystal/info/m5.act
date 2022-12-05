@@ -16,7 +16,7 @@ C ${key}  ${value}
 ----------------------------------------------------------------
 Actor a
 ----------------------------------------------------------------
-* all items in its frame
+* all items in its model
 ----------------------------------------------------------------
 
 Out delay
@@ -24,7 +24,7 @@ Out delay
 C     A ${parent.parent.name}  ${parent.name}  ${model}  - ${info}
 
 
-Its parent.A fa
+Its parent.parent.Frame.A fa
 
 ----------------------------------------------------------------
 Actor fa
