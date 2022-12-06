@@ -6,6 +6,7 @@ Frame 1a 1a - use cases
 
 A a1   * a1
 A a2   * a2
+A q    * q
 
 Frame 1b 1b - use cases
 
@@ -18,6 +19,18 @@ Model a1 - map of grid 1
 Frame a1 a1 - use cases
 
 A a1a   * a1a
+A r     * r
+
+----------------------------------------------------------------
+Model a1a - map of grid 1
+----------------------------------------------------------------
+
+Frame a1a1 a1a1 - use cases
+
+A a1a1a   * a1a1a
+A y       * y
+A a1      * up to a1
+A a2      * up to a2
 
 ----------------------------------------------------------------
 Model a2 - map of grid 2
@@ -26,6 +39,7 @@ Model a2 - map of grid 2
 Frame a2 a2 - use cases
 
 A a2a   * a2a
+A z     * z
 
 ----------------------------------------------------------------
 Model b1 - map of grid 3

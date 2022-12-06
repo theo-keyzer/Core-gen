@@ -20,4 +20,7 @@ echo m9.act
 ./gen m9.act map.def a1a x
 echo m10.act
 ./gen m10.act map.def a1a b1a
+echo m11.act
+./gen m11.act map.def r z
+
 
