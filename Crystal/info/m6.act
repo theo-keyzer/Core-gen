@@ -24,20 +24,20 @@ Out delay
 C     A ${parent.parent.name}  ${parent.name}  ${model}  - ${info}
 
 
-Its parent.parent.Frame.A fa
+Its parent.parent.Frame.A ma
 
 ----------------------------------------------------------------
-Actor fa
+Actor ma
 ----------------------------------------------------------------
 * all items in its model
 ----------------------------------------------------------------
 
-Unique add FA ${model} - ${.a.parent.name}
-Unique clear FB
-All A ma parent.parent.name = ${model}
+Unique add MA ${model} - ${.a.parent.name}
+Unique clear MB
+All A mma parent.parent.name = ${model}
 
 ----------------------------------------------------------------
-Actor ma
+Actor mma
 ----------------------------------------------------------------
 * find item 2
 ----------------------------------------------------------------
@@ -50,20 +50,20 @@ Actor b
 * all items in its model
 ----------------------------------------------------------------
 
-Its parent.parent.Frame.A fb
+Its parent.parent.Frame.A mb
 
 ----------------------------------------------------------------
-Actor fb
+Actor mb
 ----------------------------------------------------------------
 * all items in its model
 ----------------------------------------------------------------
 
-Unique add FB ${model} - ${.b.parent.name}
+Unique add MB ${model} - ${.b.parent.name}
 
-All A mb parent.parent.name = ${model}
+All A mmb parent.parent.name = ${model}
 
 ----------------------------------------------------------------
-Actor mb . model = ${.fa.model}
+Actor mmb . model = ${.ma.model}
 ----------------------------------------------------------------
 * match models
 ----------------------------------------------------------------

@@ -12,4 +12,12 @@ echo m5.act
 ./gen m5.act note.def pos todo
 echo m6.act
 ./gen m6.act note.def todo pos
+echo m7.act
+./gen m7.act note.def pad info
+echo m8.act
+./gen m8.act map.def a1a a2a
+echo m9.act
+./gen m9.act map.def a1a x
+echo m10.act
+./gen m10.act map.def a1a b1a
 

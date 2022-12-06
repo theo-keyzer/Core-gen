@@ -16,7 +16,7 @@ C ${key}  ${value}
 ----------------------------------------------------------------
 Actor a
 ----------------------------------------------------------------
-* all items in its model
+* all items in its frame
 ----------------------------------------------------------------
 
 Out delay
@@ -24,20 +24,20 @@ Out delay
 C     A ${parent.parent.name}  ${parent.name}  ${model}  - ${info}
 
 
-Its parent.parent.Frame.A ma
+Its parent.parent.A_model fa
 
 ----------------------------------------------------------------
-Actor ma
+Actor fa
 ----------------------------------------------------------------
 * all items in its model
 ----------------------------------------------------------------
 
-Unique add MA ${model} - ${.a.parent.name}
+Unique add FA ${model} - ${.a.parent.name}
 Unique clear FB
-All A mma parent.parent.name = ${model}
+All A ma parent.parent.name = ${model}
 
 ----------------------------------------------------------------
-Actor mma
+Actor ma
 ----------------------------------------------------------------
 * find item 2
 ----------------------------------------------------------------
@@ -63,7 +63,7 @@ Unique add FB ${model} - ${.b.parent.name}
 All A mb parent.parent.name = ${model}
 
 ----------------------------------------------------------------
-Actor mb . model = ${.ma.model}
+Actor mb . model = ${.fa.model}
 ----------------------------------------------------------------
 * match models
 ----------------------------------------------------------------

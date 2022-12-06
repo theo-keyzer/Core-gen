@@ -69,3 +69,22 @@ m5.act
 m6.act
     A notes purpose todo - todo items
       B model frame pos - frame, n dim grid pos
+m7.act
+    A model model pad - padding
+      B notes purpose info - data collected
+      B model a info - info
+    A model frame pad - padding
+      B notes purpose info - data collected
+      B model a info - info
+    A model a pad - padding
+      B notes purpose info - data collected
+      B model a info - info
+m8.act
+    A a1 a1 a1a - a1a
+      B a2 a2 a2a - a2a
+m9.act
+    A a1 a1 a1a - a1a
+      B b2 b2 x - x data
+m10.act
+    A a1 a1 a1a - a1a
+      B b1 b1 b1a - b1a
