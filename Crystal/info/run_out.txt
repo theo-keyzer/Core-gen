@@ -12,7 +12,7 @@ notes - map of note taking app
     A idea - union of info, knowledge, skill
     A wisdom - how to act of the idea
     A thinking - moving in the frame grid
-    A planning - how to get from a to b
+    A design - how to get from a to b
 
 model - define map of model
 
@@ -111,3 +111,45 @@ m12.act note.def idea pos
       - notes - map of note taking app
         - model - define map of model
           B model frame pos - frame, n dim grid pos
+m13.act note.def info pad
+
+Model model - define map of model
+
+ Frame 1a model - the model elements
+
+  A pad * padding
+  A info * info
+
+ Frame 2a frame - the frame elements
+
+  A pad * padding
+  A info * info
+
+ Frame 3a a - the a elements
+
+  A pad * padding
+  A info * info
+
+Model notes - map of note taking app
+
+ Frame 1a purpose - use cases
+
+  A info * data collected
+m14 note.def thinking idea pos
+
+Model notes - map of note taking app
+
+ Frame 1a purpose - use cases
+
+  A idea * list of ideas
+
+ Frame 2a mapping - how to join
+
+  A idea * union of info, knowledge, skill
+  A thinking * moving in the frame grid
+
+Model model - define map of model
+
+ Frame 2a frame - the frame elements
+
+  A pos * frame, n dim grid pos

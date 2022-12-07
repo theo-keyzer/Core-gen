@@ -26,5 +26,9 @@ echo m12.act note.def pos idea
 ./gen m12.act note.def pos idea
 echo m12.act note.def idea pos
 ./gen m12.act note.def idea pos
+echo m13.act note.def info pad
+./gen m13.act note.def info pad
+echo m14 note.def thinking idea pos
+./gen m14.act note.def thinking idea pos
 
 
