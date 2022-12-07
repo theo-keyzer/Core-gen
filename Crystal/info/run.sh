@@ -30,5 +30,7 @@ echo m13.act note.def info pad
 ./gen m13.act note.def info pad
 echo m14 note.def thinking idea pos
 ./gen m14.act note.def thinking idea pos
+echo m15.act note.def,map.def design,a1a pos,b1a
+./gen m15.act note.def,map.def design,a1a pos,b1a
 
 

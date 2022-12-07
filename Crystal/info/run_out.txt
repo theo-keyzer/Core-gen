@@ -153,3 +153,32 @@ Model model - define map of model
  Frame 2a frame - the frame elements
 
   A pos * frame, n dim grid pos
+m15.act note.def,map.def design,a1a pos,b1a
+
+Model notes - map of note taking app
+
+ Frame 1a purpose - use cases
+
+  A design * some designs 
+
+ Frame 2a mapping - how to join
+
+  A design * how to get from a to b
+
+Model model - define map of model
+
+ Frame 2a frame - the frame elements
+
+  A pos * frame, n dim grid pos
+
+Model a1 - map of grid 1
+
+ Frame a1 a1 - use cases
+
+  A a1a * a1a
+
+Model b1 - map of grid 3
+
+ Frame b1 b1 - use cases
+
+  A b1a * b1a
