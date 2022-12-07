@@ -22,5 +22,9 @@ echo m10.act
 ./gen m10.act map.def a1a b1a
 echo m11.act
 ./gen m11.act map.def r z
+echo m12.act note.def pos idea
+./gen m12.act note.def pos idea
+echo m12.act note.def idea pos
+./gen m12.act note.def idea pos
 
 

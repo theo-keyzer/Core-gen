@@ -22,4 +22,6 @@ echo m10.act
 ./gen m10.act $defs $1 $2
 echo m11.act
 ./gen m11.act $defs $1 $2
+echo m12.act
+./gen m12.act $defs $1 $2
 

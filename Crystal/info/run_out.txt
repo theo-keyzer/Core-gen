@@ -8,6 +8,11 @@ notes - map of note taking app
     A todo - todo items
     A info - data collected
     A model - build models
+  2a) mapping - how to join
+    A idea - union of info, knowledge, skill
+    A wisdom - how to act of the idea
+    A thinking - moving in the frame grid
+    A planning - how to get from a to b
 
 model - define map of model
 
@@ -88,3 +93,21 @@ m9.act
 m10.act
     A a1 a1 a1a - a1a
       B b1 b1 b1a - b1a
+m11.act
+    A a1 a1 r - r
+      B a2 a2 z - z
+m12.act note.def pos idea
+    A model frame pos - frame, n dim grid pos
+      - model - define map of model
+        - notes - map of note taking app
+          B notes purpose idea - list of ideas
+          B notes mapping idea - union of info, knowledge, skill
+m12.act note.def idea pos
+    A notes purpose idea - list of ideas
+      - notes - map of note taking app
+        - model - define map of model
+          B model frame pos - frame, n dim grid pos
+    A notes mapping idea - union of info, knowledge, skill
+      - notes - map of note taking app
+        - model - define map of model
+          B model frame pos - frame, n dim grid pos
