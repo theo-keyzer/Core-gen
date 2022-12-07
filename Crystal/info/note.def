@@ -14,8 +14,17 @@ Frame 2a mapping - how to join
 
 A idea     * union of info, knowledge, skill
 A wisdom   * how to act of the idea
-A thinking * moving in the frame grid
+A thinking * moving between the frame grids
+A memory   * the path and result of the thinking
+A learning * create new models by adding and refactoring other models
 A design   * how to get from a to b
+
+Frame 3a usage - how to use it
+
+A capture  * collect new data for models
+A match    * find correlations and missing links
+A simulate * what the app needs to do
+A doc      * describe the process
 
 ----------------------------------------------------------------
 Model model - define map of model
