@@ -511,6 +511,18 @@ def chk( eqs, v, ss, prev, rv, rs )
 		end
 		return( false )
 	end
+	if eqs.size > 1 && eqs[0] == 'A'
+		i = 1
+		while i < eqs.size
+			if v.size < i || ss.size < i
+				return false
+			end
+			if eqs[i] == '1' && v[i-1] != ss[i-1]
+				return false
+			end
+			i += 1
+		end
+	end
 	return( true )
 end
 
