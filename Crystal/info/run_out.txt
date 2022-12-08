@@ -11,8 +11,15 @@ notes - map of note taking app
   2a) mapping - how to join
     A idea - union of info, knowledge, skill
     A wisdom - how to act of the idea
-    A thinking - moving in the frame grid
+    A thinking - moving between the frame grids
+    A memory - the path and result of the thinking
+    A learning - create new models by adding and refactoring other models
     A design - how to get from a to b
+  3a) usage - how to use it
+    A capture - collect new data for models
+    A match - find correlations and missing links
+    A simulate - what the app needs to do
+    A doc - describe the process
 
 model - define map of model
 
@@ -146,7 +153,7 @@ Model notes - map of note taking app
  Frame 2a mapping - how to join
 
   A idea * union of info, knowledge, skill
-  A thinking * moving in the frame grid
+  A thinking * moving between the frame grids
 
 Model model - define map of model
 
@@ -171,6 +178,12 @@ Model model - define map of model
 
   A pos * frame, n dim grid pos
 
+Model match - map how to match
+
+ Frame 2a gen - generate matching app
+
+  A design * design app
+
 Model a1 - map of grid 1
 
  Frame a1 a1 - use cases
@@ -182,3 +195,59 @@ Model b1 - map of grid 3
  Frame b1 b1 - use cases
 
   A b1a * b1a
+m16.act note.def,map.def idea,thinking,design
+
+Model notes - map of note taking app
+
+ Frame 1a purpose - use cases
+
+  A idea * list of ideas
+  A design * some designs 
+
+ Frame 2a mapping - how to join
+
+  A design * how to get from a to b
+  A idea * union of info, knowledge, skill
+  A thinking * moving between the frame grids
+
+Model match - map how to match
+
+ Frame 2a gen - generate matching app
+
+  A design * design app
+m17.act note.def,map.def idea,thinking,desig
+
+Model notes - map of note taking app
+
+ Frame 1a purpose - use cases
+
+  A idea * list of ideas
+  A design * some designs 
+
+ Frame 2a mapping - how to join
+
+  A wisdom * how to act of the idea
+  A memory * the path and result of the thinking
+
+Model match - map how to match
+
+ Frame 2a gen - generate matching app
+
+  A design * design app
+m18.act note.def
+
+Model notes - map of note taking app
+
+ Frame 1a purpose - use cases
+
+  A model * build models
+
+ Frame 3a usage - how to use it
+
+  A match * find correlations and missing links
+
+Model model - define map of model
+
+ Frame 3a a - the a elements
+
+  A model * ref to model

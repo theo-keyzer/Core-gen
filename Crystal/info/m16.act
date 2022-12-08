@@ -9,42 +9,14 @@ All Group pr
 Actor arg1
 ----------------------------------------------------------------
 
-Its .main.3.split., arg2
+All A b model = ${value}
 
 ----------------------------------------------------------------
-Actor arg2
-----------------------------------------------------------------
-
--C ${.arg1.value}  ${value}
-
-All A a model = ${value}
-Unique clear A
-
-----------------------------------------------------------------
-Actor a
-----------------------------------------------------------------
-
-Unique add A ${k_me}
-Unique clear MA
-Its parent.parent ma
-
-----------------------------------------------------------------
-Actor ma
-----------------------------------------------------------------
-
-Unique add MA ${k_me}
-Unique clear B
-Its Frame.A b
-Its Frame.A.model ma
-Its A_model.parent.parent ma
-
-----------------------------------------------------------------
-Actor b . model = ${.arg1.value}
+Actor b .
 ----------------------------------------------------------------
 
 Unique add B ${k_me}
 Group add ${parent.parent.k_me}  ${parent.k_me} ${k_me}
-Group add ${.a.parent.parent.k_me}  ${.a.parent.k_me} ${.a.k_me}
 
 ----------------------------------------------------------------
 Actor pr

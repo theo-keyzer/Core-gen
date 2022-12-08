@@ -32,5 +32,11 @@ echo m14 note.def thinking idea pos
 ./gen m14.act note.def thinking idea pos
 echo m15.act note.def,map.def design,a1a pos,b1a
 ./gen m15.act note.def,map.def design,a1a pos,b1a
+echo m16.act note.def,map.def idea,thinking,design
+./gen m16.act note.def,map.def idea,thinking,design
+echo m17.act note.def,map.def idea,thinking,desig
+./gen m17.act note.def,map.def idea,thinking,desig
+echo m18.act note.def
+./gen m18.act note.def
 
 
