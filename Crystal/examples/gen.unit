@@ -47,6 +47,7 @@ Comp Element parent Comp FindIn
 		Opt R1            * link to top level comp - Find - needs a Ref.
 		Opt L1            * link to child of previous link - R1 for first, L1 for chain - needs a Ref2.
 		Opt M1            * link more of L1
+		Opt N1            * nested comp
 	Element mw2  C1 WORD  * data type - not used
 	Element pad  C1 WORD  * separator
 	Element doc  V1 WORD  * documentation string

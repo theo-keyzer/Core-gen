@@ -38,7 +38,7 @@ Comp Col parent Grid FindIn
 ----------------------------------------------------------------
 
 	Element name       C1 WORD       * column name, optional ref to grid
-	Element pos        C1 WORD       * column number
+	Element pos        N1 WORD       * column number
 	Element grid       R1 WORD       * optional ref to another grid
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info

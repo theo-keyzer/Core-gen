@@ -129,9 +129,6 @@ Its Comp_parent find
 C 		if v = names[ va[0] ]?
 C 			return(true, v )
 C 		end
--C 		if va[0] == "k_comp"
--C 			return(true, comp )
--C 		end
 C 		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",${name} ?");
 C 	end
 C
@@ -145,6 +142,7 @@ Its Ref3 ref_func3
 Its Ref_comp other_func
 Its Ref2_comp other_func2
 Its Ref3_comp other_func3
+Its Element nested
 
 C 		if va[0] == "Child" # ${}
 
@@ -159,6 +157,47 @@ C 		return(0)
 C 	end
 C end
 C
+
+----------------------------------------------------------------
+Actor nested Element mw = N1
+----------------------------------------------------------------
+
+C 		if va[0] == "${name}l" && va.size > 1 && parentp >= 0 # ${}
+C 			pos = 0
+C 			if v = names[ "${name}l" ]?
+C 				pos = v.to_i
+C 			end
+C 			if va[1] == "right" && pos > 0
+C 				pst = glob.dats.ap_${.struct.parent.name}l[ parentp ]
+C 				isin = false
+C 				pst.its${.struct.name}l.each do |st|
+C 					if st.me == me
+C 						isin = true
+C 						next
+C 					end
+C 					if isin == false
+C 						next
+C 					end
+C 					pos2 = 0
+C 					if v = st.names[ "${name}l" ]?
+C 						pos2 = v.to_i
+C 					end
+C 					if pos2 == 0
+C 						next
+C 					end
+C 					if pos2 <= pos
+C 						break
+C 					end
+C 					if pos2 == (pos+1)
+C 						ret = go_act(glob, st)
+C 						if ret != 0
+C 							return(ret)
+C 						end
+C 					end
+C 				end
+C 				return(0)
+C 			end
+C 		end
 
 ----------------------------------------------------------------
 Actor childs_func Comp name != Actor
@@ -257,7 +296,7 @@ Actor ele_act . mw = V1
 C 		p, @k_${name}l = getws(ln, p)
 
 ----------------------------------------------------------------
-Actor ele . mw in C1,R1,F1,L1,M1
+Actor ele . mw in C1,R1,F1,L1,M1,N1
 ----------------------------------------------------------------
 
 C 		p, @names["${name}l"] = getw(ln, p)
