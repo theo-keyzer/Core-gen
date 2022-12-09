@@ -167,6 +167,76 @@ C 			pos = 0
 C 			if v = names[ "${name}l" ]?
 C 				pos = v.to_i
 C 			end
+C 			if va[1] == "down" && pos > 0
+C 				pst = glob.dats.ap_${.struct.parent.name}l[ parentp ]
+C 				isin = false
+C 				pst.its${.struct.name}l.each do |st|
+C 					if st.me == me
+C 						isin = true
+C 						next
+C 					end
+C 					if isin == false
+C 						next
+C 					end
+C 					pos2 = 0
+C 					if v = st.names[ "${name}l" ]?
+C 						pos2 = v.to_i
+C 					end
+C 					if pos2 == 0
+C 						next
+C 					end
+C 					if pos2 == pos 
+C 						return( go_act(glob, st) )
+C 					end
+C 				end
+C 				return(0)
+C 			end
+C 			if va[1] == "up" && pos > 0
+C 				pst = glob.dats.ap_${.struct.parent.name}l[ parentp ]
+C 				isin = false
+C 				prev = 0
+C 				pst.its${.struct.name}l.each do |st|
+C 					pos2 = 0
+C 					if v = st.names[ "${name}l" ]?
+C 						pos2 = v.to_i
+C 					end
+C 					if pos2 == 0
+C 						next
+C 					end
+C 					if pos2 == pos && st.me != me
+C 						prev = st.me
+C 						isin = true
+C 						next
+C 					end
+C 					if st.me == me && isin == true
+C 						return( go_act(glob, glob.dats.ap_${.struct.name}l[prev] ) )
+C 					end
+C 				end
+C 				return(0)
+C 			end
+C 			if va[1] == "left" && pos > 0
+C 				pst = glob.dats.ap_${.struct.parent.name}l[ parentp ]
+C 				isin = false
+C 				prev = 0
+C 				pst.its${.struct.name}l.each do |st|
+C 					pos2 = 0
+C 					if v = st.names[ "${name}l" ]?
+C 						pos2 = v.to_i
+C 					end
+C 					if pos2 == 0
+C 						next
+C 					end
+C 					if pos2 == (pos-1)
+C 						prev = st.me
+C 						isin = true
+C 						next
+C 					end
+C 					if st.me == me && isin == true
+C 						return( go_act(glob, glob.dats.ap_${.struct.name}l[prev] ) )
+C 					end
+C 				end
+C 				return(0)
+C 			end
 C 			if va[1] == "right" && pos > 0
 C 				pst = glob.dats.ap_${.struct.parent.name}l[ parentp ]
 C 				isin = false
