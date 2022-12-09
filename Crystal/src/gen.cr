@@ -405,6 +405,18 @@ def go_cmds(glob, ca, winp)
 				break
 			end
 		end
+		if cmd.is_a?(KpInclude)
+			if glob.wins[winp].is_on && glob.wins[winp].is_trig == false
+				next
+			end
+			r,file = strs(glob, winp, cmd.k_file, cmd.line_no, true,true )
+			if File.exists?(file)
+				trig(glob,winp)
+				lns = File.read( file )
+#				r,s = strs(glob, winp, lns, cmd.line_no, false,true)
+				print lns
+			end
+		end
 	end
 	return(0)
 end
@@ -443,6 +455,11 @@ def re_go_cmds(glob,winp)
 		if cmd.is_a?(KpCs)
 			r,s = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true)
 			print s
+		end
+		if cmd.is_a?(KpInclude)
+			lns = File.read( cmd.k_file )
+#			r,s = strs(glob, winp, lns, cmd.line_no, false,true)
+			print lns
 		end
 		i += 1
 	end
@@ -546,6 +563,9 @@ def s_get_var(glob, winp, va, lno)
 	end
 	if va[1] == "arg"
 		return(true, glob.wins[winp].arg )
+	end
+	if va[1] == "depth"
+		return(true, winp.to_s )
 	end
 	if va[1] == "+"
 		return(true, (glob.wins[winp].cnt+1).to_s )

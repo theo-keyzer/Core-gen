@@ -32,6 +32,7 @@ class ActT
 	property ap_its : Array(KpIts) = Array(KpIts).new
 	property ap_c : Array(KpC) = Array(KpC).new
 	property ap_cs : Array(KpCs) = Array(KpCs).new
+	property ap_include : Array(KpInclude) = Array(KpInclude).new
 	property ap_out : Array(KpOut) = Array(KpOut).new
 	property ap_break : Array(KpBreak) = Array(KpBreak).new
 	property ap_unique : Array(KpUnique) = Array(KpUnique).new
@@ -1165,6 +1166,14 @@ def load(act, tok, ln, pos, lno)
 			errs = true
 		end
 		act.ap_cs << comp
+	end
+	if tok == "Include"
+		comp = KpInclude.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_include << comp
 	end
 	if tok == "Out"
 		comp = KpOut.new

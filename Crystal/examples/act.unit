@@ -91,6 +91,17 @@ Comp Cs parent Actor
 	Element desc   V1 DESC * code to output.
 
 ----------------------------------------------------------------
+Comp Include parent Actor
+----------------------------------------------------------------
+* Include code fragment from a file.
+----------------------------------------------------------------
+
+	Element opt     C1 WORD          * optional or check - error if not found
+		Opt check                * check - error if not found
+		Opt ?                    * no error if not found
+	Element file    V1 WORD          * file name
+
+----------------------------------------------------------------
 Comp Out parent Actor
 ----------------------------------------------------------------
 * Output control
