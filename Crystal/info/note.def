@@ -9,6 +9,7 @@ A design * some designs
 A todo   * todo items
 A info   * data collected
 A model  * build models
+A story  * story follows a thought pattern
 
 Frame 2a mapping - how to join
 
@@ -26,6 +27,16 @@ A match    * find correlations and missing links
 A simulate * what the app needs to do
 A doc      * describe the process
 
+Frame 4a docs - making documentation
+
+A find    * find relavant information in a document
+A order   * order of doument
+A flow    * detail need to flow together
+A files   * bulk of data can be in separate files
+A join    * process can join these files
+A easy    * easy to re order
+A subset  * needed subset of the document can be generated
+
 ----------------------------------------------------------------
 Model model - define map of model
 ----------------------------------------------------------------
@@ -36,16 +47,37 @@ A name * model name
 A pad  * padding
 A info * info
 
-Frame 2a frame - the frame elements
+Frame 1b frame - the frame elements
 
 A pos  * frame, n dim grid pos
 A name * frame name
 A pad  * padding
 A info * info
 
-Frame 3a a - the a elements
+Frame 1c a - the a elements
 
 A model * ref to model
+A pad   * padding
+A info  * info
+
+Frame 2a grid - the grid elements
+
+A name * grid name
+A pad  * padding
+A info * info
+
+Frame 2b column - the column elements
+
+A name * grid name
+A pos  * depth level or grid column
+A grid * ref to another grid
+A pad  * padding
+A info * info
+
+Frame 2c row - the row elements
+
+A grid  * ref to another grid
+A file  * file name
 A pad   * padding
 A info  * info
 
@@ -69,6 +101,9 @@ A print * print path, maps
 Frame 2a gen - generate matching app
 
 A build  * build actors to test use cases
+A eval   * not enough data
 A design * design app
 A gen    * generate app
+
+
 

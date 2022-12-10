@@ -1,0 +1,77 @@
+----------------------------------------------------------------
+Grid variable - variable names
+----------------------------------------------------------------
+
+Col purpose 1 . - use cases
+
+R output   . * print variable value
+R match    . * compare value
+
+Col special 1 . - names
+
+R global      . * .Name variable name
+R window      . * .actor def of the actor
+R collections . * .Json loaded json file
+R counters    . * .+ loop counter
+R depth       . * .depth the actor stack depth
+R arg         . * .arg argument passed from previous actor
+R conditional . * .0 first or rest of loop counter
+R eval        . * $ the contence is re evaluated
+R optional    . * ? no error on var
+
+----------------------------------------------------------------
+Grid command - commands in actors
+----------------------------------------------------------------
+
+Col purpose 1 . - use cases
+
+R navigate . * call actor with a def
+R collect  . * collect defs or strings
+R limit    . * break out of loops
+R print    . * print output text
+
+Col name 1 . - function names
+
+R All     . * all defs of type
+R Its     . * defs related to current def
+R C       . * print output
+R Unique  . * end actor if item is not unique
+R Collect . * add def to a collection
+R Group   . * add trings to a group
+R Break   . * break out of the actor
+R Include . * include file context to output
+R Out     . * delay or omitting output based on further output
+
+----------------------------------------------------------------
+Grid actor - actors functions
+----------------------------------------------------------------
+
+Col purpose 1 . - use cases
+
+R match  . * match to enter
+R runs   . * runs a list of commands
+
+----------------------------------------------------------------
+Grid match - match functions
+----------------------------------------------------------------
+
+Col name 1 . - match names
+
+R equal  . * = var equal to value
+R in     . * in var is a list
+
+----------------------------------------------------------------
+Grid window - actor stack windows
+----------------------------------------------------------------
+
+Col purpose 1 . - use cases
+
+R store  . * stores values needed 
+R stack  . * window are stored on the calling stack
+R access . * access to stack items
+
+Col name 1 . - variable names
+
+
+
+
