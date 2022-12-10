@@ -185,7 +185,13 @@ C 					end
 C 					if pos2 == 0
 C 						next
 C 					end
+C 					if pos2 == (pos-1)
+C 						break
+C 					end
 C 					if pos2 == pos 
+C 						if va.size > 2
+C 							return( st.do_its(glob, va[2..], lno) )
+C 						end
 C 						return( go_act(glob, st) )
 C 					end
 C 				end
@@ -208,7 +214,13 @@ C 						prev = st.me
 C 						isin = true
 C 						next
 C 					end
+C 					if pos2 == (pos-1)
+C 						isin = false
+C 					end
 C 					if st.me == me && isin == true
+C 						if va.size > 2
+C 							return( glob.dats.ap_${.struct.name}l[prev].do_its(glob, va[2..], lno) )
+C 						end
 C 						return( go_act(glob, glob.dats.ap_${.struct.name}l[prev] ) )
 C 					end
 C 				end
@@ -232,6 +244,9 @@ C 						isin = true
 C 						next
 C 					end
 C 					if st.me == me && isin == true
+C 						if va.size > 2
+C 							return( glob.dats.ap_${.struct.name}l[prev].do_its(glob, va[2..], lno) )
+C 						end
 C 						return( go_act(glob, glob.dats.ap_${.struct.name}l[prev] ) )
 C 					end
 C 				end
@@ -259,6 +274,13 @@ C 					if pos2 <= pos
 C 						break
 C 					end
 C 					if pos2 == (pos+1)
+C 						if va.size > 2
+C 							ret = st.do_its(glob, va[2..], lno)
+C 							if ret != 0
+C 								return(ret)
+C 							end
+C 							next
+C 						end
 C 						ret = go_act(glob, st)
 C 						if ret != 0
 C 							return(ret)

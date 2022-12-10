@@ -410,7 +410,7 @@ def go_cmds(glob, ca, winp)
 				next
 			end
 			r,file = strs(glob, winp, cmd.k_file, cmd.line_no, true,true )
-			if File.exists?(file)
+			if file != "." && File.exists?(file)
 				trig(glob,winp)
 				lns = File.read( file )
 #				r,s = strs(glob, winp, lns, cmd.line_no, false,true)
