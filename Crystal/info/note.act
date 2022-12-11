@@ -18,7 +18,7 @@ Its Frame frame
 Actor frame
 ----------------------------------------------------------------
 
-C   ${pos} ) ${name}  - ${info}
+C   ${group} ) ${name}  - ${info}
 
 Its A a
 

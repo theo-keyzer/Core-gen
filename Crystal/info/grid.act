@@ -13,7 +13,7 @@ Its Col col
 Its Col col1
 
 ----------------------------------------------------------------
-Actor col . pos = 1
+Actor col . index = 1
 ----------------------------------------------------------------
 
 C section
@@ -21,7 +21,7 @@ C section
 Its R row
 
 ----------------------------------------------------------------
-Actor col . pos = 2
+Actor col . index = 2
 ----------------------------------------------------------------
 
 C subsection
@@ -29,7 +29,7 @@ C subsection
 Its R row
 
 ----------------------------------------------------------------
-Actor col . pos = 3
+Actor col . index = 3
 ----------------------------------------------------------------
 
 C subsubsection
@@ -40,15 +40,15 @@ Its R row
 Actor row
 ----------------------------------------------------------------
 
-C item
+C item ${info}
 
 ----------------------------------------------------------------
-Actor col1 . pos = 1
+Actor col1 . index = 1
 ----------------------------------------------------------------
 
 C col1 ${name}
 
-Its pos.right col2
+Its index.right col2
 
 ----------------------------------------------------------------
 Actor col2
@@ -56,7 +56,7 @@ Actor col2
 
 C col2 ${name}
 
-Its pos.right col3
+Its index.right col3
 
 ----------------------------------------------------------------
 Actor col3
@@ -70,12 +70,12 @@ Actor col_center
 
 C col_center ${name}
 
-Its pos.left col_left
-Its pos.left.pos.right col_left_right
-Its pos.up col_up
-Its pos.up.pos.right col_up_right
-Its pos.down col_down
-Its pos.down.pos.right col_down_right
+Its index.left col_left
+Its index.left.index.right col_left_right
+Its index.up col_up
+Its index.up.index.right col_up_right
+Its index.down col_down
+Its index.down.index.right col_down_right
 
 ----------------------------------------------------------------
 Actor col_left

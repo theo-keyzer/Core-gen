@@ -38,5 +38,7 @@ echo m17.act note.def,map.def idea,thinking,desig
 ./gen m17.act note.def,map.def idea,thinking,desig
 echo m18.act note.def
 ./gen m18.act note.def
+echo grid.act grid.def
+./gen grid.act grid.def
 
 

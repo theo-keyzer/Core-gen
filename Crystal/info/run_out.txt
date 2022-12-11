@@ -2,72 +2,123 @@ note.act
 
 notes - map of note taking app
 
-  1a) purpose - use cases
+  1) E_O_L - 
+  2) purpose - use cases
     A idea - list of ideas
     A design - some designs 
     A todo - todo items
     A info - data collected
     A model - build models
-  2a) mapping - how to join
+    A story - story follows a thought pattern
+  2) mapping - how to join
     A idea - union of info, knowledge, skill
     A wisdom - how to act of the idea
     A thinking - moving between the frame grids
     A memory - the path and result of the thinking
-    A learning - create new models by adding and refactoring other models
+    A learning - create new models by adding, reorder and refactoring other models
     A design - how to get from a to b
-  3a) usage - how to use it
+  2) usage - how to use it
     A capture - collect new data for models
     A match - find correlations and missing links
     A simulate - what the app needs to do
     A doc - describe the process
+  2) docs - making documentation
+    A find - find relavant information in a document
+    A order - order of doument
+    A flow - detail need to flow together
+    A files - bulk of data can be in separate files
+    A join - process can join these files
+    A easy - easy to re order
+    A subset - needed subset of the document can be generated
 
 model - define map of model
 
-  1a) model - the model elements
+  1) E_O_L - 
+  2) model - the model elements
     A name - model name
     A pad - padding
     A info - info
-  2a) frame - the frame elements
+  2) frame - the frame elements
     A pos - frame, n dim grid pos
     A name - frame name
     A pad - padding
     A info - info
-  3a) a - the a elements
+  2) a - the a elements
     A model - ref to model
+    A pad - padding
+    A info - info
+  1) E_O_L - 
+  2) grid - the grid elements
+    A name - grid name
+    A pad - padding
+    A info - info
+  2) column - the column elements
+    A name - grid name
+    A pos - depth level or grid column
+    A grid - ref to another grid
+    A pad - padding
+    A info - info
+  2) row - the row elements
+    A grid - ref to another grid
+    A file - file name
     A pad - padding
     A info - info
 
 match - map how to match
 
-  1a) input - list of model names
+  1) E_O_L - 
+  2) input - list of model names
     A find - find the a's of these names
     A join - join with the ref to other models
     A end - end if all the models are reached, print maps.
-  1b) navigate - navigate the map
+  2) navigate - navigate the map
     A each - for each a, move to next grid
     A join - join that grid a's to other models
     A get - get shortest path to get to all the models
     A print - print path, maps
-  2a) gen - generate matching app
+  1) E_O_L - 
+  2) gen - generate matching app
     A build - build actors to test use cases
+    A eval - not enough data
     A design - design app
     A gen - generate app
+
+join - map how to join
+
+  1) E_O_L - 
+  2) find - the a of the items found
+    A its - follow its ref
+    A ref - the ref can be either to a model or a frame
+    A explore - that frame or model can be explore to get to the other item, or follow its a's refs
+    A frame - move up to its frame and explore its ref and its a's ref
+    A expand - move around in the model with up,down,left
+    A group - items a related in some way within a group
 m.act
     A model model info - info
     B model model name - model name
     A model frame info - info
     B model frame name - frame name
+    A model grid info - info
+    B model grid name - grid name
+    A model column info - info
+    B model column name - grid name
 m2.act
     A model model info - info
       B model model name - model name
       B model frame name - frame name
+      B model grid name - grid name
+      B model column name - grid name
 m3.act
     A notes purpose info - data collected
       B model model name - model name
       B model frame name - frame name
+      B model grid name - grid name
+      B model column name - grid name
     A model a info - info
       B model model name - model name
       B model frame name - frame name
+      B model grid name - grid name
+      B model column name - grid name
 m4.act
     A notes purpose info - data collected
       B notes purpose model - build models
@@ -78,9 +129,12 @@ m4.act
 m5.act
     A model frame pos - frame, n dim grid pos
       B notes purpose todo - todo items
+    A model column pos - depth level or grid column
+      B notes purpose todo - todo items
 m6.act
     A notes purpose todo - todo items
       B model frame pos - frame, n dim grid pos
+      B model column pos - depth level or grid column
 m7.act
     A model model pad - padding
       B notes purpose info - data collected
@@ -89,6 +143,15 @@ m7.act
       B notes purpose info - data collected
       B model a info - info
     A model a pad - padding
+      B notes purpose info - data collected
+      B model a info - info
+    A model grid pad - padding
+      B notes purpose info - data collected
+      B model a info - info
+    A model column pad - padding
+      B notes purpose info - data collected
+      B model a info - info
+    A model row pad - padding
       B notes purpose info - data collected
       B model a info - info
 m8.act
@@ -109,78 +172,108 @@ m12.act note.def pos idea
         - notes - map of note taking app
           B notes purpose idea - list of ideas
           B notes mapping idea - union of info, knowledge, skill
+    A model column pos - depth level or grid column
+      - model - define map of model
+        - notes - map of note taking app
+          B notes purpose idea - list of ideas
+          B notes mapping idea - union of info, knowledge, skill
 m12.act note.def idea pos
     A notes purpose idea - list of ideas
       - notes - map of note taking app
         - model - define map of model
           B model frame pos - frame, n dim grid pos
+          B model column pos - depth level or grid column
     A notes mapping idea - union of info, knowledge, skill
       - notes - map of note taking app
         - model - define map of model
           B model frame pos - frame, n dim grid pos
+          B model column pos - depth level or grid column
 m13.act note.def info pad
 
 Model model - define map of model
 
- Frame 1a model - the model elements
+ Frame 2 model - the model elements
 
   A pad * padding
   A info * info
 
- Frame 2a frame - the frame elements
+ Frame 2 frame - the frame elements
 
   A pad * padding
   A info * info
 
- Frame 3a a - the a elements
+ Frame 2 a - the a elements
+
+  A pad * padding
+  A info * info
+
+ Frame 2 grid - the grid elements
+
+  A pad * padding
+  A info * info
+
+ Frame 2 column - the column elements
+
+  A pad * padding
+  A info * info
+
+ Frame 2 row - the row elements
 
   A pad * padding
   A info * info
 
 Model notes - map of note taking app
 
- Frame 1a purpose - use cases
+ Frame 2 purpose - use cases
 
   A info * data collected
 m14 note.def thinking idea pos
 
 Model notes - map of note taking app
 
- Frame 1a purpose - use cases
+ Frame 2 purpose - use cases
 
   A idea * list of ideas
 
- Frame 2a mapping - how to join
+ Frame 2 mapping - how to join
 
   A idea * union of info, knowledge, skill
   A thinking * moving between the frame grids
 
 Model model - define map of model
 
- Frame 2a frame - the frame elements
+ Frame 2 frame - the frame elements
 
   A pos * frame, n dim grid pos
+
+ Frame 2 column - the column elements
+
+  A pos * depth level or grid column
 m15.act note.def,map.def design,a1a pos,b1a
 
 Model notes - map of note taking app
 
- Frame 1a purpose - use cases
+ Frame 2 purpose - use cases
 
   A design * some designs 
 
- Frame 2a mapping - how to join
+ Frame 2 mapping - how to join
 
   A design * how to get from a to b
 
 Model model - define map of model
 
- Frame 2a frame - the frame elements
+ Frame 2 frame - the frame elements
 
   A pos * frame, n dim grid pos
 
+ Frame 2 column - the column elements
+
+  A pos * depth level or grid column
+
 Model match - map how to match
 
- Frame 2a gen - generate matching app
+ Frame 2 gen - generate matching app
 
   A design * design app
 
@@ -199,12 +292,12 @@ m16.act note.def,map.def idea,thinking,design
 
 Model notes - map of note taking app
 
- Frame 1a purpose - use cases
+ Frame 2 purpose - use cases
 
   A idea * list of ideas
   A design * some designs 
 
- Frame 2a mapping - how to join
+ Frame 2 mapping - how to join
 
   A design * how to get from a to b
   A idea * union of info, knowledge, skill
@@ -212,42 +305,85 @@ Model notes - map of note taking app
 
 Model match - map how to match
 
- Frame 2a gen - generate matching app
+ Frame 2 gen - generate matching app
 
   A design * design app
 m17.act note.def,map.def idea,thinking,desig
 
 Model notes - map of note taking app
 
- Frame 1a purpose - use cases
+ Frame 2 purpose - use cases
 
   A idea * list of ideas
   A design * some designs 
 
- Frame 2a mapping - how to join
+ Frame 2 mapping - how to join
 
   A wisdom * how to act of the idea
   A memory * the path and result of the thinking
 
 Model match - map how to match
 
- Frame 2a gen - generate matching app
+ Frame 2 gen - generate matching app
 
   A design * design app
 m18.act note.def
 
 Model notes - map of note taking app
 
- Frame 1a purpose - use cases
+ Frame 2 purpose - use cases
 
   A model * build models
 
- Frame 3a usage - how to use it
+ Frame 2 usage - how to use it
 
   A match * find correlations and missing links
 
+ Frame 2 docs - making documentation
+
+  A join * process can join these files
+
 Model model - define map of model
 
- Frame 3a a - the a elements
+ Frame 2 a - the a elements
 
   A model * ref to model
+
+Model match - map how to match
+
+ Frame 2 input - list of model names
+
+  A join * join with the ref to other models
+
+ Frame 2 navigate - navigate the map
+
+  A join * join that grid a's to other models
+grid.act grid.def
+section
+subsection
+subsubsection
+item 
+item 
+item 
+subsubsection
+item 
+subsection
+subsubsection
+item 
+section
+subsection
+col1 a
+col2 b
+col3 c
+col3 d
+col2 e
+col3 f
+col1 g
+col2 h
+col_center e
+col_left a
+col_left_right b
+col_left_right e
+col_up b
+col_up_right c
+col_up_right d

@@ -10,10 +10,12 @@ Comp Model parent . Find
 Comp Frame parent Model FindIn
 ----------------------------------------------------------------
 
-	Element pos        C1 WORD       * frame grid pos
-	Element name       C1 WORD       * frame name
+	Element group      N1 WORD       * search navigation group index tree
+	Element name       R1 WORD       * frame name
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
+
+Ref name Model ?
 
 ----------------------------------------------------------------
 Comp A parent Frame
@@ -37,22 +39,21 @@ Comp Grid parent . Find
 Comp Col parent Grid FindIn
 ----------------------------------------------------------------
 
-	Element name       C1 WORD       * column name, optional ref to grid
-	Element pos        N1 WORD       * column number
-	Element grid       R1 WORD       * optional ref to another grid
-	Element pad        C1 WORD       * padding
+	Element name       R1 WORD       * column name, optional ref to another grid
+	Element index      N1 WORD       * document index tree
+	Element group      N1 WORD       * search navigation group index tree
 	Element info       V1 WORD       * info
 
-Ref grid Grid .
+Ref name Grid ?
 
 ----------------------------------------------------------------
-Comp R parent Col
+Comp R parent Col FindIn
 ----------------------------------------------------------------
 
-	Element grid       R1 WORD       * optional ref to another grid
+	Element name       R1 WORD       * name, optional ref to another grid
 	Element file       C1 WORD       * optional file to include
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
-Ref grid Grid ?
+Ref name Grid ?
 
