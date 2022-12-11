@@ -6,12 +6,13 @@ Frame 1
 
 Frame 2 purpose - use cases
 
-A idea   * list of ideas
-A design * some designs 
-A todo   * todo items
-A info   * data collected
-A model  * build models
-A story  * story follows a thought pattern
+A idea    * list of ideas
+A design  * some designs 
+A todo    * todo items
+A info    * data collected
+A model   * build models
+A story   * story follows a thought pattern
+A pattern * need to guide the navigation through the model to create a story
 
 Frame 2 mapping - how to join
 
