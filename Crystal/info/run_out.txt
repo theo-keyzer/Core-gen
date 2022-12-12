@@ -10,6 +10,7 @@ notes - map of note taking app
     A info - data collected
     A model - build models
     A story - story follows a thought pattern
+    A pattern - need to guide the navigation through the model to create a story
   2) mapping - how to join
     A idea - union of info, knowledge, skill
     A wisdom - how to act of the idea
@@ -319,8 +320,8 @@ Model notes - map of note taking app
 
  Frame 2 mapping - how to join
 
-  A wisdom * how to act of the idea
   A memory * the path and result of the thinking
+  A wisdom * how to act of the idea
 
 Model match - map how to match
 
@@ -387,3 +388,67 @@ col_left_right e
 col_up b
 col_up_right c
 col_up_right d
+m19.act note.def todo,ref
+   notes - map of note taking app  > 1-notes  1
+   {
+      - todo : todo items
+     model - define map of model  > 2-model  1
+     {
+       notes - map of note taking app  > 3-notes  1
+       {
+          - todo : todo items
+       }
+       model - define map of model  > 3-model  2
+     }
+     match - map how to match  > 2-match  2
+     {
+       notes - map of note taking app  > 3-notes  1
+       {
+          - todo : todo items
+       }
+       join - map how to join  > 3-join  1
+       {
+          - ref : the ref can be either to a model or a frame
+       }
+     }
+   }
+   model - define map of model  > 1-model  2
+   {
+     notes - map of note taking app  > 2-notes  1
+     {
+        - todo : todo items
+       model - define map of model  > 3-model  1
+       match - map how to match  > 3-match  2
+       join - map how to join  > 3-join  3
+       {
+          - ref : the ref can be either to a model or a frame
+       }
+     }
+   }
+m20.act note.def todo,ref
+----------------------------------------------------------------
+Model generated - with m20.act note.def todo,ref
+----------------------------------------------------------------
+
+  Frame 1 notes 0 map of note taking app
+      A todo 2 todo items
+    Frame 2 model 1 define map of model
+      Frame 3 notes 0 map of note taking app
+          A todo 2 todo items
+    Frame 2 match 2 map how to match
+      Frame 3 notes 0 map of note taking app
+          A todo 2 todo items
+      Frame 3 join 3 map how to join
+          A ref 58 the ref can be either to a model or a frame
+  Frame 1 model 1 define map of model
+    Frame 2 notes 0 map of note taking app
+        A todo 2 todo items
+      Frame 3 join 3 map how to join
+          A ref 58 the ref can be either to a model or a frame
+m21.act note.def,generated.def
+  generated
+    notes
+      - todo
+      match
+        join
+          - ref

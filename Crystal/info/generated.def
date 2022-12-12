@@ -1,0 +1,19 @@
+----------------------------------------------------------------
+Model generated - with m20.act note.def todo,ref
+----------------------------------------------------------------
+
+  Frame 1 notes 0 map of note taking app
+      A todo 2 todo items
+    Frame 2 model 1 define map of model
+      Frame 3 notes 0 map of note taking app
+          A todo 2 todo items
+    Frame 2 match 2 map how to match
+      Frame 3 notes 0 map of note taking app
+          A todo 2 todo items
+      Frame 3 join 3 map how to join
+          A ref 58 the ref can be either to a model or a frame
+  Frame 1 model 1 define map of model
+    Frame 2 notes 0 map of note taking app
+        A todo 2 todo items
+      Frame 3 join 3 map how to join
+          A ref 58 the ref can be either to a model or a frame

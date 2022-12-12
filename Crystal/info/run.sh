@@ -40,5 +40,11 @@ echo m18.act note.def
 ./gen m18.act note.def
 echo grid.act grid.def
 ./gen grid.act grid.def
-
+echo m19.act note.def todo,ref
+./gen m19.act note.def todo,ref
+echo m20.act note.def todo,ref
+./gen m20.act note.def todo,ref >generated.def
+cat generated.def
+echo m21.act note.def,generated.def
+./gen m21.act note.def,generated.def
 
