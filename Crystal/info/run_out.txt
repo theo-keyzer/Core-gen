@@ -452,3 +452,10 @@ m21.act note.def,generated.def
       match
         join
           - ref
+m22.act note.def todo,ref
+  gene
+    notes
+      - todo
+      match
+        join
+          - ref

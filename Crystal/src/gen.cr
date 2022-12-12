@@ -247,6 +247,22 @@ def go_cmds(glob, ca, winp)
 			end
 		end
 		
+		if cmd.is_a?(KpNew)
+			r,line = strs(glob, winp, cmd.k_line, cmd.line_no, true,true )
+			if cmd.k_where == "acts"
+				r = load(glob.acts, cmd.k_what, line, 0, "23")
+				if r == true
+					glob.load_errs = true
+				end
+			end
+			if cmd.k_where == "dats"
+				r = load(glob.dats, cmd.k_what, line, 0, "23")
+				if r == true
+					glob.load_errs = true
+				end
+			end
+		end
+		
 		if cmd.is_a?(KpDu)
 			r,val = strs(glob, winp, cmd.k_value, cmd.line_no, true,true )
 			r,arg = strs(glob, winp, cmd.k_args, cmd.line_no, true,true )

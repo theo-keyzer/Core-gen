@@ -47,6 +47,16 @@ Comp Du parent Actor
 Ref actor Actor check
 
 ----------------------------------------------------------------
+Comp New parent Actor
+----------------------------------------------------------------
+* Create new comp and add
+----------------------------------------------------------------
+
+	Element where  C1 WORD  * add to dats or acts
+	Element what   C1 WORD  * what comp to load
+	Element line   V1 WORD  * load line args
+	
+----------------------------------------------------------------
 Comp Var parent Actor
 ----------------------------------------------------------------
 * Set variable to value

@@ -2852,6 +2852,30 @@ class KpDu < Kp
 	end
 end
 
+class KpNew < Kp 
+	property parentp : Int32 = -1
+	property k_where : String = ""
+	property k_what : String = ""
+	property k_line : String = ""
+	property childs : Array(Kp) = Array(Kp).new
+	def load(act, ln, pos, lno)
+		p = pos
+		@comp = "New"
+		@line_no = lno
+		@me = act.ap_new.size
+		p, @k_where = getw(ln, p)
+		p, @k_what = getw(ln, p)
+		p, @k_line = getws(ln, p)
+		@parentp = act.ap_actor.size-1;
+		if @parentp < 0  
+			puts lno + " New has no Actor parent" 
+			return false
+		end
+		act.ap_actor[ @parentp ].childs << self
+		return true
+	end
+end
+
 class KpVar < Kp 
 	property parentp : Int32 = -1
 	property k_attr : String = ""

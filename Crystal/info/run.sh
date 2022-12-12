@@ -47,4 +47,6 @@ echo m20.act note.def todo,ref
 cat generated.def
 echo m21.act note.def,generated.def
 ./gen m21.act note.def,generated.def
+echo m22.act note.def todo,ref
+./gen m22.act note.def todo,ref
 
