@@ -11,6 +11,9 @@ notes - map of note taking app
     A model - build models
     A story - story follows a thought pattern
     A pattern - need to guide the navigation through the model to create a story
+    A store - store pattern in new model
+    A model - need to overlap models to describe an idea
+    A repeat - information can be repeated
   2) mapping - how to join
     A idea - union of info, knowledge, skill
     A wisdom - how to act of the idea
@@ -29,8 +32,8 @@ notes - map of note taking app
     A flow - detail need to flow together
     A files - bulk of data can be in separate files
     A join - process can join these files
-    A easy - easy to re order
     A subset - needed subset of the document can be generated
+    A index - the model is like a document index
 
 model - define map of model
 
@@ -80,9 +83,10 @@ match - map how to match
   1) E_O_L - 
   2) gen - generate matching app
     A build - build actors to test use cases
-    A eval - not enough data
+    A eval - looks like its working
     A design - design app
     A gen - generate app
+    A E_O_L - 
 
 join - map how to join
 
@@ -94,6 +98,22 @@ join - map how to join
     A frame - move up to its frame and explore its ref and its a's ref
     A expand - move around in the model with up,down,left
     A group - items a related in some way within a group
+
+design - notes app
+
+  1) E_O_L - 
+  2) parts - needed
+    A database - some form of graph database
+    A schema - the model schema
+    A queries - translate navigation into database queries
+    A capture - way to import, merge and capture data
+
+schema - notes app
+
+  1) E_O_L - 
+  2) formats - schema formats
+    A links - the way links work
+    A group - how groups work
 m.act
     A model model info - info
     B model model name - model name
@@ -300,9 +320,9 @@ Model notes - map of note taking app
 
  Frame 2 mapping - how to join
 
-  A design * how to get from a to b
   A idea * union of info, knowledge, skill
   A thinking * moving between the frame grids
+  A design * how to get from a to b
 
 Model match - map how to match
 
@@ -317,11 +337,12 @@ Model notes - map of note taking app
 
   A idea * list of ideas
   A design * some designs 
+  A model * need to overlap models to describe an idea
 
  Frame 2 mapping - how to join
 
-  A memory * the path and result of the thinking
   A wisdom * how to act of the idea
+  A memory * the path and result of the thinking
 
 Model match - map how to match
 
@@ -334,7 +355,9 @@ Model notes - map of note taking app
 
  Frame 2 purpose - use cases
 
+  A design * some designs 
   A model * build models
+  A model * need to overlap models to describe an idea
 
  Frame 2 usage - how to use it
 
@@ -343,6 +366,10 @@ Model notes - map of note taking app
  Frame 2 docs - making documentation
 
   A join * process can join these files
+
+ Frame 2 mapping - how to join
+
+  A design * how to get from a to b
 
 Model model - define map of model
 
@@ -359,6 +386,16 @@ Model match - map how to match
  Frame 2 navigate - navigate the map
 
   A join * join that grid a's to other models
+
+ Frame 2 gen - generate matching app
+
+  A design * design app
+
+Model design - notes app
+
+ Frame 2 parts - needed
+
+  A schema * the model schema
 grid.act grid.def
 section
 subsection
@@ -392,24 +429,40 @@ m19.act note.def todo,ref
    notes - map of note taking app  > 1-notes  1
    {
       - todo : todo items
-     model - define map of model  > 2-model  1
+     design - notes app  > 2-design  1
      {
        notes - map of note taking app  > 3-notes  1
        {
           - todo : todo items
        }
-       model - define map of model  > 3-model  2
+       match - map how to match  > 3-match  3
+       schema - notes app  > 3-schema  1
      }
-     match - map how to match  > 2-match  2
+     model - define map of model  > 2-model  2
      {
        notes - map of note taking app  > 3-notes  1
        {
           - todo : todo items
        }
-       join - map how to join  > 3-join  1
+       model - define map of model  > 3-model  3
+     }
+     design - notes app  > 2-design  4
+     {
+       notes - map of note taking app  > 3-notes  1
        {
-          - ref : the ref can be either to a model or a frame
+          - todo : todo items
        }
+       match - map how to match  > 3-match  3
+       schema - notes app  > 3-schema  1
+     }
+     join - map how to join  > 2-join  6
+     {
+        - ref : the ref can be either to a model or a frame
+       notes - map of note taking app  > 3-notes  1
+       {
+          - todo : todo items
+       }
+       match - map how to match  > 3-match  2
      }
    }
    model - define map of model  > 1-model  2
@@ -417,12 +470,36 @@ m19.act note.def todo,ref
      notes - map of note taking app  > 2-notes  1
      {
         - todo : todo items
-       model - define map of model  > 3-model  1
-       match - map how to match  > 3-match  2
-       join - map how to join  > 3-join  3
+       design - notes app  > 3-design  1
+       model - define map of model  > 3-model  2
+       match - map how to match  > 3-match  5
+       join - map how to join  > 3-join  6
        {
           - ref : the ref can be either to a model or a frame
        }
+     }
+     notes - map of note taking app  > 2-notes  2
+     {
+        - todo : todo items
+       design - notes app  > 3-design  1
+       model - define map of model  > 3-model  2
+       match - map how to match  > 3-match  5
+       join - map how to join  > 3-join  6
+       {
+          - ref : the ref can be either to a model or a frame
+       }
+     }
+   }
+   schema - notes app  > 1-schema  6
+   {
+     design - notes app  > 2-design  1
+     {
+       notes - map of note taking app  > 3-notes  1
+       {
+          - todo : todo items
+       }
+       match - map how to match  > 3-match  3
+       schema - notes app  > 3-schema  1
      }
    }
 m20.act note.def todo,ref
@@ -432,30 +509,63 @@ Model generated - with m20.act note.def todo,ref
 
   Frame 1 notes 0 map of note taking app
       A todo 2 todo items
+    Frame 2 design 4 notes app
+      Frame 3 notes 0 map of note taking app
+          A todo 2 todo items
     Frame 2 model 1 define map of model
       Frame 3 notes 0 map of note taking app
           A todo 2 todo items
-    Frame 2 match 2 map how to match
+    Frame 2 design 4 notes app
       Frame 3 notes 0 map of note taking app
           A todo 2 todo items
-      Frame 3 join 3 map how to join
-          A ref 58 the ref can be either to a model or a frame
+    Frame 2 join 3 map how to join
+        A ref 62 the ref can be either to a model or a frame
+      Frame 3 notes 0 map of note taking app
+          A todo 2 todo items
   Frame 1 model 1 define map of model
     Frame 2 notes 0 map of note taking app
         A todo 2 todo items
       Frame 3 join 3 map how to join
-          A ref 58 the ref can be either to a model or a frame
+          A ref 62 the ref can be either to a model or a frame
+    Frame 2 notes 0 map of note taking app
+        A todo 2 todo items
+      Frame 3 join 3 map how to join
+          A ref 62 the ref can be either to a model or a frame
+  Frame 1 schema 5 notes app
+    Frame 2 design 4 notes app
+      Frame 3 notes 0 map of note taking app
+          A todo 2 todo items
 m21.act note.def,generated.def
   generated
     notes
       - todo
-      match
-        join
-          - ref
+      join
+        - ref
 m22.act note.def todo,ref
   gene
-    notes
-      - todo
-      match
-        join
-          - ref
+    notes : map of note taking app
+      - todo : todo items
+      join : map how to join
+        - ref : the ref can be either to a model or a frame
+m23.act map.def q,x,r,y,z,top,a1,a2
+----------------------------------------------------------------
+Model new - model from map.def with q,x,r,y,z,top,a1,a2
+----------------------------------------------------------------
+
+  Frame 1 top - map of top
+    A a1 : a1
+    A a2 : a2
+    A q : q
+    Frame 2 b1 - map of grid 3
+      A top : going to top
+    Frame 2 b2 - map of grid 4
+      A top : also going to top
+      A x : x data
+    Frame 2 a1 - map of grid 1
+      A r : r
+      Frame 3 a1a - map of grid 1.1
+        A y : y
+        A a1 : up to a1
+        A a2 : up to a2
+    Frame 2 a2 - map of grid 2
+      A z : z

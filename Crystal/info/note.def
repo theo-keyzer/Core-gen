@@ -13,6 +13,9 @@ A info    * data collected
 A model   * build models
 A story   * story follows a thought pattern
 A pattern * need to guide the navigation through the model to create a story
+A store   * store pattern in new model
+A model   * need to overlap models to describe an idea
+A repeat  * information can be repeated
 
 Frame 2 mapping - how to join
 
@@ -37,8 +40,8 @@ A order   * order of doument
 A flow    * detail need to flow together
 A files   * bulk of data can be in separate files
 A join    * process can join these files
-A easy    * easy to re order
 A subset  * needed subset of the document can be generated
+A index   * the model is like a document index
 
 ----------------------------------------------------------------
 Model model - define map of model
@@ -112,10 +115,10 @@ Frame 1
 Frame 2 gen - generate matching app
 
 A build  * build actors to test use cases
-A eval   * not enough data
+A eval   * looks like its working
 A design * design app
 A gen    * generate app
-
+A 
 ----------------------------------------------------------------
 Model join - map how to join
 ----------------------------------------------------------------
@@ -130,6 +133,31 @@ A explore * that frame or model can be explore to get to the other item, or foll
 A frame   * move up to its frame and explore its ref and its a's ref
 A expand  * move around in the model with up,down,left
 A group   * items a related in some way within a group
+
+----------------------------------------------------------------
+Model design - notes app
+----------------------------------------------------------------
+
+Frame 1
+
+Frame 2 parts - needed
+
+A database * some form of graph database
+A schema   * the model schema
+A queries  * translate navigation into database queries
+A capture  * way to import, merge and capture data
+
+----------------------------------------------------------------
+Model schema - notes app
+----------------------------------------------------------------
+
+Frame 1
+
+Frame 2 formats - schema formats
+
+A links * the way links work
+A group * how groups work
+
 
 
 

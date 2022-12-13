@@ -4,7 +4,13 @@ Actor main
 
 New dats Model gene - new generated model
 All Model disp_col name != gene
-All Model.gene gen
+
+C ----------------------------------------------------------------
+C Model new - model from ${1}  with ${2}
+C ----------------------------------------------------------------
+C
+
+All Model.gene.Frame frame group = 1
 
 ----------------------------------------------------------------
 Actor clear . .depth != 4
@@ -38,20 +44,12 @@ Actor disp_item . value = ${.disp_items.model}
 New dats A ${.disp_items.model}  ${.disp_items.k_me}  ${.disp_items.info}
 
 ----------------------------------------------------------------
-Actor gen
-----------------------------------------------------------------
-
-C ${  } ${name}
-
-Its Frame frame group = 1
-
-----------------------------------------------------------------
 Actor frame
 ----------------------------------------------------------------
 
 Out delay
 
-C ${  } ${name}  : ${info}
+C ${  } Frame ${.depth}  ${name}  - ${info}
 
 Its A items
 Its group.right frame
@@ -62,7 +60,7 @@ Actor items
 
 Unique add I ${pad}
 
-C ${  } - ${model}  : ${info}
+C ${  } A ${model}  : ${info}
 
 
 
