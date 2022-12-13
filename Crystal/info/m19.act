@@ -8,7 +8,7 @@ All Model disp_col
 Actor clear . .depth != 4
 ----------------------------------------------------------------
 
-Unique clear ${.depth}
+-Unique clear ${.depth}
 -C clear ${.depth}
 
 ----------------------------------------------------------------

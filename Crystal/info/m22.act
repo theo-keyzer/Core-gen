@@ -10,7 +10,7 @@ All Model.gene gen
 Actor clear . .depth != 4
 ----------------------------------------------------------------
 
-Unique clear ${.depth}
+-Unique clear ${.depth}
 
 ----------------------------------------------------------------
 Actor disp_col . .depth != 4

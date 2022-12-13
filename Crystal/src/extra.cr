@@ -161,33 +161,34 @@ def group_all(glob, va, lno)
 end
 
 def unique_cmd(glob,winp,cmd)
+	r,key = strs(glob, winp, cmd.k_key, cmd.line_no, true,true )
 	r,arg = strs(glob, winp, cmd.k_value, cmd.line_no, true,true )
 	if cmd.k_cmd == "check"
-		if a = glob.unq[cmd.k_key]?
+		if a = glob.unq[key]?
 			if a.index(arg)
 				return(1)
 			end
 		end
 	end
 	if cmd.k_cmd == "clear"
-		if cmd.k_key != "E_O_L"
-			if a = glob.unq[cmd.k_key]?
-				glob.unq[cmd.k_key] = Array(String).new
+		if key != "E_O_L"
+			if a = glob.unq[key]?
+				glob.unq[key] = Array(String).new
 			end
 			return(0)
 		end
 		glob.unq = Hash( String, Array(String) ).new
 	end
 	if cmd.k_cmd == "add"
-		if a = glob.unq[cmd.k_key]?
+		if a = glob.unq[key]?
 			if a.index(arg)
 				return(1)
 			end
-			glob.unq[cmd.k_key] << arg
+			glob.unq[key] << arg
 		else
 			aru = Array(String).new
 			aru << arg
-			glob.unq[cmd.k_key] = aru
+			glob.unq[key] = aru
 		end
 	end
 	return(0)

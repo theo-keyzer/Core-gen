@@ -440,29 +440,19 @@ m19.act note.def todo,ref
      }
      model - define map of model  > 2-model  2
      {
-       notes - map of note taking app  > 3-notes  1
-       {
-          - todo : todo items
-       }
        model - define map of model  > 3-model  3
      }
-     design - notes app  > 2-design  4
+     match - map how to match  > 2-match  5
      {
-       notes - map of note taking app  > 3-notes  1
+       join - map how to join  > 3-join  1
        {
-          - todo : todo items
+          - ref : the ref can be either to a model or a frame
        }
-       match - map how to match  > 3-match  3
-       schema - notes app  > 3-schema  1
+       design - notes app  > 3-design  3
      }
      join - map how to join  > 2-join  6
      {
         - ref : the ref can be either to a model or a frame
-       notes - map of note taking app  > 3-notes  1
-       {
-          - todo : todo items
-       }
-       match - map how to match  > 3-match  2
      }
    }
    model - define map of model  > 1-model  2
@@ -470,38 +460,18 @@ m19.act note.def todo,ref
      notes - map of note taking app  > 2-notes  1
      {
         - todo : todo items
-       design - notes app  > 3-design  1
-       model - define map of model  > 3-model  2
-       match - map how to match  > 3-match  5
-       join - map how to join  > 3-join  6
-       {
-          - ref : the ref can be either to a model or a frame
-       }
      }
-     notes - map of note taking app  > 2-notes  2
-     {
-        - todo : todo items
-       design - notes app  > 3-design  1
-       model - define map of model  > 3-model  2
-       match - map how to match  > 3-match  5
-       join - map how to join  > 3-join  6
-       {
-          - ref : the ref can be either to a model or a frame
-       }
-     }
+   }
+   match - map how to match  > 1-match  3
+   join - map how to join  > 1-join  4
+   {
+      - ref : the ref can be either to a model or a frame
+   }
+   design - notes app  > 1-design  5
+   {
+     schema - notes app  > 2-schema  1
    }
    schema - notes app  > 1-schema  6
-   {
-     design - notes app  > 2-design  1
-     {
-       notes - map of note taking app  > 3-notes  1
-       {
-          - todo : todo items
-       }
-       match - map how to match  > 3-match  3
-       schema - notes app  > 3-schema  1
-     }
-   }
 m20.act note.def todo,ref
 ----------------------------------------------------------------
 Model generated - with m20.act note.def todo,ref
@@ -512,41 +482,30 @@ Model generated - with m20.act note.def todo,ref
     Frame 2 design 4 notes app
       Frame 3 notes 0 map of note taking app
           A todo 2 todo items
-    Frame 2 model 1 define map of model
-      Frame 3 notes 0 map of note taking app
-          A todo 2 todo items
-    Frame 2 design 4 notes app
-      Frame 3 notes 0 map of note taking app
-          A todo 2 todo items
+    Frame 2 match 2 map how to match
+      Frame 3 join 3 map how to join
+          A ref 62 the ref can be either to a model or a frame
     Frame 2 join 3 map how to join
         A ref 62 the ref can be either to a model or a frame
-      Frame 3 notes 0 map of note taking app
-          A todo 2 todo items
   Frame 1 model 1 define map of model
     Frame 2 notes 0 map of note taking app
         A todo 2 todo items
-      Frame 3 join 3 map how to join
-          A ref 62 the ref can be either to a model or a frame
-    Frame 2 notes 0 map of note taking app
-        A todo 2 todo items
-      Frame 3 join 3 map how to join
-          A ref 62 the ref can be either to a model or a frame
-  Frame 1 schema 5 notes app
-    Frame 2 design 4 notes app
-      Frame 3 notes 0 map of note taking app
-          A todo 2 todo items
+  Frame 1 join 3 map how to join
+      A ref 62 the ref can be either to a model or a frame
 m21.act note.def,generated.def
   generated
     notes
       - todo
-      join
-        - ref
+      match
+        join
+          - ref
 m22.act note.def todo,ref
   gene
     notes : map of note taking app
       - todo : todo items
-      join : map how to join
-        - ref : the ref can be either to a model or a frame
+      match : map how to match
+        join : map how to join
+          - ref : the ref can be either to a model or a frame
 m23.act map.def q,x,r,y,z,top,a1,a2
 ----------------------------------------------------------------
 Model new - model from map.def with q,x,r,y,z,top,a1,a2
