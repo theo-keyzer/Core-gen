@@ -51,4 +51,5 @@ echo m22.act note.def todo,ref
 ./gen m22.act note.def todo,ref
 echo m23.act map.def q,x,r,y,z,top,a1,a2
 ./gen m23.act map.def q,x,r,y,z,top,a1,a2
-
+echo m24.act note.def,map.def
+./gen m24.act note.def,map.def

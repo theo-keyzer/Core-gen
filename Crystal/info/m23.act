@@ -13,16 +13,18 @@ C
 All Model.gene.Frame frame group = 1
 
 ----------------------------------------------------------------
-Actor clear . .depth != 4
+Actor clear . .depth != 5
 ----------------------------------------------------------------
 
 -Unique clear ${.depth}
 
 ----------------------------------------------------------------
-Actor disp_col . .depth != 4
+Actor disp_col . .depth != 5
 ----------------------------------------------------------------
 
 Unique add ${.depth} ${name}
+
+Out delay
 
 New dats Frame ${.depth}  ${name}  ${k_me}  ${info}
 
@@ -41,13 +43,16 @@ Its .main.2.split., disp_item
 Actor disp_item . value = ${.disp_items.model}
 ----------------------------------------------------------------
 
+Unique add DI ${.disp_items.k_me}
+
 New dats A ${.disp_items.model}  ${.disp_items.k_me}  ${.disp_items.info}
 
 ----------------------------------------------------------------
 Actor frame
 ----------------------------------------------------------------
 
-Out delay
+-Unique add F ${name}
+-Out delay
 
 C ${  } Frame ${.depth}  ${name}  - ${info}
 
@@ -58,7 +63,7 @@ Its group.right frame
 Actor items
 ----------------------------------------------------------------
 
-Unique add I ${pad}
+-Unique add I ${pad}
 
 C ${  } A ${model}  : ${info}
 

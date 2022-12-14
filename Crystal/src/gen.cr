@@ -248,6 +248,10 @@ def go_cmds(glob, ca, winp)
 		end
 		
 		if cmd.is_a?(KpNew)
+			if glob.wins[winp].is_on && glob.wins[winp].is_trig == false
+				next
+			end
+			trig(glob,winp)
 			r,line = strs(glob, winp, cmd.k_line, cmd.line_no, true,true )
 			if cmd.k_where == "acts"
 				r = load(glob.acts, cmd.k_what, line, 0, "23")
@@ -477,6 +481,21 @@ def re_go_cmds(glob,winp)
 #			r,s = strs(glob, winp, lns, cmd.line_no, false,true)
 			print lns
 		end
+		if cmd.is_a?(KpNew)
+			r,line = strs(glob, winp, cmd.k_line, cmd.line_no, true,true )
+			if cmd.k_where == "acts"
+				r = load(glob.acts, cmd.k_what, line, 0, "23")
+				if r == true
+					glob.load_errs = true
+				end
+			end
+			if cmd.k_where == "dats"
+				r = load(glob.dats, cmd.k_what, line, 0, "23")
+				if r == true
+					glob.load_errs = true
+				end
+			end
+		end
 		i += 1
 	end
 end
@@ -523,6 +542,18 @@ def chk( eqs, v, ss, prev, rv, rs )
 			return false
 		end
 		return true
+	end
+	if eq == "<"
+		if v.to_i < ss.to_i
+			return true
+		end
+		return false
+	end
+	if eq == ">"
+		if v.to_i > ss.to_i
+			return true
+		end
+		return false
 	end
 	if eq == "regex"               # var_value regex exp
 	 	if rs == false
