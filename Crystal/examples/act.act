@@ -8,6 +8,13 @@ C node link - ${.Node.n21.Link.to.name}
 
 All Field fld
 
+New acts Actor fld_new
+New acts C  - new pi
+
+C new actor
+Var dt = new
+Du fld_${dt}
+
 ----------------------------------------------------------------
 Actor fld
 ----------------------------------------------------------------
