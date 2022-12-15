@@ -32,7 +32,7 @@ Comp Grid parent . Find
 ----------------------------------------------------------------
 
 	Element name       C1 WORD       * grid
-	Element pad        C1 WORD       * padding
+	Element file       C1 WORD       * optional file to include
 	Element info       V1 WORD       * info
 
 ----------------------------------------------------------------
@@ -42,6 +42,7 @@ Comp Col parent Grid FindIn
 	Element name       R1 WORD       * column name, optional ref to another grid
 	Element index      N1 WORD       * document index tree
 	Element group      N1 WORD       * search navigation group index tree
+	Element file       C1 WORD       * optional file to include
 	Element info       V1 WORD       * info
 
 Ref name Grid ?
@@ -52,7 +53,6 @@ Comp R parent Col FindIn
 
 	Element name       R1 WORD       * name, optional ref to another grid
 	Element file       C1 WORD       * optional file to include
-	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
 Ref name Grid ?

@@ -311,29 +311,33 @@ m22.act note.def todo,ref
       match : map how to match
         join : map how to join
           - ref : the ref can be either to a model or a frame
-m23.act map.def a1,a2
+m23.act map.def a1,q z,y,z
 ----------------------------------------------------------------
-Model gen1 - model from map.def with a1,a2
+Model gen1 - model from map.def with a1,q
 ----------------------------------------------------------------
 
   Frame 1 top - map of top
-    A a2 : a2
+    A q : q
   Frame 1 a1 - map of grid 1
     Frame 2 a1a - map of grid 1.1
       A a1 : up to a1
 ----------------------------------------------------------------
-Model gen2 - model from map.def,gen1 with a1,a2
+Model gen2 - model from map.def,gen1 with a1,q
 ----------------------------------------------------------------
 
-  Frame 1 top - map of top
-    A a2 : a2
-    Frame 2 a2 - map of grid 2
-      Frame 3 gen1 - new generated model
-        A a2 : a2
+  Frame 1 gen1 - new generated model
+    A q : q
+    A a1 : up to a1
+    Frame 2 a1 - map of grid 1
+      Frame 3 a1a - map of grid 1.1
+        A y : y
         A a1 : up to a1
-  Frame 1 a1 - map of grid 1
-    Frame 2 a1a - map of grid 1.1
-      A a1 : up to a1
+  Frame 1 top - map of top
+    A q : q
+    Frame 2 b1 - map of grid 3
+      Frame 3 top - map of top
+        Frame 4 a2 - map of grid 2
+          A z : z
 m24.act note.def,map.def
 notes 6 0
 model 0 2
@@ -360,3 +364,86 @@ model 0 2
 join 0 3
 schema 0 1
 a2 0 1
+latex.act gen.def
+\documentclass[11pt]{article}
+    \addtolength{\topmargin}{-3cm}
+    \addtolength{\textheight}{3cm}
+\begin{document}
+\section{Variable}
+variable names
+\subsection{Purpose}
+use cases
+\begin{description}
+\item[output]  print variable value
+\item[match]  compare value
+\end{description}
+\subsection{Special}
+names
+\begin{description}
+\item[global]  .Name variable name
+\item[window]  .actor def of the actor
+\item[collections]  .Json loaded json file
+\item[counters]  .+ loop counter
+\item[depth]  .depth the actor stack depth
+\item[arg]  .arg argument passed from previous actor
+\item[conditional]  .0 first or rest of loop counter
+\item[eval]  \$ the contence is re evaluated
+\item[optional]  ? no error on var
+\end{description}
+\section{Command}
+commands in actors
+\subsection{Purpose}
+use cases
+\begin{description}
+\item[navigate]  call actor with a def
+\item[collect]  collect defs or strings
+\item[limit]  break out of loops
+\item[print]  print output text
+\end{description}
+\subsection{Name}
+function names
+\begin{description}
+\item[All]  all defs of type
+\item[Its]  defs related to current def
+\item[C]  print output
+\item[Unique]  end actor if item is not unique
+\item[Collect]  add def to a collection
+\item[Group]  add trings to a group
+\item[Break]  break out of the actor
+\item[Include]  include file context to output
+\item[Out]  delay or omitting output based on further output
+\item[New]  add new node to input data
+\end{description}
+\subsubsection{Xx}
+try
+\begin{description}
+\item[qa] the long text
+\end{description}
+\section{Actor}
+actors functions
+\subsection{Purpose}
+use cases
+\begin{description}
+\item[match] match to enter
+\item[runs] runs a list of commands
+\end{description}
+\section{Match}
+match functions
+\subsection{Name}
+match names
+\begin{description}
+\item[equal]  = var equal to value
+\item[in]  in var is a list
+\end{description}
+\section{Window}
+actor stack windows
+\subsection{Purpose}
+use cases
+\begin{description}
+\item[store]  stores values needed 
+\item[stack]  window are stored on the calling stack
+\item[access]  access to stack items
+\end{description}
+\subsection{Name}
+variable names
+\end{document}

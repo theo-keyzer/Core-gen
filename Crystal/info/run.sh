@@ -49,7 +49,10 @@ echo m21.act note.def,generated.def
 ./gen m21.act note.def,generated.def
 echo m22.act note.def todo,ref
 ./gen m22.act note.def todo,ref
-echo m23.act map.def a1,a2
-./gen m23.act map.def a1,a2
+echo m23.act map.def a1,q z,y,z
+./gen m23.act map.def a1,q z,y,z
 echo m24.act note.def,map.def
 ./gen m24.act note.def,map.def
+echo latex.act gen.def
+./gen latex.act gen.def
+

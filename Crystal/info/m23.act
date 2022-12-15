@@ -2,6 +2,8 @@
 Actor main
 ----------------------------------------------------------------
 
+Var items = ${2}
+
 Var model = gen1
 New dats Model ${model}n - new generated model
 All Model disp_col name != ${model}
@@ -17,8 +19,12 @@ Refs dats
 
 Unique clear
 
+Var items = ${3}n,${2}
+
 Var model = gen2
 New dats Model ${model}n - new generated model
+
+All Model disp_col name = gen1
 All Model disp_col name != ${model}
 
 C ----------------------------------------------------------------
@@ -35,7 +41,7 @@ Actor clear . .depth != 4
 -Unique clear ${.depth}
 
 ----------------------------------------------------------------
-Actor disp_col . .depth != 4
+Actor disp_col . .depth != 5
 ----------------------------------------------------------------
 
 Unique add ${.depth} ${name}
@@ -53,7 +59,7 @@ Its Frame.A.model disp_col  name != ${.main.model}
 Actor disp_items
 ----------------------------------------------------------------
 
-Its .main.2.split., disp_item
+Its .main.items.split., disp_item
 
 ----------------------------------------------------------------
 Actor disp_item . value = ${.disp_items.model}

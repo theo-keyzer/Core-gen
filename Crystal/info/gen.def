@@ -16,7 +16,7 @@ R counters    .  .+ loop counter
 R depth       .  .depth the actor stack depth
 R arg         .  .arg argument passed from previous actor
 R conditional .  .0 first or rest of loop counter
-R eval        .  $ the contence is re evaluated
+R eval        .  \$ the contence is re evaluated
 R optional    .  ? no error on var
 
 ----------------------------------------------------------------
@@ -42,6 +42,10 @@ R Break   .  break out of the actor
 R Include .  include file context to output
 R Out     .  delay or omitting output based on further output
 R New     .  add new node to input data
+
+Col xx 2 2 - try
+
+R qa . the long text
 
 ----------------------------------------------------------------
 Grid actor - actors functions
