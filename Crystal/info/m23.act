@@ -2,24 +2,40 @@
 Actor main
 ----------------------------------------------------------------
 
-New dats Model gene - new generated model
-All Model disp_col name != gene
+Var model = gen1
+New dats Model ${model}n - new generated model
+All Model disp_col name != ${model}
 
 C ----------------------------------------------------------------
-C Model new - model from ${1}  with ${2}
+C Model gen1 - model from ${1}  with ${2}
 C ----------------------------------------------------------------
 C
 
-All Model.gene.Frame frame group = 1
+All Model.${model}n.Frame frame group = 1
+
+Refs dats
+
+Unique clear
+
+Var model = gen2
+New dats Model ${model}n - new generated model
+All Model disp_col name != ${model}
+
+C ----------------------------------------------------------------
+C Model gen2 - model from ${1} ,gen1 with ${2}
+C ----------------------------------------------------------------
+C
+
+All Model.gen2.Frame frame group = 1
 
 ----------------------------------------------------------------
-Actor clear . .depth != 5
+Actor clear . .depth != 4
 ----------------------------------------------------------------
 
 -Unique clear ${.depth}
 
 ----------------------------------------------------------------
-Actor disp_col . .depth != 5
+Actor disp_col . .depth != 4
 ----------------------------------------------------------------
 
 Unique add ${.depth} ${name}
@@ -30,8 +46,8 @@ New dats Frame ${.depth}  ${name}  ${k_me}  ${info}
 
 Its Frame.A disp_items
 Du clear
-Its A_model.parent.parent disp_col  name != gene
-Its Frame.A.model disp_col  name != gene
+Its A_model.parent.parent disp_col  name != ${.main.model}
+Its Frame.A.model disp_col  name != ${.main.model}
 
 ----------------------------------------------------------------
 Actor disp_items

@@ -9,11 +9,11 @@ Model generated - with m20.act note.def todo,ref
           A todo 2 todo items
     Frame 2 match 2 map how to match
       Frame 3 join 3 map how to join
-          A ref 62 the ref can be either to a model or a frame
+          A ref 47 the ref can be either to a model or a frame
     Frame 2 join 3 map how to join
-        A ref 62 the ref can be either to a model or a frame
-  Frame 1 model 1 define map of model
+        A ref 47 the ref can be either to a model or a frame
+  Frame 1 model 1 new model
     Frame 2 notes 0 map of note taking app
         A todo 2 todo items
   Frame 1 join 3 map how to join
-      A ref 62 the ref can be either to a model or a frame
+      A ref 47 the ref can be either to a model or a frame

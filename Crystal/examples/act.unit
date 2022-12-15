@@ -57,6 +57,14 @@ Comp New parent Actor
 	Element line   V1 WORD  * load line args
 	
 ----------------------------------------------------------------
+Comp Refs parent Actor
+----------------------------------------------------------------
+* Re run refs after loading new defs
+----------------------------------------------------------------
+
+	Element where  C1 WORD  * ref of dats or acts
+
+----------------------------------------------------------------
 Comp Var parent Actor
 ----------------------------------------------------------------
 * Set variable to value

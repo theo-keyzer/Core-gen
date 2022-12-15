@@ -29,6 +29,7 @@ class ActT
 	property ap_all : Array(KpAll) = Array(KpAll).new
 	property ap_du : Array(KpDu) = Array(KpDu).new
 	property ap_new : Array(KpNew) = Array(KpNew).new
+	property ap_refs : Array(KpRefs) = Array(KpRefs).new
 	property ap_var : Array(KpVar) = Array(KpVar).new
 	property ap_its : Array(KpIts) = Array(KpIts).new
 	property ap_c : Array(KpC) = Array(KpC).new
@@ -1143,6 +1144,14 @@ def load(act, tok, ln, pos, lno)
 			errs = true
 		end
 		act.ap_new << comp
+	end
+	if tok == "Refs"
+		comp = KpRefs.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_refs << comp
 	end
 	if tok == "Var"
 		comp = KpVar.new

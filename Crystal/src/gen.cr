@@ -252,7 +252,7 @@ def go_cmds(glob, ca, winp)
 				next
 			end
 			trig(glob,winp)
-			r,line = strs(glob, winp, cmd.k_line, cmd.line_no, true,true )
+			r,line = strs(glob, winp, " " + cmd.k_line, cmd.line_no, true,true )
 			if cmd.k_where == "acts"
 				r = load(glob.acts, cmd.k_what, line, 0, "23")
 				if r == true
@@ -261,6 +261,21 @@ def go_cmds(glob, ca, winp)
 			end
 			if cmd.k_where == "dats"
 				r = load(glob.dats, cmd.k_what, line, 0, "23")
+				if r == true
+					glob.load_errs = true
+				end
+			end
+		end
+		
+		if cmd.is_a?(KpRefs)
+			if cmd.k_where == "acts"
+				r = refs(glob.acts)
+				if r == true
+					glob.load_errs = true
+				end
+			end
+			if cmd.k_where == "dats"
+				r = refs(glob.dats)
 				if r == true
 					glob.load_errs = true
 				end
@@ -482,7 +497,7 @@ def re_go_cmds(glob,winp)
 			print lns
 		end
 		if cmd.is_a?(KpNew)
-			r,line = strs(glob, winp, cmd.k_line, cmd.line_no, true,true )
+			r,line = strs(glob, winp, " " + cmd.k_line, cmd.line_no, true,true )
 			if cmd.k_where == "acts"
 				r = load(glob.acts, cmd.k_what, line, 0, "23")
 				if r == true

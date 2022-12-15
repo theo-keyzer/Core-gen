@@ -4,7 +4,7 @@ Model top - map of top
 
 Frame 1a 1a - use cases
 
-A a1   * a1
+-A a1   * a1
 A a2   * a2
 A q    * q
 
@@ -30,7 +30,7 @@ Frame a1a1 a1a1 - use cases
 A a1a1a   * a1a1a
 A y       * y
 A a1      * up to a1
-A a2      * up to a2
+-A a2      * up to a2
 
 ----------------------------------------------------------------
 Model a2 - map of grid 2

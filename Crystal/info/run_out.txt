@@ -35,38 +35,19 @@ notes - map of note taking app
     A subset - needed subset of the document can be generated
     A index - the model is like a document index
 
-model - define map of model
+model - new model
 
   1) E_O_L - 
-  2) model - the model elements
-    A name - model name
-    A pad - padding
-    A info - info
-  2) frame - the frame elements
-    A pos - frame, n dim grid pos
-    A name - frame name
-    A pad - padding
-    A info - info
-  2) a - the a elements
-    A model - ref to model
-    A pad - padding
-    A info - info
-  1) E_O_L - 
-  2) grid - the grid elements
-    A name - grid name
-    A pad - padding
-    A info - info
-  2) column - the column elements
-    A name - grid name
-    A pos - depth level or grid column
-    A grid - ref to another grid
-    A pad - padding
-    A info - info
-  2) row - the row elements
-    A grid - ref to another grid
-    A file - file name
-    A pad - padding
-    A info - info
+  2) input - input data
+    A keywords - multiple values
+    A models - from the models
+  2) map - join
+    A find - find keywords in the given models
+    A link - find the links between them
+  2) output - 
+    A diagram - diagram of the result
+    A nest - limit nesting depth
+    A layout - options to choose
 
 match - map how to match
 
@@ -115,139 +96,19 @@ schema - notes app
     A links - the way links work
     A group - how groups work
 m.act
-    A model model info - info
-    B model model name - model name
-    A model frame info - info
-    B model frame name - frame name
-    A model grid info - info
-    B model grid name - grid name
-    A model column info - info
-    B model column name - grid name
 m2.act
-    A model model info - info
-      B model model name - model name
-      B model frame name - frame name
-      B model grid name - grid name
-      B model column name - grid name
 m3.act
-    A notes purpose info - data collected
-      B model model name - model name
-      B model frame name - frame name
-      B model grid name - grid name
-      B model column name - grid name
-    A model a info - info
-      B model model name - model name
-      B model frame name - frame name
-      B model grid name - grid name
-      B model column name - grid name
 m4.act
-    A notes purpose info - data collected
-      B notes purpose model - build models
-      B model a model - ref to model
-    A model a info - info
-      B notes purpose model - build models
-      B model a model - ref to model
 m5.act
-    A model frame pos - frame, n dim grid pos
-      B notes purpose todo - todo items
-    A model column pos - depth level or grid column
-      B notes purpose todo - todo items
 m6.act
-    A notes purpose todo - todo items
-      B model frame pos - frame, n dim grid pos
-      B model column pos - depth level or grid column
 m7.act
-    A model model pad - padding
-      B notes purpose info - data collected
-      B model a info - info
-    A model frame pad - padding
-      B notes purpose info - data collected
-      B model a info - info
-    A model a pad - padding
-      B notes purpose info - data collected
-      B model a info - info
-    A model grid pad - padding
-      B notes purpose info - data collected
-      B model a info - info
-    A model column pad - padding
-      B notes purpose info - data collected
-      B model a info - info
-    A model row pad - padding
-      B notes purpose info - data collected
-      B model a info - info
 m8.act
-    A a1 a1 a1a - a1a
-      B a2 a2 a2a - a2a
 m9.act
-    A a1 a1 a1a - a1a
-      B b2 b2 x - x data
 m10.act
-    A a1 a1 a1a - a1a
-      B b1 b1 b1a - b1a
 m11.act
-    A a1 a1 r - r
-      B a2 a2 z - z
 m12.act note.def pos idea
-    A model frame pos - frame, n dim grid pos
-      - model - define map of model
-        - notes - map of note taking app
-          B notes purpose idea - list of ideas
-          B notes mapping idea - union of info, knowledge, skill
-    A model column pos - depth level or grid column
-      - model - define map of model
-        - notes - map of note taking app
-          B notes purpose idea - list of ideas
-          B notes mapping idea - union of info, knowledge, skill
 m12.act note.def idea pos
-    A notes purpose idea - list of ideas
-      - notes - map of note taking app
-        - model - define map of model
-          B model frame pos - frame, n dim grid pos
-          B model column pos - depth level or grid column
-    A notes mapping idea - union of info, knowledge, skill
-      - notes - map of note taking app
-        - model - define map of model
-          B model frame pos - frame, n dim grid pos
-          B model column pos - depth level or grid column
 m13.act note.def info pad
-
-Model model - define map of model
-
- Frame 2 model - the model elements
-
-  A pad * padding
-  A info * info
-
- Frame 2 frame - the frame elements
-
-  A pad * padding
-  A info * info
-
- Frame 2 a - the a elements
-
-  A pad * padding
-  A info * info
-
- Frame 2 grid - the grid elements
-
-  A pad * padding
-  A info * info
-
- Frame 2 column - the column elements
-
-  A pad * padding
-  A info * info
-
- Frame 2 row - the row elements
-
-  A pad * padding
-  A info * info
-
-Model notes - map of note taking app
-
- Frame 2 purpose - use cases
-
-  A info * data collected
 m14 note.def thinking idea pos
 
 Model notes - map of note taking app
@@ -260,55 +121,7 @@ Model notes - map of note taking app
 
   A idea * union of info, knowledge, skill
   A thinking * moving between the frame grids
-
-Model model - define map of model
-
- Frame 2 frame - the frame elements
-
-  A pos * frame, n dim grid pos
-
- Frame 2 column - the column elements
-
-  A pos * depth level or grid column
 m15.act note.def,map.def design,a1a pos,b1a
-
-Model notes - map of note taking app
-
- Frame 2 purpose - use cases
-
-  A design * some designs 
-
- Frame 2 mapping - how to join
-
-  A design * how to get from a to b
-
-Model model - define map of model
-
- Frame 2 frame - the frame elements
-
-  A pos * frame, n dim grid pos
-
- Frame 2 column - the column elements
-
-  A pos * depth level or grid column
-
-Model match - map how to match
-
- Frame 2 gen - generate matching app
-
-  A design * design app
-
-Model a1 - map of grid 1
-
- Frame a1 a1 - use cases
-
-  A a1a * a1a
-
-Model b1 - map of grid 3
-
- Frame b1 b1 - use cases
-
-  A b1a * b1a
 m16.act note.def,map.def idea,thinking,design
 
 Model notes - map of note taking app
@@ -371,12 +184,6 @@ Model notes - map of note taking app
 
   A design * how to get from a to b
 
-Model model - define map of model
-
- Frame 2 a - the a elements
-
-  A model * ref to model
-
 Model match - map how to match
 
  Frame 2 input - list of model names
@@ -438,10 +245,7 @@ m19.act note.def todo,ref
        match - map how to match  > 3-match  3
        schema - notes app  > 3-schema  1
      }
-     model - define map of model  > 2-model  2
-     {
-       model - define map of model  > 3-model  3
-     }
+     model - new model  > 2-model  2
      match - map how to match  > 2-match  5
      {
        join - map how to join  > 3-join  1
@@ -455,11 +259,12 @@ m19.act note.def todo,ref
         - ref : the ref can be either to a model or a frame
      }
    }
-   model - define map of model  > 1-model  2
+   model - new model  > 1-model  2
    {
      notes - map of note taking app  > 2-notes  1
      {
         - todo : todo items
+       model - new model  > 3-model  2
      }
    }
    match - map how to match  > 1-match  3
@@ -484,14 +289,14 @@ Model generated - with m20.act note.def todo,ref
           A todo 2 todo items
     Frame 2 match 2 map how to match
       Frame 3 join 3 map how to join
-          A ref 62 the ref can be either to a model or a frame
+          A ref 47 the ref can be either to a model or a frame
     Frame 2 join 3 map how to join
-        A ref 62 the ref can be either to a model or a frame
-  Frame 1 model 1 define map of model
+        A ref 47 the ref can be either to a model or a frame
+  Frame 1 model 1 new model
     Frame 2 notes 0 map of note taking app
         A todo 2 todo items
   Frame 1 join 3 map how to join
-      A ref 62 the ref can be either to a model or a frame
+      A ref 47 the ref can be either to a model or a frame
 m21.act note.def,generated.def
   generated
     notes
@@ -506,53 +311,52 @@ m22.act note.def todo,ref
       match : map how to match
         join : map how to join
           - ref : the ref can be either to a model or a frame
-m23.act map.def q,x,r,y,z,top,a1,a2
+m23.act map.def a1,a2
 ----------------------------------------------------------------
-Model new - model from map.def with q,x,r,y,z,top,a1,a2
+Model gen1 - model from map.def with a1,a2
 ----------------------------------------------------------------
 
   Frame 1 top - map of top
-    A a1 : a1
     A a2 : a2
-    A q : q
-    Frame 2 b1 - map of grid 3
-      A top : going to top
-      Frame 3 top - map of top
-        Frame 4 b2 - map of grid 4
-          A top : also going to top
-          A x : x data
-        Frame 4 a1 - map of grid 1
-          A r : r
-        Frame 4 a2 - map of grid 2
-          A z : z
-    Frame 2 a1 - map of grid 1
-      Frame 3 a1a - map of grid 1.1
-        A y : y
+  Frame 1 a1 - map of grid 1
+    Frame 2 a1a - map of grid 1.1
+      A a1 : up to a1
+----------------------------------------------------------------
+Model gen2 - model from map.def,gen1 with a1,a2
+----------------------------------------------------------------
+
+  Frame 1 top - map of top
+    A a2 : a2
+    Frame 2 a2 - map of grid 2
+      Frame 3 gen1 - new generated model
+        A a2 : a2
         A a1 : up to a1
-        A a2 : up to a2
+  Frame 1 a1 - map of grid 1
+    Frame 2 a1a - map of grid 1.1
+      A a1 : up to a1
 m24.act note.def,map.def
 notes 6 0
-model 1 3
+model 0 2
 match 3 1
 join 0 3
 design 1 3
 schema 0 1
-top 3 2
-a1 1 2
-a1a 2 1
-a2 0 2
+top 2 2
+a1 1 1
+a1a 1 1
+a2 0 1
 b1 1 1
 b2 1 0
 
 notes 6 0
 match 3 1
-top 3 2
-a1a 2 1
-model 1 3
+top 2 2
 design 1 3
-a1 1 2
+a1 1 1
+a1a 1 1
 b1 1 1
 b2 1 0
+model 0 2
 join 0 3
 schema 0 1
-a2 0 2
+a2 0 1
