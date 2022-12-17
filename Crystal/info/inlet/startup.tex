@@ -1,0 +1,11 @@
+The generator takes a \texttt{,} separated list of actor files followed
+by a \texttt{,} separated list of def input files. They each are all
+lumped together.
+
+The first actor's name, is the starting actor. The \texttt{go\_act}
+function loop through all actors with this name.
+
+All comand line arguments are store in the starting node instance as
+named entries. They are \texttt{\$\{0\},\ \$\{1\}} variables. To access
+these variables else where, prefix it with the starting actor's name
+like \texttt{\$\{.main.1\}}.

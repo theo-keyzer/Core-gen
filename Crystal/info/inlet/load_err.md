@@ -1,0 +1,3 @@
+The input file loader, prints errors as it goes along, mainly the parent and refs.
+The run time only checks these, but does not generate errors.
+

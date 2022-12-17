@@ -39,57 +39,32 @@ A find    * find relavant information in a document
 A order   * order of doument
 A flow    * detail need to flow together
 A files   * bulk of data can be in separate files
+A pandoc  * convert markdown to latex for these files
 A join    * process can join these files
 A subset  * needed subset of the document can be generated
 A index   * the model is like a document index
 
 ----------------------------------------------------------------
-Model model - define map of model
+Model model - new model
 ----------------------------------------------------------------
 
 Frame 1
 
-Frame 2 model - the model elements
+Frame 2 input - input data
 
-A name * model name
-A pad  * padding
-A info * info
+A keywords * multiple values
+A models   * from the models
 
-Frame 2 frame - the frame elements
+Frame 2 map - join
 
-A pos  * frame, n dim grid pos
-A name * frame name
-A pad  * padding
-A info * info
+A find * find keywords in the given models
+A link * find the links between them
 
-Frame 2 a - the a elements
+Frame 2 output
 
-A model * ref to model
-A pad   * padding
-A info  * info
-
-Frame 1
-
-Frame 2 grid - the grid elements
-
-A name * grid name
-A pad  * padding
-A info * info
-
-Frame 2 column - the column elements
-
-A name * grid name
-A pos  * depth level or grid column
-A grid * ref to another grid
-A pad  * padding
-A info * info
-
-Frame 2 row - the row elements
-
-A grid  * ref to another grid
-A file  * file name
-A pad   * padding
-A info  * info
+A diagram * diagram of the result
+A nest    * limit nesting depth
+A layout  * options to choose
 
 ----------------------------------------------------------------
 Model match - map how to match

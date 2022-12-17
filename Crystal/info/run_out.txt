@@ -31,6 +31,7 @@ notes - map of note taking app
     A order - order of doument
     A flow - detail need to flow together
     A files - bulk of data can be in separate files
+    A pandoc - convert markdown to latex for these files
     A join - process can join these files
     A subset - needed subset of the document can be generated
     A index - the model is like a document index
@@ -289,14 +290,14 @@ Model generated - with m20.act note.def todo,ref
           A todo 2 todo items
     Frame 2 match 2 map how to match
       Frame 3 join 3 map how to join
-          A ref 47 the ref can be either to a model or a frame
+          A ref 48 the ref can be either to a model or a frame
     Frame 2 join 3 map how to join
-        A ref 47 the ref can be either to a model or a frame
+        A ref 48 the ref can be either to a model or a frame
   Frame 1 model 1 new model
     Frame 2 notes 0 map of note taking app
         A todo 2 todo items
   Frame 1 join 3 map how to join
-      A ref 47 the ref can be either to a model or a frame
+      A ref 48 the ref can be either to a model or a frame
 m21.act note.def,generated.def
   generated
     notes
@@ -365,85 +366,3 @@ join 0 3
 schema 0 1
 a2 0 1
 latex.act gen.def
-\documentclass[11pt]{article}
-    \addtolength{\topmargin}{-3cm}
-    \addtolength{\textheight}{3cm}
-\begin{document}
-\section{Variable}
-variable names
-\subsection{Purpose}
-use cases
-\begin{description}
-\item[output]  print variable value
-\item[match]  compare value
-\end{description}
-\subsection{Special}
-names
-\begin{description}
-\item[global]  .Name variable name
-\item[window]  .actor def of the actor
-\item[collections]  .Json loaded json file
-\item[counters]  .+ loop counter
-\item[depth]  .depth the actor stack depth
-\item[arg]  .arg argument passed from previous actor
-\item[conditional]  .0 first or rest of loop counter
-\item[eval]  \$ the contence is re evaluated
-\item[optional]  ? no error on var
-\end{description}
-\section{Command}
-commands in actors
-\subsection{Purpose}
-use cases
-\begin{description}
-\item[navigate]  call actor with a def
-\item[collect]  collect defs or strings
-\item[limit]  break out of loops
-\item[print]  print output text
-\end{description}
-\subsection{Name}
-function names
-\begin{description}
-\item[All]  all defs of type
-\item[Its]  defs related to current def
-\item[C]  print output
-\item[Unique]  end actor if item is not unique
-\item[Collect]  add def to a collection
-\item[Group]  add trings to a group
-\item[Break]  break out of the actor
-\item[Include]  include file context to output
-\item[Out]  delay or omitting output based on further output
-\item[New]  add new node to input data
-\end{description}
-\subsubsection{Xx}
-try
-\begin{description}
-\item[qa] the long text
-\end{description}
-\section{Actor}
-actors functions
-\subsection{Purpose}
-use cases
-\begin{description}
-\item[match] match to enter
-\item[runs] runs a list of commands
-\end{description}
-\section{Match}
-match functions
-\subsection{Name}
-match names
-\begin{description}
-\item[equal]  = var equal to value
-\item[in]  in var is a list
-\end{description}
-\section{Window}
-actor stack windows
-\subsection{Purpose}
-use cases
-\begin{description}
-\item[store]  stores values needed 
-\item[stack]  window are stored on the calling stack
-\item[access]  access to stack items
-\end{description}
-\subsection{Name}
-variable names
-\end{document}

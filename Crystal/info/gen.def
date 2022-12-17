@@ -1,82 +1,114 @@
-----------------------------------------------------------------
-Grid variable - variable names
-----------------------------------------------------------------
-
-Col purpose 1 1 - use cases
-
-R output   .  print variable value
-R match    .  compare value
-
-Col special 1 1 - names
-
-R global      .  .Name variable name
-R window      .  .actor def of the actor
-R collections .  .Json loaded json file
-R counters    .  .+ loop counter
-R depth       .  .depth the actor stack depth
-R arg         .  .arg argument passed from previous actor
-R conditional .  .0 first or rest of loop counter
-R eval        .  \$ the contence is re evaluated
-R optional    .  ? no error on var
+inlet/actor_calls.tex  inlet/actor.tex      inlet/break_condition.tex  inlet/input_files.tex  inlet/loop_counter.tex       inlet/refs.tex     inlet/var_cmd.tex  inlet/var.tex
+inlet/actor_match.tex  inlet/break_cmd.tex  inlet/collections.tex      inlet/load_err.tex     inlet/other_input_files.tex  inlet/startup.tex  inlet/var_err.tex
 
 ----------------------------------------------------------------
-Grid command - commands in actors
+Grid Startup inlet/startup.tex Start.
 ----------------------------------------------------------------
 
-Col purpose 1 1 - use cases
-
-R navigate .  call actor with a def
-R collect  .  collect defs or strings
-R limit    .  break out of loops
-R print    .  print output text
-
-Col name 1 1 - function names
-
-R All     .  all defs of type
-R Its     .  defs related to current def
-R C       .  print output
-R Unique  .  end actor if item is not unique
-R Collect .  add def to a collection
-R Group   .  add trings to a group
-R Break   .  break out of the actor
-R Include .  include file context to output
-R Out     .  delay or omitting output based on further output
-R New     .  add new node to input data
-
-Col xx 2 2 - try
-
-R qa . the long text
-
 ----------------------------------------------------------------
-Grid actor - actors functions
+Grid Variable inlet/var.tex Variable names.
 ----------------------------------------------------------------
 
-Col purpose 1 1 - use cases
+Col Purpose 1 1 . The use cases.
 
-R match   * match to enter
-R runs    * runs a list of commands
+R Output   .  print variable value.
+R Match    .  compare value.
+
+Col Special 1 1 - Special variable names are prefixed by (.).
+
+R Global      .  .Node.item.var The item index name of a Node.
+R Window      .  .actor, the def of the actor.
+R Collections .  .Json, loaded json file.
+R Counters    .  .+, loop counter.
+R Depth       .  .depth, the actor stack depth.
+R Arg         .  .arg, argument passed from previous actor.
+R Conditional .  .0, first or rest of loop counter.
+R Eval        .  \$, the contence is re evaluated.
+R Optional    .  ?, no error on var.
+
+Col Errors 1 1 inlet/var_err.tex Variable name errors.
 
 ----------------------------------------------------------------
-Grid match - match functions
+Grid Actor inlet/actor.tex The actors
 ----------------------------------------------------------------
 
-Col name 1 1 - match names
+Col Purpose 1 1 . Use cases.
 
-R equal  .  = var equal to value
-R in     .  in var is a list
+R Navigate .  call actor with a def.
+R Collect  .  collect defs or strings.
+R Limit    .  break out of loops.
+R Print    .  print output text.
+
+Col name 1 1 . Command names.
+
+R All     .  actor call with all nodes of type.
+R Its     .  actor call with defs related to current node.
+R Du      .  actor call with the current node.
+R C       .  print output line.
+R Cs      .  print output with no new line.
+R Unique  .  end actor if item is not unique.
+R Collect .  add def to a collection.
+R Group   .  add strings to a group.
+R Break   .  break out of the actor.
+R Include .  include file context to output.
+R Out     .  delay or omitting output based on further output.
+R New     .  add new node to input data.
+R Refs    .  run loader refs after adding new nodes.
+R Var     .  create new variable in the current node.
+
+Col Var 2 2 inlet/var_cmd.tex Var command.
+Col Collect 2 2 inlet/collections.tex Collection commands.
+Col Break 2 2 inlet/break_cmd.tex Break command.
+Col Condition 2 2 inlet/break_condition.tex Break condition.
+
+Col Call 1 1 inlet/actor_calls.tex Actor calls.
+Col Loop 2 2 inlet/loop_counter.tex Loop counter.
+
+Col Match 1 1 inlet/actor_match.tex Actor matching.
+
+Col Matching 2 2 . Match cases.
+
+R Equal  .  =, var equal to value.
+R In     .  in or has, var is in a list 
 
 ----------------------------------------------------------------
-Grid window - actor stack windows
+Grid Input . Input files.
 ----------------------------------------------------------------
 
-Col purpose 1 1 - use cases
+Col File   1 1 inlet/input_files.tex Input files.
+Col Other  1 1 inlet/other_input_files.tex Other input.
+Col Errors 1 1 inlet/load_err.tex Load errors.
 
-R store  .  stores values needed 
-R stack  .  window are stored on the calling stack
-R access .  access to stack items
+----------------------------------------------------------------
+Grid Window . Actor stack windows
+----------------------------------------------------------------
 
-Col name 1 1 - variable names
+Col Purpose 1 1 . Use cases.
 
+R Store  .  stores values needed.
+R Stack  .  window are stored on the calling stack.
+R Access .  access to stack items.
+
+Col name 1 1 . Window variables.
+
+R name     . actor name
+R cnt      . loop counter
+R dat      . node instance
+R attr     . node variable
+R eq       . equation
+R value    . compare value
+R arg      . argument passed from previos actor
+R flno     . line number of the calling actor
+R is\_on   . out delay is on
+R is\_trig . out delay is triggered
+R is\_prev . previous actor has trigger
+R on\_pos  . cmd index for trigger
+R cur\_pos . current cmd index
+R cur\_act . current actor index
+
+----------------------------------------------------------------
+Grid Refs inlet/refs.tex refs
+----------------------------------------------------------------
 
 
 

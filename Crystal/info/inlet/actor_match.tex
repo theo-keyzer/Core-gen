@@ -1,0 +1,8 @@
+Actor have a case like match on all the actors of the same name.
+\texttt{Actor\ list\_act\ Node\ name\ =\ tb1}, here it matches the
+varable \texttt{name} to \texttt{tb1} The \texttt{\&=} would be false if
+the previous one failed. The \texttt{\textbar{}=} would be true if the
+previous one was true. The variable has a \texttt{?} option like
+\texttt{name?\ =\ tb1}. This would fail if \texttt{name} does not exist.
+No error is printed and the global errors flag is not updated - not seen
+as an error.

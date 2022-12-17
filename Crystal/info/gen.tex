@@ -1,0 +1,267 @@
+\documentclass[11pt]{article}
+    \addtolength{\topmargin}{-3cm}
+    \addtolength{\textheight}{3cm}
+\begin{document}
+\section{Startup}
+Start.
+The generator takes a \texttt{,} separated list of actor files followed
+by a \texttt{,} separated list of def input files. They each are all
+lumped together.
+
+The first actor's name, is the starting actor. The \texttt{go\_act}
+function loop through all actors with this name.
+
+All comand line arguments are store in the starting node instance as
+named entries. They are \texttt{\$\{0\},\ \$\{1\}} variables. To access
+these variables else where, prefix it with the starting actor's name
+like \texttt{\$\{.main.1\}}.
+\section{Variable}
+Variable names.
+The \texttt{\$\{name\}} gets replaced by the value of the variable
+\texttt{name}. To escape the \texttt{\$\{}, use \texttt{\$\$\{} The case
+conversion letter \texttt{c} like \texttt{\$\{name\}c}, captilize the
+variable's value. The \texttt{\$\{.arg\}} is the value of the argument
+passed from the previous actor. The \texttt{\$\{eval\}\$}, it replaces
+the eval with the \texttt{strs} function of the value of \texttt{eval}.
+That is to get a code block from a separate file and print it
+\texttt{C\ \$\{code\_block\}\$}.
+\subsection{Purpose}
+The use cases.
+\begin{description}
+\item[Output]  print variable value.
+\item[Match]  compare value.
+\end{description}
+\subsection{Special}
+Special variable names are prefixed by (.).
+\begin{description}
+\item[Global]  .Node.item.var The item index name of a Node.
+\item[Window]  .actor, the def of the actor.
+\item[Collections]  .Json, loaded json file.
+\item[Counters]  .+, loop counter.
+\item[Depth]  .depth, the actor stack depth.
+\item[Arg]  .arg, argument passed from previous actor.
+\item[Conditional]  .0, first or rest of loop counter.
+\item[Eval]  \$, the contence is re evaluated.
+\item[Optional]  ?, no error on var.
+\end{description}
+\subsection{Errors}
+Variable name errors.
+The errors land up in the generated code to track down the error. Some
+commands make use of the \texttt{s\_get\_var,\ strs} functions that
+would return the error, but the commands ignore them. The errors are
+printed though.
+\section{Actor}
+The actors
+The actor are like functions that can be called and a case like
+statement that matches. The match is (var exp string), the string can
+have variables in it. Actors of the same name, are the case items. They
+are given an input node to operate on. The actor has a list of commands
+it runs through.
+\subsection{Purpose}
+Use cases.
+\begin{description}
+\item[Navigate]  call actor with a def.
+\item[Collect]  collect defs or strings.
+\item[Limit]  break out of loops.
+\item[Print]  print output text.
+\end{description}
+\subsection{Name}
+Command names.
+\begin{description}
+\item[All]  actor call with all nodes of type.
+\item[Its]  actor call with defs related to current node.
+\item[Du]  actor call with the current node.
+\item[C]  print output line.
+\item[Cs]  print output with no new line.
+\item[Unique]  end actor if item is not unique.
+\item[Collect]  add def to a collection.
+\item[Group]  add strings to a group.
+\item[Break]  break out of the actor.
+\item[Include]  include file context to output.
+\item[Out]  delay or omitting output based on further output.
+\item[New]  add new node to input data.
+\item[Refs]  run loader refs after adding new nodes.
+\item[Var]  create new variable in the current node.
+\end{description}
+\subsubsection{Var}
+Var command.
+This creates a named entry in the the current node's instance. The
+\texttt{Var\ foo\ =\ bar}, sets the variable. To access it,
+\texttt{\$\{foo\}} The \texttt{Var\ .list\_act.foo\ =\ abar}, set the
+variable in the node instance that is current in the \texttt{list\_act}.
+The current actors are on the stack. To access it,
+\texttt{\$\{.list\_act.foo\}}, or when on that node instance (back to
+the list\_act), \texttt{\$\{foo\}}.
+
+Also has a \texttt{regex} that can break down the string as named
+entries.
+\subsubsection{Collect}
+Collection commands.
+These are to collect data for later use. They denormalizes the input to
+be more elegant for the generator. The \texttt{Collect} and
+\texttt{Hash}, store the current node's instance. The \texttt{Unique}
+and \texttt{Group} store strings - does not duplicate. The \texttt{Hash}
+can be accessed as a var \texttt{\$\{.Hash.A.Open.foo\}}, the others by
+the \texttt{All} command.
+\subsubsection{Break}
+Break command.
+The actor loop \texttt{go\_act} works like a \texttt{case} switch.
+Actors of the same name, are the \texttt{when} cases. The command loop
+\texttt{go\_cmds}, loops through the commands in that actor. The
+\texttt{All,\ Its} loop, calls the \texttt{go\_act} function in a loop.
+The \texttt{Du} command call another actor with \texttt{go\_act}. To
+break out of the \texttt{go\_cmds}'s loop, it uses a break to end the
+loop. The \texttt{Break\ cmd} command and \texttt{Unique} does that. To
+break out of the actor loop, it returns 2. The \texttt{Break\ actor}
+does that. That ends up in the \texttt{go\_act}, that end it. To break
+out of the \texttt{Its,\ All} loop, it returns 1. The
+\texttt{Break\ loop} command does that. The actor loop \texttt{go\_act}
+would return 1 if its return is 1. The return 1 will end up in the
+calling \texttt{Its,\ All} command that will continue with the
+\texttt{go\_cmds}. The generated code loop functions would return the
+result if \texttt{!=\ 0}. The other implementations make use of a depth
+value that gets inc/dec. It can go back further. The problem is the
+\texttt{Du} command \texttt{Do/Jump} that may or may not be between the
+loops.
+\subsubsection{Condition}
+Break condition.
+The \texttt{Break\ cmd\ on\_error\ \$\{val\}}, evals the variable string
+with the \texttt{strs} function. If the variables are missing, it would
+break out of the \texttt{go\_cmds}. The \texttt{no\_error}, would break
+when the variables are present - doing checks.
+\subsection{Call}
+Actor calls.
+The \texttt{All,\ Its\ and\ Du} commands, calls the \texttt{new\_act}
+function to set up a new actor window on the stack. It passes the match
+data \texttt{(variable,\ eq,\ value)} and \texttt{arg} string. The value
+is evaluated from the current node instance. The \texttt{Du} command
+calls \texttt{go\_act} with the current node instance, the others, the
+generated code that call \texttt{go\_act}. The \texttt{go\_act} function
+uses the new node instance. The match uses this instance and return if
+the match failed. Then it loops through all actors with its given name.
+Each of these actors, have there own match data and skips the ones that
+do not match.
+\subsubsection{Loop}
+Loop counter.
+The \texttt{All,\ Its} command calls \texttt{new\_act} first that sets
+the next actor's counter to -1. The loop calls the \texttt{go\_act}
+function, that increments the counter on match. The \texttt{\$\{.-\}} is
+the counter value and \texttt{\$\{.+\}}, the counter +1. Also
+\texttt{\$\{.0.string\}} for first (if counter is 0) and
+\texttt{\$\{.1.string\}} for rest. The value is \texttt{string} The
+\texttt{Du} inherits this value.
+\subsection{Match}
+Actor matching.
+Actor have a case like match on all the actors of the same name.
+\texttt{Actor\ list\_act\ Node\ name\ =\ tb1}, here it matches the
+varable \texttt{name} to \texttt{tb1} The \texttt{\&=} would be false if
+the previous one failed. The \texttt{\textbar{}=} would be true if the
+previous one was true. The variable has a \texttt{?} option like
+\texttt{name?\ =\ tb1}. This would fail if \texttt{name} does not exist.
+No error is printed and the global errors flag is not updated - not seen
+as an error.
+\subsubsection{Matching}
+Match cases.
+\begin{description}
+\item[Equal]  =, var equal to value.
+\item[In]  in or has, var is in a list 
+\end{description}
+\section{Input}
+Input files.
+\subsection{File}
+Input files.
+The input files are word based separated by tabs or spaces. The last
+column can be a variable string \texttt{(V1)}, that is the string to the
+end of the line. There is one whitespace between the previous word and
+it. Use a padding word before it to get all the columns alligned if
+needed.
+\subsection{Other}
+Other input.
+The Json, Yaml and Xml are addons that operate the same way that the
+rest does. May need some more work here.
+\subsection{Errors}
+Load errors.
+The input file loader, prints errors as it goes along, mainly the parent
+and refs. The run time only checks these, but does not generate errors.
+\section{Window}
+Actor stack windows
+\subsection{Purpose}
+Use cases.
+\begin{description}
+\item[Store]  stores values needed.
+\item[Stack]  window are stored on the calling stack.
+\item[Access]  access to stack items.
+\end{description}
+\subsection{Name}
+Window variables.
+\begin{description}
+\item[name] actor name
+\item[cnt] loop counter
+\item[dat] node instance
+\item[attr] node variable
+\item[eq] equation
+\item[value] compare value
+\item[arg] argument passed from previos actor
+\item[flno] line number of the calling actor
+\item[is\_on] out delay is on
+\item[is\_trig] out delay is triggered
+\item[is\_prev] previous actor has trigger
+\item[on\_pos] cmd index for trigger
+\item[cur\_pos] current cmd index
+\item[cur\_act] current actor index
+\end{description}
+\section{Refs}
+refs
+The \texttt{R1} is a ref to another node, \texttt{F1}, ref to local
+node, \texttt{L1}, ref to local node of the \texttt{R1}, M1, ref to
+local node of an element of \texttt{R1} of a node that has a \texttt{L1}
+ref.
+
+\begin{verbatim}
+----------------------------------------------------------------
+Comp Attr parent Type FindIn
+----------------------------------------------------------------
+
+    Element table    R1 TABLE            * Pointer to (Table).
+    Element name     C1 NAME             * Colomn name.
+
+Ref table Type check
+
+----------------------------------------------------------------
+Comp Where parent Type
+----------------------------------------------------------------
+
+    Element attr     F1 Attr      * Field name
+    Element from_id  M1 Attr      * From id
+    Element eq       C1 WORD      * =
+    Element id       F1 Attr      * id
+
+Ref     attr Attr check
+Ref       id Attr check
+Ref3 from_id Attr attr Attr table check
+\end{verbatim}
+
+The \texttt{Ref3} uses the \texttt{M1} field \texttt{from\_id}. The link
+goes to node of type \texttt{Attr}. It uses the \texttt{attr} field to
+get to \texttt{Attr} node. In that node it uses the \texttt{table} field
+to be used as the parent \texttt{(Type)} to find the \texttt{Attr} in.
+The \texttt{from\_id,\ attr} can be different node types. The refs run
+in a sequence at \texttt{Element} level. First it does the
+\texttt{F1,\ R1} ones, then the the \texttt{M1,\ L1} ones.
+
+To use the links from the \texttt{Where} node, use
+\texttt{attr,from\_id,id}. To use it from the \texttt{Attr} node, use
+\texttt{Where\_attr,\ Where\_from\_id,\ Where\_id}. These are the
+reverse links that loops to match. The \texttt{Its} cmd will get them
+all, The variables will get the first one.
+
+The \texttt{L1} is a simpler model of this, it uses the \texttt{R1}
+instead of the \texttt{F1} to get to the parent. The \texttt{F1} share
+the same parent. The \texttt{R1} finds the parent - top level nodes.
+
+The \texttt{check} on the refs, means it is an error if it does find the
+link. A \texttt{(.)} here, means it is optional link. The value then
+also need to be a \texttt{(.)} if it is optional. If the value if
+different, then it is an error if not found. A \texttt{(?)} here means
+link if can, but no error if not.
+\end{document}

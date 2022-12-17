@@ -1,0 +1,10 @@
+This creates a named entry in the the current node's instance. The
+\texttt{Var\ foo\ =\ bar}, sets the variable. To access it,
+\texttt{\$\{foo\}} The \texttt{Var\ .list\_act.foo\ =\ abar}, set the
+variable in the node instance that is current in the \texttt{list\_act}.
+The current actors are on the stack. To access it,
+\texttt{\$\{.list\_act.foo\}}, or when on that node instance (back to
+the list\_act), \texttt{\$\{foo\}}.
+
+Also has a \texttt{regex} that can break down the string as named
+entries.

@@ -1,0 +1,5 @@
+The input files are word based separated by tabs or spaces. The last column
+can be a variable string `(V1)`, that is the string to the end of the line.
+There is one whitespace between the previous word and it. Use a padding word
+before it to get all the columns alligned if needed.
+
