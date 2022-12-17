@@ -1,12 +1,9 @@
-inlet/actor_calls.tex  inlet/actor.tex      inlet/break_condition.tex  inlet/input_files.tex  inlet/loop_counter.tex       inlet/refs.tex     inlet/var_cmd.tex  inlet/var.tex
-inlet/actor_match.tex  inlet/break_cmd.tex  inlet/collections.tex      inlet/load_err.tex     inlet/other_input_files.tex  inlet/startup.tex  inlet/var_err.tex
-
 ----------------------------------------------------------------
-Grid Startup inlet/startup.tex Start.
+Grid Startup inlet/startup Start.
 ----------------------------------------------------------------
 
 ----------------------------------------------------------------
-Grid Variable inlet/var.tex Variable names.
+Grid Variable inlet/var Variable names.
 ----------------------------------------------------------------
 
 Col Purpose 1 1 . The use cases.
@@ -23,13 +20,13 @@ R Counters    .  .+, loop counter.
 R Depth       .  .depth, the actor stack depth.
 R Arg         .  .arg, argument passed from previous actor.
 R Conditional .  .0, first or rest of loop counter.
-R Eval        .  \$, the contence is re evaluated.
+R Eval        .  \$, the content is re evaluated.
 R Optional    .  ?, no error on var.
 
-Col Errors 1 1 inlet/var_err.tex Variable name errors.
+Col Errors 1 1 inlet/var_err Variable name errors.
 
 ----------------------------------------------------------------
-Grid Actor inlet/actor.tex The actors
+Grid Actor inlet/actor The actors
 ----------------------------------------------------------------
 
 Col Purpose 1 1 . Use cases.
@@ -56,15 +53,15 @@ R New     .  add new node to input data.
 R Refs    .  run loader refs after adding new nodes.
 R Var     .  create new variable in the current node.
 
-Col Var 2 2 inlet/var_cmd.tex Var command.
-Col Collect 2 2 inlet/collections.tex Collection commands.
-Col Break 2 2 inlet/break_cmd.tex Break command.
-Col Condition 2 2 inlet/break_condition.tex Break condition.
+Col Var 2 2 inlet/var_cmd Var command.
+Col Collect 2 2 inlet/collections Collection commands.
+Col Break 2 2 inlet/break_cmd Break command.
+Col Condition 2 2 inlet/break_condition Break condition.
 
-Col Call 1 1 inlet/actor_calls.tex Actor calls.
-Col Loop 2 2 inlet/loop_counter.tex Loop counter.
+Col Call 1 1 inlet/actor_calls Actor calls.
+Col Loop 2 2 inlet/loop_counter Loop counter.
 
-Col Match 1 1 inlet/actor_match.tex Actor matching.
+Col Match 1 1 inlet/actor_match Actor matching.
 
 Col Matching 2 2 . Match cases.
 
@@ -75,9 +72,9 @@ R In     .  in or has, var is in a list
 Grid Input . Input files.
 ----------------------------------------------------------------
 
-Col File   1 1 inlet/input_files.tex Input files.
-Col Other  1 1 inlet/other_input_files.tex Other input.
-Col Errors 1 1 inlet/load_err.tex Load errors.
+Col File   1 1 inlet/input_files Input files.
+Col Other  1 1 inlet/other_input_files Other input.
+Col Errors 1 1 inlet/load_err Load errors.
 
 ----------------------------------------------------------------
 Grid Window . Actor stack windows
@@ -107,7 +104,7 @@ R cur\_pos . current cmd index
 R cur\_act . current actor index
 
 ----------------------------------------------------------------
-Grid Refs inlet/refs.tex refs
+Grid Refs inlet/refs refs
 ----------------------------------------------------------------
 
 
