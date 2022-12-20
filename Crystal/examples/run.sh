@@ -55,5 +55,7 @@ echo ref.act
 ./gen ref.act tst.def,sample.def
 echo act.act:
 ./gen act.act tst.def
+echo cre_tbl.act: note.unit,gen.unit
+./gen cre_tbl.act note.unit,gen.unit
 
 

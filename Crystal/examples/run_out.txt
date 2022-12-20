@@ -1,0 +1,393 @@
+dag2.act:
+   n221 - v = 9
+   {
+     n1 - v = 9
+   }
+   n21 - v = 9
+   {
+     n11 - v = 9
+     {
+       n22 - v = 9
+     }
+   }
+   n2 - v = 9
+   n12 - v = 9
+dag.act:
+   n221 - v = 9
+   {
+     n1 - v = 9
+   }
+   n21 - v = 9
+   {
+     n11 - v = 9
+     {
+       n22 - v = 9
+     }
+   }
+   n12 - v = 9
+   n2 - v = 9
+Unique: D:n1, D:n221, D:n11, D:n21, D:n12, D:n2, D:n22, A:n221, A:n1, A:n21, A:n11, A:n22, A:n12, A:n2
+Unique: D:n1, D:n221, D:n11, D:n21, D:n12, D:n2, D:n22
+json2.act:
+ID: USA - Nil
+      child ID:  TN
+         info ID: TN - USA
+      child ID:  FL
+         info ID: FL - USA
+ID: TN - USA
+  par ID:   USA - Nil
+      child ID:  Nashville
+         info ID: Nashville - TN
+      child ID:  Memphis
+ID: FL - USA
+  par ID:   USA - Nil
+      child ID:  Miami
+      child ID:  Jacksonville
+ID: Nashville - TN
+  par ID:   TN - USA
+json.act:
+ Arg : file
+List : file
+Menu: File
+Popup :
+Addr: CreateNewDoc()
+Addr: OpenDoc()
+Arg: Open Open
+Tbl: op
+Arg: Open Open
+Tbl: op
+Addr: CloseDoc()
+node.act:
+a
+n1 - v = 9
+{
+  child n11  not 12
+  child n12  is 12
+}
+n11 - v = 9
+n12 - v = 9
+n2 - v = 9
+{
+  child n21  not 12
+  child n22  not 12
+  {
+   child n221  not 12
+  }
+}
+n21 - v = 9
+n22 - v = 9
+{
+  child n221  not 12
+}
+n221 - v = 9
+tbl.act:
+Arg: TBL.ACT  Tst.def  tb2  - Command line arguments
+Table : tb1 - from Table
+Table : tb2 - from Table
+Table : Open - from Table
+Table : tb1 - from Table.tb1
+Field : t1f1 - from Table..Field
+Field : t1f2 - from Table..Field
+Field : t2f1 - from Table..Field
+Field : user - from Table..Field
+Field : t2f1 - from Table.tb2.Field
+Attrs : t2f1a1 - from Table.tb2.Field.Attrs
+Attrs : t2f1a1 - from Table..Field.Attrs
+Table : tb2 - from Table.${2}
+Field : t2f1 - from Table.${2}n.Field
+tbl2.act:
+Table | : tb1
+Table | : tb2
+Table & : tb1
+tst2.act:
+xx t2f1a1
+yy TB2
+Select (a.t1f2) from tb1 a
+Select (b.t2f1, a1.t1f2, a2.t1f2) from tb2 b, tb1 a1, tb1 a2 where a1.t1f1 = b.t2f1 and a2.t1f1 = b.t2f1
+group.act:
+A B ab1,ab3,zab1
+A C ac1,ac2,ac3,ac4
+B B ab4
+hash2.act:
+ID: USA - Nil
+ID: TN - USA
+ID: FL - USA
+ID: Nashville - TN
+Hash : state
+hash.act:
+ Arg : file
+List : file
+Addr: New CreateNewDoc()
+Addr: Open OpenDoc()
+Addr: Close CloseDoc()
+Hash : CloseDoc()
+Hash : bar
+45 ${val}
+45 45
+47 47
+47 ${val}
+bar
+s_check.act:
+tst3.act:
+- join attr t2f1a1
+
+- field t1f1
+- field t1f2
+- join attr t2f1a1
+-  attr t2f1a1
+- field t2f1
+- field user
+tst4.act:
+- table tb1
+- field t1f1
+- field t1f2
+- join2 t1f2
+- table tb2
+- field t2f1
+- join t2f1
+- join t2f1
+- table Open
+- field user
+tst5.act:
+ a A-B,B-A,B-C,C-B
+  b A-B
+   s 3  A-B
+   s 4  A-B
+  b B-A
+   s 1  B-A
+  b B-C
+   s 1  B-C
+   s 4  B-C
+   s 3  B-C
+   s 5  B-C
+  b C-B
+   s 2  C-B
+ a A-B,B-C,C-C
+  b A-B
+   s 3  A-B
+   s 4  A-B
+  b B-C
+   s 1  B-C
+   s 4  B-C
+   s 3  B-C
+   s 5  B-C
+  b C-C
+ a A-A,A-C,C-C
+  b A-A
+  b A-C
+   s 2  A-C
+  b C-C
+ a A-C,C-A,C-B,C-C
+  b A-C
+   s 2  A-C
+  b C-A
+   s 2  C-A
+   s 1  C-A
+  b C-B
+   s 2  C-B
+  b C-C
+ a A-C,C-A
+  b A-C
+   s 2  A-C
+  b C-A
+   s 2  C-A
+   s 1  C-A
+ all 3 A-B,B-C
+ all 4 A-B,B-C
+ all 1 B-A,B-C,C-A
+ no  5 B-C check
+ all 2 A-C,C-A,C-B
+
+tst6.act:
+tst.def 2,3,4
+ all 1 3 A-B,B-C
+ all 1 4 A-B,B-C
+ no  1 1 B-A,B-C
+ all 1 5 B-C
+ no  1 2 C-B
+ no  3 2 A-C
+ all 2 4 A-B,B-C
+ all 2 1 B-C
+ all 2 5 B-C
+ all 4 2 A-C,C-A,C-B
+-- aaa -- A-C 2
+-- aaa -- C-A 1
+-- aaa -- C-B 2
+ no  4 1 C-A
+ no  5 2 A-C,C-A
+ no  5 1 C-A
+json3.act:
+Parent: sport
+Question: q1 Which one is correct team name in NBA? Huston Rocket
+Parent: maths
+Question: q1 5 + 7 = ? 12
+Question: q2 12 - 8 = ? 4
+json.act:
+Parent: sport
+Question: q1 Which one is correct team name in NBA? Huston Rocket
+Parent: maths
+Question: q1 5 + 7 = ? 12
+Question: q2 12 - 8 = ? 4
+json5.act:
+Question: q1 Which one is correct team name in NBA? Huston Rocket
+Question: q1 5 + 7 = ? 12
+Question: q2 12 - 8 = ? 4
+yaml.act:
+ Arg : a pear tree
+Day: 3
+Part: a pear tree
+Topic: ?2<3?yaml.act:36? doe a deer, a female deer
+Topic: ?2<3?yaml.act:36? ray a drop of golden sun
+Topic: ?2<3?yaml.act:36? pi 3.14159
+Topic: ?2<3?yaml.act:36? xmas true
+Topic: ?2<3?yaml.act:36? french-hens 3
+Topic: ?2<3?yaml.act:36? calling-birds ?*?
+Topic: calling-birds ?parent_key? huey
+Topic: calling-birds ?parent_key? dewey
+Topic: calling-birds ?parent_key? louie
+Topic: calling-birds ?parent_key? fred
+Topic: ?2<3?yaml.act:36? xmas-fifth-day ?*?
+Topic: xmas-fifth-day calling-birds four
+Topic: xmas-fifth-day french-hens 3
+Topic: xmas-fifth-day golden-rings 5
+Topic: xmas-fifth-day partridges ?*?
+Topic: partridges count 1
+Topic: partridges location a pear tree
+Topic: xmas-fifth-day turtle-doves two
+Load error = false
+Run error = true
+var.act:
+45 ${val}
+45 45
+47 47
+47 ${val}
+asdf
+fdsa
+xml.act:
+ Name : Belgian Waffles
+ Food price : $5.95
+Name: Belgian Waffles
+
+Foods:
+
+Food: 
+Two of our famous Belgian Waffles with plenty of real maple syrup
+Food: 
+Light Belgian waffles covered with strawberries and whipped cream
+Food: 
+Light Belgian waffles covered with an assortment of fresh berries and whipped cream
+Food: 
+Thick slices made from our homemade sourdough bread
+Food: 
+Two eggs, bacon or sausage, toast, and our ever-popular hash browns
+
+All:
+
+Name: Belgian Waffles
+Price: $5.95
+Food: 
+Two of our famous Belgian Waffles with plenty of real maple syrup
+ - 650
+Food: 
+Light Belgian waffles covered with strawberries and whipped cream
+ - 900
+Food: 
+Light Belgian waffles covered with an assortment of fresh berries and whipped cream
+ - 900
+Food: 
+Thick slices made from our homemade sourdough bread
+ - 600
+Food: 
+Two eggs, bacon or sausage, toast, and our ever-popular hash browns
+ - 950
+
+All food.calories:
+
+Calories: 650
+Calories: 900
+Calories: 900
+Calories: 600
+Calories: 950
+def2json.act
+def2json2.act
+def2json3.act
+ref.act
+xx user
+yy test
+yy location_id
+yy location_name
+yy id
+yy NNNN
+yy Location
+zz location_name
+zz YYYY
+NNNN
+location_name
+location_id
+test
+user
+Open
+user
+act.act:
+n21
+node link - n11
+t1f1
+- num
+t1f2
+- float
+t2f1
+- var
+user
+- var
+new actor
+- new pi
+cre_tbl.act: note.unit,gen.unit
+Create table "model" ( 
+ pk_id  serial PRIMARY KEY,
+ "name" text,
+ "pad" text,
+ "info" text
+);
+
+Create table "frame" ( 
+ pk_id  serial PRIMARY KEY,
+ "group" text,
+ "name"   text,
+ "namep" integer,
+ "pad" text,
+ "info" text
+);
+
+Create table "a" ( 
+ pk_id  serial PRIMARY KEY,
+ "model"   text,
+ "modelp" integer,
+ "pad" text,
+ "info" text
+);
+
+Create table "grid" ( 
+ pk_id  serial PRIMARY KEY,
+ "name" text,
+ "file" text,
+ "info" text
+);
+
+Create table "col" ( 
+ pk_id  serial PRIMARY KEY,
+ "name"   text,
+ "namep" integer,
+ "index" text,
+ "group" text,
+ "file" text,
+ "info" text
+);
+
+Create table "r" ( 
+ pk_id  serial PRIMARY KEY,
+ "name"   text,
+ "namep" integer,
+ "file" text,
+ "info" text
+);
+
