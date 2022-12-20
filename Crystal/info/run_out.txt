@@ -366,3 +366,10 @@ join 0 3
 schema 0 1
 a2 0 1
 latex.act gen.def
+load.act: note.def,note.unit
+Insert into "model" ("name", "pad", "info") values ( "notes",  "-",  "map of note taking app")
+Insert into "model" ("name", "pad", "info") values ( "model",  "-",  "new model")
+Insert into "model" ("name", "pad", "info") values ( "match",  "-",  "map how to match")
+Insert into "model" ("name", "pad", "info") values ( "join",  "-",  "map how to join")
+Insert into "model" ("name", "pad", "info") values ( "design",  "-",  "notes app")
+Insert into "model" ("name", "pad", "info") values ( "schema",  "-",  "notes app")

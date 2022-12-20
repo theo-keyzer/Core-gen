@@ -55,5 +55,7 @@ echo m24.act note.def,map.def
 ./gen m24.act note.def,map.def
 echo latex.act gen.def
 ./gen latex.act gen.def >gen.tex
+echo load.act: note.def,note.unit
+./gen load.act note.def,note.unit
 
 
