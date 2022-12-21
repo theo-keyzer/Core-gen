@@ -1,0 +1,18 @@
+name: gen
+version: 0.1.0
+
+authors:
+  - Theo Keyzer <theo.keyzer@gmail.com>
+
+targets:
+  gen:
+    main: src/gen.cr
+
+crystal: 1.6.2
+
+license: MIT
+
+dependencies:
+  pg:
+    github: will/crystal-pg
+
