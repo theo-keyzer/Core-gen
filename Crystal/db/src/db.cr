@@ -18,6 +18,7 @@ def db_load(where, dat, tbl)
 	end
 	ins += ") values ("
 	i = 0
+	args = [] of DB::Any
 	dat.names.each do |key,val|
 		if key.size > 2 && key[0..1] == "k_"
 			next
@@ -25,15 +26,17 @@ def db_load(where, dat, tbl)
 		if i != 0
 			ins += ", "
 		end
-		val = val.sub("'", " ")
-		ins += "'" + val + "'"
+		ins += "$" + (i+1).to_s  # "?" for some dbs
+		args << val
+#		val = val.sub("'", " ")
+#		ins += "'" + val + "'"
 		i += 1
 	end
 	ins += ") RETURNING pk_id;"
 	puts ins
 	id = -1
 	DB.open(where) do |db|
-		db.query ins do |rs|
+		db.query ins, args: args do |rs|
   			rs.each do
   				id = rs.read(Int32)
   			end
@@ -52,6 +55,7 @@ def db_select(where, what)
   			rs.each do
 				kp = KpExtra.new()
   				rs.column_names.each_with_index do |cn,i|
+#  					puts cn
 #  					puts rs.column_type(i)
   					begin
 	  					case rs.column_type(i)

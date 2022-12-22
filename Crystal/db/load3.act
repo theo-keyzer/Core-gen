@@ -29,7 +29,7 @@ Its A a
 Actor a
 ----------------------------------------------------------------
 
-Var parent_id = ${.model.pk_id}
+Var parent_id = ${.frame.pk_id}
 
 Dbload ${.main.DB} kp."a"
 
