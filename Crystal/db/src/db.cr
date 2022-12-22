@@ -1,9 +1,10 @@
 require "db"
 require "pg"
 
-def db_load(where, dat)
+def db_load(where, dat, tbl)
 	i = 0
-	ins = "Insert into kp.\"model\" ("
+#	ins = "Insert into kp.\"model\" ("
+	ins = "Insert into " + tbl + " ("
 	
 	dat.names.each do |key,val|
 		if key.size > 2 && key[0..1] == "k_"
@@ -24,15 +25,24 @@ def db_load(where, dat)
 		if i != 0
 			ins += ", "
 		end
+		val = val.sub("'", " ")
 		ins += "'" + val + "'"
 		i += 1
 	end
-	ins += ");"
+	ins += ") RETURNING pk_id;"
 	puts ins
+	id = -1
 	DB.open(where) do |db|
-		db.exec ins
-		db.exec "commit;"
+		db.query ins do |rs|
+  			rs.each do
+  				id = rs.read(Int32)
+  			end
+  		end
+#		er = db.exec ins
+#		puts er
+#		db.exec "commit;"
 	end
+	dat.names[ "pk_id" ] = id.to_s
 end
 
 def db_select(where, what)
@@ -41,12 +51,19 @@ def db_select(where, what)
 		db.query what do |rs|
   			rs.each do
 				kp = KpExtra.new()
-  				rs.column_names.each do |cn|
-  					if cn == "pk_id"
-  						kp.names[cn] = rs.read(Int32).to_s
-  						next
+  				rs.column_names.each_with_index do |cn,i|
+#  					puts rs.column_type(i)
+  					begin
+	  					case rs.column_type(i)
+  						when String.class
+  							kp.names[cn] = rs.read(String)
+  						when Int32.class
+  							kp.names[cn] = rs.read(Int32).to_s
+  						else
+  							puts cn, rs.column_type(i)
+						end
+					rescue
   					end
-					kp.names[cn] = rs.read(String)
 				end
 				rows << kp
   			end

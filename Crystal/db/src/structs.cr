@@ -2030,6 +2030,7 @@ end
 class KpDbload < Kp 
 	property parentp : Int32 = -1
 	property k_where : String = ""
+	property k_tbl : String = ""
 	property childs : Array(Kp) = Array(Kp).new
 	def load(act, ln, pos, lno)
 		p = pos
@@ -2037,6 +2038,7 @@ class KpDbload < Kp
 		@line_no = lno
 		@me = act.ap_dbload.size
 		p, @k_where = getw(ln, p)
+		p, @k_tbl = getw(ln, p)
 		@parentp = act.ap_actor.size-1;
 		if @parentp < 0  
 			puts lno + " Dbload has no Actor parent" 

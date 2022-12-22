@@ -9,7 +9,8 @@ Actor comps Comp name !in Comp,Star,Token,Ref,Ref2,Ref3,Token,Element,Opt
 ----------------------------------------------------------------
 
 C Create table "${name}l" ( 
-Cs  pk_id  serial PRIMARY KEY
+C  pk_id  serial PRIMARY KEY,
+Cs  parent_id  integer
 
 Its Element childs
 

@@ -20,12 +20,13 @@ Comp Dbload parent Actor
 * insert current def into db
 ----------------------------------------------------------------
 
-	Element where  C1 WORD  * database url
+	Element where  C1 WORD    * database url
+	Element tbl    C1 WORD    * into table
 
 ----------------------------------------------------------------
 Comp Dbselect parent Actor
 ----------------------------------------------------------------
-* select from db
+* select from db, call actor for each row
 ----------------------------------------------------------------
 
 	Element actor   R1 ACTOR   * what actor to run for it

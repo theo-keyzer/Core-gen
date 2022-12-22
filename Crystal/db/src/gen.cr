@@ -442,15 +442,22 @@ def go_cmds(glob, ca, winp)
 			end
 		end
 		if cmd.is_a?(KpDbload)
-			db_load(cmd.k_where, glob.wins[winp].dat)
+			r,where = strs(glob, winp, cmd.k_where, cmd.line_no, true,true )
+			r,tbl = strs(glob, winp, cmd.k_tbl, cmd.line_no, true,true )
+			db_load(where, glob.wins[winp].dat, tbl)
 		end
 		if cmd.is_a?(KpDbselect)
+			r,where = strs(glob, winp, cmd.k_where, cmd.line_no, true,true )
+			r,what = strs(glob, winp, cmd.k_what, cmd.line_no, true,true )
 			new_act(glob, cmd.k_actor, "", cmd.line_no, "", "", "")
-			rows = db_select( cmd.k_where, cmd.k_what)
+			rows = db_select( where, what)
 			rows.each do |row|
 				ret = go_act(glob,row)
-				if ret != 0
+				if ret > 1
 					return(ret)
+				end
+				if ret != 0
+					break
 				end
 			end
 		end

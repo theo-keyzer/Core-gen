@@ -8,5 +8,12 @@ Dbselect row postgres://postgres:ss23qq@localhost:5432/postgres Select * from kp
 Actor row
 ----------------------------------------------------------------
 
+-C ${column_name}
 C ${name}  ${pad}  ${info}
+
+
+
+
+-SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = 'model';
+
 
