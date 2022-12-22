@@ -15,6 +15,15 @@ Comp Actor parent . Find
 	Element cc     V1 WORD  * code to generate.
 
 ----------------------------------------------------------------
+Comp Dbcreate parent Actor
+----------------------------------------------------------------
+* create table of current def
+----------------------------------------------------------------
+
+	Element where  C1 WORD    * database url
+	Element tbl    C1 WORD    * create table
+
+----------------------------------------------------------------
 Comp Dbload parent Actor
 ----------------------------------------------------------------
 * insert current def into db

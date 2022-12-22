@@ -2027,6 +2027,28 @@ class KpActor < Kp
 	end
 end
 
+class KpDbcreate < Kp 
+	property parentp : Int32 = -1
+	property k_where : String = ""
+	property k_tbl : String = ""
+	property childs : Array(Kp) = Array(Kp).new
+	def load(act, ln, pos, lno)
+		p = pos
+		@comp = "Dbcreate"
+		@line_no = lno
+		@me = act.ap_dbcreate.size
+		p, @k_where = getw(ln, p)
+		p, @k_tbl = getw(ln, p)
+		@parentp = act.ap_actor.size-1;
+		if @parentp < 0  
+			puts lno + " Dbcreate has no Actor parent" 
+			return false
+		end
+		act.ap_actor[ @parentp ].childs << self
+		return true
+	end
+end
+
 class KpDbload < Kp 
 	property parentp : Int32 = -1
 	property k_where : String = ""

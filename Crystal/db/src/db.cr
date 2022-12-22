@@ -7,9 +7,9 @@ def db_load(where, dat, tbl)
 	ins = "Insert into " + tbl + " ("
 	
 	dat.names.each do |key,val|
-		if key.size > 2 && key[0..1] == "k_"
-			next
-		end
+#		if key.size > 2 && key[0..1] == "k_"
+#			next
+#		end
 		if i != 0
 			ins += ", "
 		end
@@ -20,9 +20,9 @@ def db_load(where, dat, tbl)
 	i = 0
 	args = [] of DB::Any
 	dat.names.each do |key,val|
-		if key.size > 2 && key[0..1] == "k_"
-			next
-		end
+#		if key.size > 2 && key[0..1] == "k_"
+#			next
+#		end
 		if i != 0
 			ins += ", "
 		end
@@ -75,5 +75,21 @@ def db_select(where, what)
   	end
   	return rows
 end
+
+def db_create(where, dat, tbl)
+	i = 0
+	cre = "Create table " + tbl + " ("
+	cre += "pk_id  serial PRIMARY KEY, parent_id  integer"
+	
+	dat.names.each do |key,val|
+		cre += ", \"" + key + "\" text"
+	end
+	cre += ");"
+	puts cre
+	DB.open(where) do |db|
+		db.exec cre
+	end
+end
+
 
 

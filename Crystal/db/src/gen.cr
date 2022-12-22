@@ -446,6 +446,11 @@ def go_cmds(glob, ca, winp)
 			r,tbl = strs(glob, winp, cmd.k_tbl, cmd.line_no, true,true )
 			db_load(where, glob.wins[winp].dat, tbl)
 		end
+		if cmd.is_a?(KpDbcreate)
+			r,where = strs(glob, winp, cmd.k_where, cmd.line_no, true,true )
+			r,tbl = strs(glob, winp, cmd.k_tbl, cmd.line_no, true,true )
+			db_create(where, glob.wins[winp].dat, tbl)
+		end
 		if cmd.is_a?(KpDbselect)
 			r,where = strs(glob, winp, cmd.k_where, cmd.line_no, true,true )
 			r,what = strs(glob, winp, cmd.k_what, cmd.line_no, true,true )

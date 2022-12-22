@@ -17,6 +17,7 @@ class ActT
 	property ap_col : Array(KpCol) = Array(KpCol).new
 	property ap_r : Array(KpR) = Array(KpR).new
 	property ap_actor : Array(KpActor) = Array(KpActor).new
+	property ap_dbcreate : Array(KpDbcreate) = Array(KpDbcreate).new
 	property ap_dbload : Array(KpDbload) = Array(KpDbload).new
 	property ap_dbselect : Array(KpDbselect) = Array(KpDbselect).new
 	property ap_all : Array(KpAll) = Array(KpAll).new
@@ -686,6 +687,14 @@ def load(act, tok, ln, pos, lno)
 			errs = true
 		end
 		act.ap_actor << comp
+	end
+	if tok == "Dbcreate"
+		comp = KpDbcreate.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_dbcreate << comp
 	end
 	if tok == "Dbload"
 		comp = KpDbload.new
