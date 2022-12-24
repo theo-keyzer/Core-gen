@@ -80,7 +80,7 @@ def db_create(where, dat, tbl)
 	i = 0
 	cre = "Create table " + tbl + " ("
 	cre += "pk_id  serial PRIMARY KEY, parent_id  integer"
-	
+	puts cre
 	dat.names.each do |key,val|
 		cre += ", \"" + key + "\" text"
 	end

@@ -1,5 +1,13 @@
 ----------------------------------------------------------------
-Comp Model parent . Find
+Comp Domain parent . Find
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+	Element pad        C1 WORD       * padding
+	Element info       V1 WORD       * info
+
+----------------------------------------------------------------
+Comp Model parent Domain FindIn
 ----------------------------------------------------------------
 
 	Element name       C1 WORD       * node name
@@ -10,22 +18,23 @@ Comp Model parent . Find
 Comp Frame parent Model FindIn
 ----------------------------------------------------------------
 
+	Element domain     R1 WORD       * frame name
 	Element group      N1 WORD       * search navigation group index tree
-	Element name       R1 WORD       * frame name
+	Element name       C1 WORD       * frame name
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
-Ref name Model ?
+Ref domain Domain ?
 
 ----------------------------------------------------------------
 Comp A parent Frame
 ----------------------------------------------------------------
 
-	Element model      R1 WORD       * ref to model
+	Element model      Q1 WORD       * ref to model
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
-Ref model Model ?
+Refq model Model domain Frame name ?
 
 ----------------------------------------------------------------
 Comp Grid parent . Find

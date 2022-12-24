@@ -1,10 +1,14 @@
 ----------------------------------------------------------------
+Domain info - info domain
+----------------------------------------------------------------
+
+----------------------------------------------------------------
 Model notes - map of note taking app
 ----------------------------------------------------------------
 
-Frame 1
+Frame info 1
 
-Frame 2 purpose - use cases
+Frame info 2 purpose - use cases
 
 A idea    * list of ideas
 A design  * some designs 
@@ -17,7 +21,7 @@ A store   * store pattern in new model
 A model   * need to overlap models to describe an idea
 A repeat  * information can be repeated
 
-Frame 2 mapping - how to join
+Frame info 2 mapping - how to join
 
 A idea     * union of info, knowledge, skill
 A wisdom   * how to act of the idea
@@ -26,14 +30,14 @@ A memory   * the path and result of the thinking
 A learning * create new models by adding, reorder and refactoring other models
 A design   * how to get from a to b
 
-Frame 2 usage - how to use it
+Frame info 2 usage - how to use it
 
 A capture  * collect new data for models
 A match    * find correlations and missing links
 A simulate * what the app needs to do
 A doc      * describe the process
 
-Frame 2 docs - making documentation
+Frame info 2 docs - making documentation
 
 A find    * find relavant information in a document
 A order   * order of doument
@@ -48,19 +52,19 @@ A index   * the model is like a document index
 Model model - new model
 ----------------------------------------------------------------
 
-Frame 1
+Frame info 1
 
-Frame 2 input - input data
+Frame info 2 input - input data
 
 A keywords * multiple values
 A models   * from the models
 
-Frame 2 map - join
+Frame info 2 map - join
 
 A find * find keywords in the given models
 A link * find the links between them
 
-Frame 2 output
+Frame info 2 output
 
 A diagram * diagram of the result
 A nest    * limit nesting depth
@@ -70,24 +74,24 @@ A layout  * options to choose
 Model match - map how to match
 ----------------------------------------------------------------
 
-Frame 1
+Frame info 1
 
-Frame 2 input - list of model names
+Frame info 2 input - list of model names
 
 A find * find the a's of these names
 A join * join with the ref to other models
 A end  * end if all the models are reached, print maps.
 
-Frame 2 navigate - navigate the map
+Frame info 2 navigate - navigate the map
 
 A each  * for each a, move to next grid
 A join  * join that grid a's to other models
 A get   * get shortest path to get to all the models
 A print * print path, maps
 
-Frame 1
+Frame info 1
 
-Frame 2 gen - generate matching app
+Frame info 2 gen - generate matching app
 
 A build  * build actors to test use cases
 A eval   * looks like its working
@@ -98,9 +102,9 @@ A
 Model join - map how to join
 ----------------------------------------------------------------
 
-Frame 1
+Frame info 1
 
-Frame 2 find - the a of the items found
+Frame info 2 find - the a of the items found
 
 A its     * follow its ref
 A ref     * the ref can be either to a model or a frame
@@ -113,9 +117,9 @@ A group   * items a related in some way within a group
 Model design - notes app
 ----------------------------------------------------------------
 
-Frame 1
+Frame info 1
 
-Frame 2 parts - needed
+Frame info 2 parts - needed
 
 A database * some form of graph database
 A schema   * the model schema
@@ -126,9 +130,9 @@ A capture  * way to import, merge and capture data
 Model schema - notes app
 ----------------------------------------------------------------
 
-Frame 1
+Frame info 1
 
-Frame 2 formats - schema formats
+Frame info 2 formats - schema formats
 
 A links * the way links work
 A group * how groups work

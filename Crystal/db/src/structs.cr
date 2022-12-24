@@ -25,6 +25,7 @@ class KpComp < Kp
 	property itsref : Array(KpRef) = Array(KpRef).new
 	property itsref2 : Array(KpRef2) = Array(KpRef2).new
 	property itsref3 : Array(KpRef3) = Array(KpRef3).new
+	property itsrefq : Array(KpRefq) = Array(KpRefq).new
 	property childs : Array(Kp) = Array(Kp).new
 
 	def load(act, ln, pos, lno)
@@ -45,63 +46,80 @@ class KpComp < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "parent" # gen.unit:16, ../../test3/c_struct.act:578
+		if va[0] == "parent" # gen.unit:16, c_struct.act:618
 			if k_parentp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "Comp_parent" && va.size > 1 # gen.unit:16, ../../test3/c_struct.act:666
+		if va[0] == "Comp_parent" && va.size > 1 # gen.unit:16, c_struct.act:707
 			glob.dats.ap_comp.each do |st|
 				if st.k_parentp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref_comp" && va.size > 1 # gen.unit:82, ../../test3/c_struct.act:666
+		if va[0] == "Ref_comp" && va.size > 1 # gen.unit:83, c_struct.act:707
 			glob.dats.ap_ref.each do |st|
 				if st.k_compp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref2_comp" && va.size > 1 # gen.unit:100, ../../test3/c_struct.act:666
+		if va[0] == "Ref2_comp" && va.size > 1 # gen.unit:101, c_struct.act:707
 			glob.dats.ap_ref2.each do |st|
 				if st.k_compp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref3_comp" && va.size > 1 # gen.unit:121, ../../test3/c_struct.act:666
+		if va[0] == "Ref3_comp" && va.size > 1 # gen.unit:122, c_struct.act:707
 			glob.dats.ap_ref3.each do |st|
 				if st.k_compp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref3_comp_ref" && va.size > 1 # gen.unit:122, ../../test3/c_struct.act:666
+		if va[0] == "Ref3_comp_ref" && va.size > 1 # gen.unit:123, c_struct.act:707
 			glob.dats.ap_ref3.each do |st|
 				if st.k_comp_refp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Token"  && va.size > 2 && itstoken.size > 0 # gen.unit:19, ../../test3/c_struct.act:431
+		if va[0] == "Refq_comp" && va.size > 1 # gen.unit:144, c_struct.act:707
+			glob.dats.ap_refq.each do |st|
+				if st.k_compp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Refq_comp_ref" && va.size > 1 # gen.unit:145, c_struct.act:707
+			glob.dats.ap_refq.each do |st|
+				if st.k_comp_refp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Token"  && va.size > 2 && itstoken.size > 0 # gen.unit:19, c_struct.act:433
 			return (itstoken[0].get_var(glob, va[1..], lno))
 		end
-		if va[0] == "Element"  && va.size > 2 # gen.unit:42, ../../test3/c_struct.act:420
+		if va[0] == "Element"  && va.size > 2 # gen.unit:42, c_struct.act:422
 			if en = glob.dats.index[me.to_s + "_Element_" + va[1] ]?
 				return (glob.dats.ap_element[en].get_var(glob, va[2..], lno))
 			end
 			return(false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?")
 		end
-		if va[0] == "Ref"  && va.size > 2 && itsref.size > 0 # gen.unit:67, ../../test3/c_struct.act:431
+		if va[0] == "Ref"  && va.size > 2 && itsref.size > 0 # gen.unit:68, c_struct.act:433
 			return (itsref[0].get_var(glob, va[1..], lno))
 		end
-		if va[0] == "Ref2"  && va.size > 2 && itsref2.size > 0 # gen.unit:85, ../../test3/c_struct.act:431
+		if va[0] == "Ref2"  && va.size > 2 && itsref2.size > 0 # gen.unit:86, c_struct.act:433
 			return (itsref2[0].get_var(glob, va[1..], lno))
 		end
-		if va[0] == "Ref3"  && va.size > 2 && itsref3.size > 0 # gen.unit:104, ../../test3/c_struct.act:431
+		if va[0] == "Ref3"  && va.size > 2 && itsref3.size > 0 # gen.unit:105, c_struct.act:433
 			return (itsref3[0].get_var(glob, va[1..], lno))
+		end
+		if va[0] == "Refq"  && va.size > 2 && itsrefq.size > 0 # gen.unit:127, c_struct.act:433
+			return (itsrefq[0].get_var(glob, va[1..], lno))
 		end
 		if v = names[ va[0] ]?
 			return(true, v )
@@ -110,7 +128,7 @@ class KpComp < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "Token" # gen.unit:19, ../../test3/c_struct.act:645
+		if va[0] == "Token" # gen.unit:19, c_struct.act:686
 			itstoken.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -126,7 +144,7 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Element" # gen.unit:37, ../../test3/c_struct.act:645
+		if va[0] == "Element" # gen.unit:37, c_struct.act:686
 			itselement.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -142,7 +160,7 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref" # gen.unit:67, ../../test3/c_struct.act:645
+		if va[0] == "Ref" # gen.unit:68, c_struct.act:686
 			itsref.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -158,7 +176,7 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref2" # gen.unit:85, ../../test3/c_struct.act:645
+		if va[0] == "Ref2" # gen.unit:86, c_struct.act:686
 			itsref2.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -174,8 +192,24 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref3" # gen.unit:104, ../../test3/c_struct.act:645
+		if va[0] == "Ref3" # gen.unit:105, c_struct.act:686
 			itsref3.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
+				ret = go_act(glob, st)
+				if ret != 0
+					return(ret)
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Refq" # gen.unit:127, c_struct.act:686
+			itsrefq.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
 					if ret != 0
@@ -200,7 +234,7 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Comp_parent" # gen.unit:16, ../../test3/c_struct.act:509
+		if va[0] == "Comp_parent" # gen.unit:16, c_struct.act:526
 			glob.dats.ap_comp.each do |st|
 				if st.k_parentp == me
 					if va.size > 1
@@ -218,7 +252,7 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref_comp" # gen.unit:82, ../../test3/c_struct.act:509
+		if va[0] == "Ref_comp" # gen.unit:83, c_struct.act:526
 			glob.dats.ap_ref.each do |st|
 				if st.k_compp == me
 					if va.size > 1
@@ -236,7 +270,7 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref2_comp" # gen.unit:100, ../../test3/c_struct.act:509
+		if va[0] == "Ref2_comp" # gen.unit:101, c_struct.act:526
 			glob.dats.ap_ref2.each do |st|
 				if st.k_compp == me
 					if va.size > 1
@@ -254,7 +288,7 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref3_comp" # gen.unit:121, ../../test3/c_struct.act:509
+		if va[0] == "Ref3_comp" # gen.unit:122, c_struct.act:526
 			glob.dats.ap_ref3.each do |st|
 				if st.k_compp == me
 					if va.size > 1
@@ -272,7 +306,7 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref3_comp_ref" # gen.unit:122, ../../test3/c_struct.act:509
+		if va[0] == "Ref3_comp_ref" # gen.unit:123, c_struct.act:526
 			glob.dats.ap_ref3.each do |st|
 				if st.k_comp_refp == me
 					if va.size > 1
@@ -290,7 +324,43 @@ class KpComp < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # gen.unit:2, ../../test3/c_struct.act:147
+		if va[0] == "Refq_comp" # gen.unit:144, c_struct.act:526
+			glob.dats.ap_refq.each do |st|
+				if st.k_compp == me
+					if va.size > 1
+						ret = st.do_its(glob, va[1..], lno)
+						if ret != 0
+							return(ret)
+						end
+						next
+					end
+					ret = go_act(glob, st)
+					if ret != 0
+						return(ret)
+					end
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Refq_comp_ref" # gen.unit:145, c_struct.act:526
+			glob.dats.ap_refq.each do |st|
+				if st.k_comp_refp == me
+					if va.size > 1
+						ret = st.do_its(glob, va[1..], lno)
+						if ret != 0
+							return(ret)
+						end
+						next
+					end
+					ret = go_act(glob, st)
+					if ret != 0
+						return(ret)
+					end
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Child" # gen.unit:2, c_struct.act:149
 			childs.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -336,7 +406,7 @@ class KpToken < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:499
+		if va[0] == "parent" # gen.unit:2, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -348,7 +418,7 @@ class KpToken < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:484
+		if va[0] == "parent" # gen.unit:2, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_comp[ parentp ]
 				if va.size > 1
@@ -358,7 +428,7 @@ class KpToken < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # gen.unit:19, ../../test3/c_struct.act:147
+		if va[0] == "Child" # gen.unit:19, c_struct.act:149
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for Token," + line_no + "," + lno + "?");
@@ -389,7 +459,7 @@ class KpStar < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "Child" # gen.unit:27, ../../test3/c_struct.act:147
+		if va[0] == "Child" # gen.unit:27, c_struct.act:149
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for Star," + line_no + "," + lno + "?");
@@ -430,47 +500,54 @@ class KpElement < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:499
+		if va[0] == "parent" # gen.unit:2, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "Ref_element" && va.size > 1 # gen.unit:81, ../../test3/c_struct.act:666
+		if va[0] == "Ref_element" && va.size > 1 # gen.unit:82, c_struct.act:707
 			glob.dats.ap_ref.each do |st|
 				if st.k_elementp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref2_element" && va.size > 1 # gen.unit:99, ../../test3/c_struct.act:666
+		if va[0] == "Ref2_element" && va.size > 1 # gen.unit:100, c_struct.act:707
 			glob.dats.ap_ref2.each do |st|
 				if st.k_elementp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref2_element2" && va.size > 1 # gen.unit:101, ../../test3/c_struct.act:666
+		if va[0] == "Ref2_element2" && va.size > 1 # gen.unit:102, c_struct.act:707
 			glob.dats.ap_ref2.each do |st|
 				if st.k_element2p == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref3_element" && va.size > 1 # gen.unit:120, ../../test3/c_struct.act:666
+		if va[0] == "Ref3_element" && va.size > 1 # gen.unit:121, c_struct.act:707
 			glob.dats.ap_ref3.each do |st|
 				if st.k_elementp == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Ref3_element2" && va.size > 1 # gen.unit:123, ../../test3/c_struct.act:666
+		if va[0] == "Ref3_element2" && va.size > 1 # gen.unit:124, c_struct.act:707
 			glob.dats.ap_ref3.each do |st|
 				if st.k_element2p == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Opt"  && va.size > 2 # gen.unit:62, ../../test3/c_struct.act:420
+		if va[0] == "Refq_element" && va.size > 1 # gen.unit:143, c_struct.act:707
+			glob.dats.ap_refq.each do |st|
+				if st.k_elementp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Opt"  && va.size > 2 # gen.unit:63, c_struct.act:422
 			if en = glob.dats.index[me.to_s + "_Opt_" + va[1] ]?
 				return (glob.dats.ap_opt[en].get_var(glob, va[2..], lno))
 			end
@@ -483,7 +560,7 @@ class KpElement < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "Opt" # gen.unit:56, ../../test3/c_struct.act:645
+		if va[0] == "Opt" # gen.unit:57, c_struct.act:686
 			itsopt.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -499,7 +576,7 @@ class KpElement < Kp
 			end
 			return(0)
 		end
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:484
+		if va[0] == "parent" # gen.unit:2, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_comp[ parentp ]
 				if va.size > 1
@@ -509,7 +586,7 @@ class KpElement < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref_element" # gen.unit:81, ../../test3/c_struct.act:509
+		if va[0] == "Ref_element" # gen.unit:82, c_struct.act:526
 			glob.dats.ap_ref.each do |st|
 				if st.k_elementp == me
 					if va.size > 1
@@ -527,7 +604,7 @@ class KpElement < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref2_element" # gen.unit:99, ../../test3/c_struct.act:509
+		if va[0] == "Ref2_element" # gen.unit:100, c_struct.act:526
 			glob.dats.ap_ref2.each do |st|
 				if st.k_elementp == me
 					if va.size > 1
@@ -545,7 +622,7 @@ class KpElement < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref2_element2" # gen.unit:101, ../../test3/c_struct.act:509
+		if va[0] == "Ref2_element2" # gen.unit:102, c_struct.act:526
 			glob.dats.ap_ref2.each do |st|
 				if st.k_element2p == me
 					if va.size > 1
@@ -563,7 +640,7 @@ class KpElement < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref3_element" # gen.unit:120, ../../test3/c_struct.act:509
+		if va[0] == "Ref3_element" # gen.unit:121, c_struct.act:526
 			glob.dats.ap_ref3.each do |st|
 				if st.k_elementp == me
 					if va.size > 1
@@ -581,7 +658,7 @@ class KpElement < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Ref3_element2" # gen.unit:123, ../../test3/c_struct.act:509
+		if va[0] == "Ref3_element2" # gen.unit:124, c_struct.act:526
 			glob.dats.ap_ref3.each do |st|
 				if st.k_element2p == me
 					if va.size > 1
@@ -599,7 +676,25 @@ class KpElement < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # gen.unit:37, ../../test3/c_struct.act:147
+		if va[0] == "Refq_element" # gen.unit:143, c_struct.act:526
+			glob.dats.ap_refq.each do |st|
+				if st.k_elementp == me
+					if va.size > 1
+						ret = st.do_its(glob, va[1..], lno)
+						if ret != 0
+							return(ret)
+						end
+						next
+					end
+					ret = go_act(glob, st)
+					if ret != 0
+						return(ret)
+					end
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Child" # gen.unit:37, c_struct.act:149
 			childs.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -649,7 +744,7 @@ class KpOpt < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "parent" # gen.unit:37, ../../test3/c_struct.act:499
+		if va[0] == "parent" # gen.unit:37, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_element[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -661,7 +756,7 @@ class KpOpt < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # gen.unit:37, ../../test3/c_struct.act:484
+		if va[0] == "parent" # gen.unit:37, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_element[ parentp ]
 				if va.size > 1
@@ -671,7 +766,7 @@ class KpOpt < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # gen.unit:56, ../../test3/c_struct.act:147
+		if va[0] == "Child" # gen.unit:57, c_struct.act:149
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for Opt," + line_no + "," + lno + "?");
@@ -710,17 +805,17 @@ class KpRef < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "element" # gen.unit:81, ../../test3/c_struct.act:578
+		if va[0] == "element" # gen.unit:82, c_struct.act:618
 			if k_elementp >= 0 && va.size > 1
 				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "comp" # gen.unit:82, ../../test3/c_struct.act:578
+		if va[0] == "comp" # gen.unit:83, c_struct.act:618
 			if k_compp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:499
+		if va[0] == "parent" # gen.unit:2, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -732,7 +827,7 @@ class KpRef < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:484
+		if va[0] == "parent" # gen.unit:2, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_comp[ parentp ]
 				if va.size > 1
@@ -762,7 +857,7 @@ class KpRef < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # gen.unit:67, ../../test3/c_struct.act:147
+		if va[0] == "Child" # gen.unit:68, c_struct.act:149
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for Ref," + line_no + "," + lno + "?");
@@ -803,22 +898,22 @@ class KpRef2 < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "element" # gen.unit:99, ../../test3/c_struct.act:578
+		if va[0] == "element" # gen.unit:100, c_struct.act:618
 			if k_elementp >= 0 && va.size > 1
 				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "comp" # gen.unit:100, ../../test3/c_struct.act:578
+		if va[0] == "comp" # gen.unit:101, c_struct.act:618
 			if k_compp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "element2" # gen.unit:101, ../../test3/c_struct.act:578
+		if va[0] == "element2" # gen.unit:102, c_struct.act:618
 			if k_element2p >= 0 && va.size > 1
 				return( glob.dats.ap_element[ k_element2p ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:499
+		if va[0] == "parent" # gen.unit:2, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -830,7 +925,7 @@ class KpRef2 < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:484
+		if va[0] == "parent" # gen.unit:2, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_comp[ parentp ]
 				if va.size > 1
@@ -870,7 +965,7 @@ class KpRef2 < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # gen.unit:85, ../../test3/c_struct.act:147
+		if va[0] == "Child" # gen.unit:86, c_struct.act:149
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for Ref2," + line_no + "," + lno + "?");
@@ -914,27 +1009,27 @@ class KpRef3 < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "element" # gen.unit:120, ../../test3/c_struct.act:578
+		if va[0] == "element" # gen.unit:121, c_struct.act:618
 			if k_elementp >= 0 && va.size > 1
 				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "comp" # gen.unit:121, ../../test3/c_struct.act:578
+		if va[0] == "comp" # gen.unit:122, c_struct.act:618
 			if k_compp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "comp_ref" # gen.unit:122, ../../test3/c_struct.act:578
+		if va[0] == "comp_ref" # gen.unit:123, c_struct.act:618
 			if k_comp_refp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ k_comp_refp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "element2" # gen.unit:123, ../../test3/c_struct.act:578
+		if va[0] == "element2" # gen.unit:124, c_struct.act:618
 			if k_element2p >= 0 && va.size > 1
 				return( glob.dats.ap_element[ k_element2p ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:499
+		if va[0] == "parent" # gen.unit:2, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -946,7 +1041,7 @@ class KpRef3 < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # gen.unit:2, ../../test3/c_struct.act:484
+		if va[0] == "parent" # gen.unit:2, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_comp[ parentp ]
 				if va.size > 1
@@ -996,7 +1091,7 @@ class KpRef3 < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # gen.unit:104, ../../test3/c_struct.act:147
+		if va[0] == "Child" # gen.unit:105, c_struct.act:149
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for Ref3," + line_no + "," + lno + "?");
@@ -1005,7 +1100,214 @@ class KpRef3 < Kp
 	end
 end
 
+class KpRefq < Kp 
+	property parentp : Int32 = -1
+	property k_elementp : Int32 = -1
+	property k_compp : Int32 = -1
+	property k_comp_refp : Int32 = -1
+
+	def load(act, ln, pos, lno)
+		p = pos
+		@comp = "Refq"
+		@line_no = lno
+		@me = act.ap_refq.size
+		@names["k_me"] = @me.to_s
+		@names["k_parent"] = "-1"
+		@names["k_comp"] = "Refq"
+		p, @names["element"] = getw(ln, p)
+		p, @names["comp"] = getw(ln, p)
+		p, @names["element2"] = getw(ln, p)
+		p, @names["comp_ref"] = getw(ln, p)
+		p, @names["element3"] = getw(ln, p)
+		p, @names["opt"] = getw(ln, p)
+		p, @names["var"] = getw(ln, p)
+		p, @names["doc"] = getws(ln, p)
+		@parentp = act.ap_comp.size-1;
+		@names["k_parent"] = @parentp.to_s
+		if @parentp < 0  
+			puts lno + " Refq has no Comp parent" 
+			return false
+		end
+		act.ap_comp[ @parentp ].itsrefq << self
+		act.ap_comp[ @parentp ].childs << self
+		return true
+	end
+
+	def get_var(glob, va, lno)
+		if va[0] == "element" # gen.unit:143, c_struct.act:618
+			if k_elementp >= 0 && va.size > 1
+				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "comp" # gen.unit:144, c_struct.act:618
+			if k_compp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "comp_ref" # gen.unit:145, c_struct.act:618
+			if k_comp_refp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ k_comp_refp ].get_var(glob, va[1..], lno) )
+			end
+		end
+		if va[0] == "parent" # gen.unit:2, c_struct.act:516
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_comp[ parentp ].get_var(glob, va[1..],lno) )
+			end
+		end
+		if v = names[ va[0] ]?
+			return(true, v )
+		end
+		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Refq?");
+	end
+
+	def do_its(glob, va, lno)
+		if va[0] == "parent" # gen.unit:2, c_struct.act:501
+			if parentp >= 0
+				st = glob.dats.ap_comp[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+			return(0)
+		end
+		if va[0] == "element"
+			if k_elementp >= 0
+				st = glob.dats.ap_element[ k_elementp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+			return(0)
+		end
+		if va[0] == "comp"
+			if k_compp >= 0
+				st = glob.dats.ap_comp[ k_compp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+			return(0)
+		end
+		if va[0] == "comp_ref"
+			if k_comp_refp >= 0
+				st = glob.dats.ap_comp[ k_comp_refp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
+				end
+				return( go_act(glob, st) )
+			end
+			return(0)
+		end
+		if va[0] == "Child" # gen.unit:127, c_struct.act:149
+			return(0)
+		end
+		puts("?No its " + va[0] + " cmd for Refq," + line_no + "," + lno + "?");
+		glob.run_errs = true
+		return(0)
+	end
+end
+
+class KpDomain < Kp 
+	property itsmodel : Array(KpModel) = Array(KpModel).new
+	property childs : Array(Kp) = Array(Kp).new
+
+	def load(act, ln, pos, lno)
+		p = pos
+		@comp = "Domain"
+		@line_no = lno
+		@me = act.ap_domain.size
+		@names["k_me"] = @me.to_s
+		@names["k_parent"] = "-1"
+		@names["k_comp"] = "Domain"
+		p, @names["name"] = getw(ln, p)
+		p, @names["pad"] = getw(ln, p)
+		p, @names["info"] = getws(ln, p)
+		act.index["Domain_" + @names["name"]] = @me
+		return true
+	end
+
+	def get_var(glob, va, lno)
+		if va[0] == "Frame_domain" && va.size > 1 # note.unit:27, c_struct.act:707
+			glob.dats.ap_frame.each do |st|
+				if st.k_domainp == me
+					return (st.get_var(glob, va[1..], lno) )
+				end
+			end
+		end
+		if va[0] == "Model"  && va.size > 2 # note.unit:13, c_struct.act:422
+			if en = glob.dats.index[me.to_s + "_Model_" + va[1] ]?
+				return (glob.dats.ap_model[en].get_var(glob, va[2..], lno))
+			end
+			return(false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?")
+		end
+		if v = names[ va[0] ]?
+			return(true, v )
+		end
+		return(false, "?" + va[0] + "?" + line_no + "," + lno + ",Domain?");
+	end
+
+	def do_its(glob, va, lno)
+		if va[0] == "Model" # note.unit:10, c_struct.act:686
+			itsmodel.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
+				ret = go_act(glob, st)
+				if ret != 0
+					return(ret)
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Frame_domain" # note.unit:27, c_struct.act:526
+			glob.dats.ap_frame.each do |st|
+				if st.k_domainp == me
+					if va.size > 1
+						ret = st.do_its(glob, va[1..], lno)
+						if ret != 0
+							return(ret)
+						end
+						next
+					end
+					ret = go_act(glob, st)
+					if ret != 0
+						return(ret)
+					end
+				end
+			end
+			return(0)
+		end
+		if va[0] == "Child" # note.unit:2, c_struct.act:149
+			childs.each do |st|
+				if va.size > 1
+					ret = st.do_its(glob, va[1..], lno)
+					if ret != 0
+						return(ret)
+					end
+					next
+				end
+				ret = go_act(glob, st)
+				if ret != 0
+					return(ret)
+				end
+			end
+			return(0)
+		end
+		puts("?No its " + va[0] + " cmd for Domain," + line_no + "," + lno + "?");
+		glob.run_errs = true
+		return(0)
+	end
+end
+
 class KpModel < Kp 
+	property parentp : Int32 = -1
 	property itsframe : Array(KpFrame) = Array(KpFrame).new
 	property childs : Array(Kp) = Array(Kp).new
 
@@ -1020,26 +1322,26 @@ class KpModel < Kp
 		p, @names["name"] = getw(ln, p)
 		p, @names["pad"] = getw(ln, p)
 		p, @names["info"] = getws(ln, p)
-		act.index["Model_" + @names["name"]] = @me
+		@parentp = act.ap_domain.size-1;
+		@names["k_parent"] = @parentp.to_s
+		if @parentp < 0  
+			puts lno + " Model has no Domain parent" 
+			return false
+		end
+		act.ap_domain[ @parentp ].itsmodel << self
+		act.ap_domain[ @parentp ].childs << self
+		s = @parentp.to_s + "_Model_" + @names["name"]
+		act.index[s] = @me
 		return true
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "Frame_name" && va.size > 1 # note.unit:18, ../../test3/c_struct.act:666
-			glob.dats.ap_frame.each do |st|
-				if st.k_namep == me
-					return (st.get_var(glob, va[1..], lno) )
-				end
+		if va[0] == "parent" # note.unit:2, c_struct.act:516
+			if parentp >= 0 && va.size > 1
+				return( glob.dats.ap_domain[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "A_model" && va.size > 1 # note.unit:28, ../../test3/c_struct.act:666
-			glob.dats.ap_a.each do |st|
-				if st.k_modelp == me
-					return (st.get_var(glob, va[1..], lno) )
-				end
-			end
-		end
-		if va[0] == "Frame"  && va.size > 2 # note.unit:14, ../../test3/c_struct.act:420
+		if va[0] == "Frame"  && va.size > 2 # note.unit:23, c_struct.act:422
 			if en = glob.dats.index[me.to_s + "_Frame_" + va[1] ]?
 				return (glob.dats.ap_frame[en].get_var(glob, va[2..], lno))
 			end
@@ -1052,7 +1354,7 @@ class KpModel < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "Frame" # note.unit:10, ../../test3/c_struct.act:645
+		if va[0] == "Frame" # note.unit:18, c_struct.act:686
 			itsframe.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1068,25 +1370,17 @@ class KpModel < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Frame_name" # note.unit:18, ../../test3/c_struct.act:509
-			glob.dats.ap_frame.each do |st|
-				if st.k_namep == me
-					if va.size > 1
-						ret = st.do_its(glob, va[1..], lno)
-						if ret != 0
-							return(ret)
-						end
-						next
-					end
-					ret = go_act(glob, st)
-					if ret != 0
-						return(ret)
-					end
+		if va[0] == "parent" # note.unit:2, c_struct.act:501
+			if parentp >= 0
+				st = glob.dats.ap_domain[ parentp ]
+				if va.size > 1
+					return( st.do_its(glob, va[1..], lno) )
 				end
+				return( go_act(glob, st) )
 			end
 			return(0)
 		end
-		if va[0] == "A_model" # note.unit:28, ../../test3/c_struct.act:509
+		if va[0] == "A_model" # note.unit:37, c_struct.act:595
 			glob.dats.ap_a.each do |st|
 				if st.k_modelp == me
 					if va.size > 1
@@ -1104,7 +1398,7 @@ class KpModel < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # note.unit:2, ../../test3/c_struct.act:147
+		if va[0] == "Child" # note.unit:10, c_struct.act:149
 			childs.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1128,7 +1422,7 @@ end
 
 class KpFrame < Kp 
 	property parentp : Int32 = -1
-	property k_namep : Int32 = -1
+	property k_domainp : Int32 = -1
 	property itsa : Array(KpA) = Array(KpA).new
 	property childs : Array(Kp) = Array(Kp).new
 
@@ -1140,6 +1434,7 @@ class KpFrame < Kp
 		@names["k_me"] = @me.to_s
 		@names["k_parent"] = "-1"
 		@names["k_comp"] = "Frame"
+		p, @names["domain"] = getw(ln, p)
 		p, @names["group"] = getw(ln, p)
 		p, @names["name"] = getw(ln, p)
 		p, @names["pad"] = getw(ln, p)
@@ -1158,17 +1453,17 @@ class KpFrame < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "name" # note.unit:18, ../../test3/c_struct.act:578
-			if k_namep >= 0 && va.size > 1
-				return( glob.dats.ap_model[ k_namep ].get_var(glob, va[1..], lno) )
+		if va[0] == "domain" # note.unit:27, c_struct.act:618
+			if k_domainp >= 0 && va.size > 1
+				return( glob.dats.ap_domain[ k_domainp ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # note.unit:2, ../../test3/c_struct.act:499
+		if va[0] == "parent" # note.unit:10, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_model[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "A"  && va.size > 2 && itsa.size > 0 # note.unit:21, ../../test3/c_struct.act:431
+		if va[0] == "A"  && va.size > 2 && itsa.size > 0 # note.unit:30, c_struct.act:433
 			return (itsa[0].get_var(glob, va[1..], lno))
 		end
 		if v = names[ va[0] ]?
@@ -1178,7 +1473,7 @@ class KpFrame < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "A" # note.unit:21, ../../test3/c_struct.act:645
+		if va[0] == "A" # note.unit:30, c_struct.act:686
 			itsa.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1194,7 +1489,7 @@ class KpFrame < Kp
 			end
 			return(0)
 		end
-		if va[0] == "parent" # note.unit:2, ../../test3/c_struct.act:484
+		if va[0] == "parent" # note.unit:10, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_model[ parentp ]
 				if va.size > 1
@@ -1204,9 +1499,9 @@ class KpFrame < Kp
 			end
 			return(0)
 		end
-		if va[0] == "name"
-			if k_namep >= 0
-				st = glob.dats.ap_model[ k_namep ]
+		if va[0] == "domain"
+			if k_domainp >= 0
+				st = glob.dats.ap_domain[ k_domainp ]
 				if va.size > 1
 					return( st.do_its(glob, va[1..], lno) )
 				end
@@ -1214,7 +1509,7 @@ class KpFrame < Kp
 			end
 			return(0)
 		end
-		if va[0] == "group" && va.size > 1 && parentp >= 0 # note.unit:13, ../../test3/c_struct.act:165
+		if va[0] == "group" && va.size > 1 && parentp >= 0 # note.unit:22, c_struct.act:167
 			pos = 0
 			if v = names[ "group" ]?
 				pos = v.to_i
@@ -1342,7 +1637,7 @@ class KpFrame < Kp
 				return(0)
 			end
 		end
-		if va[0] == "Child" # note.unit:10, ../../test3/c_struct.act:147
+		if va[0] == "Child" # note.unit:18, c_struct.act:149
 			childs.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1391,12 +1686,7 @@ class KpA < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "model" # note.unit:28, ../../test3/c_struct.act:578
-			if k_modelp >= 0 && va.size > 1
-				return( glob.dats.ap_model[ k_modelp ].get_var(glob, va[1..], lno) )
-			end
-		end
-		if va[0] == "parent" # note.unit:10, ../../test3/c_struct.act:499
+		if va[0] == "parent" # note.unit:18, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_frame[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -1408,7 +1698,7 @@ class KpA < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # note.unit:10, ../../test3/c_struct.act:484
+		if va[0] == "parent" # note.unit:18, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_frame[ parentp ]
 				if va.size > 1
@@ -1428,7 +1718,7 @@ class KpA < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # note.unit:21, ../../test3/c_struct.act:147
+		if va[0] == "Child" # note.unit:30, c_struct.act:149
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for A," + line_no + "," + lno + "?");
@@ -1457,21 +1747,21 @@ class KpGrid < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "Col_name" && va.size > 1 # note.unit:48, ../../test3/c_struct.act:666
+		if va[0] == "Col_name" && va.size > 1 # note.unit:57, c_struct.act:707
 			glob.dats.ap_col.each do |st|
 				if st.k_namep == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "R_name" && va.size > 1 # note.unit:58, ../../test3/c_struct.act:666
+		if va[0] == "R_name" && va.size > 1 # note.unit:67, c_struct.act:707
 			glob.dats.ap_r.each do |st|
 				if st.k_namep == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Col"  && va.size > 2 # note.unit:42, ../../test3/c_struct.act:420
+		if va[0] == "Col"  && va.size > 2 # note.unit:51, c_struct.act:422
 			if en = glob.dats.index[me.to_s + "_Col_" + va[1] ]?
 				return (glob.dats.ap_col[en].get_var(glob, va[2..], lno))
 			end
@@ -1484,7 +1774,7 @@ class KpGrid < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "Col" # note.unit:39, ../../test3/c_struct.act:645
+		if va[0] == "Col" # note.unit:48, c_struct.act:686
 			itscol.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1500,7 +1790,7 @@ class KpGrid < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Col_name" # note.unit:48, ../../test3/c_struct.act:509
+		if va[0] == "Col_name" # note.unit:57, c_struct.act:526
 			glob.dats.ap_col.each do |st|
 				if st.k_namep == me
 					if va.size > 1
@@ -1518,7 +1808,7 @@ class KpGrid < Kp
 			end
 			return(0)
 		end
-		if va[0] == "R_name" # note.unit:58, ../../test3/c_struct.act:509
+		if va[0] == "R_name" # note.unit:67, c_struct.act:526
 			glob.dats.ap_r.each do |st|
 				if st.k_namep == me
 					if va.size > 1
@@ -1536,7 +1826,7 @@ class KpGrid < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # note.unit:31, ../../test3/c_struct.act:147
+		if va[0] == "Child" # note.unit:40, c_struct.act:149
 			childs.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1591,17 +1881,17 @@ class KpCol < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "name" # note.unit:48, ../../test3/c_struct.act:578
+		if va[0] == "name" # note.unit:57, c_struct.act:618
 			if k_namep >= 0 && va.size > 1
 				return( glob.dats.ap_grid[ k_namep ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # note.unit:31, ../../test3/c_struct.act:499
+		if va[0] == "parent" # note.unit:40, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_grid[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "R"  && va.size > 2 # note.unit:54, ../../test3/c_struct.act:420
+		if va[0] == "R"  && va.size > 2 # note.unit:63, c_struct.act:422
 			if en = glob.dats.index[me.to_s + "_R_" + va[1] ]?
 				return (glob.dats.ap_r[en].get_var(glob, va[2..], lno))
 			end
@@ -1614,7 +1904,7 @@ class KpCol < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "R" # note.unit:51, ../../test3/c_struct.act:645
+		if va[0] == "R" # note.unit:60, c_struct.act:686
 			itsr.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1630,7 +1920,7 @@ class KpCol < Kp
 			end
 			return(0)
 		end
-		if va[0] == "parent" # note.unit:31, ../../test3/c_struct.act:484
+		if va[0] == "parent" # note.unit:40, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_grid[ parentp ]
 				if va.size > 1
@@ -1650,7 +1940,7 @@ class KpCol < Kp
 			end
 			return(0)
 		end
-		if va[0] == "index" && va.size > 1 && parentp >= 0 # note.unit:43, ../../test3/c_struct.act:165
+		if va[0] == "index" && va.size > 1 && parentp >= 0 # note.unit:52, c_struct.act:167
 			pos = 0
 			if v = names[ "index" ]?
 				pos = v.to_i
@@ -1778,7 +2068,7 @@ class KpCol < Kp
 				return(0)
 			end
 		end
-		if va[0] == "group" && va.size > 1 && parentp >= 0 # note.unit:44, ../../test3/c_struct.act:165
+		if va[0] == "group" && va.size > 1 && parentp >= 0 # note.unit:53, c_struct.act:167
 			pos = 0
 			if v = names[ "group" ]?
 				pos = v.to_i
@@ -1906,7 +2196,7 @@ class KpCol < Kp
 				return(0)
 			end
 		end
-		if va[0] == "Child" # note.unit:39, ../../test3/c_struct.act:147
+		if va[0] == "Child" # note.unit:48, c_struct.act:149
 			childs.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1957,12 +2247,12 @@ class KpR < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "name" # note.unit:58, ../../test3/c_struct.act:578
+		if va[0] == "name" # note.unit:67, c_struct.act:618
 			if k_namep >= 0 && va.size > 1
 				return( glob.dats.ap_grid[ k_namep ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # note.unit:39, ../../test3/c_struct.act:499
+		if va[0] == "parent" # note.unit:48, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_col[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -1974,7 +2264,7 @@ class KpR < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # note.unit:39, ../../test3/c_struct.act:484
+		if va[0] == "parent" # note.unit:48, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_col[ parentp ]
 				if va.size > 1
@@ -1994,7 +2284,7 @@ class KpR < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # note.unit:51, ../../test3/c_struct.act:147
+		if va[0] == "Child" # note.unit:60, c_struct.act:149
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for R," + line_no + "," + lno + "?");

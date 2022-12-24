@@ -4,6 +4,7 @@ Actor main
 
 Var DB = postgres://postgres:ss23qq@localhost:5432/postgres
 
+Dbselect row ${DB} Delete from kp.domain
 Dbselect row ${DB} Delete from kp.model
 Dbselect row ${DB} Delete from kp.frame
 Dbselect row ${DB} Delete from kp.a

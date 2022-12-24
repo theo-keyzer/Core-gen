@@ -4,12 +4,21 @@ Actor main
 
 Var DB = postgres://postgres:ss23qq@localhost:5432/postgres
 
--All Model.match model
-All Model model
+All Domain domain
  
+----------------------------------------------------------------
+Actor domain
+----------------------------------------------------------------
+
+Dbload ${.main.DB} kp.domain
+
+Its Model model
+
 ----------------------------------------------------------------
 Actor model
 ----------------------------------------------------------------
+
+Var parent_id = ${.domain.pk_id}
 
 Dbload ${.main.DB} kp.model
 

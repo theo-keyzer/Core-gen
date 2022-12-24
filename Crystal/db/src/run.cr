@@ -10,6 +10,8 @@ class ActT
 	property ap_ref : Array(KpRef) = Array(KpRef).new
 	property ap_ref2 : Array(KpRef2) = Array(KpRef2).new
 	property ap_ref3 : Array(KpRef3) = Array(KpRef3).new
+	property ap_refq : Array(KpRefq) = Array(KpRefq).new
+	property ap_domain : Array(KpDomain) = Array(KpDomain).new
 	property ap_model : Array(KpModel) = Array(KpModel).new
 	property ap_frame : Array(KpFrame) = Array(KpFrame).new
 	property ap_a : Array(KpA) = Array(KpA).new
@@ -100,16 +102,26 @@ def refs(act)
 			errs = true
 		end
 	end
-	act.ap_frame.each_with_index do |st,i|
-		r, st.k_namep = fnd(act, "Model_" + st.names["name"] , st.names["name"],  "?", st.line_no )
-		st.names["k_namep"] = st.k_namep.to_s
+	act.ap_refq.each_with_index do |st,i|
+		r, st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
+		st.names["k_elementp"] = st.k_elementp.to_s
+		if r == false
+			errs = true
+		end
+		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  "check", st.line_no )
+		st.names["k_compp"] = st.k_compp.to_s
+		if r == false
+			errs = true
+		end
+		r, st.k_comp_refp = fnd(act, "Comp_" + st.names["comp_ref"] , st.names["comp_ref"],  "check", st.line_no )
+		st.names["k_comp_refp"] = st.k_comp_refp.to_s
 		if r == false
 			errs = true
 		end
 	end
-	act.ap_a.each_with_index do |st,i|
-		r, st.k_modelp = fnd(act, "Model_" + st.names["model"] , st.names["model"],  "?", st.line_no )
-		st.names["k_modelp"] = st.k_modelp.to_s
+	act.ap_frame.each_with_index do |st,i|
+		r, st.k_domainp = fnd(act, "Domain_" + st.names["domain"] , st.names["domain"],  "?", st.line_no )
+		st.names["k_domainp"] = st.k_domainp.to_s
 		if r == false
 			errs = true
 		end
@@ -152,6 +164,23 @@ def refs(act)
 			errs = true
 		end
 	end
+	act.ap_a.each_with_index do |st,i|
+		tp = -1
+		ap = st.parentp
+		if ap >= 0
+			tp = act.ap_frame[ap].k_domainp
+		end
+		if tp >= 0
+			r, st.k_modelp = fnd(act, tp.to_s + "_Model_" + st.names["model"] , st.names["model"],  "?", st.line_no )
+			if r == false
+				errs = true
+			end
+		elsif "?" != "?" && st.names["model"] != "?"
+			puts "ref error " + st.line_no
+			errs = true
+		end
+		st.names["k_modelp"] = st.k_modelp.to_s
+	end
 	return(errs)
 end
 
@@ -159,25 +188,25 @@ def var_all(glob, va, lno)
 	if va.size < 3
 		return(false, "?" + va.size.to_s + "<3?" + lno + "?")
 	end
-	if va[0] == "Comp" # gen.unit:2, ../../test3/c_run.act:173
+	if va[0] == "Comp" # gen.unit:2, c_run.act:193
 		if en = glob.dats.index["Comp_" + va[1] ]?
 			return (glob.dats.ap_comp[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Model" # note.unit:2, ../../test3/c_run.act:173
-		if en = glob.dats.index["Model_" + va[1] ]?
-			return (glob.dats.ap_model[en].get_var(glob, va[2..], lno))
+	if va[0] == "Domain" # note.unit:2, c_run.act:193
+		if en = glob.dats.index["Domain_" + va[1] ]?
+			return (glob.dats.ap_domain[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Grid" # note.unit:31, ../../test3/c_run.act:173
+	if va[0] == "Grid" # note.unit:40, c_run.act:193
 		if en = glob.dats.index["Grid_" + va[1] ]?
 			return (glob.dats.ap_grid[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Actor" # act.unit:2, ../../test3/c_run.act:173
+	if va[0] == "Actor" # act.unit:2, c_run.act:193
 		if en = glob.dats.index["Actor_" + va[1] ]?
 			return (glob.dats.ap_actor[en].get_var(glob, va[2..], lno))
 		end
@@ -373,6 +402,56 @@ def do_all(glob, va, lno)
 			return(0)
 		end
 		glob.dats.ap_ref3.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
+	if va[0] == "Refq" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Refq_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_refq[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_refq[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_refq.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
+	if va[0] == "Domain" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Domain_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_domain[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_domain[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_domain.each do |st|
 			if va.size > 2
 				ret = st.do_its(glob, va[2..], lno)
 				if ret != 0
@@ -631,6 +710,22 @@ def load(act, tok, ln, pos, lno)
 			errs = true
 		end
 		act.ap_ref3 << comp
+	end
+	if tok == "Refq"
+		comp = KpRefq.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_refq << comp
+	end
+	if tok == "Domain"
+		comp = KpDomain.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_domain << comp
 	end
 	if tok == "Model"
 		comp = KpModel.new

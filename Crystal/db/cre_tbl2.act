@@ -4,9 +4,21 @@ Actor main
 
 Var DB = postgres://postgres:ss23qq@localhost:5432/postgres
 
+C ${DB}
+
+All Domain domain
 All Model model
 All Frame frame
 All A a
+
+----------------------------------------------------------------
+Actor domain
+----------------------------------------------------------------
+
+C here
+Dbcreate ${.main.DB} kp.domain
+
+Break loop
 
 ----------------------------------------------------------------
 Actor model

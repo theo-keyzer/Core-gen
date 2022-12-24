@@ -4,13 +4,27 @@ Actor main
 
 Var DB = postgres://postgres:ss23qq@localhost:5432/postgres
 
-Dbselect model ${DB} Select * from kp.model
+Dbselect domain ${DB} Select * from kp.domain
 
 Refs dats
 
 C ---------
 
-All Model disp_model
+All Domain disp_domain
+
+C ---------
+
+All Domain.info.Model disp_model2 name = notes
+
+----------------------------------------------------------------
+Actor domain
+----------------------------------------------------------------
+
+C domain ${name}  ${pad}  ${info}
+
+New dats Domain ${name}  ${pad}  ${info}
+
+Dbselect model ${.main.DB} Select * from kp.model where parent_id = ${pk_id}
 
 ----------------------------------------------------------------
 Actor model
@@ -28,7 +42,7 @@ Actor frame
 
 C frame ${group}  ${name}  ${pad}  ${info}
 
-New dats Frame ${group}  ${name}  ${pad}  ${info}
+New dats Frame ${domain}  ${group}  ${name}  ${pad}  ${info}
 
 Dbselect a ${.main.DB} Select * from kp.a where parent_id = ${pk_id}
 
@@ -39,6 +53,14 @@ Actor a
 C a ${model}  ${pad}  ${info}
 
 New dats A ${model}  ${pad}  ${info}
+
+----------------------------------------------------------------
+Actor disp_domain
+----------------------------------------------------------------
+
+C domain ${name}  ${pad}  ${info}
+
+Its Model disp_model
 
 ----------------------------------------------------------------
 Actor disp_model
@@ -52,7 +74,7 @@ Its Frame disp_frame
 Actor disp_frame
 ----------------------------------------------------------------
 
-C frame ${group}  ${name}  ${pad}  ${info}
+C frame ${domain}  ${group}  ${name}  ${pad}  ${info}
 
 Its A disp_a
 
@@ -61,4 +83,37 @@ Actor disp_a
 ----------------------------------------------------------------
 
 C a ${model}  ${pad}  ${info}
+
+----------------------------------------------------------------
+Actor disp_model2
+----------------------------------------------------------------
+
+C model2 ${name}  ${pad}  ${info}
+
+Its Frame disp_frame2 name = purpose
+
+----------------------------------------------------------------
+Actor disp_frame2
+----------------------------------------------------------------
+
+C frame2 ${domain}  ${group}  ${name}  ${pad}  ${info}
+
+Its A.model disp_model3
+
+----------------------------------------------------------------
+Actor disp_model3
+----------------------------------------------------------------
+
+C model3 ${name}  ${pad}  ${info}
+
+Its A_model disp_a3
+
+----------------------------------------------------------------
+Actor disp_a3
+----------------------------------------------------------------
+
+C a3 ${model}  ${pad}  ${info}
+
+
+
 
