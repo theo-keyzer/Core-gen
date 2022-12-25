@@ -1,0 +1,35 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+Var DB = postgres://postgres:ss23qq@localhost:5432/postgres
+
+Dbselect domain ${DB} Select * from kp.domain where name = 'info'
+
+----------------------------------------------------------------
+Actor domain
+----------------------------------------------------------------
+
+Dbselect model ${.main.DB} Select * from kp.model where parent_id = ${pk_id}
+Dbselect row ${.main.DB} Delete from kp.model where parent_id = ${pk_id}
+Dbselect row ${.main.DB} Delete from kp.domain where pk_id = ${pk_id}
+
+----------------------------------------------------------------
+Actor model
+----------------------------------------------------------------
+
+Dbselect frame ${.main.DB} Select * from kp.frame where parent_id = ${pk_id}
+Dbselect row ${.main.DB} Delete from kp.frame where parent_id = ${pk_id}
+
+----------------------------------------------------------------
+Actor frame
+----------------------------------------------------------------
+
+Dbselect row ${.main.DB} Delete from kp.a where parent_id = ${pk_id}
+
+----------------------------------------------------------------
+Actor row
+----------------------------------------------------------------
+
+
+
