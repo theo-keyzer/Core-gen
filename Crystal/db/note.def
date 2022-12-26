@@ -8,7 +8,9 @@ Model try - try this model
 
 Frame info 1 test1 - 
 
-A notes * this goes to the notes model in the info domain
+A notes : db * this goes to the notes model in the info domain, from info.notes.test2.try
+
+Use a of b
 
 ----------------------------------------------------------------
 Domain info - info domain
@@ -21,6 +23,8 @@ Model notes - map of note taking app
 Frame test 1 test2
 
 A try * this goes to the try model in the test domain
+
+Use test1 for db * this goes to test1, db
 
 Frame info 2 purpose - use cases
 

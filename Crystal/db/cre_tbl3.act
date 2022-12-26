@@ -4,52 +4,56 @@ Actor main
 
 Var DB = postgres://postgres:ss23qq@localhost:5432/postgres
 
+C ${DB}
+
 All Domain domain
- 
+All Model model
+All Frame frame
+All A a
+All Use use
+
 ----------------------------------------------------------------
 Actor domain
 ----------------------------------------------------------------
 
-Dbload ${.main.DB} kp.domain
-
-Its Model model
+Dbcreate ${.main.DB} kp.domain
+Break loop
 
 ----------------------------------------------------------------
 Actor model
 ----------------------------------------------------------------
 
-Var parent_id = ${.domain.pk_id}
-
-Dbload ${.main.DB} kp.model
-
-Its Frame frame
+Dbcreate ${.main.DB} kp.model
+Break loop
 
 ----------------------------------------------------------------
 Actor frame
 ----------------------------------------------------------------
 
-Var parent_id = ${.model.pk_id}
+Var domain_id = -1
 
-Dbload ${.main.DB} kp.frame
-
-Its A a
+Dbcreate ${.main.DB} kp.frame
+Break loop
 
 ----------------------------------------------------------------
 Actor a
 ----------------------------------------------------------------
 
-Var parent_id = ${.frame.pk_id}
+Var model_id = -1
 
-Dbload ${.main.DB} kp."a"
+Dbcreate ${.main.DB} kp.a
 
-Its Use use
+Break loop
 
 ----------------------------------------------------------------
 Actor use
 ----------------------------------------------------------------
 
-Var parent_id = ${.a.pk_id}
+Var frame_id = -1
+Var a_id = -1
 
-Dbload ${.main.DB} kp.use
+Dbcreate ${.main.DB} kp.use
+
+Break loop
 
 

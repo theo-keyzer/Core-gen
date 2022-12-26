@@ -1,0 +1,73 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+Var DB = postgres://postgres:ss23qq@localhost:5432/postgres
+
+C ${DB}
+
+Dbselect frame ${DB} Select * from kp.frame
+
+----------------------------------------------------------------
+Actor frame
+----------------------------------------------------------------
+
+-C frame ${domain}  ${group}  ${name}  ${pad}  ${info}
+
+Dbselect domain ${.main.DB} Select * from kp.domain where name = '${domain} '
+
+
+----------------------------------------------------------------
+Actor domain
+----------------------------------------------------------------
+
+-C domain ${name}  ${pad}  ${info}
+
+Dbselect row ${.main.DB} Update kp.frame set domain_id = '${pk_id} ' where pk_id = ${.frame.pk_id}
+
+Dbselect a ${.main.DB} Select * from kp.a where parent_id = ${.frame.pk_id}
+
+----------------------------------------------------------------
+Actor a
+----------------------------------------------------------------
+
+-C a ${model}  ${pad}  ${info}
+
+Dbselect model ${.main.DB} Select * from kp.model where name = '${model} ' and parent_id = ${.domain.pk_id}
+
+----------------------------------------------------------------
+Actor model
+----------------------------------------------------------------
+
+C model ${name}  ${pad}  ${info}
+
+Dbselect row ${.main.DB} Update kp.a set model_id = '${pk_id} ' where pk_id = ${.a.pk_id}
+
+Dbselect use ${.main.DB} Select * from kp.use where parent_id = ${.a.pk_id}
+
+----------------------------------------------------------------
+Actor use
+----------------------------------------------------------------
+
+Dbselect frame2 ${.main.DB} Select * from kp.frame where name = '${frame} ' and parent_id = ${.model.pk_id}
+
+----------------------------------------------------------------
+Actor frame2
+----------------------------------------------------------------
+
+Dbselect row ${.main.DB} Update kp.use set frame_id = '${pk_id} ' where pk_id = ${.use.pk_id}
+
+Dbselect a2 ${.main.DB} Select * from kp.a where name = '${.use.a} ' and parent_id = ${pk_id}
+
+----------------------------------------------------------------
+Actor a2
+----------------------------------------------------------------
+
+C here
+
+Dbselect row ${.main.DB} Update kp.use set a_id = '${pk_id} ' where pk_id = ${.use.pk_id}
+
+----------------------------------------------------------------
+Actor row
+----------------------------------------------------------------
+

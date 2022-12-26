@@ -15,6 +15,7 @@ class ActT
 	property ap_model : Array(KpModel) = Array(KpModel).new
 	property ap_frame : Array(KpFrame) = Array(KpFrame).new
 	property ap_a : Array(KpA) = Array(KpA).new
+	property ap_use : Array(KpUse) = Array(KpUse).new
 	property ap_grid : Array(KpGrid) = Array(KpGrid).new
 	property ap_col : Array(KpCol) = Array(KpCol).new
 	property ap_r : Array(KpR) = Array(KpR).new
@@ -181,6 +182,28 @@ def refs(act)
 		end
 		st.names["k_modelp"] = st.k_modelp.to_s
 	end
+	act.ap_use.each_with_index do |st,i|
+		tp = -1
+		ap = st.parentp
+		if ap >= 0
+			tp = act.ap_a[ap].k_modelp
+		end
+		if tp >= 0
+			r, st.k_framep = fnd(act, tp.to_s + "_Frame_" + st.names["frame"] , st.names["frame"],  "?", st.line_no )
+			if r == false
+				errs = true
+			end
+		elsif "?" != "?" && st.names["frame"] != "?"
+			puts "ref error " + st.line_no
+			errs = true
+		end
+		st.names["k_framep"] = st.k_framep.to_s
+		r, st.k_ap = fnd(act, st.k_framep.to_s + "_A_" + st.names["a"] , st.names["a"],  "?", st.line_no )
+		st.names["k_ap"] = st.k_ap.to_s
+		if r == false
+			errs = true
+		end
+	end
 	return(errs)
 end
 
@@ -200,7 +223,7 @@ def var_all(glob, va, lno)
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Grid" # note.unit:41, c_run.act:193
+	if va[0] == "Grid" # note.unit:55, c_run.act:193
 		if en = glob.dats.index["Grid_" + va[1] ]?
 			return (glob.dats.ap_grid[en].get_var(glob, va[2..], lno))
 		end
@@ -541,6 +564,31 @@ def do_all(glob, va, lno)
 		end
 		return(0)
 	end
+	if va[0] == "Use" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Use_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_use[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_use[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_use.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
 	if va[0] == "Grid" 
 		if va.size > 1 && va[1] != ""
 			if en = glob.dats.index["Grid_" + va[1] ]?
@@ -750,6 +798,14 @@ def load(act, tok, ln, pos, lno)
 			errs = true
 		end
 		act.ap_a << comp
+	end
+	if tok == "Use"
+		comp = KpUse.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_use << comp
 	end
 	if tok == "Grid"
 		comp = KpGrid.new
