@@ -1,4 +1,16 @@
 ----------------------------------------------------------------
+Domain test - test domain
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+Model try - try this model
+----------------------------------------------------------------
+
+Frame info 1 test1 - 
+
+A notes * this goes to the notes model in the info domain
+
+----------------------------------------------------------------
 Domain info - info domain
 ----------------------------------------------------------------
 
@@ -6,7 +18,9 @@ Domain info - info domain
 Model notes - map of note taking app
 ----------------------------------------------------------------
 
-Frame info 1
+Frame test 1 test2
+
+A try * this goes to the try model in the test domain
 
 Frame info 2 purpose - use cases
 

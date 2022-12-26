@@ -1118,7 +1118,6 @@ class KpRefq < Kp
 		p, @names["comp"] = getw(ln, p)
 		p, @names["element2"] = getw(ln, p)
 		p, @names["comp_ref"] = getw(ln, p)
-		p, @names["element3"] = getw(ln, p)
 		p, @names["opt"] = getw(ln, p)
 		p, @names["var"] = getw(ln, p)
 		p, @names["doc"] = getws(ln, p)
@@ -1380,7 +1379,7 @@ class KpModel < Kp
 			end
 			return(0)
 		end
-		if va[0] == "A_model" # note.unit:37, c_struct.act:595
+		if va[0] == "A_model" # note.unit:38, c_struct.act:595
 			glob.dats.ap_a.each do |st|
 				if st.k_modelp == me
 					if va.size > 1
@@ -1747,21 +1746,21 @@ class KpGrid < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "Col_name" && va.size > 1 # note.unit:57, c_struct.act:707
+		if va[0] == "Col_name" && va.size > 1 # note.unit:58, c_struct.act:707
 			glob.dats.ap_col.each do |st|
 				if st.k_namep == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "R_name" && va.size > 1 # note.unit:67, c_struct.act:707
+		if va[0] == "R_name" && va.size > 1 # note.unit:68, c_struct.act:707
 			glob.dats.ap_r.each do |st|
 				if st.k_namep == me
 					return (st.get_var(glob, va[1..], lno) )
 				end
 			end
 		end
-		if va[0] == "Col"  && va.size > 2 # note.unit:51, c_struct.act:422
+		if va[0] == "Col"  && va.size > 2 # note.unit:52, c_struct.act:422
 			if en = glob.dats.index[me.to_s + "_Col_" + va[1] ]?
 				return (glob.dats.ap_col[en].get_var(glob, va[2..], lno))
 			end
@@ -1774,7 +1773,7 @@ class KpGrid < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "Col" # note.unit:48, c_struct.act:686
+		if va[0] == "Col" # note.unit:49, c_struct.act:686
 			itscol.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1790,7 +1789,7 @@ class KpGrid < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Col_name" # note.unit:57, c_struct.act:526
+		if va[0] == "Col_name" # note.unit:58, c_struct.act:526
 			glob.dats.ap_col.each do |st|
 				if st.k_namep == me
 					if va.size > 1
@@ -1808,7 +1807,7 @@ class KpGrid < Kp
 			end
 			return(0)
 		end
-		if va[0] == "R_name" # note.unit:67, c_struct.act:526
+		if va[0] == "R_name" # note.unit:68, c_struct.act:526
 			glob.dats.ap_r.each do |st|
 				if st.k_namep == me
 					if va.size > 1
@@ -1826,7 +1825,7 @@ class KpGrid < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # note.unit:40, c_struct.act:149
+		if va[0] == "Child" # note.unit:41, c_struct.act:149
 			childs.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1881,17 +1880,17 @@ class KpCol < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "name" # note.unit:57, c_struct.act:618
+		if va[0] == "name" # note.unit:58, c_struct.act:618
 			if k_namep >= 0 && va.size > 1
 				return( glob.dats.ap_grid[ k_namep ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # note.unit:40, c_struct.act:516
+		if va[0] == "parent" # note.unit:41, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_grid[ parentp ].get_var(glob, va[1..],lno) )
 			end
 		end
-		if va[0] == "R"  && va.size > 2 # note.unit:63, c_struct.act:422
+		if va[0] == "R"  && va.size > 2 # note.unit:64, c_struct.act:422
 			if en = glob.dats.index[me.to_s + "_R_" + va[1] ]?
 				return (glob.dats.ap_r[en].get_var(glob, va[2..], lno))
 			end
@@ -1904,7 +1903,7 @@ class KpCol < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "R" # note.unit:60, c_struct.act:686
+		if va[0] == "R" # note.unit:61, c_struct.act:686
 			itsr.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -1920,7 +1919,7 @@ class KpCol < Kp
 			end
 			return(0)
 		end
-		if va[0] == "parent" # note.unit:40, c_struct.act:501
+		if va[0] == "parent" # note.unit:41, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_grid[ parentp ]
 				if va.size > 1
@@ -1940,7 +1939,7 @@ class KpCol < Kp
 			end
 			return(0)
 		end
-		if va[0] == "index" && va.size > 1 && parentp >= 0 # note.unit:52, c_struct.act:167
+		if va[0] == "index" && va.size > 1 && parentp >= 0 # note.unit:53, c_struct.act:167
 			pos = 0
 			if v = names[ "index" ]?
 				pos = v.to_i
@@ -2068,7 +2067,7 @@ class KpCol < Kp
 				return(0)
 			end
 		end
-		if va[0] == "group" && va.size > 1 && parentp >= 0 # note.unit:53, c_struct.act:167
+		if va[0] == "group" && va.size > 1 && parentp >= 0 # note.unit:54, c_struct.act:167
 			pos = 0
 			if v = names[ "group" ]?
 				pos = v.to_i
@@ -2196,7 +2195,7 @@ class KpCol < Kp
 				return(0)
 			end
 		end
-		if va[0] == "Child" # note.unit:48, c_struct.act:149
+		if va[0] == "Child" # note.unit:49, c_struct.act:149
 			childs.each do |st|
 				if va.size > 1
 					ret = st.do_its(glob, va[1..], lno)
@@ -2247,12 +2246,12 @@ class KpR < Kp
 	end
 
 	def get_var(glob, va, lno)
-		if va[0] == "name" # note.unit:67, c_struct.act:618
+		if va[0] == "name" # note.unit:68, c_struct.act:618
 			if k_namep >= 0 && va.size > 1
 				return( glob.dats.ap_grid[ k_namep ].get_var(glob, va[1..], lno) )
 			end
 		end
-		if va[0] == "parent" # note.unit:48, c_struct.act:516
+		if va[0] == "parent" # note.unit:49, c_struct.act:516
 			if parentp >= 0 && va.size > 1
 				return( glob.dats.ap_col[ parentp ].get_var(glob, va[1..],lno) )
 			end
@@ -2264,7 +2263,7 @@ class KpR < Kp
 	end
 
 	def do_its(glob, va, lno)
-		if va[0] == "parent" # note.unit:48, c_struct.act:501
+		if va[0] == "parent" # note.unit:49, c_struct.act:501
 			if parentp >= 0
 				st = glob.dats.ap_col[ parentp ]
 				if va.size > 1
@@ -2284,7 +2283,7 @@ class KpR < Kp
 			end
 			return(0)
 		end
-		if va[0] == "Child" # note.unit:60, c_struct.act:149
+		if va[0] == "Child" # note.unit:61, c_struct.act:149
 			return(0)
 		end
 		puts("?No its " + va[0] + " cmd for R," + line_no + "," + lno + "?");

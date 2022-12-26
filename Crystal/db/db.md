@@ -25,4 +25,30 @@ and a.parent_id = frame.pk_id and a.name = model.name`
 Other queries may be more usefull, or the generator can
 incrementaly select what it needs.
 
+The `Q1` links to a node where the node's parent is is referenced by a
+field that is in the link's parent node.
+
+```
+----------------------------------------------------------------
+Comp Frame parent Model FindIn
+----------------------------------------------------------------
+
+	Element domain     R1 WORD       * ref to domain
+	
+Ref domain Domain ?
+
+----------------------------------------------------------------
+Comp A parent Frame
+----------------------------------------------------------------
+
+	Element model      Q1 WORD       * ref to model
+
+Refq model Model domain Frame ?
+```
+
+The `Refq` uses the `Q1` field `model`. The link goes to node of type `Model`.
+It uses the `domain` field (the one with the `R1`) to be used as the parent `(Domain)` to find the `Model` in.
+This is the same as `L1` except the `domain` field is not in `A`, but in `A's` parent, `Frame`.
+
+
 

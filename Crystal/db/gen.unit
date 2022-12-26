@@ -133,7 +133,7 @@ Comp Refq parent Comp
 	Element comp     R1 COMP          * link to Comp
 	Element element2 C1 ELEMENT       * use this element in parent for the parent
 	Element comp_ref R1 COMP          * parent's Comp
-	Element element3 C1 WORD          * target element, child of parent
+-	Element element3 C1 WORD          * target element, child of parent
 	Element opt      C1 WORD          * optional or check - error if not found
 		Opt check                 * check
 		Opt .                     * optional value to use
