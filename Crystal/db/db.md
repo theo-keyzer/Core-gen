@@ -46,7 +46,7 @@ Comp Model parent Domain FindIn
 Comp Frame parent Model FindIn
 ----------------------------------------------------------------
 
-	Element domain     R1 WORD       * ref to domain
+	Element domain     RS WORD       * ref to domain
 	Element name       C1 WORD       * frame name
 	
 Ref domain Domain ?
@@ -55,7 +55,7 @@ Ref domain Domain ?
 Comp A parent Frame FindIn
 ----------------------------------------------------------------
 
-	Element model      Q1 WORD       * ref to model
+	Element model      QS WORD       * ref to model
 	Element name       C1 WORD       * a name
 
 Refq model Model domain Frame ?
@@ -71,7 +71,7 @@ This is the same as `L1` except the `domain` field is not in `A`, but in `A's` p
 Comp Use parent A
 ----------------------------------------------------------------
 
-	Element frame      Q1 Frame      * ref to frame
+	Element frame      QS Frame      * ref to frame
 	Element a          L1 A          * ref to a in frame
 
 Refq frame Frame model A ?
@@ -80,5 +80,14 @@ Ref2 a A frame ?
 
 The `Ref2` uses the `L1` field `a`. The link goes to node of type `A`.
 It uses the `frame` field (the one with the `Q1`) to be used as the parent (`Frame`) to find the `A` in.
+
+The `CS,RS,FS,LS,MS,NS,PS,QS` data types is the same as `C1,R1,F1,L1,M1,N1,P1,Q1` except the whitespace between the words
+can be a `:`.
+```
+Frame 2 info:docs - making documentation
+
+A   find:info   * find relavant information in a document
+```
+
 
 

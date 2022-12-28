@@ -223,7 +223,7 @@ def var_all(glob, va, lno)
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Grid" # note.unit:55, c_run.act:193
+	if va[0] == "Grid" # note.unit:53, c_run.act:193
 		if en = glob.dats.index["Grid_" + va[1] ]?
 			return (glob.dats.ap_grid[en].get_var(glob, va[2..], lno))
 		end

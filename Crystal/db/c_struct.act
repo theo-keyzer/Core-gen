@@ -402,6 +402,12 @@ Actor ele . mw = V1
 C 		p, @names["${name}l"] = getws(ln, p)
 
 ----------------------------------------------------------------
+Actor ele . mw in CS,RS,FS,LS,MS,NS,PS,QS
+----------------------------------------------------------------
+
+C 		p, @names["${name}l"] = getsw(ln, p)
+
+----------------------------------------------------------------
 Actor childs Comp
 ----------------------------------------------------------------
 
@@ -656,6 +662,7 @@ D 	${name}l * ${doc}
 ----------------------------------------------------------------
 -Actor val_inc Element
 Actor val_inc Element mw = C1 	property k_${name}l : String = ""
+Actor val_inc Element mw = CS 	property k_${name}l : String = ""
 Actor val_inc Element mw = V1 	property k_${name}l : String = ""
 Actor val_inc Element mw = R1 	property k_${name}l : String = ""
 Actor val_inc Element mw = F1 	property k_${name}l : String = ""
@@ -666,6 +673,11 @@ Actor val_inc2 Element mw = F1 	property k_${name}lp : Int32 = -1
 Actor val_inc2 Element mw = L1 	property k_${name}lp : Int32 = -1
 Actor val_inc2 Element mw = M1 	property k_${name}lp : Int32 = -1
 Actor val_inc2 Element mw = Q1 	property k_${name}lp : Int32 = -1
+Actor val_inc2 Element mw = RS 	property k_${name}lp : Int32 = -1
+Actor val_inc2 Element mw = FS 	property k_${name}lp : Int32 = -1
+Actor val_inc2 Element mw = LS 	property k_${name}lp : Int32 = -1
+Actor val_inc2 Element mw = MS 	property k_${name}lp : Int32 = -1
+Actor val_inc2 Element mw = QS 	property k_${name}lp : Int32 = -1
 ----------------------------------------------------------------
 Actor parent_field Comp
 ----------------------------------------------------------------
