@@ -2,9 +2,15 @@
 Actor main
 ----------------------------------------------------------------
 
-Var DB = postgres://postgres:ss23qq@localhost:5432/postgres
+Var DB = ${2}
 
-Dbselect domain ${DB} Select * from kp.domain where name = 'info'
+All Domain domains
+
+----------------------------------------------------------------
+Actor domains
+----------------------------------------------------------------
+
+Dbselect domain ${.main.DB} Select * from kp.domain where name = '${name}n'
 
 ----------------------------------------------------------------
 Actor domain
@@ -25,7 +31,14 @@ Dbselect row ${.main.DB} Delete from kp.frame where parent_id = ${pk_id}
 Actor frame
 ----------------------------------------------------------------
 
+Dbselect a ${.main.DB} Select * from kp.a where parent_id = ${pk_id}
 Dbselect row ${.main.DB} Delete from kp.a where parent_id = ${pk_id}
+
+----------------------------------------------------------------
+Actor a
+----------------------------------------------------------------
+
+Dbselect row ${.main.DB} Delete from kp.use where parent_id = ${pk_id}
 
 ----------------------------------------------------------------
 Actor row

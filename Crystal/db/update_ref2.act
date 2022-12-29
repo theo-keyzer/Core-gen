@@ -4,9 +4,13 @@ Actor main
 
 Var DB = ${2}
 
-C ${DB}
+All Domain domains
 
-Dbselect frame ${DB} Select * from kp.frame
+----------------------------------------------------------------
+Actor domains
+----------------------------------------------------------------
+
+Dbselect frame ${.main.DB} Select * from kp.frame where domain = '${name}n'
 
 ----------------------------------------------------------------
 Actor frame
