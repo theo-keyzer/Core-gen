@@ -47,6 +47,7 @@ Comp Element parent Comp FindIn
 		Opt R1            * link to top level comp - Find - needs a Ref.
 		Opt L1            * link to child of previous link - R1 for first, L1 for chain - needs a Ref2.
 		Opt M1            * link more of L1
+		Opt Q1            * link to child of link from parent element
 		Opt N1            * nested comp
 	Element mw2  C1 WORD  * data type - not used
 	Element pad  C1 WORD  * separator
@@ -91,13 +92,13 @@ Comp Ref2 parent Comp
 	Element comp     R1 COMP          * linking Comp
 	Element element2 F1 ELEMENT       * use this link for remote parent
 	Element opt      C1 WORD          * optional or check - error if not found
-		Opt check                     * check
-		Opt .                         * optional value to use
+		Opt check                 * check
+		Opt .                     * optional value to use
 	Element var      C1 WORD          * not used
 	Element doc      V1 WORD          * doc string
 	
-Ref element Element check
-Ref comp Comp       check
+Ref element  Element check
+Ref comp     Comp    check
 Ref element2 Element check
 	
 ----------------------------------------------------------------
@@ -112,8 +113,8 @@ Comp Ref3 parent Comp
 	Element comp_ref R1 COMP          * ref Comp if comps differ
 	Element element3 C1 WORD          * use this link from element for remote parent
 	Element opt      C1 WORD          * optional or check - error if not found
-		Opt check                     * check
-		Opt .                         * optional value to use
+		Opt check                 * check
+		Opt .                     * optional value to use
 	Element var      C1 WORD          * not used
 	Element doc      V1 WORD          * doc string
 	
@@ -122,4 +123,24 @@ Ref comp     Comp    check
 Ref comp_ref Comp    check
 Ref element2 Element check
 	
+----------------------------------------------------------------
+Comp Refq parent Comp
+----------------------------------------------------------------
+* Relation of element to comp and child of comp
+----------------------------------------------------------------
+
+	Element element  F1 ELEMENT       * link to remote element
+	Element comp     R1 COMP          * link to Comp
+	Element element2 C1 ELEMENT       * use this element in parent for the parent
+	Element comp_ref R1 COMP          * parent's Comp
+-	Element element3 C1 WORD          * target element, child of parent
+	Element opt      C1 WORD          * optional or check - error if not found
+		Opt check                 * check
+		Opt .                     * optional value to use
+	Element var      C1 WORD          * not used
+	Element doc      V1 WORD          * doc string
+	
+Ref element  Element check
+Ref comp     Comp    check
+Ref comp_ref Comp    check
 

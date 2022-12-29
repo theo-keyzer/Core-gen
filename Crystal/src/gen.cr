@@ -3,6 +3,7 @@ require "./*"
 
 # Usage: gen  c_struct.act  app.unit,gen.unit,act.unit  >struct.cr
 
+
 if ARGV.size > 1
 	glob = GlobT.new
 	r = load_files(ARGV[0], glob.acts)
@@ -761,6 +762,9 @@ def tocase(s, c)
 	if c == 'z'
 		return( s.capitalize() )
 	end
+	if c == 'n' || c == ' '
+		return( s )
+	end
 	return(s)
 end
 
@@ -812,6 +816,45 @@ def getw(ln, pos)
 		end
 		to = i
 		i = i + 1
+	end
+	return(to+1, ln[from..to] );
+end
+
+def getsw(ln, pos)
+	l = ln.size
+	if pos+1 > l
+		return(pos, "E_O_L")
+	end
+	from = pos
+	i = pos
+	while i < l
+		from = i + 1
+		if ln[i] == ' ' || ln[i] == '\t'
+			i = i+1
+			next
+		end
+		from = i
+		break
+	end
+	if from+1 > l
+		return(pos, "E_O_L")
+	end
+	to = from
+	i = from
+	is_s = false	
+	while i < l
+		if ln[i] == ' ' || ln[i] == '\t'
+			break
+		end
+		if ln[i] == ':'
+			is_s = true
+			break
+		end
+		to = i
+		i = i + 1
+	end
+	if is_s == true
+		return(to+2, ln[from..to] );
 	end
 	return(to+1, ln[from..to] );
 end

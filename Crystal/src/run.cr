@@ -25,7 +25,11 @@ class ActT
 	property ap_ref : Array(KpRef) = Array(KpRef).new
 	property ap_ref2 : Array(KpRef2) = Array(KpRef2).new
 	property ap_ref3 : Array(KpRef3) = Array(KpRef3).new
+	property ap_refq : Array(KpRefq) = Array(KpRefq).new
 	property ap_actor : Array(KpActor) = Array(KpActor).new
+	property ap_dbcreate : Array(KpDbcreate) = Array(KpDbcreate).new
+	property ap_dbload : Array(KpDbload) = Array(KpDbload).new
+	property ap_dbselect : Array(KpDbselect) = Array(KpDbselect).new
 	property ap_all : Array(KpAll) = Array(KpAll).new
 	property ap_du : Array(KpDu) = Array(KpDu).new
 	property ap_new : Array(KpNew) = Array(KpNew).new
@@ -184,6 +188,29 @@ def refs(act)
 			errs = true
 		end
 	end
+	act.ap_refq.each_with_index do |st,i|
+		r, st.k_elementp = fnd(act, st.parentp.to_s + "_Element_" + st.names["element"] , st.names["element"],  "check", st.line_no )
+		st.names["k_elementp"] = st.k_elementp.to_s
+		if r == false
+			errs = true
+		end
+		r, st.k_compp = fnd(act, "Comp_" + st.names["comp"] , st.names["comp"],  "check", st.line_no )
+		st.names["k_compp"] = st.k_compp.to_s
+		if r == false
+			errs = true
+		end
+		r, st.k_comp_refp = fnd(act, "Comp_" + st.names["comp_ref"] , st.names["comp_ref"],  "check", st.line_no )
+		st.names["k_comp_refp"] = st.k_comp_refp.to_s
+		if r == false
+			errs = true
+		end
+	end
+	act.ap_dbselect.each_with_index do |st,i|
+		r, st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
+		if r == false
+			errs = true
+		end
+	end
 	act.ap_all.each_with_index do |st,i|
 		r, st.k_actorp = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no )
 		if r == false
@@ -277,43 +304,43 @@ def var_all(glob, va, lno)
 	if va.size < 3
 		return(false, "?" + va.size.to_s + "<3?" + lno + "?")
 	end
-	if va[0] == "Node" # app.unit:2, c_run.act:173
+	if va[0] == "Node" # app.unit:2, c_run.act:208
 		if en = glob.dats.index["Node_" + va[1] ]?
 			return (glob.dats.ap_node[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Graph" # app.unit:23, c_run.act:173
+	if va[0] == "Graph" # app.unit:23, c_run.act:208
 		if en = glob.dats.index["Graph_" + va[1] ]?
 			return (glob.dats.ap_graph[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Matrix" # app.unit:31, c_run.act:173
+	if va[0] == "Matrix" # app.unit:31, c_run.act:208
 		if en = glob.dats.index["Matrix_" + va[1] ]?
 			return (glob.dats.ap_matrix[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Table" # app.unit:41, c_run.act:173
+	if va[0] == "Table" # app.unit:41, c_run.act:208
 		if en = glob.dats.index["Table_" + va[1] ]?
 			return (glob.dats.ap_table[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Type" # sample.unit:2, c_run.act:173
+	if va[0] == "Type" # sample.unit:2, c_run.act:208
 		if en = glob.dats.index["Type_" + va[1] ]?
 			return (glob.dats.ap_type[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Comp" # gen.unit:2, c_run.act:173
+	if va[0] == "Comp" # gen.unit:2, c_run.act:208
 		if en = glob.dats.index["Comp_" + va[1] ]?
 			return (glob.dats.ap_comp[en].get_var(glob, va[2..], lno))
 		end
 		return(false, "?" + va[0] + "=" + va[1] + "?" + lno + "?")
 	end
-	if va[0] == "Actor" # act.unit:2, c_run.act:173
+	if va[0] == "Actor" # act.unit:2, c_run.act:208
 		if en = glob.dats.index["Actor_" + va[1] ]?
 			return (glob.dats.ap_actor[en].get_var(glob, va[2..], lno))
 		end
@@ -898,6 +925,31 @@ def do_all(glob, va, lno)
 		end
 		return(0)
 	end
+	if va[0] == "Refq" 
+		if va.size > 1 && va[1] != ""
+			if en = glob.dats.index["Refq_" + va[1] ]?
+				if va.size > 2
+					return( glob.dats.ap_refq[en].do_its(glob, va[2..], lno) )
+				end
+				return( go_act(glob, glob.dats.ap_refq[en]) )
+			end
+			return(0)
+		end
+		glob.dats.ap_refq.each do |st|
+			if va.size > 2
+				ret = st.do_its(glob, va[2..], lno)
+				if ret != 0
+					return(ret)
+				end
+				next
+			end
+			ret = go_act(glob, st)
+			if ret != 0
+				return(ret)
+			end
+		end
+		return(0)
+	end
 	if va[0] == "Actor" 
 		if va.size > 1 && va[1] != ""
 			if en = glob.dats.index["Actor_" + va[1] ]?
@@ -1073,6 +1125,14 @@ def load(act, tok, ln, pos, lno)
 		end
 		act.ap_star << comp
 	end
+	if tok == "*"
+		comp = KpStar.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_star << comp
+	end
 	if tok == "Element"
 		comp = KpElement.new
 		r = comp.load(act, ln, pos, lno)
@@ -1113,6 +1173,14 @@ def load(act, tok, ln, pos, lno)
 		end
 		act.ap_ref3 << comp
 	end
+	if tok == "Refq"
+		comp = KpRefq.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_refq << comp
+	end
 	if tok == "Actor"
 		comp = KpActor.new
 		r = comp.load(act, ln, pos, lno)
@@ -1120,6 +1188,30 @@ def load(act, tok, ln, pos, lno)
 			errs = true
 		end
 		act.ap_actor << comp
+	end
+	if tok == "Dbcreate"
+		comp = KpDbcreate.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_dbcreate << comp
+	end
+	if tok == "Dbload"
+		comp = KpDbload.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_dbload << comp
+	end
+	if tok == "Dbselect"
+		comp = KpDbselect.new
+		r = comp.load(act, ln, pos, lno)
+		if r == false
+			errs = true
+		end
+		act.ap_dbselect << comp
 	end
 	if tok == "All"
 		comp = KpAll.new

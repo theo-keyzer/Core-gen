@@ -69,6 +69,21 @@ C 		end
 C 		act.ap_${name}l << comp
 C 	end
 
+Its Token load_tok
+
+----------------------------------------------------------------
+Actor load_tok .
+----------------------------------------------------------------
+
+C 	if tok == "${token}n"
+C 		comp = Kp${.load.name}c.new
+C 		r = comp.load(act, ln, pos, lno)
+C 		if r == false
+C 			errs = true
+C 		end
+C 		act.ap_${.load.name}l << comp
+C 	end
+
 ----------------------------------------------------------------
 Actor refs Comp parent = Actor
 ----------------------------------------------------------------
@@ -108,7 +123,7 @@ Its Element refs_ele2
 C 	end
 
 ----------------------------------------------------------------
-Actor refs_act_ele . mw = R1
+Actor refs_act_ele . mw in R1,RS
 ----------------------------------------------------------------
 
 C 		r, st.k_${name}lp = fnd(act, "${Ref_element.comp.name}c_" + st.k_${name}l , st.k_${name}l,  ".", st.line_no )
@@ -117,7 +132,7 @@ C 			errs = true
 C 		end
 
 ----------------------------------------------------------------
-Actor refs_ele . mw = R1
+Actor refs_ele . mw in R1,RS
 ----------------------------------------------------------------
 
 C 		r, st.k_${name}lp = fnd(act, "${Ref_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref_element.opt} ", st.line_no )
@@ -127,7 +142,7 @@ C 			errs = true
 C 		end
 
 ----------------------------------------------------------------
-Actor refs_ele2 . mw = M1
+Actor refs_ele2 . mw in M1,MS
 ----------------------------------------------------------------
 
 C 		tp = -1
@@ -147,7 +162,7 @@ C 		end
 C 		st.names["k_${name}lp"] = st.k_${name}lp.to_s
 
 ----------------------------------------------------------------
-Actor refs_ele . mw in F1
+Actor refs_ele . mw in F1,FS
 ----------------------------------------------------------------
 
 C 		r, st.k_${name}lp = fnd(act, st.parentp.to_s + "_${Ref_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref_element.opt} ", st.line_no )
@@ -157,7 +172,7 @@ C 			errs = true
 C 		end
 
 ----------------------------------------------------------------
-Actor refs_ele2 . mw = L1
+Actor refs_ele2 . mw in L1,LS
 ----------------------------------------------------------------
 
 C 		r, st.k_${name}lp = fnd(act, st.k_${Ref2_element.element2.name}lp.to_s + "_${Ref2_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref2_element.opt} ", st.line_no )
@@ -165,6 +180,26 @@ C 		st.names["k_${name}lp"] = st.k_${name}lp.to_s
 C 		if r == false
 C 			errs = true
 C 		end
+
+----------------------------------------------------------------
+Actor refs_ele2 . mw in Q1,QS
+----------------------------------------------------------------
+
+C 		tp = -1
+C 		ap = st.parentp
+C 		if ap >= 0
+C 			tp = act.ap_${Refq_element.comp_ref.name}l[ap].k_${Refq_element.element2.name}lp
+C 		end
+C 		if tp >= 0
+C 			r, st.k_${name}lp = fnd(act, tp.to_s + "_${Refq_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Refq_element.opt} ", st.line_no )
+C 			if r == false
+C 				errs = true
+C 			end
+C 		elsif "${Refq_element.opt} " != "?" && st.names["${name}l"] != "${Refq_element.opt} "
+C 			puts "ref error " + st.line_no
+C 			errs = true
+C 		end
+C 		st.names["k_${name}lp"] = st.k_${name}lp.to_s
 
 ----------------------------------------------------------------
 Actor var_all Comp find = Find
