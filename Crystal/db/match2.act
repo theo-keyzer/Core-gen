@@ -1,0 +1,45 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+Var DB = ${2}
+Var items = ${3}
+
+C ----------------------------------------------------------------
+C Domain gen1 - domain from ${1}  with ${3}
+C ----------------------------------------------------------------
+C Model gen2 - model
+C ----------------------------------------------------------------
+C
+
+Dbselect domain ${DB}  Select * from kp.domain
+
+----------------------------------------------------------------
+Actor domain
+----------------------------------------------------------------
+
+Dbselect disp_col ${.main.DB} Select * from kp.model where parent_id = ${pk_id}
+
+----------------------------------------------------------------
+Actor disp_col . .depth != 6
+----------------------------------------------------------------
+
+Unique add ${.depth} ${.domain.name}n:${name}
+
+Out delay
+
+C ${ }  Frame ${.depth}  ${name}  ${pad}  ${info}
+
+Dbselect disp_items ${.main.DB} Select a.* from kp.frame, kp.a where frame.parent_id = ${pk_id}  and a.parent_id = frame.pk_id and a.model in (${.main.items} )
+Dbselect disp_col ${.main.DB} Select model.* from kp.frame, kp.a, kp.model where a.model_id::int8 = ${pk_id}  and frame.pk_id = a.parent_id and model.pk_id = frame.parent_id
+Dbselect disp_col ${.main.DB} Select model.* from kp.frame, kp.a, kp.model where frame.parent_id = ${pk_id}  and a.parent_id = frame.pk_id and model.pk_id = a.model_id::int8
+
+----------------------------------------------------------------
+Actor disp_items
+----------------------------------------------------------------
+
+Unique add DI ${pk_id}
+
+C ${ }  A ${model} :${name}  ${pad}  ${info}
+
+
