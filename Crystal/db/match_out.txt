@@ -1,0 +1,26 @@
+----------------------------------------------------------------
+Domain gen1 - domain from note.def with moving,frame
+----------------------------------------------------------------
+Model gen2 - model
+----------------------------------------------------------------
+
+   Frame 2 try - try this model
+    Frame 3 notes - map of note taking app
+     A thinking:moving * moving between the frame grids
+     Frame 4 try - try this model
+      Frame 5 notes - map of note taking app
+       A thinking:moving * moving between the frame grids
+     Frame 4 match - map how to match
+      Frame 5 join - map how to join
+       A frame:frame * move up to its frame and explore its ref and its a's ref
+     Frame 4 join - map how to join
+      A frame:frame * move up to its frame and explore its ref and its a's ref
+   Frame 2 notes - map of note taking app
+    A thinking:moving * moving between the frame grids
+    Frame 3 try - try this model
+     Frame 4 notes - map of note taking app
+      A thinking:moving * moving between the frame grids
+    Frame 3 join - map how to join
+     A frame:frame * move up to its frame and explore its ref and its a's ref
+   Frame 2 join - map how to join
+    A frame:frame * move up to its frame and explore its ref and its a's ref

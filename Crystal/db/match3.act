@@ -43,7 +43,7 @@ Its .main.items.split., disp_item
 Actor disp_item . value = ${.disp_items.name}
 ----------------------------------------------------------------
 
-Unique add DI ${.disp_items.k_me}
+Unique add DI ${.depth} ${.disp_items.k_me}
 
 C ${ } A ${.disp_items.model} :${.disp_items.name}  ${.disp_items.pad}  ${.disp_items.info}
 
