@@ -9,7 +9,7 @@ The files are ini like - line based.
 The nodes has a configured parent and are tied
 to the above parent.
 
-# This is an actor language.
+# This is an query language.
 
 The actor are like functions that can be called
 and a case like statement that matches.
