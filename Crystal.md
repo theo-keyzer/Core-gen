@@ -73,6 +73,8 @@ Command names.
 - Dbcreate -  create table in database from current node's def.
 - Dbload -  load current node's data into the database.
 - Dbselect -  select data from the database.
+- Dbits -  same format as Its, but uses the database - todo idea
+- Dbrefs -  same as Refs, but for the database - todo idea
 #### Var
 Var command.
 This creates a named entry in the the current node's instance.
