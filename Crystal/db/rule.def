@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Domain rules - rules domain
+----------------------------------------------------------------
+Model rule - try this rule
+----------------------------------------------------------------
+
+Frame 1 rules:overlap       - a
+Frame 2 rules:result        - b
+Frame 2 rules:b2            - b2
+Frame 1 rules:correlations  - c
+Frame 2 rules:grid          - d
+Frame 3 rules:explore       - e
+
