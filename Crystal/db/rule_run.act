@@ -1,0 +1,52 @@
+----------
+Actor main
+----------
+
+All A r0 info regex overlap
+All A r3 info regex correlations
+
+----------
+Actor r0
+----------
+
+C overlap - ${parent.parent.name}  * ${info}
+
+Its model.Frame.A r1 info regex result
+Its model.Frame.A r2 info regex b2
+
+----------
+Actor r1
+----------
+
+C result - ${parent.parent.name}  * ${info}
+
+
+----------
+Actor r2
+----------
+
+C b2 - ${parent.parent.name}  * ${info}
+
+
+----------
+Actor r3
+----------
+
+C correlations - ${parent.parent.name}  * ${info}
+
+Its model.Frame.A r4 info regex grid
+
+----------
+Actor r4
+----------
+
+C grid - ${parent.parent.name}  * ${info}
+
+Its model.Frame.A r5 info regex explore
+
+----------
+Actor r5
+----------
+
+C explore - ${parent.parent.name}  * ${info}
+

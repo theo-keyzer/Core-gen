@@ -1,0 +1,7 @@
+overlap - notes * need to overlap models to describe an idea
+result - model * diagram of the result
+correlations - notes * find correlations and missing links
+grid - match * for each a, move to next grid
+grid - match * join that grid a's to other models
+explore - join * that frame or model can be explore to get to the other item, or follow its a's refs
+explore - join * move up to its frame and explore its ref and its a's ref
