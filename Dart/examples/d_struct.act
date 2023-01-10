@@ -2,7 +2,7 @@
 Actor main .
 ----------------------------------------------------------------
 
-C require "./*"
+C part of gen;
 C
 C class Kp
 C {
@@ -44,7 +44,8 @@ Its Element val_inc2
 
 C 	List <Kp> childs = [];
 C 	bool load(act, ln, pos, lno) {
-C 		var p = pos;
+-C 		var p = pos;
+C 		var tok = [pos, ''];
 C 		comp = "${name}c";
 C 		line_no = lno;
 C 		me = act.ap_${name}l.length;
@@ -75,7 +76,8 @@ Its Element val_inc2
 
 C 	List <Kp> childs = [];
 C 	bool load(act, ln, pos, lno) {
-C 		var p = pos;
+-C 		var p = pos;
+C 		var tok = [pos, ''];
 C 		comp = "${name}c";
 C 		line_no = lno;
 C 		me = act.ap_${name}l.length;
@@ -106,7 +108,8 @@ Its Comp_parent childs
 
 C
 C 	bool load(act, ln, pos, lno) {
-C 		var p = pos;
+-C 		var p = pos;
+C 		var tok = [pos, ''];
 C 		comp = "${name}c";
 C 		line_no = lno;
 C 		me = act.ap_${name}l.length;
@@ -324,7 +327,7 @@ Break loop
 Actor parent_field_p Comp name = Actor
 ----------------------------------------------------------------
 
-C 		var parentp = act.ap_${name}l.size-1;
+C 		var parentp = act.ap_${name}l.length-1;
 C 		if (parentp < 0 ) { 
 C 			print(lno + " ${.struct.name}c has no ${name}c parent") ;
 C 			return false;
@@ -335,7 +338,7 @@ C 		act.ap_${name}l[ parentp ].childs.add( this );
 Actor parent_field_p Comp name != Actor
 ----------------------------------------------------------------
 
-C 		var parentp = act.ap_${name}l.size-1;
+C 		var parentp = act.ap_${name}l.length-1;
 C 		names["k_parent"] = parentp.toString();
 C 		if (parentp < 0 ) { 
 C 			print( lno + " ${.struct.name}c has no ${name}c parent" );
@@ -354,7 +357,8 @@ Its Element index_name
 Actor index_name Element name = name
 ----------------------------------------------------------------
 
-C 		act.index["${.index.name}c_" + names["name"]] = me;
+-C 		act.index["${.index.name}c_" + names["name"]] = me;
+C 		act.index["${.index.name}c_" + get_name(names, "name") ] = me;
 
 ----------------------------------------------------------------
 Actor index_act Comp find = Find
@@ -378,38 +382,49 @@ Its Element index_name_in
 Actor index_name_in Element name = name
 ----------------------------------------------------------------
 
-C 		var s = parentp.toString() + "_${.index.name}c_" + names["name"];
+-C 		var s = parentp.toString() + "_${.index.name}c_" + names["name"];
+C 		var s = parentp.toString() + "_${.index.name}c_" + get_name(names, "name");
 C 		act.index[s] = me;
 
 ----------------------------------------------------------------
 Actor ele_act . mw in C1,R1,F1,L1
 ----------------------------------------------------------------
 
-C 		p, k_${name}l = getw(ln, p);
+-C 		p, k_${name}l = getw(ln, p);
+C 		tok = getw(ln,tok[0]);
+C 		k_${name}l = tok[1];
 
 ----------------------------------------------------------------
 Actor ele_act . mw = V1
 ----------------------------------------------------------------
 
-C 		p, k_${name}l = getws(ln, p);
+-C 		p, k_${name}l = getws(ln, p);
+C 		tok = getws(ln,tok[0]);
+C 		k_${name}l = tok[1];
 
 ----------------------------------------------------------------
 Actor ele . mw in C1,R1,F1,L1,M1,N1,P1,Q1
 ----------------------------------------------------------------
 
-C 		p, names["${name}l"] = getw(ln, p);
+-C 		p, names["${name}l"] = getw(ln, p);
+C 		tok = getw(ln,tok[0]);
+C 		names["${name}l"] = tok[1];
 
 ----------------------------------------------------------------
 Actor ele . mw = V1
 ----------------------------------------------------------------
 
-C 		p, names["${name}l"] = getws(ln, p);
+-C 		p, names["${name}l"] = getws(ln, p);
+C 		tok = getws(ln,tok[0]);
+C 		names["${name}l"] = tok[1];
 
 ----------------------------------------------------------------
 Actor ele . mw in CS,RS,FS,LS,MS,NS,PS,QS
 ----------------------------------------------------------------
 
-C 		p, names["${name}l"] = getsw(ln, p);
+-C 		p, names["${name}l"] = getsw(ln, p);
+C 		tok = getsw(ln,tok[0]);
+C 		names["${name}l"] = tok[1];
 
 ----------------------------------------------------------------
 Actor childs Comp
