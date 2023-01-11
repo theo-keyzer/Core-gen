@@ -327,7 +327,7 @@ Break loop
 Actor parent_field_p Comp name = Actor
 ----------------------------------------------------------------
 
-C 		var parentp = act.ap_${name}l.length-1;
+C 		parentp = act.ap_${name}l.length-1;
 C 		if (parentp < 0 ) { 
 C 			print(lno + " ${.struct.name}c has no ${name}c parent") ;
 C 			return false;
@@ -338,7 +338,7 @@ C 		act.ap_${name}l[ parentp ].childs.add( this );
 Actor parent_field_p Comp name != Actor
 ----------------------------------------------------------------
 
-C 		var parentp = act.ap_${name}l.length-1;
+C 		parentp = act.ap_${name}l.length-1;
 C 		names["k_parent"] = parentp.toString();
 C 		if (parentp < 0 ) { 
 C 			print( lno + " ${.struct.name}c has no ${name}c parent" );

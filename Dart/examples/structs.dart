@@ -209,7 +209,7 @@ class KpElement extends Kp
 		names["pad"] = tok[1];
 		tok = getws(ln,tok[0]);
 		names["doc"] = tok[1];
-		var parentp = act.ap_comp.length-1;
+		parentp = act.ap_comp.length-1;
 		names["k_parent"] = parentp.toString();
 		if (parentp < 0 ) { 
 			print( lno + " Element has no Comp parent" );
@@ -304,7 +304,7 @@ class KpRef extends Kp
 		names["var"] = tok[1];
 		tok = getws(ln,tok[0]);
 		names["doc"] = tok[1];
-		var parentp = act.ap_comp.length-1;
+		parentp = act.ap_comp.length-1;
 		names["k_parent"] = parentp.toString();
 		if (parentp < 0 ) { 
 			print( lno + " Ref has no Comp parent" );
@@ -421,7 +421,7 @@ class KpC extends Kp
 		me = act.ap_c.length;
 		tok = getws(ln,tok[0]);
 		k_desc = tok[1];
-		var parentp = act.ap_actor.length-1;
+		parentp = act.ap_actor.length-1;
 		if (parentp < 0 ) { 
 			print(lno + " C has no Actor parent") ;
 			return false;

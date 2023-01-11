@@ -23,7 +23,7 @@ bool refs(act)
 		}
 	}
 	for(var st in act.ap_ref) {
-		res = fnd(act, st.parentp.to_s + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
+		res = fnd(act, st.parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
 		st.k_elementp = res[1];
 		st.names["k_elementp"] = st.k_elementp.toString();
 		if (res[0] == false) {
@@ -42,7 +42,7 @@ bool refs(act)
 List var_all(glob, va, lno) 
 {
 	if (va.size < 3) {
-		return( [false, "?" + va.size.to_s + "<3?" + lno + "?"] );
+		return( [false, "?" + va.size.toString() + "<3?" + lno + "?"] );
 	}
 	return( [false, "?" + va[0] + "?" + lno + "?"] );
 }

@@ -3,28 +3,55 @@ import 'dart:io';
 part 'structs.dart';
 part 'run.dart';
 
-void main(List<String> arguments) 
+class GlobT
 {
-  var act = new ActT();
-  var ln = 'Comp Element parent Comp FindIn  aa qq';
-  var tok = getw(ln,0);
-  print(tok);
-  load(act,tok[1], ln, tok[0], "1");
-  ln = 'Element name C1 NAME  * of element';
-  tok = getw(ln,0);
-  print(tok);
-  load(act,tok[1], ln, tok[0], "1");
-  print( act.ap_comp[0].names["k_comp"] );
-  print( act.ap_comp[0].names["doc"] );
-  print( act.index["Comp_Element"] );
+	bool load_errs = false;
+	bool run_errs = false;
+	ActT acts = new ActT();
+	ActT dats = new ActT();
 }
 
+void main(List<String> args) 
+{
+	print(args);
+	if (args.length < 2) {
+		return;
+	}
+	var glob = new GlobT();
+	glob.load_errs |= load_files(args[0], glob.acts);
+	glob.load_errs |= load_files(args[1], glob.dats);
+
+//  print( glob.dats.ap_comp[0].names["k_comp"] );
+//  print( glob.dats.ap_comp[0].names["doc"] );
+//  print( glob.dats.index["Comp_Element"] );
+//  print(false|true|false);
+}
+
+bool load_files(files, act)
+{
+	var errs = false;
+	var fa = files.split(",");
+	for(var file in fa) {
+		List<String> lns = new File(file).readAsLinesSync();
+		for(var i = 0; i < lns.length; i++) {
+			var lno = file + ":" + (i+1).toString();
+			var tok = getw(lns[i], 0);
+			if (tok[1].compareTo("E_O_F") == 0) {
+				break;
+			}
+			errs |= load(act, tok[1], lns[i], tok[0], lno);
+		}
+	}
+	errs |= refs(act);
+	return(errs);
+}
 
 List fnd(act, s, f, chk, lno)
 {
 	var v = act.index[s];
 	if (v != null) {
-		return( [ true, int.parse(v) ] );
+//		return( [ true, int.parse(v) ] );
+		return( [ true, v ] );
 	}
 	if (chk == "?") {
 		return( [true, -1] );
