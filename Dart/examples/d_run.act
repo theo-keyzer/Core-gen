@@ -41,7 +41,7 @@ C
 C int do_all(glob, va, lno)
 C {
 
--All Comp do_all
+All Comp do_all
 
 C 	print("?No all " + va[0] + " cmd " + "," + lno + "?");
 C 	return 0;
@@ -229,31 +229,32 @@ C 	end
 Actor do_all Comp parent != Actor
 ----------------------------------------------------------------
 
-C 	if va[0] == "${name}c" 
-C 		if va.size > 1 && va[1] != ""
-C 			if en = glob.dats.index["${name}c_" + va[1] ]?
-C 				if va.size > 2
-C 					return( glob.dats.ap_${name}l[en].do_its(glob, va[2..], lno) )
-C 				end
-C 				return( go_act(glob, glob.dats.ap_${name}l[en]) )
-C 			end
-C 			return(0)
-C 		end
-C 		glob.dats.ap_${name}l.each do |st|
-C 			if va.size > 2
-C 				ret = st.do_its(glob, va[2..], lno)
-C 				if ret != 0
-C 					return(ret)
-C 				end
-C 				next
-C 			end
-C 			ret = go_act(glob, st)
-C 			if ret != 0
-C 				return(ret)
-C 			end
-C 		end
-C 		return(0)
-C 	end
+C 	if (va[0].compareTo("${name}c") == 0) {
+C 		if (va.length > 1 && va[1].length > 0) {
+C 			var en = glob.dats.index["${name}c_" + va[1] ];
+C 			if (en != null) {
+C 				if (va.length > 2) {
+C 					return( glob.dats.ap_${name}l[en].do_its(glob, va.sublist(2), lno) );
+C 				}
+C 				return( go_act(glob, glob.dats.ap_${name}l[en]) );
+C 			}
+C 			return(0);
+C 		}
+C 		for(var st in glob.dats.ap_${name}l) {
+C 			if (va.length > 2) {
+C 				var ret = st.do_its(glob, va.sublist(2), lno);
+C 				if (ret != 0) {
+C 					return(ret);
+C 				}
+C 				continue;
+C 			}
+C 			var ret = go_act(glob, st);
+C 			if (ret != 0) {
+C 				return(ret);
+C 			}
+C 		}
+C 		return(0);
+C 	}
 
 
 ----------------------------------------------------------------
