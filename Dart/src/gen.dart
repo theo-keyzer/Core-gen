@@ -131,7 +131,8 @@ int go_cmds(glob, ca, winp)
 	for(var i = 0; i < a.childs.length; i++) {
 		var cmd = a.childs[i];
 		if (cmd is KpC) {
-			print(cmd.k_desc);
+			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
+			print(res[1]);
 		}
 		if (cmd is KpAll) {
 			new_act(glob, cmd.k_actor, "", "run:1", "", "", "");
@@ -154,6 +155,82 @@ int go_cmds(glob, ca, winp)
 	}
 	return(0);
 }
+
+List s_get_var(glob, winp, va, lno)
+{
+	if (va.length > 0) {
+		return( glob.wins[winp].dat.get_var(glob, va, lno) );
+	}
+	return( [false, "?"] );
+}
+
+List strs(glob, winp, ss, lno, pr_err, is_err)
+{
+	var s = ss.split('');
+	var ok = true;
+	var l = s.length;
+	var ret = "";
+	var pos = 0;
+	var dp = -3;
+	var bp = -3;
+	for(var i = 0; i < l; i++)
+	{
+		if (s[i] == '\$') {
+			if (i == dp+1) {
+//				if (i > 1 ) {
+					ret += s.sublist(pos,i).join();
+//				}
+				pos = i+1;
+				continue;
+			}
+			dp = i;
+		}
+		if (s[i] == '{') {
+			if (i == (dp+1)) {
+				if (i > 1) {
+					ret += s.sublist(pos,i-1).join();
+				}
+				pos = i;
+				bp = i;
+			}
+		}
+		if (s[i] == '}') {
+			if (bp > 0) {
+				var va = s.sublist(bp+1,i).join().split(".");
+//				r,v = s_get_var(glob, winp, va, lno );
+				var res = s_get_var(glob, winp, va, lno );
+				if (res[0] == false) {
+					ok = false;
+					if (pr_err == true) {
+						print(res[1]);
+					}
+					if (is_err) {
+						glob.run_errs = true;
+					}
+				}
+				if (l > i+1) {
+					i += 1;
+					if (res[0] != false) {
+						if (s[i] == '\$') {
+//							sr,v = strs(glob, winp, v, lno, pr_err, is_err);
+						} else {
+//							v = tocase(v, s[i]);
+						}
+					}
+				}
+				ret += res[1];
+				pos = i+1;
+				dp = -3;
+				bp = -3;
+			}
+		}
+	}
+	if (pos < l) {
+		ret += s.sublist(pos,l).join();
+	}
+	return( [ok, ret] );
+}
+
 
 bool chk( eq, v, ss )
 {
