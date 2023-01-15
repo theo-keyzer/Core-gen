@@ -156,22 +156,24 @@ C 		}
 Actor refs_ele2 . mw in M1,MS
 ----------------------------------------------------------------
 
-C 		tp = -1
-C 		ap = st.k_${Ref3_element.element2.name}lp
-C 		if ap >= 0
-C 			tp = act.ap_${Ref3_element.comp_ref.name}l[ap].k_${Ref3_element.element3.name}lp
-C 		end
-C 		if tp >= 0
-C 			r, st.k_${name}lp = fnd(act, tp.toString() + "_${Ref3_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref3_element.opt} ", st.line_no )
-C 			if r == false
+C 		{
+C 		var tp = -1;
+C 		var ap = st.k_${Ref3_element.element2.name}lp;
+C 		if (ap >= 0) {
+C 			tp = act.ap_${Ref3_element.comp_ref.name}l[ap].k_${Ref3_element.element3.name}lp;
+C 		}
+C 		if (tp >= 0) {
+C 			res = fnd(act, tp.toString() + "_${Ref3_element.comp.name}c_" + get_name(st.names, "${name}l") , get_name(st.names, "${name}l"),  "${Ref3_element.opt} ", st.line_no );
+C 			st.k_${name}lp = res[1];
+C 			if (res[0] == false) {
 C 				errs = true;
-C 			end
-C 		elsif "${Ref3_element.opt} " != "?" && st.names["${name}l"] != "${Ref3_element.opt} "
-C 			puts "ref error " + st.line_no
+C 			}
+C 		} else if ( "${Ref3_element.opt} ".compareTo( "?" ) != 0 && get_name(st.names, "${name}l").compareTo( "${Ref3_element.opt} " ) != 0 ) {
+C 			print( "ref error " + st.line_no);
 C 			errs = true;
-C 		end
+C 		}
 C 		st.names["k_${name}lp"] = st.k_${name}lp.toString();
-
+C 		}
 ----------------------------------------------------------------
 Actor refs_ele . mw in F1,FS
 ----------------------------------------------------------------
@@ -188,31 +190,35 @@ C 		}
 Actor refs_ele2 . mw in L1,LS
 ----------------------------------------------------------------
 
-C 		r, st.k_${name}lp = fnd(act, st.k_${Ref2_element.element2.name}lp.toString() + "_${Ref2_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref2_element.opt} ", st.line_no )
+C 		res = fnd(act, st.k_${Ref2_element.element2.name}lp.toString() + "_${Ref2_element.comp.name}c_" + get_name(st.names, "${name}l") , get_name(st.names, "${name}l"),  "${Ref2_element.opt} ", st.line_no );
+C 		st.k_${name}lp = res[1];
 C 		st.names["k_${name}lp"] = st.k_${name}lp.toString();
-C 		if r == false
+C 		if (res[0] == false) {
 C 			errs = true;
-C 		end
+C 		}
 
 ----------------------------------------------------------------
 Actor refs_ele2 . mw in Q1,QS
 ----------------------------------------------------------------
 
-C 		tp = -1
-C 		ap = st.parentp
-C 		if ap >= 0
-C 			tp = act.ap_${Refq_element.comp_ref.name}l[ap].k_${Refq_element.element2.name}lp
-C 		end
-C 		if tp >= 0
-C 			r, st.k_${name}lp = fnd(act, tp.toString() + "_${Refq_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Refq_element.opt} ", st.line_no )
-C 			if r == false
+C 		{
+C 		var tp = -1;
+C 		var ap = st.parentp;
+C 		if (ap >= 0) {
+C 			tp = act.ap_${Refq_element.comp_ref.name}l[ap].k_${Refq_element.element2.name}lp;
+C 		}
+C 		if (tp >= 0) {
+C 			res = fnd(act, tp.toString() + "_${Refq_element.comp.name}c_" + get_name(st.names, "${name}l") , get_name(st.names, "${name}l"),  "${Refq_element.opt} ", st.line_no );
+C 			st.k_${name}lp = res[1];
+C 			if (res[0] == false) {
 C 				errs = true;
-C 			end
-C 		elsif "${Refq_element.opt} " != "?" && st.names["${name}l"] != "${Refq_element.opt} "
-C 			puts "ref error " + st.line_no
+C 			}
+C 		} else if ("${Refq_element.opt} ".compareTo( "?" ) != 0 && get_name(st.names, "${name}l").compareTo( "${Refq_element.opt} ") != 0) {
+C 			print( "ref error " + st.line_no );
 C 			errs = true;
-C 		end
+C 		}
 C 		st.names["k_${name}lp"] = st.k_${name}lp.toString();
+C 		}
 
 ----------------------------------------------------------------
 Actor var_all Comp find = Find
@@ -262,3 +268,4 @@ Actor do_all_ele Element name = name
 ----------------------------------------------------------------
 
 C 			if b != "" { if st.kname != b { continue; } }
+

@@ -589,7 +589,7 @@ C 						return(ret);
 C 					}
 C 				}
 C 			}
-C 			return(0)
+C 			return(0);
 C 		}
 
 ----------------------------------------------------------------
@@ -752,7 +752,8 @@ Actor other_var2 Ref2
 ----------------------------------------------------------------
 
 C 		if (va[0].compareTo("${parent.name}c_${element.name}l") == 0 && va.length > 1) { // ${} 
-C 			glob.dats.ap_${parent.name}l.each do |st| {
+-C 			glob.dats.ap_${parent.name}l.each do |st| {
+C 			for (var st in glob.dats.ap_${parent.name}l) {
 C 				if (st.k_${element.name}lp == me) {
 C 					return (st.get_var(glob, va.sublist(1), lno) );
 C 				}
@@ -764,7 +765,8 @@ Actor other_var3 Ref3
 ----------------------------------------------------------------
 
 C 		if (va[0].compareTo("${parent.name}c_${element.name}l") == 0 && va.length > 1) { // ${} 
-C 			glob.dats.ap_${parent.name}l.each do |st| {
+-C 			glob.dats.ap_${parent.name}l.each do |st| {
+C 			for (var st in glob.dats.ap_${parent.name}l) {
 C 				if (st.k_${element.name}lp == me) {
 C 					return (st.get_var(glob, va.sublist(1), lno) );
 C 				}
