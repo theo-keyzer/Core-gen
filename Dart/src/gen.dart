@@ -103,9 +103,14 @@ int go_act(glob, dat)
 		}
 		var act = glob.acts.ap_actor[i];
 		if (act.k_attr.compareTo("E_O_L") != 0) {
-			var v = dat.get_var(glob, act.k_attr, act.line_no);
+			var va = act.k_attr.split(".");
+			var v = dat.get_var(glob, va, act.line_no);
 			if (chk( act.k_eq, v[1], act.k_value) == false ) {
 				continue;
+			}
+			if (act.k_cc.compareTo( "" ) != 0) {
+				var res = strs(glob, winp, act.k_cc, act.line_no, true,true);
+				print(res[1]);
 			}
 		}
 		prev = true;
@@ -141,7 +146,13 @@ int go_cmds(glob, ca, winp)
 			if (ret > 1) {
 				return(ret);
 			}
-//			go_act(glob, new Kp() );
+		}
+		if (cmd is KpDu) {
+			new_act(glob, cmd.k_actor, "", "run:1", "", "", "");
+			var ret = go_act(glob,glob.wins[winp].dat);
+			if (ret > 1) {
+				return(ret);
+			}
 		}
 		if (cmd is KpIts) {
 			new_act(glob, cmd.k_actor, "", "run:1", "", "", "");
@@ -150,7 +161,17 @@ int go_cmds(glob, ca, winp)
 			if (ret > 1) {
 				return(ret);
 			}
-//			go_act(glob, new Kp() );
+		}
+		if (cmd is KpBreak) {
+			if ( cmd.k_what.compareTo( "E_O_L" ) == 0 || cmd.k_what.compareTo( "actor" ) == 0 ) {
+				return(2);
+			}
+			if (cmd.k_what.compareTo( "loop" ) == 0) {
+				return(1);
+			}
+			if (cmd.k_what.compareTo( "cmd" ) == 0) {
+				break;
+			}
 		}
 	}
 	return(0);
@@ -158,8 +179,16 @@ int go_cmds(glob, ca, winp)
 
 List s_get_var(glob, winp, va, lno)
 {
-	if (va.length > 0) {
+	if (va[0].length > 0) {
 		return( glob.wins[winp].dat.get_var(glob, va, lno) );
+	}
+	if (va.length == 1) {
+		return( [true, glob.wins[winp].dat.line_no + ", " + lno] );
+	}
+	for(var i = winp-1; i >= 0; i--) {
+		if ( glob.wins[i].name.compareTo( va[1] ) == 0 ) {
+			return( s_get_var(glob, i , va.sublist(2), lno) );
+		}
 	}
 	return( [false, "?"] );
 }
@@ -214,7 +243,7 @@ List strs(glob, winp, ss, lno, pr_err, is_err)
 						if (s[i] == '\$') {
 //							sr,v = strs(glob, winp, v, lno, pr_err, is_err);
 						} else {
-//							v = tocase(v, s[i]);
+							res[1] = tocase(res[1], s[i]);
 						}
 					}
 				}
@@ -231,6 +260,19 @@ List strs(glob, winp, ss, lno, pr_err, is_err)
 	return( [ok, ret] );
 }
 
+String tocase(s, c)
+{
+	if (c == 'u') {
+		return( s.toUpperCase() );
+	}
+	if (c == 'd' || c == 'l') {
+		return( s.toLowerCase() );
+	}
+	if (c == 'c') {
+		return( s[0].toUpperCase() + s.substring(1) );
+	}
+	return(s);
+}
 
 bool chk( eq, v, ss )
 {
@@ -242,6 +284,12 @@ bool chk( eq, v, ss )
 	if (eq.compareTo('!=') == 0)
 	{
 		if(v.compareTo(ss) != 0) { return(true); }
+		return(false);
+	}
+	if (eq.compareTo('in') == 0)
+	{
+		var s = ss.split(",");
+		if( s.contains(v) ) { return(true); }
 		return(false);
 	}
 	return(false);
