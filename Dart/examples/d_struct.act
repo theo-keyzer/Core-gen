@@ -175,14 +175,15 @@ Actor nested Element mw = N1
 ----------------------------------------------------------------
 
 C 		if (va[0].compareTo("${name}l") == 0 && va.length > 1 && parentp >= 0) { // ${}
-C 			pos = 0;
-C 			if v = names[ "${name}l" ]?
-C 				pos = v.to_i;
-C 			end
+C 			var pos = 0;
+C 			var v = names[ "${name}l" ];
+C 			if( v != null) {
+C 				pos = int.parse(v);
+C 			}
 C 			if (va[1].compareTo("down") == 0 && pos > 0) {
-C 				pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
-C 				isin = false;
-C 				pst.its${.struct.name}l.each do |st| {
+C 				var pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
+C 				var isin = false;
+C 				for(var st in pst.its${.struct.name}l) {
 C 					if (st.me == me) {
 C 						isin = true;
 C 						continue;
@@ -190,10 +191,11 @@ C 					}
 C 					if (isin == false) {
 C 						continue;
 C 					}
-C 					pos2 = 0
-C 					if v = st.names[ "${name}l" ]?
-C 						pos2 = v.to_i;
-C 					end
+C 					var pos2 = 0;
+C 					var v2 = st.names[ "${name}l" ];
+C 					if(v2 != null) {
+C 						pos2 = int.parse(v2);
+C 					}
 C 					if (pos2 == 0) {
 C 						continue;
 C 					}
@@ -202,7 +204,7 @@ C 						break;
 C 					}
 C 					if (pos2 == pos) {
 C 						if (va.length > 2) {
-C 							return( st.do_its(glob, va[2..], lno) );
+C 							return( st.do_its(glob, va.sublist(2), lno) );
 C 						}
 C 						return( go_act(glob, st) );
 C 					}
@@ -210,14 +212,15 @@ C 				}
 C 				return(0);
 C 			}
 C 			if (va[1].compareTo("up") == 0 && pos > 0) {
-C 				pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
-C 				isin = false;
-C 				prev = 0;
-C 				pst.its${.struct.name}l.each do |st| {
-C 					pos2 = 0;
-C 					if v = st.names[ "${name}l" ]?
-C 						pos2 = v.to_i;
-C 					end
+C 				var pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
+C 				var isin = false;
+C 				var prev = 0;
+C 				for(var st in pst.its${.struct.name}l) {
+C 					var pos2 = 0;
+C 					var v2 = st.names[ "${name}l" ];
+C 					if(v2 != null) {
+C 						pos2 = int.parse(v2);
+C 					}
 C 					if (pos2 == 0) {
 C 						continue;
 C 					}
@@ -231,7 +234,7 @@ C 						isin = false;
 C 					}
 C 					if (st.me == me && isin == true) {
 C 						if (va.length > 2) {
-C 							return( glob.dats.ap_${.struct.name}l[prev].do_its(glob, va[2..], lno) );
+C 							return( glob.dats.ap_${.struct.name}l[prev].do_its(glob, va.sublist(2), lno) );
 C 						}
 C 						return( go_act(glob, glob.dats.ap_${.struct.name}l[prev] ) );
 C 					}
@@ -239,14 +242,15 @@ C 				}
 C 				return(0);
 C 			}
 C 			if (va[1].compareTo("left") == 0 && pos > 0) {
-C 				pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
-C 				isin = false;
-C 				prev = 0;
-C 				pst.its${.struct.name}l.each do |st| {
-C 					pos2 = 0;
-C 					if v = st.names[ "${name}l" ]?
-C 						pos2 = v.to_i;
-C 					end
+C 				var pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
+C 				var isin = false;
+C 				var prev = 0;
+C 				for(var st in pst.its${.struct.name}l) {
+C 					var pos2 = 0;
+C 					var v2 = st.names[ "${name}l" ];
+C 					if(v2 != null) {
+C 						pos2 = int.parse(v2);
+C 					}
 C 					if (pos2 == 0) {
 C 						continue;
 C 					}
@@ -257,17 +261,17 @@ C 						continue;
 C 					}
 C 					if (st.me == me && isin == true) {
 C 						if (va.length > 2) {
-C 							return( glob.dats.ap_${.struct.name}l[prev].do_its(glob, va[2..], lno) );
+C 							return( glob.dats.ap_${.struct.name}l[prev].do_its(glob, va.sublist(2), lno) );
 C 						}
 C 						return( go_act(glob, glob.dats.ap_${.struct.name}l[prev] ) );
 C 					}
 C 				}
-C 				return(0)
+C 				return(0);
 C 			}
 C 			if (va[1].compareTo("right") == 0 && pos > 0) {
-C 				pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
-C 				isin = false;
-C 				pst.its${.struct.name}l.each do |st| {
+C 				var pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
+C 				var isin = false;
+C 				for(var st in pst.its${.struct.name}l) {
 C 					if (st.me == me) {
 C 						isin = true;
 C 						continue;
@@ -275,11 +279,12 @@ C 					}
 C 					if (isin == false) {
 C 						continue;
 C 					}
-C 					pos2 = 0
-C 					if v = st.names[ "${name}l" ]?
-C 						pos2 = v.to_i;
-C 					end
-C 					if (pos2 == 0)
+C 					var pos2 = 0;
+C 					var v2 = st.names[ "${name}l" ];
+C 					if(v2 != null) {
+C 						pos2 = int.parse(v2);
+C 					}
+C 					if (pos2 == 0) {
 C 						continue;
 C 					}
 C 					if (pos2 <= pos) {
@@ -287,19 +292,19 @@ C 						break;
 C 					}
 C 					if (pos2 == (pos+1)) {
 C 						if (va.length > 2) {
-C 							var ret = st.do_its(glob, va[2..], lno);
+C 							var ret = st.do_its(glob, va.sublist(2), lno);
 C 							if (ret != 0) {
 C 								return(ret);
 C 							}
 C 							continue;
 C 						}
 C 						var ret = go_act(glob, st);
-C 						if (ret != 0)
+C 						if (ret != 0) {
 C 							return(ret);
 C 						}
 C 					}
 C 				}
-C 				return(0)
+C 				return(0);
 C 			}
 C 		}
 

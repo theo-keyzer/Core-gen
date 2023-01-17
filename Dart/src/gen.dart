@@ -139,6 +139,10 @@ int go_cmds(glob, ca, winp)
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
 			print(res[1]);
 		}
+		if (cmd is KpCs) {
+			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
+			print(res[1]);
+		}
 		if (cmd is KpAll) {
 			new_act(glob, cmd.k_actor, "", "run:1", "", "", "");
 			var va = cmd.k_what.split(".");
@@ -179,6 +183,15 @@ int go_cmds(glob, ca, winp)
 
 List s_get_var(glob, winp, va, lno)
 {
+	if (va.length == 1 && va[0].length > 0 ) {
+		if (va[0][0] == ' ' || va[0][0] == '	') {
+			var ret = "";
+			for(var i = 0; i < winp; i++) {
+				ret += va[0];
+			}
+			return( [true, ret] );
+		}
+	}
 	if (va[0].length > 0) {
 		return( glob.wins[winp].dat.get_var(glob, va, lno) );
 	}
@@ -190,7 +203,8 @@ List s_get_var(glob, winp, va, lno)
 			return( s_get_var(glob, i , va.sublist(2), lno) );
 		}
 	}
-	return( [false, "?"] );
+	return( var_all(glob, va.sublist(1), lno) );
+//	return( [false, "?"] );
 }
 
 List strs(glob, winp, ss, lno, pr_err, is_err)
@@ -292,6 +306,18 @@ bool chk( eq, v, ss )
 		if( s.contains(v) ) { return(true); }
 		return(false);
 	}
+	if (eq.compareTo('!in') == 0)
+	{
+		var s = ss.split(",");
+		if( s.contains(v) ) { return(false); }
+		return(true);
+	}
+	if (eq.compareTo('has') == 0)
+	{
+		var vv = v.split(",");
+		if( vv.contains(ss) ) { return(true); }
+		return(false);
+	}
 	return(false);
 }
 
@@ -361,4 +387,44 @@ List getw(line, pos)
 	return( [to+1, ln.sublist(from,to+1).join() ] );
 }
 
+List getsw(line, pos)
+{
+	var ln = line.split('');
+	var l = ln.length;
+	if (pos+1 > l) {
+		return( [pos, "E_O_L"] );
+	}
+	var from = pos;
+	var i = pos;
+	while (i < l) {
+		from = i + 1;
+		if (ln[i] == ' ' || ln[i] == '\t') {
+			i = i+1;
+			continue;
+		}
+		from = i;
+		break;
+	}
+	if (from+1 > l) {
+		return( [pos, "E_O_L"] );
+	}
+	var to = from;
+	i = from;
+	var is_s = false;	
+	while (i < l) {
+		if (ln[i] == ' ' || ln[i] == '\t') {
+			break;
+		}
+		if (ln[i] == ':') {
+			is_s = true;
+			break;
+		}
+		to = i;
+		i = i + 1;
+	}
+	if (is_s == true) {
+		return( [to+2, ln.sublist(from,to+1).join() ] );
+	}
+	return( [to+1, ln.sublist(from,to+1).join() ] );
+}
 
