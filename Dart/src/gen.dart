@@ -1,10 +1,9 @@
-library gen;
-import 'dart:io';
-part 'structs.dart';
-part 'run.dart';
+part of gen;
+
 
 class GlobT
 {
+	final buffer = StringBuffer();
 	bool load_errs = false;
 	bool run_errs = false;
 	ActT acts = new ActT();
@@ -25,53 +24,17 @@ class WinT {
 	int cur_act = 0;
 }
 
-void main(List<String> args) 
-{
-	if (args.length < 2) {
-		print(args);
-		return;
-	}
-	var glob = new GlobT();
-	glob.load_errs |= load_files(args[0], glob.acts);
-	glob.load_errs |= load_files(args[1], glob.dats);
-	if (glob.acts.ap_actor.length > 0) {
-//		kp = KpExtra.new
-		var kp = new Kp();
-		for(var i = 0; i < args.length; i++) {
-			kp.names[ i.toString() ] = args[i];
-		}
-		new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1", "", "", "");
-		go_act(glob, kp);
-	}
-	if (glob.load_errs == true || glob.run_errs == true) {
-//		puts "Load error = " + glob.load_errs.to_s
-//		puts "Run error = " + glob.run_errs.to_s
-		print("Errors");
-		exit(1);
-	}
-
-//  print( glob.dats.ap_comp[0].names["k_comp"] );
-//  print( glob.dats.ap_comp[0].names["doc"] );
-//  print( glob.dats.index["Comp_Element"] );
-//  print(false|true|false);
-}
-
-bool load_files(files, act)
+bool load_data(lns, act, file)
 {
 	var errs = false;
-	var fa = files.split(",");
-	for(var file in fa) {
-		List<String> lns = new File(file).readAsLinesSync();
-		for(var i = 0; i < lns.length; i++) {
-			var lno = file + ":" + (i+1).toString();
-			var tok = getw(lns[i], 0);
-			if (tok[1].compareTo("E_O_F") == 0) {
-				break;
-			}
-			errs |= load(act, tok[1], lns[i], tok[0], lno);
+	for(var i = 0; i < lns.length; i++) {
+		var lno = file + ":" + (i+1).toString();
+		var tok = getw(lns[i], 0);
+		if (tok[1].compareTo("E_O_F") == 0) {
+			break;
 		}
+		errs |= load(act, tok[1], lns[i], tok[0], lno);
 	}
-	errs |= refs(act);
 	return(errs);
 }
 
@@ -110,7 +73,8 @@ int go_act(glob, dat)
 			}
 			if (act.k_cc.compareTo( "" ) != 0) {
 				var res = strs(glob, winp, act.k_cc, act.line_no, true,true);
-				print(res[1]);
+				glob.buffer.writeln(res[1]);
+//				print(res[1]);
 			}
 		}
 		prev = true;
@@ -137,11 +101,13 @@ int go_cmds(glob, ca, winp)
 		var cmd = a.childs[i];
 		if (cmd is KpC) {
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			print(res[1]);
+			glob.buffer.writeln(res[1]);
+//			print(res[1]);
 		}
 		if (cmd is KpCs) {
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			print(res[1]);
+			glob.buffer.write(res[1]);
+//			print(res[1]);
 		}
 		if (cmd is KpAll) {
 			new_act(glob, cmd.k_actor, "", "run:1", "", "", "");
