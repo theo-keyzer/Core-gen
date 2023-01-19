@@ -58,6 +58,15 @@ int go_act(glob, dat)
 	var winp = glob.winp+1;
 	glob.winp = winp;
 	glob.wins[winp].dat = dat;
+	var attr = glob.wins[winp].attr;
+	if ( attr.compareTo("E_O_L") != 0 && attr.compareTo(".") != 0 && attr.compareTo("") != 0) {
+		var va = attr.split(".");
+		var v = dat.get_var(glob, va, glob.wins[winp].flno);
+		if (chk( glob.wins[winp].eq, v[1], glob.wins[winp].value) == false ) {
+			glob.winp = winp-1;
+			return(0);
+		}
+	}
 	var name = glob.wins[winp].name;
 	var prev = false;
 	for(var i = 0; i < glob.acts.ap_actor.length; i++) {
@@ -74,7 +83,6 @@ int go_act(glob, dat)
 			if (act.k_cc.compareTo( "" ) != 0) {
 				var res = strs(glob, winp, act.k_cc, act.line_no, true,true);
 				glob.buffer.writeln(res[1]);
-//				print(res[1]);
 			}
 		}
 		prev = true;
@@ -102,15 +110,13 @@ int go_cmds(glob, ca, winp)
 		if (cmd is KpC) {
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
 			glob.buffer.writeln(res[1]);
-//			print(res[1]);
 		}
 		if (cmd is KpCs) {
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
 			glob.buffer.write(res[1]);
-//			print(res[1]);
 		}
 		if (cmd is KpAll) {
-			new_act(glob, cmd.k_actor, "", "run:1", "", "", "");
+			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
 			var va = cmd.k_what.split(".");
 			var ret = do_all(glob, va, cmd.line_no);
 			if (ret > 1) {
@@ -118,14 +124,14 @@ int go_cmds(glob, ca, winp)
 			}
 		}
 		if (cmd is KpDu) {
-			new_act(glob, cmd.k_actor, "", "run:1", "", "", "");
+			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
 			var ret = go_act(glob,glob.wins[winp].dat);
 			if (ret > 1) {
 				return(ret);
 			}
 		}
 		if (cmd is KpIts) {
-			new_act(glob, cmd.k_actor, "", "run:1", "", "", "");
+			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
 			var va = cmd.k_what.split(".");
 			var ret = glob.wins[winp].dat.do_its(glob, va, cmd.line_no);
 			if (ret > 1) {
@@ -163,6 +169,33 @@ List s_get_var(glob, winp, va, lno)
 	}
 	if (va.length == 1) {
 		return( [true, glob.wins[winp].dat.line_no + ", " + lno] );
+	}
+	if (va[1].compareTo( "arg" ) == 0) {
+		return( [true, glob.wins[winp].arg] );
+	}
+	if (va[1].compareTo( "depth" ) == 0) {
+		return( [true, winp.to_s] );
+	}
+	if (va[1].compareTo( "+" ) == 0) {
+		return( [true, (glob.wins[winp].cnt+1).toString() ] );
+	}
+	if (va[1].compareTo( "-" ) == 0) {
+		return( [true, (glob.wins[winp].cnt).toString() ] );
+	}
+	if (va.length < 3) {
+		return( [false, "?" + va[1] + "?" + glob.wins[winp].dat.line_no + ", " + lno] );
+	}
+	if (va[1].compareTo( "0" ) == 0) {
+		if (glob.wins[winp].cnt != 0) {
+			return( [true, ""] );
+		}
+		return( [true, va[2]] );
+	}
+	if (va[1].compareTo( "1" ) == 0) {
+		if (glob.wins[winp].cnt == 0) {
+			return( [true, ""]);
+		}
+		return( [true,  va[2]] );
 	}
 	for(var i = winp-1; i >= 0; i--) {
 		if ( glob.wins[i].name.compareTo( va[1] ) == 0 ) {
@@ -283,6 +316,14 @@ bool chk( eq, v, ss )
 		var vv = v.split(",");
 		if( vv.contains(ss) ) { return(true); }
 		return(false);
+	}
+	if (eq.compareTo('regex') == 0)
+	{
+		var rx = new RegExp(ss);
+		if (rx.hasMatch(v) ) {
+			return( true );
+		}
+		return( false );
 	}
 	return(false);
 }
