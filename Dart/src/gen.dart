@@ -22,6 +22,11 @@ class WinT {
 	String arg = "";
 	String flno = "";
 	int cur_act = 0;
+	int cur_pos = 0;
+	int on_pos = 0;
+	bool is_on = false;
+	bool is_trig = false;
+	bool is_prev = false;
 }
 
 bool load_data(lns, act, file)
@@ -51,6 +56,14 @@ void new_act(glob, actn, arg, flno, attr, eq, value)
 	glob.wins[winp].attr = attr;
 	glob.wins[winp].eq = eq;
 	glob.wins[winp].value = value;
+	if (winp == 0) {
+		return;
+	}
+    	if (glob.wins[winp-1].is_on || glob.wins[winp-1].is_prev) {
+        	if (glob.wins[winp-1].is_trig == false) { 
+			glob.wins[winp].is_prev = true;
+        	}
+	}
 }
 
 int go_act(glob, dat)
@@ -76,7 +89,8 @@ int go_act(glob, dat)
 		var act = glob.acts.ap_actor[i];
 		if (act.k_attr.compareTo("E_O_L") != 0) {
 			var va = act.k_attr.split(".");
-			var v = dat.get_var(glob, va, act.line_no);
+//			rv,v = s_get_var(glob, winp, va, act.line_no )
+			var v = s_get_var(glob, winp, va, act.line_no);
 			if (chk( act.k_eq, v[1], act.k_value) == false ) {
 				continue;
 			}
@@ -104,34 +118,49 @@ int go_act(glob, dat)
 
 int go_cmds(glob, ca, winp)
 {
+    	glob.wins[winp].is_on   = false;
+    	glob.wins[winp].is_trig = false;
 	var a = glob.acts.ap_actor[ca];
 	for(var i = 0; i < a.childs.length; i++) {
+		glob.wins[winp].cur_pos = i;
 		var cmd = a.childs[i];
 		if (cmd is KpC) {
+			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) {
+				continue;
+			}
+			trig(glob,winp);
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
 			glob.buffer.writeln(res[1]);
 		}
 		if (cmd is KpCs) {
+			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) {
+				continue;
+			}
+			trig(glob,winp);
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
 			glob.buffer.write(res[1]);
 		}
 		if (cmd is KpAll) {
-			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
-			var va = cmd.k_what.split(".");
+			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
+			var what = strs(glob, winp, cmd.k_what, cmd.line_no, true,true );
+			var va = what[1].split(".");
 			var ret = do_all(glob, va, cmd.line_no);
 			if (ret > 1) {
 				return(ret);
 			}
 		}
 		if (cmd is KpDu) {
-			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
+			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
 			var ret = go_act(glob,glob.wins[winp].dat);
 			if (ret > 1) {
 				return(ret);
 			}
 		}
 		if (cmd is KpIts) {
-			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
+			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
 			var va = cmd.k_what.split(".");
 			var ret = glob.wins[winp].dat.do_its(glob, va, cmd.line_no);
 			if (ret > 1) {
@@ -149,8 +178,67 @@ int go_cmds(glob, ca, winp)
 				break;
 			}
 		}
+		if (cmd is KpVar) {
+			var res = strs(glob, winp, cmd.k_value, cmd.line_no, true,true );
+			var va = cmd.k_attr.split(".");
+			if (va[0] == "" && va.length > 2) {
+				for(var i = winp-1; i >= 0; i--) {
+					if ( glob.wins[i].name.compareTo( va[1] ) == 0 ) {
+						glob.wins[i].dat.names[ va[2] ] = res[1];
+						break;
+					}
+				}
+				continue;
+			}
+			glob.wins[winp].dat.names[cmd.k_attr] = res[1];
+		}
+		if (cmd is KpOut) {
+			if (cmd.k_what.compareTo( "delay" ) == 0) {
+				glob.wins[winp].is_on = true;
+				glob.wins[winp].on_pos = i;
+			}
+			if (cmd.k_what.compareTo( "normal" ) == 0) {
+				glob.wins[winp].is_on = false;
+				glob.wins[winp].is_trig = false;
+			}
+		}
 	}
 	return(0);
+}
+
+void trig(glob, winp)
+{
+	if (glob.wins[winp].is_prev == false || winp == 0) {
+		return;
+	}
+	glob.wins[winp].is_prev = false;
+	var prev = winp - 1;
+    	if (glob.wins[ prev ].is_on == false && glob.wins[ prev ].is_prev == false) {
+		return;
+	}
+	if (glob.wins[ prev ].is_trig == true ) {
+		return;
+	}
+	glob.wins[ prev ].is_trig = true;
+	
+	re_go_cmds(glob, prev );
+}
+
+void re_go_cmds(glob,winp)
+{
+	trig(glob,winp);
+	var a = glob.acts.ap_actor[ glob.wins[winp].cur_act ];
+	for(var i = glob.wins[winp].on_pos; i < glob.wins[winp].cur_pos; i++) {
+		var cmd = a.childs[i];
+		if (cmd is KpC) {
+			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
+			glob.buffer.writeln(res[1]);
+		}
+		if (cmd is KpCs) {
+			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
+			glob.buffer.write(res[1]);
+		}
+	}
 }
 
 List s_get_var(glob, winp, va, lno)
@@ -254,7 +342,7 @@ List strs(glob, winp, ss, lno, pr_err, is_err)
 					i += 1;
 					if (res[0] != false) {
 						if (s[i] == '\$') {
-//							sr,v = strs(glob, winp, v, lno, pr_err, is_err);
+							res = strs(glob, winp, res[1], lno, pr_err, is_err);
 						} else {
 							res[1] = tocase(res[1], s[i]);
 						}
