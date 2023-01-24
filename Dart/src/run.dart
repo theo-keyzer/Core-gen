@@ -31,6 +31,9 @@ class ActT
 	List<KpCollect> ap_collect = [];
 	List<KpHash> ap_hash = [];
 	List<KpGroup> ap_group = [];
+	List<KpAdd> ap_add = [];
+	List<KpClear> ap_clear = [];
+	List<KpCheck> ap_check = [];
 	List<KpJson> ap_json = [];
 	List<KpYaml> ap_yaml = [];
 	List<KpXml> ap_xml = [];
@@ -1591,6 +1594,30 @@ bool load(act, tok, ln, pos, lno)
 			errs = true;
 		}
 		act.ap_group.add( comp );
+	}
+	if ( tok.compareTo( "Add" ) == 0 ) {
+		var comp = new KpAdd();
+		var r = comp.load(act, ln, pos, lno);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_add.add( comp );
+	}
+	if ( tok.compareTo( "Clear" ) == 0 ) {
+		var comp = new KpClear();
+		var r = comp.load(act, ln, pos, lno);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_clear.add( comp );
+	}
+	if ( tok.compareTo( "Check" ) == 0 ) {
+		var comp = new KpCheck();
+		var r = comp.load(act, ln, pos, lno);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_check.add( comp );
 	}
 	if ( tok.compareTo( "Json" ) == 0 ) {
 		var comp = new KpJson();

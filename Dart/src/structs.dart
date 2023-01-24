@@ -1811,6 +1811,99 @@ class KpGroup extends Kp
 	}
 }
 
+class KpAdd extends Kp 
+{
+	int parentp = -1;
+	String k_pocket = "";
+	String k_what = "";
+	String k_item = "";
+	String k_data = "";
+	List <Kp> childs = [];
+	bool load(act, ln, pos, lno) {
+		var tok = [pos, ''];
+		comp = "Add";
+		line_no = lno;
+		me = act.ap_add.length;
+		tok = getw(ln,tok[0]);
+		k_pocket = tok[1];
+		tok = getw(ln,tok[0]);
+		k_what = tok[1];
+		tok = getw(ln,tok[0]);
+		k_item = tok[1];
+		tok = getws(ln,tok[0]);
+		k_data = tok[1];
+		parentp = act.ap_actor.length-1;
+		if (parentp < 0 ) { 
+			print(lno + " Add has no Actor parent") ;
+			return false;
+		}
+		act.ap_actor[ parentp ].childs.add( this );
+		return true;
+	}
+}
+
+class KpClear extends Kp 
+{
+	int parentp = -1;
+	String k_pocket = "";
+	String k_what = "";
+	String k_item = "";
+	String k_data = "";
+	List <Kp> childs = [];
+	bool load(act, ln, pos, lno) {
+		var tok = [pos, ''];
+		comp = "Clear";
+		line_no = lno;
+		me = act.ap_clear.length;
+		tok = getw(ln,tok[0]);
+		k_pocket = tok[1];
+		tok = getw(ln,tok[0]);
+		k_what = tok[1];
+		tok = getw(ln,tok[0]);
+		k_item = tok[1];
+		tok = getws(ln,tok[0]);
+		k_data = tok[1];
+		parentp = act.ap_actor.length-1;
+		if (parentp < 0 ) { 
+			print(lno + " Clear has no Actor parent") ;
+			return false;
+		}
+		act.ap_actor[ parentp ].childs.add( this );
+		return true;
+	}
+}
+
+class KpCheck extends Kp 
+{
+	int parentp = -1;
+	String k_pocket = "";
+	String k_what = "";
+	String k_item = "";
+	String k_data = "";
+	List <Kp> childs = [];
+	bool load(act, ln, pos, lno) {
+		var tok = [pos, ''];
+		comp = "Check";
+		line_no = lno;
+		me = act.ap_check.length;
+		tok = getw(ln,tok[0]);
+		k_pocket = tok[1];
+		tok = getw(ln,tok[0]);
+		k_what = tok[1];
+		tok = getw(ln,tok[0]);
+		k_item = tok[1];
+		tok = getws(ln,tok[0]);
+		k_data = tok[1];
+		parentp = act.ap_actor.length-1;
+		if (parentp < 0 ) { 
+			print(lno + " Check has no Actor parent") ;
+			return false;
+		}
+		act.ap_actor[ parentp ].childs.add( this );
+		return true;
+	}
+}
+
 class KpJson extends Kp 
 {
 	int parentp = -1;

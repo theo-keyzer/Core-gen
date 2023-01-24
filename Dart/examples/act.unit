@@ -232,6 +232,39 @@ Comp Group parent Actor
 	Element value   V1 WORD * value
 
 ----------------------------------------------------------------
+Comp Add parent Actor
+----------------------------------------------------------------
+* Add item to pocket
+----------------------------------------------------------------
+	
+	Element pocket  C1 WORD * where to add
+	Element what    C1 WORD * what to add
+	Element item    C1 WORD * item or file
+	Element data    V1 WORD * data
+
+----------------------------------------------------------------
+Comp Clear parent Actor
+----------------------------------------------------------------
+* Clear item in pocket
+----------------------------------------------------------------
+	
+	Element pocket  C1 WORD * where to add
+	Element what    C1 WORD * what to add
+	Element item    C1 WORD * item or file
+	Element data    V1 WORD * data
+
+----------------------------------------------------------------
+Comp Check parent Actor
+----------------------------------------------------------------
+* Check item in pocket
+----------------------------------------------------------------
+	
+	Element pocket  C1 WORD * where to add
+	Element what    C1 WORD * what to add
+	Element item    C1 WORD * item or file
+	Element data    V1 WORD * data
+
+----------------------------------------------------------------
 Comp Json parent Actor
 ----------------------------------------------------------------
 * Add json file to pocket

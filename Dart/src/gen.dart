@@ -3,13 +3,15 @@ part of gen;
 
 class GlobT
 {
-	final buffer = StringBuffer();
+//	final buffer = StringBuffer();
 	bool load_errs = false;
 	bool run_errs = false;
 	ActT acts = new ActT();
 	ActT dats = new ActT();
-	List<WinT> wins = [];
 	int winp = -1;
+	List<WinT> wins = [];
+	Map pocket = new Map();
+	Map jsons = new Map();
 }
 
 class WinT {
@@ -89,14 +91,13 @@ int go_act(glob, dat)
 		var act = glob.acts.ap_actor[i];
 		if (act.k_attr.compareTo("E_O_L") != 0) {
 			var va = act.k_attr.split(".");
-//			rv,v = s_get_var(glob, winp, va, act.line_no )
 			var v = s_get_var(glob, winp, va, act.line_no);
 			if (chk( act.k_eq, v[1], act.k_value) == false ) {
 				continue;
 			}
 			if (act.k_cc.compareTo( "" ) != 0) {
 				var res = strs(glob, winp, act.k_cc, act.line_no, true,true);
-				glob.buffer.writeln(res[1]);
+				stdout.writeln(res[1]);
 			}
 		}
 		prev = true;
@@ -130,7 +131,7 @@ int go_cmds(glob, ca, winp)
 			}
 			trig(glob,winp);
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			glob.buffer.writeln(res[1]);
+			stdout.writeln(res[1]);
 		}
 		if (cmd is KpCs) {
 			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) {
@@ -138,13 +139,30 @@ int go_cmds(glob, ca, winp)
 			}
 			trig(glob,winp);
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			glob.buffer.write(res[1]);
+			stdout.write(res[1]);
 		}
 		if (cmd is KpAll) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
-			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
+			var value = strs(glob, winp, cmd.k_value, cmd.line_no, true,true );
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, value[1]);
 			var what = strs(glob, winp, cmd.k_what, cmd.line_no, true,true );
 			var va = what[1].split(".");
+			var st = glob.pocket[ va[0] ];
+			if(st != null)
+			{
+				if(va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), cmd.line_no);
+					if (ret > 1) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret > 1) {
+					return(ret);
+				}
+				continue;
+			}
 			var ret = do_all(glob, va, cmd.line_no);
 			if (ret > 1) {
 				return(ret);
@@ -152,7 +170,8 @@ int go_cmds(glob, ca, winp)
 		}
 		if (cmd is KpDu) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
-			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
+			var value = strs(glob, winp, cmd.k_value, cmd.line_no, true,true );
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, value[1]);
 			var ret = go_act(glob,glob.wins[winp].dat);
 			if (ret > 1) {
 				return(ret);
@@ -160,8 +179,21 @@ int go_cmds(glob, ca, winp)
 		}
 		if (cmd is KpIts) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
-			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, cmd.k_value);
+			var value = strs(glob, winp, cmd.k_value, cmd.line_no, true,true );
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, value[1]);
 			var va = cmd.k_what.split(".");
+			if (va[0].length == 0 && va.length > 1) {
+				for(var i = winp-1; i >= 0; i--) {
+					if ( glob.wins[i].name.compareTo( va[1] ) == 0 ) {
+						var ret = glob.wins[i].dat.do_its(glob, va.sublist(2), cmd.line_no);
+						if (ret > 1) {
+							return(ret);
+						}
+						break;
+					}
+				}
+				continue;
+			}
 			var ret = glob.wins[winp].dat.do_its(glob, va, cmd.line_no);
 			if (ret > 1) {
 				return(ret);
@@ -202,6 +234,23 @@ int go_cmds(glob, ca, winp)
 				glob.wins[winp].is_trig = false;
 			}
 		}
+		if (cmd is KpNew) {
+			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) {
+				continue;
+			}
+			trig(glob,winp);
+			var line = strs(glob, winp, " " + cmd.k_line, cmd.line_no, true,true );
+			glob.load_errs |= load(glob.dats, cmd.k_what, line[1], 0, "23");
+		}
+		if (cmd is KpRefs) {
+			glob.load_errs |= refs(glob.dats);
+		}
+		if (cmd is KpAdd) {
+			var ret = add_cmd(glob,winp,cmd);
+			if( ret != 0 ) {
+				break;
+			}
+		}
 	}
 	return(0);
 }
@@ -232,11 +281,15 @@ void re_go_cmds(glob,winp)
 		var cmd = a.childs[i];
 		if (cmd is KpC) {
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			glob.buffer.writeln(res[1]);
+			stdout.writeln(res[1]);
 		}
 		if (cmd is KpCs) {
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			glob.buffer.write(res[1]);
+			stdout.write(res[1]);
+		}
+		if (cmd is KpNew) {
+			var line = strs(glob, winp, " " + cmd.k_line, cmd.line_no, true,true );
+			glob.load_errs |= load(glob.dats, cmd.k_what, line[1], 0, "23");
 		}
 	}
 }
@@ -289,6 +342,10 @@ List s_get_var(glob, winp, va, lno)
 		if ( glob.wins[i].name.compareTo( va[1] ) == 0 ) {
 			return( s_get_var(glob, i , va.sublist(2), lno) );
 		}
+	}
+	var st = glob.pocket[ va[1] ];
+	if(st != null) {
+		return( st.get_var( glob, va.sublist(2), lno ) );
 	}
 	return( var_all(glob, va.sublist(1), lno) );
 //	return( [false, "?"] );
@@ -416,110 +473,4 @@ bool chk( eq, v, ss )
 	return(false);
 }
 
-List fnd(act, s, f, chk, lno)
-{
-	var v = act.index[s];
-	if (v != null) {
-//		return( [ true, int.parse(v) ] );
-		return( [ true, v ] );
-	}
-	if (chk == "?") {
-		return( [true, -1] );
-	}
-	if (f == chk) {
-		return( [true, -1] );
-	}
-	print( s + " not found " + lno);
-	return( [false, -1] );
-}
-
-String get_name(m,n)
-{
-	var v = m[n];
-	if (v == null) { return(''); }
-	return(v);
-}
-
-List getws(line, pos)
-{
-	var ln = line.split('');
-	if (pos+1 > ln.length) {
-		return( [pos, ""] );
-	}
-	return( [ ln.length, ln.sublist(pos+1).join() ] );
-}
-
-List getw(line, pos)
-{
-	var ln = line.split('');
-	var l = ln.length;
-	if (pos+1 > l) {
-		return( [pos, "E_O_L"] );
-	}
-	var from = pos;
-	var i = pos;
-	while (i < l) {
-		from = i + 1;
-		if (ln[i] == ' ' || ln[i] == '\t') {
-			i = i+1;
-			continue;
-		}
-		from = i;
-		break;
-	}
-	if (from+1 > l) {
-		return( [pos, "E_O_L"] );
-	}
-	var to = from;
-	i = from;	
-	while (i < l) {
-		if (ln[i] == ' ' || ln[i] == '\t') {
-			break;
-		}
-		to = i;
-		i = i + 1;
-	}
-	return( [to+1, ln.sublist(from,to+1).join() ] );
-}
-
-List getsw(line, pos)
-{
-	var ln = line.split('');
-	var l = ln.length;
-	if (pos+1 > l) {
-		return( [pos, "E_O_L"] );
-	}
-	var from = pos;
-	var i = pos;
-	while (i < l) {
-		from = i + 1;
-		if (ln[i] == ' ' || ln[i] == '\t') {
-			i = i+1;
-			continue;
-		}
-		from = i;
-		break;
-	}
-	if (from+1 > l) {
-		return( [pos, "E_O_L"] );
-	}
-	var to = from;
-	i = from;
-	var is_s = false;	
-	while (i < l) {
-		if (ln[i] == ' ' || ln[i] == '\t') {
-			break;
-		}
-		if (ln[i] == ':') {
-			is_s = true;
-			break;
-		}
-		to = i;
-		i = i + 1;
-	}
-	if (is_s == true) {
-		return( [to+2, ln.sublist(from,to+1).join() ] );
-	}
-	return( [to+1, ln.sublist(from,to+1).join() ] );
-}
 
