@@ -147,6 +147,13 @@ int go_cmds(glob, ca, winp)
 			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, value[1]);
 			var what = strs(glob, winp, cmd.k_what, cmd.line_no, true,true );
 			var va = what[1].split(".");
+			if(va[0] == "Pocket") {
+				var ret = all_cmd(glob,winp,va);
+				if( ret != 0 ) {
+					break;
+				}
+				continue;
+			}
 			var st = glob.pocket[ va[0] ];
 			if(st != null)
 			{
@@ -250,6 +257,9 @@ int go_cmds(glob, ca, winp)
 			if( ret != 0 ) {
 				break;
 			}
+		}
+		if (cmd is KpClear) {
+			clear_cmd(glob,winp,cmd);
 		}
 	}
 	return(0);
