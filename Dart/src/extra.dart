@@ -3,8 +3,12 @@ part of gen;
 class KpExtra extends Kp 
 {
 	dynamic parsedJson;
-	
+
 	List get_var(glob, va, lno) {
+		var v = names[ va[0] ];
+		if(v != null) {
+			return( [true, v] );
+		}
 		if ( parsedJson is String ) { 
 			return( [true, parsedJson] );
 		}
@@ -15,41 +19,38 @@ class KpExtra extends Kp
 		}
 		if ( parsedJson is Map ) { 
 			var v = parsedJson[ va[0] ];
-			if (v != null) {
-				if (v is Map) {
-					return( get_var2(glob, va.sublist(1), lno, v) );
-				}
-				if (v is String) {
-					return( [true, v] );
-				}
-				if (v is Set) {
-					return( [true, v.toString()] );
-				}
-				return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Kp?"] );
+			if(v != null) {
+				return( get_var2(glob, va.sublist(1), lno, v) );
 			}
 			if (parsedJson.containsKey(va[0]) ) {
 				return( [true, 'null'] );
 			}
 		}
-		var v = names[ va[0] ];
-		if(v != null) {
-			return( [true, v] );
-		}
-		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Kp?"] );
+		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Kp?"] );			
 	}
-	
+		
 	List get_var2(glob, va, lno, std) {
-		var v = std[ va[0] ];
-		if (v != null) {
-			if (v is Map) {
+		if ( std is String ) { 
+			return( [true, std] );
+		}
+		if ( std is Set  ) { 
+			var l = std.toList();
+			l.sort();
+			return( [true, l.join(",") ] );
+		}
+		if ( std is Map ) { 
+			if( va.length < 1) {
+				return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Kp?"] );			
+			}
+			var v = std[ va[0] ];
+			if(v != null) {
 				return( get_var2(glob, va.sublist(1), lno, v) );
 			}
-			return( [true, v] );
+			if (std.containsKey(va[0]) ) {
+				return( [true, 'null'] );
+			}
 		}
-		if (std.containsKey(va[0]) ) {
-			return( [true, 'null'] );
-		}
-		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Kp?"] );
+		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Kp?"] );			
 	}
 	
 	int do_its(glob, va, lno) {
@@ -132,8 +133,19 @@ class KpExtra extends Kp
 
 void clear_cmd(glob,winp,cmd) 
 {
+	var item = strs(glob, winp, cmd.k_item, cmd.line_no, true,true );
 	var pocket = strs(glob, winp, cmd.k_pocket, cmd.line_no, true,true );
-	glob.pocket.remove( pocket[1] );
+	if(item == "E_O_L") {
+		glob.pocket.remove( pocket[1] );
+		return;
+	}
+	var v = glob.pocket[ pocket[1] ].parsedJson;
+	if(v == null) {
+		return;
+	}
+	if(v is Map) {
+		glob.pocket[ pocket[1] ].parsedJson.remove( item[1] );
+	}
 }
 
 int all_cmd(glob,winp,va) 
