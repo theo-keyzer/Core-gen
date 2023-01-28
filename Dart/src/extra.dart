@@ -54,6 +54,27 @@ class KpExtra extends Kp
 	}
 	
 	int do_its(glob, va, lno) {
+		var v = names[ va[0] ];
+		if(v != null) {
+			if (va.length < 3) {
+				var extra = new KpExtra();
+				extra.names["value"] = v;
+				return( go_act(glob, extra) );
+			}
+			var vas = v.split( va[2] );
+			List newList = List.from(vas);
+			for(var val in vas) {
+				newList.remove(val);
+				var extra = new KpExtra();
+				extra.names["value"] = val;
+				extra.parsedJson = newList;
+				var ret = go_act(glob, extra);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
 		if ( parsedJson is List || parsedJson is Set) { 
 			for(var std in parsedJson) {
 				if(std is! Kp) { 
@@ -104,7 +125,7 @@ class KpExtra extends Kp
 				}
 				return( go_act(glob, extra) );
 			}
-			if ( v is List ) { 
+			if ( v is List  || v is Set) { 
 				for(var std in v) {
 					var extra = new KpExtra();
 					extra.parsedJson = std;
@@ -135,6 +156,7 @@ void clear_cmd(glob,winp,cmd)
 {
 	var item = strs(glob, winp, cmd.k_item, cmd.line_no, true,true );
 	var pocket = strs(glob, winp, cmd.k_pocket, cmd.line_no, true,true );
+	var data = strs(glob, winp, cmd.k_data, cmd.line_no, true,true );
 	if(item == "E_O_L") {
 		glob.pocket.remove( pocket[1] );
 		return;
@@ -144,7 +166,13 @@ void clear_cmd(glob,winp,cmd)
 		return;
 	}
 	if(v is Map) {
-		glob.pocket[ pocket[1] ].parsedJson.remove( item[1] );
+		if(data == "") {
+			glob.pocket[ pocket[1] ].parsedJson.remove( item[1] );
+			return;
+		}
+		if( v[ item[1] ] is Set ) {
+			glob.pocket[ pocket[1] ].parsedJson[ item[1] ].remove( data[1] );
+		}
 	}
 }
 

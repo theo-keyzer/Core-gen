@@ -17,7 +17,7 @@ void main(List<String> args)
 	glob.load_errs |= load_files(args[0], glob.acts);
 	glob.load_errs |= load_files(args[1], glob.dats);
 	if (glob.acts.ap_actor.length > 0) {
-		var kp = new Kp();
+		var kp = new KpExtra();
 		for(var i = 0; i < args.length; i++) {
 			kp.names[ i.toString() ] = args[i];
 		}

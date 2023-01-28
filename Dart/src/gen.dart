@@ -90,9 +90,10 @@ int go_act(glob, dat)
 		}
 		var act = glob.acts.ap_actor[i];
 		if (act.k_attr.compareTo("E_O_L") != 0) {
+			var value = strs(glob, winp, act.k_value, act.line_no, true,true );
 			var va = act.k_attr.split(".");
 			var v = s_get_var(glob, winp, va, act.line_no);
-			if (chk( act.k_eq, v[1], act.k_value) == false ) {
+			if (chk( act.k_eq, v[1], value[1]) == false ) {
 				continue;
 			}
 			if (act.k_cc.compareTo( "" ) != 0) {
@@ -325,7 +326,7 @@ List s_get_var(glob, winp, va, lno)
 		return( [true, glob.wins[winp].arg] );
 	}
 	if (va[1].compareTo( "depth" ) == 0) {
-		return( [true, winp.to_s] );
+		return( [true, winp.toString()] );
 	}
 	if (va[1].compareTo( "+" ) == 0) {
 		return( [true, (glob.wins[winp].cnt+1).toString() ] );
