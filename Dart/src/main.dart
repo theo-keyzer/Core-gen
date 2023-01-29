@@ -16,10 +16,16 @@ void main(List<String> args)
 	var glob = new GlobT();
 	glob.load_errs |= load_files(args[0], glob.acts);
 	glob.load_errs |= load_files(args[1], glob.dats);
+	var extra = new KpExtra();
+	extra.parsedJson = [];
+	glob.pocket[ "Args" ] = extra;
 	if (glob.acts.ap_actor.length > 0) {
 		var kp = new KpExtra();
 		for(var i = 0; i < args.length; i++) {
 			kp.names[ i.toString() ] = args[i];
+			if(i > 1) {
+				extra.parsedJson.add( args[i] );
+			}
 		}
 		new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1", "", "", "");
 		go_act(glob, kp);

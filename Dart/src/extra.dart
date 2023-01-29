@@ -209,6 +209,17 @@ int add_cmd(glob,winp,cmd)
 		extra.parsedJson = jsonDecode(jsonData);
 		glob.pocket[ pocket[1] ] = extra;
 	}
+	if (cmd.k_what.compareTo( "list" ) == 0) {
+		var v = glob.pocket[ pocket[1] ];
+		if( v != null)
+		{
+			v.parsedJson.add( item[1] );
+			return(0);
+		}
+		var extra = new KpExtra();
+		extra.parsedJson = [ item[1] ];
+		glob.pocket[ pocket[1] ] = extra;
+	}
 	if (cmd.k_what.compareTo( "collect" ) == 0) {
 		var v = glob.pocket[ pocket[1] ];
 		if( v != null)
