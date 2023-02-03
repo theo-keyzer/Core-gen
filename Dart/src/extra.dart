@@ -38,10 +38,13 @@ class KpExtra extends Kp
 			l.sort();
 			return( [true, l.join(",") ] );
 		}
+		if( va.length < 1) {
+			return( [false, "??" + line_no + "," + lno + ",Kp?"] );			
+		}
+		if( std is Kp ) {
+			return( std.get_var(glob, va, line_no) );
+		}
 		if ( std is Map ) { 
-			if( va.length < 1) {
-				return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Kp?"] );			
-			}
 			var v = std[ va[0] ];
 			if(v != null) {
 				return( get_var2(glob, va.sublist(1), lno, v) );
@@ -62,12 +65,12 @@ class KpExtra extends Kp
 				return( go_act(glob, extra) );
 			}
 			var vas = v.split( va[2] );
-			List newList = List.from(vas);
+//			List newList = List.from(vas);
 			for(var val in vas) {
-				newList.remove(val);
+//				newList.remove(val);
 				var extra = new KpExtra();
 				extra.names["value"] = val;
-				extra.parsedJson = newList;
+//				extra.parsedJson = newList;
 				var ret = go_act(glob, extra);
 				if (ret != 0) {
 					return(ret);
@@ -243,6 +246,32 @@ int add_cmd(glob,winp,cmd)
 		}
 		var extra = new KpExtra();
 		extra.parsedJson = { item[1] };
+		glob.pocket[ pocket[1] ] = extra;
+	}
+	if (cmd.k_what.compareTo( "map" ) == 0) {
+		var data = strs(glob, winp, cmd.k_data, cmd.line_no, true,true );
+		var v = glob.pocket[ pocket[1] ];
+		if( v != null)
+		{
+			v.parsedJson[ item[1] ] = data[1];
+			return(0);
+		}
+		var extra = new KpExtra();
+		extra.parsedJson = new Map();
+		extra.parsedJson[ item[1] ] = data[1];
+		glob.pocket[ pocket[1] ] = extra;
+	}
+	if (cmd.k_what.compareTo( "hash" ) == 0) {
+		var data = strs(glob, winp, cmd.k_data, cmd.line_no, true,true );
+		var v = glob.pocket[ pocket[1] ];
+		if( v != null)
+		{
+			v.parsedJson[ item[1] ] = glob.wins[winp].dat;
+			return(0);
+		}
+		var extra = new KpExtra();
+		extra.parsedJson = new Map();
+		extra.parsedJson[ item[1] ] = glob.wins[winp].dat;
 		glob.pocket[ pocket[1] ] = extra;
 	}
 	if (cmd.k_what.compareTo( "group" ) == 0) {
