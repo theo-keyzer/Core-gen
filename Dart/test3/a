@@ -1,0 +1,17 @@
+tst.def 2,3,4
+ all 1 3 A-B,B-C
+ all 1 4 A-B,B-C
+ no  1 1 B-A,B-C check
+ all 1 5 B-C
+ no  1 2 C-B check
+ no  3 2 A-C check
+ all 2 4 A-B,B-C
+ all 2 1 B-C
+ all 2 5 B-C
+ all 4 2 A-C,C-A,C-B
+-- aaa -- A-C 2
+-- aaa -- C-A 1
+-- aaa -- C-B 2
+ no  4 1 C-A check
+ no  5 2 A-C,C-A check
+ no  5 1 C-A check

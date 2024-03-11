@@ -1,0 +1,70 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+Json add P per.json
+Add P json per.json
+
+C  Arg : ${.P.menu.id} 
+
+All P list
+
+C Hash : ${.A.Close.onclick}
+C Hash : ${.A.Open.foo}
+C Hash : ${.A.Open}
+C ${.AA.Open}
+
+Var val = 45
+Var dat = $${val}
+
+C ${val}  ${dat}
+C ${val}  ${dat}$
+
+Var val = 47
+
+C ${val}  ${dat}$
+C ${val}  ${dat}
+
+C ${fos}
+-C ${foo}
+
+----------------------------------------------------------------
+Actor list
+----------------------------------------------------------------
+
+C List : ${menu.id} 
+
+-Its menu menu
+-Its menu.popup popup
+Its menu.popup.menuitem menuitem
+
+----------------------------------------------------------------
+Actor menu
+----------------------------------------------------------------
+
+C Menu: ${value} 
+
+Its popup popup
+
+----------------------------------------------------------------
+Actor popup
+----------------------------------------------------------------
+
+C Popup :
+
+Its menuitem menuitem
+
+----------------------------------------------------------------
+Actor menuitem
+----------------------------------------------------------------
+
+C Addr: ${value}  ${onclick} 
+
+Var foo = bar
+Var .main.fos = bar
+
+Hash add A ${value}
+Add AA map ${value} ${onclick} 
+Add A hash ${value}
+
+

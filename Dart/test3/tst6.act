@@ -1,0 +1,85 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+C ${1}  ${2}
+
+Var check = true
+All Matrix mat_collect search in 1,2,3,4,5,6,7
+-All Matrix mat_collect search in ${3}
+Group remove 2 3
+Clear 2 group 3
+-All Group graph_all
+All Pocket graph_all
+Group pr
+
+
+---------------------------------------------------------------
+Actor mat_collect Matrix
+----------------------------------------------------------------
+
+Var ab = ${a} -${b}
+-Var bc = ${b} -${c}
+
+All Graph graph_collect name = ${ab}
+All Graph graph_collect name = ${b}n-${c}
+
+---------------------------------------------------------------
+Actor graph_collect Graph
+----------------------------------------------------------------
+
+-C Add: ${.mat_collect.search}  ${search}  ${name}u
+
+-Group add ${.mat_collect.search}  ${search} ${name}
+Add ${.mat_collect.search} group ${search} ${name}
+
+----------------------------------------------------------------
+Actor graph_all Kp value = A-B,B-C
+----------------------------------------------------------------
+
+C  all ${pocket}  ${key}  ${value} 
+
+Break
+
+----------------------------------------------------------------
+Actor graph_all Kp value = B-C
+----------------------------------------------------------------
+
+C  all ${pocket}  ${key}  ${value} 
+
+Break
+
+-----------------------------------------------------------------
+Actor graph_all Kp value = A-C,C-A,C-B
+----------------------------------------------------------------
+
+C  all ${pocket}  ${key}  ${value} 
+
+-Its value.split., aa
+Its * aa
+
+Break
+
+-----------------------------------------------------------------
+Actor graph_all Kp .main.check = true
+-Actor graph_all Kp
+----------------------------------------------------------------
+
+C  no  ${pocket}  ${key}  ${value}
+
+----------------------------------------------------------------
+Actor aa Kp
+----------------------------------------------------------------
+
+-C -- aa -- ${value}
+
+All Graph.${value} aaa
+
+----------------------------------------------------------------
+Actor aaa Graph
+----------------------------------------------------------------
+
+C -- aaa -- ${name}  ${search}
+
+
+

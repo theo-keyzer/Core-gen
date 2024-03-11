@@ -1,0 +1,766 @@
+{
+   "Refq": 
+   {
+    "Element":
+    {
+      "name": "element",
+      "mw": "F1",
+      "mw2": "ELEMENT",
+      "pad": "*",
+      "doc": "link to remote element"
+    },
+    "Element":
+    {
+      "name": "comp",
+      "mw": "R1",
+      "mw2": "COMP",
+      "pad": "*",
+      "doc": "link to Comp"
+    },
+    "Element":
+    {
+      "name": "element2",
+      "mw": "C1",
+      "mw2": "ELEMENT",
+      "pad": "*",
+      "doc": "use this element in parent for the parent"
+    },
+    "Element":
+    {
+      "name": "comp_ref",
+      "mw": "R1",
+      "mw2": "COMP",
+      "pad": "*",
+      "doc": "parent's Comp"
+    },
+    "Element":
+    {
+      "name": "opt",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "optional or check - error if not found"
+    },
+    "Element":
+    {
+      "name": "var",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "not used"
+    },
+    "Element":
+    {
+      "name": "doc",
+      "mw": "V1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "doc string"
+    },
+    "Ref":
+    {
+      "element": "element",
+      "comp": "Element",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref":
+    {
+      "element": "comp",
+      "comp": "Comp",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref":
+    {
+      "element": "comp_ref",
+      "comp": "Comp",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   },
+   "Node": 
+   {
+    "Element":
+    {
+      "name": "name",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "node name"
+    },
+    "Element":
+    {
+      "name": "pad",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "padding"
+    },
+    "Element":
+    {
+      "name": "parent",
+      "mw": "R1",
+      "mw2": "Node",
+      "pad": "*",
+      "doc": "parent node"
+    },
+    "Element":
+    {
+      "name": "var",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "a table"
+    },
+    "Element":
+    {
+      "name": "eq",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "padding, as"
+    },
+    "Element":
+    {
+      "name": "value",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "value"
+    },
+    "Ref":
+    {
+      "element": "parent",
+      "comp": "Node",
+      "opt": ".",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   },
+   "Link": 
+   {
+    "Element":
+    {
+      "name": "to",
+      "mw": "R1",
+      "mw2": "Node",
+      "pad": "*",
+      "doc": "node name"
+    },
+    "Ref":
+    {
+      "element": "to",
+      "comp": "Node",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   },
+   "Graph": 
+   {
+    "Element":
+    {
+      "name": "name",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "a type"
+    },
+    "Element":
+    {
+      "name": "pad",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Padding"
+    },
+    "Element":
+    {
+      "name": "search",
+      "mw": "V1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Search for field"
+    }
+   },
+   "Matrix": 
+   {
+    "Element":
+    {
+      "name": "a",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "a type"
+    },
+    "Element":
+    {
+      "name": "b",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "a type"
+    },
+    "Element":
+    {
+      "name": "c",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "a type"
+    },
+    "Element":
+    {
+      "name": "pad",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Padding"
+    },
+    "Element":
+    {
+      "name": "search",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Search for field"
+    }
+   },
+   "Table": 
+   {
+    "Element":
+    {
+      "name": "name",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "a table"
+    },
+    "Element":
+    {
+      "name": "pad",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "padding, as"
+    },
+    "Element":
+    {
+      "name": "value",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "value"
+    }
+   },
+   "Field": 
+   {
+    "Element":
+    {
+      "name": "type",
+      "mw": "R1",
+      "mw2": "TYPE",
+      "pad": "*",
+      "doc": "Pointer to (Type)."
+    },
+    "Element":
+    {
+      "name": "name",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "a field name"
+    },
+    "Element":
+    {
+      "name": "dt",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "data type"
+    },
+    "Element":
+    {
+      "name": "pad",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "padding"
+    },
+    "Element":
+    {
+      "name": "use",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "grid,search"
+    },
+    "Ref":
+    {
+      "element": "type",
+      "comp": "Type",
+      "opt": "?",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   },
+   "Attrs": 
+   {
+    "Element":
+    {
+      "name": "name",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "a attr name"
+    }
+   },
+   "Of": 
+   {
+    "Element":
+    {
+      "name": "field",
+      "mw": "F1",
+      "mw2": "Field",
+      "pad": "*",
+      "doc": "Field name"
+    },
+    "Element":
+    {
+      "name": "attr",
+      "mw": "M1",
+      "mw2": "Attr",
+      "pad": "*",
+      "doc": "Attr name"
+    },
+    "Element":
+    {
+      "name": "from",
+      "mw": "M1",
+      "mw2": "Attr",
+      "pad": "*",
+      "doc": "Attr name"
+    },
+    "Element":
+    {
+      "name": "op",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "(=, >, like)"
+    },
+    "Element":
+    {
+      "name": "value",
+      "mw": "V1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Select value"
+    },
+    "Ref":
+    {
+      "element": "field",
+      "comp": "Field",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref3":
+    {
+      "element": "attr",
+      "comp": "Attr",
+      "element2": "field",
+      "comp_ref": "Field",
+      "element3": "type",
+      "opt": "?",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref3":
+    {
+      "element": "from",
+      "comp": "Attr",
+      "element2": "attr",
+      "comp_ref": "Attr",
+      "element3": "table",
+      "opt": "?",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   },
+   "Join": 
+   {
+    "Element":
+    {
+      "name": "field1",
+      "mw": "F1",
+      "mw2": ".Field",
+      "pad": "*",
+      "doc": "link to its field"
+    },
+    "Element":
+    {
+      "name": "table2",
+      "mw": "R1",
+      "mw2": "Table",
+      "pad": "*",
+      "doc": "link to other table"
+    },
+    "Element":
+    {
+      "name": "field2",
+      "mw": "L1",
+      "mw2": "Table.Field",
+      "pad": "*",
+      "doc": "link to other table's field"
+    },
+    "Element":
+    {
+      "name": "pad",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "padding "
+    },
+    "Element":
+    {
+      "name": "use",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "grid,search"
+    },
+    "Ref":
+    {
+      "element": "field1",
+      "comp": "Field",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref":
+    {
+      "element": "table2",
+      "comp": "Table",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref2":
+    {
+      "element": "field2",
+      "comp": "Field",
+      "element2": "table2",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   },
+   "Join2": 
+   {
+    "Element":
+    {
+      "name": "field1",
+      "mw": "F1",
+      "mw2": ".Field",
+      "pad": "*",
+      "doc": "link to its field"
+    },
+    "Element":
+    {
+      "name": "table2",
+      "mw": "R1",
+      "mw2": "Table",
+      "pad": "*",
+      "doc": "link to other table"
+    },
+    "Element":
+    {
+      "name": "field2",
+      "mw": "L1",
+      "mw2": "Table.Field",
+      "pad": "*",
+      "doc": "link to other table's field"
+    },
+    "Element":
+    {
+      "name": "attr2",
+      "mw": "L1",
+      "mw2": "Table.Field.Attr",
+      "pad": "*",
+      "doc": "link to other field's attr"
+    },
+    "Ref":
+    {
+      "element": "field1",
+      "comp": "Field",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref":
+    {
+      "element": "table2",
+      "comp": "Table",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref2":
+    {
+      "element": "field2",
+      "comp": "Field",
+      "element2": "table2",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref2":
+    {
+      "element": "attr2",
+      "comp": "Attrs",
+      "element2": "field2",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   },
+   "Type": 
+   {
+    "Element":
+    {
+      "name": "name",
+      "mw": "C1",
+      "mw2": "NAME",
+      "pad": "*",
+      "doc": "Its name."
+    },
+    "Element":
+    {
+      "name": "desc",
+      "mw": "V1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Description."
+    }
+   },
+   "Data": 
+   {
+    "Element":
+    {
+      "name": "name",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Field name"
+    },
+    "Element":
+    {
+      "name": "op",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "(= >)"
+    },
+    "Element":
+    {
+      "name": "value",
+      "mw": "V1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Data value"
+    }
+   },
+   "Attr": 
+   {
+    "Element":
+    {
+      "name": "table",
+      "mw": "R1",
+      "mw2": "TABLE",
+      "pad": "*",
+      "doc": "Pointer to (Table)."
+    },
+    "Element":
+    {
+      "name": "relation",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Relation type"
+    },
+    "Element":
+    {
+      "name": "name",
+      "mw": "C1",
+      "mw2": "NAME",
+      "pad": "*",
+      "doc": "Colomn name."
+    },
+    "Element":
+    {
+      "name": "mytype",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Data type."
+    },
+    "Element":
+    {
+      "name": "len",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Default length."
+    },
+    "Element":
+    {
+      "name": "null",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Not null."
+    },
+    "Element":
+    {
+      "name": "flags",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Input flags - search,grid,edit,modify"
+    },
+    "Element":
+    {
+      "name": "desc",
+      "mw": "V1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Documentation."
+    },
+    "Ref":
+    {
+      "element": "table",
+      "comp": "Type",
+      "opt": ".",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   },
+   "Where": 
+   {
+    "Element":
+    {
+      "name": "attr",
+      "mw": "F1",
+      "mw2": "Attr",
+      "pad": "*",
+      "doc": "Field name"
+    },
+    "Element":
+    {
+      "name": "from_id",
+      "mw": "M1",
+      "mw2": "Attr",
+      "pad": "*",
+      "doc": "From id"
+    },
+    "Element":
+    {
+      "name": "eq",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "="
+    },
+    "Element":
+    {
+      "name": "id",
+      "mw": "F1",
+      "mw2": "Attr",
+      "pad": "*",
+      "doc": "id"
+    },
+    "Element":
+    {
+      "name": "op",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "(=, >, like)"
+    },
+    "Element":
+    {
+      "name": "value",
+      "mw": "V1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Select value"
+    },
+    "Ref":
+    {
+      "element": "attr",
+      "comp": "Attr",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref":
+    {
+      "element": "id",
+      "comp": "Attr",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    },
+    "Ref3":
+    {
+      "element": "from_id",
+      "comp": "Attr",
+      "element2": "attr",
+      "comp_ref": "Attr",
+      "element3": "table",
+      "opt": "check",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   },
+   "Logic": 
+   {
+    "Element":
+    {
+      "name": "attr",
+      "mw": "F1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Field name"
+    },
+    "Element":
+    {
+      "name": "op",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "(=)"
+    },
+    "Element":
+    {
+      "name": "code",
+      "mw": "C1",
+      "mw2": "WORD",
+      "pad": "*",
+      "doc": "Code block name"
+    },
+    "Ref":
+    {
+      "element": "attr",
+      "comp": "Attr",
+      "opt": ".",
+      "var": "E_O_L",
+      "doc": ""
+    }
+   }
+}

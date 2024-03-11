@@ -1,0 +1,84 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+All Node sort
+-All Collect.S.reverse disp_col
+-All S disp_colC
+All S.* disp_col
+
+----------------------------------------------------------------
+Actor sort Node
+----------------------------------------------------------------
+
+Check D unique ${name}
+-Unique check D ${name}
+All Node sort_item 
+
+----------------------------------------------------------------
+Actor sort_item Node
+----------------------------------------------------------------
+
+-Unique add D ${name}
+Add D unique ${name}
+Its Link.to sort_item
+-Collect add S
+Add S collect
+
+----------------------------------------------------------------
+Actor disp_colC
+----------------------------------------------------------------
+
+Its * disp_col
+
+----------------------------------------------------------------
+Actor disp_col Node
+----------------------------------------------------------------
+
+-Unique add A ${name}
+-Add A unique ${name}
+
+C ${  }  ${name}  - ${var}  ${eq}  ${value}
+
+Out delay
+
+C ${  }  {
+
+Its Link.to disp_col
+
+C ${  }  }
+
+----------------------------------------------------------------
+E_O_F
+----------------------------------------------------------------
+
+In tst.d:
+
+Node n1  parent  . v = 9
+Node n11 parent n1 v = 9
+ Link n22
+Node n12 parent n1 v = 9
+
+Node n2   parent   . v = 9
+Node n21  parent  n2 v = 9
+ Link n11
+Node n22  parent  n2 v = 9
+Node n221 parent n22 v = 9
+ Link n1
+
+Out dag2.a:
+
+ n221 - v = 9
+ {
+  n1 - v = 9
+ }
+ n21 - v = 9
+ {
+  n11 - v = 9
+  {
+   n22 - v = 9
+  }
+ }
+ n2 - v = 9
+ n12 - v = 9
+

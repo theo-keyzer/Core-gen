@@ -1,0 +1,339 @@
+{
+   "Node": 
+   [
+    {
+       "me_id": 0,
+       "name": "n1",
+       "pad": "parent",
+       "parent": ".", "parent_id": "-1",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
+       "me_id": 1,
+       "name": "n11",
+       "pad": "parent",
+       "parent": "n1", "parent_id": "0",
+       "var": "v",
+       "eq": "=",
+       "value": "9",
+       "Link": 
+        {
+           "parent_id": 1,
+           "me_id": 0,
+           "to": "n22", "to_id": 5
+        }
+    },
+    {
+       "me_id": 2,
+       "name": "n12",
+       "pad": "parent",
+       "parent": "n1", "parent_id": "0",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
+       "me_id": 3,
+       "name": "n2",
+       "pad": "parent",
+       "parent": ".", "parent_id": "-1",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
+       "me_id": 4,
+       "name": "n21",
+       "pad": "parent",
+       "parent": "n2", "parent_id": "3",
+       "var": "v",
+       "eq": "=",
+       "value": "9",
+       "Link": 
+        {
+           "parent_id": 4,
+           "me_id": 1,
+           "to": "n11", "to_id": 1
+        }
+    },
+    {
+       "me_id": 5,
+       "name": "n22",
+       "pad": "parent",
+       "parent": "n2", "parent_id": "3",
+       "var": "v",
+       "eq": "=",
+       "value": "9"
+    },
+    {
+       "me_id": 6,
+       "name": "n221",
+       "pad": "parent",
+       "parent": "n22", "parent_id": "5",
+       "var": "v",
+       "eq": "=",
+       "value": "9",
+       "Link": 
+        {
+           "parent_id": 6,
+           "me_id": 2,
+           "to": "n1", "to_id": 0
+        }
+    }
+   ],
+   "Graph": 
+   [
+    {
+       "me_id": 0,
+       "name": "B-C",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 1,
+       "name": "C-A",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 2,
+       "name": "C-A",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 3,
+       "name": "C-B",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 4,
+       "name": "A-B",
+       "pad": "for",
+       "search": "3"
+    },
+    {
+       "me_id": 5,
+       "name": "A-C",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 6,
+       "name": "A-B",
+       "pad": "for",
+       "search": "4"
+    },
+    {
+       "me_id": 7,
+       "name": "B-A",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 8,
+       "name": "B-C",
+       "pad": "for",
+       "search": "4"
+    },
+    {
+       "me_id": 9,
+       "name": "B-C",
+       "pad": "for",
+       "search": "3"
+    },
+    {
+       "me_id": 10,
+       "name": "B-C",
+       "pad": "for",
+       "search": "5"
+    }
+   ],
+   "Matrix": 
+   [
+    {
+       "me_id": 0,
+       "a": "A",
+       "b": "B",
+       "c": "C",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 1,
+       "a": "C",
+       "b": "C",
+       "c": "C",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 2,
+       "a": "A",
+       "b": "A",
+       "c": "C",
+       "pad": "for",
+       "search": "3"
+    },
+    {
+       "me_id": 3,
+       "a": "C",
+       "b": "B",
+       "c": "A",
+       "pad": "for",
+       "search": "1"
+    },
+    {
+       "me_id": 4,
+       "a": "A",
+       "b": "B",
+       "c": "C",
+       "pad": "for",
+       "search": "2"
+    },
+    {
+       "me_id": 5,
+       "a": "A",
+       "b": "C",
+       "c": "C",
+       "pad": "for",
+       "search": "3"
+    },
+    {
+       "me_id": 6,
+       "a": "A",
+       "b": "C",
+       "c": "B",
+       "pad": "for",
+       "search": "4"
+    },
+    {
+       "me_id": 7,
+       "a": "C",
+       "b": "A",
+       "c": "C",
+       "pad": "for",
+       "search": "5"
+    },
+    {
+       "me_id": 8,
+       "a": "C",
+       "b": "C",
+       "c": "A",
+       "pad": "for",
+       "search": "4"
+    }
+   ],
+   "Table": 
+   [
+    {
+       "me_id": 0,
+       "name": "tb1",
+       "pad": "as",
+       "value": "a",
+       "Field": 
+        {
+           "parent_id": 0,
+           "me_id": 0,
+           "type": ".", "type_id": -1,
+           "name": "t1f1",
+           "dt": "NUM",
+           "pad": "display",
+           "use": "dropdown"
+        },
+       "Field": 
+        {
+           "parent_id": 0,
+           "me_id": 1,
+           "type": ".", "type_id": -1,
+           "name": "t1f2",
+           "dt": "FLOAT",
+           "pad": "display",
+           "use": "normal,grid"
+        },
+       "Join2": 
+        {
+           "parent_id": 0,
+           "me_id": 0,
+           "field1": "t1f2", "field1_id": 1,
+           "table2": "tb2", "table2_id": 1,
+           "field2": "t2f1", "field2_id": 2,
+           "attr2": "t2f1a1", "attr2_id": 0
+        }
+    },
+    {
+       "me_id": 1,
+       "name": "tb2",
+       "pad": "as",
+       "value": "b",
+       "Field": 
+        {
+           "parent_id": 1,
+           "me_id": 2,
+           "type": ".", "type_id": -1,
+           "name": "t2f1",
+           "dt": "VAR",
+           "pad": "display",
+           "use": "normal,grid",
+           "Attrs": 
+            {
+               "parent_id": 2,
+               "me_id": 0,
+               "name": "t2f1a1"
+            }
+        },
+       "Join": 
+        {
+           "parent_id": 1,
+           "me_id": 0,
+           "field1": "t2f1", "field1_id": 2,
+           "table2": "tb1", "table2_id": 0,
+           "field2": "t1f1", "field2_id": 0,
+           "pad": "for",
+           "use": "grid"
+        },
+       "Join": 
+        {
+           "parent_id": 1,
+           "me_id": 1,
+           "field1": "t2f1", "field1_id": 2,
+           "table2": "tb1", "table2_id": 0,
+           "field2": "t1f1", "field2_id": 0,
+           "pad": "for",
+           "use": "grid"
+        }
+    },
+    {
+       "me_id": 2,
+       "name": "Open",
+       "pad": "as",
+       "value": "op",
+       "Field": 
+        {
+           "parent_id": 2,
+           "me_id": 3,
+           "type": "User", "type_id": -1,
+           "name": "user",
+           "dt": "VAR",
+           "pad": "E_O_L",
+           "use": "E_O_L"
+        },
+       "Of": 
+        {
+           "parent_id": 2,
+           "me_id": 0,
+           "field": "user", "field_id": 3,
+           "attr": "location_id", "attr_id": -1,
+           "from": "location_name", "from_id": -1,
+           "op": "=",
+           "value": "test"
+        }
+    }
+   ],
+   "Type": 
+   [
+   ]
+}
