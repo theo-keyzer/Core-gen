@@ -1,3 +1,4 @@
+from collections.vector import DynamicVector
 from collections.dict import Dict, KeyElement
 
 
@@ -19,35 +20,87 @@ struct StringKey(KeyElement):
 
 
 fn main() raises :
-	print("Hello, world!")
-	
-	var  f = open("info.txt", "r")
-	var ff = Input( f.read() )
-	print( len( ff.lines ) )
-	print( ff.lines[1] )
-	print( ff.getw( ff.lines[1], 4 ) )
-	print( ff.getwsw( ff.lines[1], 4 ) )
-	print( ff.getwsw( ff.lines[1], 4 ) )
-	f.close()
-	var d = Dict[StringKey, Int]()
-	d["a"] = 1
-	d["b"] = 2
-	print(len(d))      # prints 2
-	print(d["a"])      # prints 1
+    print("Hello, world!")
+    var names = Dict[StringKey, Int]()
+    var vars = Dict[StringKey, Int]()
 
-trait Kp:
+    var act = ActT()
+
+    var  f = open("tst.unit", "r")
+    var ff = Input( f.read() )
+    for ln in range( len( ff.lines ) ):
+        var tok = ff.getw( ff.lines[ln], 0 )
+        if tok == "Comp":
+            var kp = KpComp(ff, ln, act)
+            act.ap_kp.push_back(kp)
+            print("x")
+        if tok == "Element":
+            print("y")
+#        print(  )
+    print( len( ff.lines ) )
+    print( ff.lines[1] )
+    print( ff.getw( ff.lines[1], 4 ) )
+    print( ff.getwsw( ff.lines[1], 4 ) )
+    print( ff.getwsw( ff.lines[1], 4 ) )
+    f.close()
+    var d = Dict[StringKey, Int]()
+    d["a"] = 1
+    d["b"] = 2
+    print(len(d))      # prints 2
+    print(d["a"])      # prints 1
+
+
+
+
+#@register_passable("trivial")
+trait Kp():
    
    fn get_var(self):
        ...
 
-struct Comp(Kp):
-    var names : Dict[StringKey, Int]
+@register_passable("trivial")
+struct KpComp(Kp,CollectionElement):
+    var me: Int
+    var element_from: Int
+    var element_to: Int
    
-    fn getx(self):
+    fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+        self.me = len( act.ap_kp )
+        var name = ff.getw( ff.lines[ln], 1 )
+        act.index[ "Comp_" + name ] = self.me
+        act.names[ "Comp_" + String(self.me) + "_name" ] = name
+        self.element_from = len( act.ap_element )
+        self.element_to = len( act.ap_element )
+        print (name)
+    fn get_var(self):
        return
+
+@register_passable("trivial")
+struct KpElement(Kp,CollectionElement):
+
+    fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+        var i = len( act.ap_kp )
+        if i > 0:
+            act.ap_kp[i-1].element_to = len( act.ap_element ) + 1
 
     fn get_var(self):
        return
+       
+
+
+struct ActT():
+    var names : Dict[StringKey, String]
+    var index : Dict[StringKey, Int]
+    var ap_kp : DynamicVector[KpComp]
+    var ap_element : DynamicVector[KpElement]
+    
+    fn __init__(inout self):
+        self.names = Dict[StringKey, String]()
+        self.index = Dict[StringKey, Int]()
+        self.ap_kp = DynamicVector[KpComp]()
+        self.ap_element = DynamicVector[KpElement]()
+        
+
 
 struct Input:
     var lines: DynamicVector[String]
