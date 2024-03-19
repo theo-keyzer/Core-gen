@@ -1,0 +1,116 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C from collections import Dict, DynamicVector
+C
+C from inputs import StringKey, Input
+C
+C
+C struct ActT():
+C     var names : Dict[StringKey, String]
+C     var index : Dict[StringKey, Int]
+
+All Comp vec
+
+-C     var ap_kp : DynamicVector[KpComp]
+-C     var ap_element : DynamicVector[KpElement]
+C
+C     fn __init__(inout self):
+C         self.names = Dict[StringKey, String]()
+C         self.index = Dict[StringKey, Int]()
+
+All Comp vec2
+
+-C         self.ap_kp = DynamicVector[KpComp]()
+-C         self.ap_element = DynamicVector[KpElement]()
+C
+C
+C trait Kp():
+C
+C    fn get_var(self):
+C        ...
+C
+
+All Comp struct
+
+----------------------------------------------------------------
+Actor vec Comp
+----------------------------------------------------------------
+
+C     var ap_${name}l : DynamicVector[Kp${name}c]
+
+----------------------------------------------------------------
+Actor vec2 Comp
+----------------------------------------------------------------
+
+C         self.ap_${name}l = DynamicVector[Kp${name}c]()
+
+----------------------------------------------------------------
+Actor struct Comp
+----------------------------------------------------------------
+
+C @register_passable("trivial")
+C struct Kp${name}c(Kp,CollectionElement):
+C     var me: Int
+
+Its Comp_parent from_to
+
+C
+C     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+C         self.me = len( act.ap_${name}l )
+
+Its Comp_parent from
+Its Element ele
+Its parent parent_field
+
+C
+C     fn get_var(self):
+C        return
+C
+
+----------------------------------------------------------------
+Actor from_to Comp
+----------------------------------------------------------------
+
+C     var ${name}l_from: Int
+C     var ${name}l_to: Int
+
+----------------------------------------------------------------
+Actor from Comp
+----------------------------------------------------------------
+
+C         self.${name}l_from = len( act.ap_${name}l )
+C         self.${name}l_to = len( act.ap_${name}l )
+
+----------------------------------------------------------------
+Actor ele Element name = name
+----------------------------------------------------------------
+
+C         var na = ff.getw( ff.lines[ln], 1 )
+C         act.names[ "${parent.name}c_" + String(self.me) + "_${name} " ] = na
+
+Du index
+Break
+
+----------------------------------------------------------------
+Actor index Element parent.find = Find
+----------------------------------------------------------------
+
+C         act.index[ "${parent.name}c_" + na ] = self.me
+
+----------------------------------------------------------------
+Actor ele Element
+----------------------------------------------------------------
+
+C         act.names[ "${parent.name}c_" + String(self.me) + "_${name} " ] = ff.getw( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor parent_field Comp
+----------------------------------------------------------------
+
+C         var i = len( act.ap_${name}l )
+C         if i > 0:
+C             act.ap_${name}l[i-1].${.struct.name}l_to = self.me + 1
+
+
