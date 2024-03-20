@@ -1,8 +1,9 @@
 
-import structs
+import structs,run
 
 from inputs import StringKey, Input
 
+#fn load(inout act: Act, inout ff: Input, tok: String, ln: Int)
 
 
 fn main() raises :
@@ -13,16 +14,12 @@ fn main() raises :
     var ff = Input( f.read() )
     for ln in range( len( ff.lines ) ):
         var tok = ff.getw( ff.lines[ln], 0 )
-        if tok == "Comp":
-            var kp = structs.KpComp(ff, ln, act)
-            act.ap_comp.push_back(kp)
-        if tok == "Element":
-            var kp = structs.KpElement(ff, ln, act)
-            act.ap_element.push_back(kp)
+        run.load(act, ff, tok, ln)
     print( len( ff.lines ) )
     f.close()
     print( act.index[ "Comp_Element" ] )
     print( act.names[ "Comp_1_parent" ] )
+    run.refs(act)
 
 
 

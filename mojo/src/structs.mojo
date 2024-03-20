@@ -38,6 +38,7 @@ trait Kp():
 @register_passable("trivial")
 struct KpComp(Kp,CollectionElement):
     var me: Int
+    var k_parentp: Int
     var token_from: Int
     var token_to: Int
     var element_from: Int
@@ -53,6 +54,7 @@ struct KpComp(Kp,CollectionElement):
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me = len( act.ap_comp )
+        self.k_parentp = -1
         self.token_from = len( act.ap_token )
         self.token_to = len( act.ap_token )
         self.element_from = len( act.ap_element )
@@ -144,9 +146,13 @@ struct KpOpt(Kp,CollectionElement):
 @register_passable("trivial")
 struct KpRef(Kp,CollectionElement):
     var me: Int
+    var k_elementp: Int
+    var k_compp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me = len( act.ap_ref )
+        self.k_elementp = -1
+        self.k_compp = -1
         act.names[ "Ref_" + String(self.me) + "_element" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref_" + String(self.me) + "_comp" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref_" + String(self.me) + "_opt" ] = ff.getw( ff.lines[ln], 1 )
@@ -162,9 +168,15 @@ struct KpRef(Kp,CollectionElement):
 @register_passable("trivial")
 struct KpRef2(Kp,CollectionElement):
     var me: Int
+    var k_elementp: Int
+    var k_compp: Int
+    var k_element2p: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me = len( act.ap_ref2 )
+        self.k_elementp = -1
+        self.k_compp = -1
+        self.k_element2p = -1
         act.names[ "Ref2_" + String(self.me) + "_element" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref2_" + String(self.me) + "_comp" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref2_" + String(self.me) + "_element2" ] = ff.getw( ff.lines[ln], 1 )
@@ -181,9 +193,17 @@ struct KpRef2(Kp,CollectionElement):
 @register_passable("trivial")
 struct KpRef3(Kp,CollectionElement):
     var me: Int
+    var k_elementp: Int
+    var k_compp: Int
+    var k_element2p: Int
+    var k_comp_refp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me = len( act.ap_ref3 )
+        self.k_elementp = -1
+        self.k_compp = -1
+        self.k_element2p = -1
+        self.k_comp_refp = -1
         act.names[ "Ref3_" + String(self.me) + "_element" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref3_" + String(self.me) + "_comp" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref3_" + String(self.me) + "_element2" ] = ff.getw( ff.lines[ln], 1 )
@@ -202,9 +222,15 @@ struct KpRef3(Kp,CollectionElement):
 @register_passable("trivial")
 struct KpRefq(Kp,CollectionElement):
     var me: Int
+    var k_elementp: Int
+    var k_compp: Int
+    var k_comp_refp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me = len( act.ap_refq )
+        self.k_elementp = -1
+        self.k_compp = -1
+        self.k_comp_refp = -1
         act.names[ "Refq_" + String(self.me) + "_element" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Refq_" + String(self.me) + "_comp" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Refq_" + String(self.me) + "_element2" ] = ff.getw( ff.lines[ln], 1 )

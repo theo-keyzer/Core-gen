@@ -1,0 +1,47 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C import structs
+C 
+C from inputs import Input
+C
+C fn load(inout act: structs.ActT, inout ff: Input, tok: String, ln: Int):
+
+All Comp load
+
+C
+C fn refs(inout act: structs.ActT):
+
+All Comp refs
+
+----------------------------------------------------------------
+Actor load .
+----------------------------------------------------------------
+
+C         if tok == "${name}c":
+C             var kp = structs.Kp${name}c(ff, ln, act)
+C             act.ap_${name}l.push_back(kp)
+
+----------------------------------------------------------------
+Actor refs .
+----------------------------------------------------------------
+
+Out delay
+
+C     for i in range( len(act.ap_${name}l) ):
+		
+Its Element refs_ele
+
+C
+
+----------------------------------------------------------------
+Actor refs_ele . mw in R1,RS
+----------------------------------------------------------------
+
+C         try:
+C             var p = act.names["${.refs.name}c_" + String(i) + "_${name}l" ]
+C             act.ap_${.refs.name}l[i].k_${name}lp = act.index["${Ref_element.comp.name}c_" + p]
+C         except:
+C             print("except")
+

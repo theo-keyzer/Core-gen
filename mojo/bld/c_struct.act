@@ -13,8 +13,6 @@ C     var index : Dict[StringKey, Int]
 
 All Comp vec
 
--C     var ap_kp : DynamicVector[KpComp]
--C     var ap_element : DynamicVector[KpElement]
 C
 C     fn __init__(inout self):
 C         self.names = Dict[StringKey, String]()
@@ -22,8 +20,6 @@ C         self.index = Dict[StringKey, Int]()
 
 All Comp vec2
 
--C         self.ap_kp = DynamicVector[KpComp]()
--C         self.ap_element = DynamicVector[KpElement]()
 C
 C
 C trait Kp():
@@ -54,12 +50,14 @@ C @register_passable("trivial")
 C struct Kp${name}c(Kp,CollectionElement):
 C     var me: Int
 
+Its Element val_inc2
 Its Comp_parent from_to
 
 C
 C     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
 C         self.me = len( act.ap_${name}l )
 
+Its Element val_inc3
 Its Comp_parent from
 Its Element ele
 Its parent parent_field
@@ -69,6 +67,28 @@ C     fn get_var(self):
 C        return
 C
 
+----------------------------------------------------------------
+Actor val_inc2 Element mw = R1     var k_${name}lp: Int
+Actor val_inc2 Element mw = F1     var k_${name}lp: Int
+Actor val_inc2 Element mw = L1     var k_${name}lp: Int
+Actor val_inc2 Element mw = M1     var k_${name}lp: Int
+Actor val_inc2 Element mw = Q1     var k_${name}lp: Int
+Actor val_inc2 Element mw = RS     var k_${name}lp: Int
+Actor val_inc2 Element mw = FS     var k_${name}lp: Int
+Actor val_inc2 Element mw = LS     var k_${name}lp: Int
+Actor val_inc2 Element mw = MS     var k_${name}lp: Int
+Actor val_inc2 Element mw = QS     var k_${name}lp: Int
+----------------------------------------------------------------
+Actor val_inc3 Element mw = R1         self.k_${name}lp = -1
+Actor val_inc3 Element mw = F1         self.k_${name}lp = -1
+Actor val_inc3 Element mw = L1         self.k_${name}lp = -1
+Actor val_inc3 Element mw = M1         self.k_${name}lp = -1
+Actor val_inc3 Element mw = Q1         self.k_${name}lp = -1
+Actor val_inc3 Element mw = RS         self.k_${name}lp = -1
+Actor val_inc3 Element mw = FS         self.k_${name}lp = -1
+Actor val_inc3 Element mw = LS         self.k_${name}lp = -1
+Actor val_inc3 Element mw = MS         self.k_${name}lp = -1
+Actor val_inc3 Element mw = QS         self.k_${name}lp = -1
 ----------------------------------------------------------------
 Actor from_to Comp
 ----------------------------------------------------------------
