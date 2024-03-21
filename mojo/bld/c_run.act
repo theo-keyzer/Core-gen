@@ -16,6 +16,18 @@ C fn refs(inout act: structs.ActT):
 All Comp refs
 
 ----------------------------------------------------------------
+Actor load . parent.name = Actor
+----------------------------------------------------------------
+
+C         if tok == "${name}c":
+C             var kp = structs.Kp${name}c(ff, ln, act)
+C             act.ap_${name}l.push_back(kp)
+C             var cmd = structs.CmdT(${k_me} , kp.me2)
+C             act.ap_cmds.push_back(cmd)
+
+Break
+
+----------------------------------------------------------------
 Actor load .
 ----------------------------------------------------------------
 

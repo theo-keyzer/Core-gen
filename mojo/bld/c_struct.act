@@ -21,6 +21,14 @@ C         self.index = Dict[StringKey, Int]()
 All Comp vec2
 
 C
+C @register_passable("trivial")
+C struct CmdT(CollectionElement):
+C     var cmd: Int
+C     var ind: Int
+C
+C     fn __init__(inout self, cmd:Int, ind:Int):
+C         self.cmd = cmd
+C         self.ind = ind
 C
 C trait Kp():
 C
@@ -31,16 +39,84 @@ C
 All Comp struct
 
 ----------------------------------------------------------------
+Actor vec Comp name = Actor
+----------------------------------------------------------------
+
+C     var ap_cmds : DynamicVector[CmdT]
+
+----------------------------------------------------------------
 Actor vec Comp
 ----------------------------------------------------------------
 
 C     var ap_${name}l : DynamicVector[Kp${name}c]
 
 ----------------------------------------------------------------
+Actor vec2 Comp name = Actor
+----------------------------------------------------------------
+
+C         self.ap_cmds = DynamicVector[CmdT]()
+
+----------------------------------------------------------------
 Actor vec2 Comp
 ----------------------------------------------------------------
 
 C         self.ap_${name}l = DynamicVector[Kp${name}c]()
+
+----------------------------------------------------------------
+Actor struct Comp name = Actor
+----------------------------------------------------------------
+
+C @register_passable("trivial")
+C struct Kp${name}c(Kp,CollectionElement):
+C     var me: Int
+C     var cmds_from: Int
+C     var cmds_to: Int
+
+Its Element val_inc2
+
+C
+C     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+C         self.me = len( act.ap_${name}l )
+C         self.cmds_from = len( act.ap_cmds )
+C         self.cmds_to = len( act.ap_cmds )
+
+Its Element val_inc3
+Its Element ele
+Its parent parent_field
+
+C
+C     fn get_var(self):
+C        return
+C
+
+Break
+
+----------------------------------------------------------------
+Actor struct Comp parent.name = Actor
+----------------------------------------------------------------
+
+C @register_passable("trivial")
+C struct Kp${name}c(Kp,CollectionElement):
+C     var me: Int
+C     var me2: Int
+
+Its Element val_inc2
+
+C
+C     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+C         self.me = len( act.ap_cmds )
+C         self.me2 = len( act.ap_${name}l )
+
+Its Element val_inc3
+Its Element ele
+Its parent parent_field
+
+C
+C     fn get_var(self):
+C        return
+C
+
+Break
 
 ----------------------------------------------------------------
 Actor struct Comp
@@ -124,6 +200,16 @@ Actor ele Element
 ----------------------------------------------------------------
 
 C         act.names[ "${parent.name}c_" + String(self.me) + "_${name} " ] = ff.getw( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor parent_field Comp .struct.parent.name = Actor
+----------------------------------------------------------------
+
+C         var i = len( act.ap_${name}l )
+C         if i > 0:
+C             act.ap_${name}l[i-1].cmds_to = self.me + 1
+
+Break
 
 ----------------------------------------------------------------
 Actor parent_field Comp
