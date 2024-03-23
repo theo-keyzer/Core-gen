@@ -1,5 +1,13 @@
 from collections import DynamicVector, KeyElement
 
+fn vector(*values: StringLiteral) -> DynamicVector[StringLiteral]:
+    var elements_list: VariadicList[StringLiteral] = values
+    var result = DynamicVector[StringLiteral]()
+    result.clear()
+    for i in range(len(elements_list)):
+        result.push_back(values[i])
+    return result
+
 
 @value
 struct StringKey(KeyElement):

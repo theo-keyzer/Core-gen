@@ -39,10 +39,10 @@ struct ActT():
 
 @register_passable("trivial")
 struct CmdT(CollectionElement):
-    var cmd: Int
+    var cmd: StringLiteral
     var ind: Int
 
-    fn __init__(inout self, cmd:Int, ind:Int):
+    fn __init__(inout self, cmd:StringLiteral, ind:Int):
         self.cmd = cmd
         self.ind = ind
 
@@ -148,8 +148,8 @@ struct KpAll(Kp,CollectionElement):
     var k_actorp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
-        self.me = len( act.ap_cmds )
-        self.me2 = len( act.ap_all )
+        self.me2 = len( act.ap_cmds )
+        self.me = len( act.ap_all )
         self.k_actorp = -1
         act.names[ "All_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "All_" + String(self.me) + "_actor" ] = ff.getw( ff.lines[ln], 1 )
@@ -159,7 +159,7 @@ struct KpAll(Kp,CollectionElement):
         act.names[ "All_" + String(self.me) + "_args" ] = ff.getw( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
-            act.ap_actor[i-1].cmds_to = self.me + 1
+            act.ap_actor[i-1].cmds_to = self.me2 + 1
 
     fn get_var(self):
        return
@@ -171,8 +171,8 @@ struct KpDu(Kp,CollectionElement):
     var k_actorp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
-        self.me = len( act.ap_cmds )
-        self.me2 = len( act.ap_du )
+        self.me2 = len( act.ap_cmds )
+        self.me = len( act.ap_du )
         self.k_actorp = -1
         act.names[ "Du_" + String(self.me) + "_actor" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Du_" + String(self.me) + "_attr" ] = ff.getw( ff.lines[ln], 1 )
@@ -181,7 +181,7 @@ struct KpDu(Kp,CollectionElement):
         act.names[ "Du_" + String(self.me) + "_args" ] = ff.getw( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
-            act.ap_actor[i-1].cmds_to = self.me + 1
+            act.ap_actor[i-1].cmds_to = self.me2 + 1
 
     fn get_var(self):
        return
@@ -193,8 +193,8 @@ struct KpIts(Kp,CollectionElement):
     var k_actorp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
-        self.me = len( act.ap_cmds )
-        self.me2 = len( act.ap_its )
+        self.me2 = len( act.ap_cmds )
+        self.me = len( act.ap_its )
         self.k_actorp = -1
         act.names[ "Its_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Its_" + String(self.me) + "_actor" ] = ff.getw( ff.lines[ln], 1 )
@@ -204,7 +204,7 @@ struct KpIts(Kp,CollectionElement):
         act.names[ "Its_" + String(self.me) + "_args" ] = ff.getw( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
-            act.ap_actor[i-1].cmds_to = self.me + 1
+            act.ap_actor[i-1].cmds_to = self.me2 + 1
 
     fn get_var(self):
        return
@@ -215,12 +215,12 @@ struct KpC(Kp,CollectionElement):
     var me2: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
-        self.me = len( act.ap_cmds )
-        self.me2 = len( act.ap_c )
+        self.me2 = len( act.ap_cmds )
+        self.me = len( act.ap_c )
         act.names[ "C_" + String(self.me) + "_desc" ] = ff.getw( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
-            act.ap_actor[i-1].cmds_to = self.me + 1
+            act.ap_actor[i-1].cmds_to = self.me2 + 1
 
     fn get_var(self):
        return
@@ -231,12 +231,12 @@ struct KpCs(Kp,CollectionElement):
     var me2: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
-        self.me = len( act.ap_cmds )
-        self.me2 = len( act.ap_cs )
+        self.me2 = len( act.ap_cmds )
+        self.me = len( act.ap_cs )
         act.names[ "Cs_" + String(self.me) + "_desc" ] = ff.getw( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
-            act.ap_actor[i-1].cmds_to = self.me + 1
+            act.ap_actor[i-1].cmds_to = self.me2 + 1
 
     fn get_var(self):
        return
@@ -247,14 +247,14 @@ struct KpOut(Kp,CollectionElement):
     var me2: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
-        self.me = len( act.ap_cmds )
-        self.me2 = len( act.ap_out )
+        self.me2 = len( act.ap_cmds )
+        self.me = len( act.ap_out )
         act.names[ "Out_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Out_" + String(self.me) + "_pad" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Out_" + String(self.me) + "_desc" ] = ff.getw( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
-            act.ap_actor[i-1].cmds_to = self.me + 1
+            act.ap_actor[i-1].cmds_to = self.me2 + 1
 
     fn get_var(self):
        return
@@ -265,14 +265,14 @@ struct KpBreak(Kp,CollectionElement):
     var me2: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
-        self.me = len( act.ap_cmds )
-        self.me2 = len( act.ap_break )
+        self.me2 = len( act.ap_cmds )
+        self.me = len( act.ap_break )
         act.names[ "Break_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Break_" + String(self.me) + "_on" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Break_" + String(self.me) + "_vars" ] = ff.getw( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
-            act.ap_actor[i-1].cmds_to = self.me + 1
+            act.ap_actor[i-1].cmds_to = self.me2 + 1
 
     fn get_var(self):
        return
@@ -283,14 +283,14 @@ struct KpUnique(Kp,CollectionElement):
     var me2: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
-        self.me = len( act.ap_cmds )
-        self.me2 = len( act.ap_unique )
+        self.me2 = len( act.ap_cmds )
+        self.me = len( act.ap_unique )
         act.names[ "Unique_" + String(self.me) + "_cmd" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Unique_" + String(self.me) + "_key" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Unique_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
-            act.ap_actor[i-1].cmds_to = self.me + 1
+            act.ap_actor[i-1].cmds_to = self.me2 + 1
 
     fn get_var(self):
        return
