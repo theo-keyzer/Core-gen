@@ -26,7 +26,14 @@ fn main() raises :
         run.load(dats, ff, tok, ln)
     f.close()
     run.refs(dats)
+    print( dats.ap_comp[1].get_var(dats, "name") )
+    gen(acts, dats, 0)
 
-
+fn gen(acts: structs.ActT, dats: structs.ActT, act: Int):
+    for c in range(acts.ap_actor[act].cmds_from, acts.ap_actor[act].cmds_to):
+        var cmd = acts.ap_cmds[c]
+        if cmd.cmd == "C":
+            var cc = acts.ap_c[ cmd.ind ]
+            print( cc.get_var(acts, "desc") )
 
 

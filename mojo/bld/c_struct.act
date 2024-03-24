@@ -32,7 +32,7 @@ C         self.ind = ind
 C
 C trait Kp():
 C
-C    fn get_var(self):
+C    fn get_var(self, act: ActT, na: String) -> String:
 C        ...
 C
 
@@ -72,6 +72,7 @@ C     var me: Int
 C     var cmds_from: Int
 C     var cmds_to: Int
 
+-Its Element val_inc
 Its Element val_inc2
 
 C
@@ -85,8 +86,12 @@ Its Element ele
 Its parent parent_field
 
 C
-C     fn get_var(self):
-C        return
+C     fn get_var(self, act: ActT, na: String) -> String:
+C         try:
+C             return( act.names["${name}c_" + String(self.me) + "_" + na ] )
+C         except:
+C            print("except ${name}c_" + String(self.me) + "_" + na  )
+C         return("??")
 C
 
 Break
@@ -100,6 +105,7 @@ C struct Kp${name}c(Kp,CollectionElement):
 C     var me: Int
 C     var me2: Int
 
+-Its Element val_inc
 Its Element val_inc2
 
 C
@@ -112,8 +118,12 @@ Its Element ele
 Its parent parent_field
 
 C
-C     fn get_var(self):
-C        return
+C     fn get_var(self, act: ActT, na: String) -> String:
+C         try:
+C             return( act.names["${name}c_" + String(self.me) + "_" + na ] )
+C         except:
+C            print("except ${name}c_" + String(self.me) + "_" + na  )
+C         return("??")
 C
 
 Break
@@ -139,10 +149,22 @@ Its Element ele
 Its parent parent_field
 
 C
-C     fn get_var(self):
-C        return
+C     fn get_var(self, act: ActT, na: String) -> String:
+C         try:
+C             return( act.names["${name}c_" + String(self.me) + "_" + na ] )
+C         except:
+C            print("except ${name}c_" + String(self.me) + "_" + na  )
+C         return("??")
 C
 
+----------------------------------------------------------------
+Actor val_inc Element mw = C1     var k_${name}l: StringLiteral
+Actor val_inc Element mw = CS     var k_${name}l: StringLiteral
+Actor val_inc Element mw = V1     var k_${name}l: StringLiteral
+Actor val_inc Element mw = R1     var k_${name}l: StringLiteral
+Actor val_inc Element mw = F1     var k_${name}l: StringLiteral
+Actor val_inc Element mw = L1     var k_${name}l: StringLiteral
+Actor val_inc Element mw = M1     var k_${name}l: StringLiteral
 ----------------------------------------------------------------
 Actor val_inc2 Element mw = R1     var k_${name}lp: Int
 Actor val_inc2 Element mw = F1     var k_${name}lp: Int
@@ -196,10 +218,34 @@ Actor index Element parent.find = Find
 C         act.index[ "${parent.name}c_" + na ] = self.me
 
 ----------------------------------------------------------------
-Actor ele Element
+Actor ele_act . mw in C1,R1,F1,L1
+----------------------------------------------------------------
+
+C         self.k_${name}l = ff.getw( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor ele_act . mw = V1
+----------------------------------------------------------------
+
+C         self.k_${name}l = ff.getws( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor ele . mw in C1,R1,F1,L1,M1,N1,P1,Q1
 ----------------------------------------------------------------
 
 C         act.names[ "${parent.name}c_" + String(self.me) + "_${name} " ] = ff.getw( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor ele . mw = V1
+----------------------------------------------------------------
+
+C         act.names[ "${parent.name}c_" + String(self.me) + "_${name} " ] = ff.getws( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor ele . mw in CS,RS,FS,LS,MS,NS,PS,QS
+----------------------------------------------------------------
+
+C         act.names[ "${parent.name}c_" + String(self.me) + "_${name} " ] = ff.getsw( ff.lines[ln], 1 )
 
 ----------------------------------------------------------------
 Actor parent_field Comp .struct.parent.name = Actor

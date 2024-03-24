@@ -51,7 +51,7 @@ struct Input:
         if p == 0:
             pos = 0
         if pos+1 > l:
-            return("E_O_L")
+            return("")
         self.pos = l
         return( ln[pos+1:l] )
 

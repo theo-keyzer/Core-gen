@@ -48,7 +48,7 @@ struct CmdT(CollectionElement):
 
 trait Kp():
 
-   fn get_var(self):
+   fn get_var(self, act: ActT, na: String) -> String:
        ...
 
 @register_passable("trivial")
@@ -73,10 +73,14 @@ struct KpComp(Kp,CollectionElement):
         act.names[ "Comp_" + String(self.me) + "_nop" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Comp_" + String(self.me) + "_parent" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Comp_" + String(self.me) + "_find" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Comp_" + String(self.me) + "_doc" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Comp_" + String(self.me) + "_doc" ] = ff.getws( ff.lines[ln], 1 )
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Comp_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Comp_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpElement(Kp,CollectionElement):
@@ -89,13 +93,17 @@ struct KpElement(Kp,CollectionElement):
         act.names[ "Element_" + String(self.me) + "_mw" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Element_" + String(self.me) + "_mw2" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Element_" + String(self.me) + "_pad" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Element_" + String(self.me) + "_doc" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Element_" + String(self.me) + "_doc" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].element_to = self.me + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Element_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Element_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpRef(Kp,CollectionElement):
@@ -111,13 +119,17 @@ struct KpRef(Kp,CollectionElement):
         act.names[ "Ref_" + String(self.me) + "_comp" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref_" + String(self.me) + "_opt" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref_" + String(self.me) + "_var" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Ref_" + String(self.me) + "_doc" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Ref_" + String(self.me) + "_doc" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].ref_to = self.me + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Ref_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Ref_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpActor(Kp,CollectionElement):
@@ -136,10 +148,14 @@ struct KpActor(Kp,CollectionElement):
         act.names[ "Actor_" + String(self.me) + "_attr" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Actor_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Actor_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Actor_" + String(self.me) + "_cc" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Actor_" + String(self.me) + "_cc" ] = ff.getws( ff.lines[ln], 1 )
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Actor_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Actor_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpAll(Kp,CollectionElement):
@@ -156,13 +172,17 @@ struct KpAll(Kp,CollectionElement):
         act.names[ "All_" + String(self.me) + "_attr" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "All_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "All_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "All_" + String(self.me) + "_args" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "All_" + String(self.me) + "_args" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["All_" + String(self.me) + "_" + na ] )
+        except:
+           print("except All_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpDu(Kp,CollectionElement):
@@ -178,13 +198,17 @@ struct KpDu(Kp,CollectionElement):
         act.names[ "Du_" + String(self.me) + "_attr" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Du_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Du_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Du_" + String(self.me) + "_args" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Du_" + String(self.me) + "_args" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Du_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Du_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpIts(Kp,CollectionElement):
@@ -201,13 +225,17 @@ struct KpIts(Kp,CollectionElement):
         act.names[ "Its_" + String(self.me) + "_attr" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Its_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Its_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Its_" + String(self.me) + "_args" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Its_" + String(self.me) + "_args" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Its_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Its_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpC(Kp,CollectionElement):
@@ -217,13 +245,17 @@ struct KpC(Kp,CollectionElement):
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_c )
-        act.names[ "C_" + String(self.me) + "_desc" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "C_" + String(self.me) + "_desc" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["C_" + String(self.me) + "_" + na ] )
+        except:
+           print("except C_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpCs(Kp,CollectionElement):
@@ -233,13 +265,17 @@ struct KpCs(Kp,CollectionElement):
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_cs )
-        act.names[ "Cs_" + String(self.me) + "_desc" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Cs_" + String(self.me) + "_desc" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Cs_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Cs_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpOut(Kp,CollectionElement):
@@ -251,13 +287,17 @@ struct KpOut(Kp,CollectionElement):
         self.me = len( act.ap_out )
         act.names[ "Out_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Out_" + String(self.me) + "_pad" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Out_" + String(self.me) + "_desc" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Out_" + String(self.me) + "_desc" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Out_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Out_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpBreak(Kp,CollectionElement):
@@ -269,13 +309,17 @@ struct KpBreak(Kp,CollectionElement):
         self.me = len( act.ap_break )
         act.names[ "Break_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Break_" + String(self.me) + "_on" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Break_" + String(self.me) + "_vars" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Break_" + String(self.me) + "_vars" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Break_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Break_" + String(self.me) + "_" + na  )
+        return("??")
 
 @register_passable("trivial")
 struct KpUnique(Kp,CollectionElement):
@@ -287,11 +331,15 @@ struct KpUnique(Kp,CollectionElement):
         self.me = len( act.ap_unique )
         act.names[ "Unique_" + String(self.me) + "_cmd" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Unique_" + String(self.me) + "_key" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Unique_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
+        act.names[ "Unique_" + String(self.me) + "_value" ] = ff.getws( ff.lines[ln], 1 )
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
 
-    fn get_var(self):
-       return
+    fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            return( act.names["Unique_" + String(self.me) + "_" + na ] )
+        except:
+           print("except Unique_" + String(self.me) + "_" + na  )
+        return("??")
 
