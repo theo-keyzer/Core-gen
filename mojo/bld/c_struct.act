@@ -35,6 +35,16 @@ C
 C    fn get_var(self, act: ActT, na: String) -> String:
 C        ...
 C
+C @register_passable("trivial")
+C struct KpArgs(Kp):
+C     var me: Int
+C
+C     fn __init__(inout self): 
+C         self.me = 1
+C
+C     fn get_var(self, act: ActT, na: String) -> String:
+C         return("?")
+C
 
 All Comp struct
 

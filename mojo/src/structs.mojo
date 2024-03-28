@@ -52,6 +52,16 @@ trait Kp():
        ...
 
 @register_passable("trivial")
+struct KpArgs(Kp):
+    var me: Int
+
+    fn __init__(inout self): 
+        self.me = 1
+
+    fn get_var(self, act: ActT, na: String) -> String:
+        return("?")
+
+@register_passable("trivial")
 struct KpComp(Kp,CollectionElement):
     var me: Int
     var k_parentp: Int
