@@ -5,7 +5,7 @@ Actor main .
 C from collections import Dict, DynamicVector
 C
 C from inputs import StringKey, Input
-C
+C from gen import GlobT, go_act
 C
 C struct ActT():
 C     var names : Dict[StringKey, String]
@@ -32,8 +32,10 @@ C         self.ind = ind
 C
 C trait Kp():
 C
-C    fn get_var(self, act: ActT, na: String) -> String:
-C        ...
+C     fn get_var(self, act: ActT, na: String) -> String:
+C         ...
+C     fn do_its(self, glob: GlobT, what: String, act: Int):
+C         ...
 C
 C @register_passable("trivial")
 C struct KpArgs(Kp):
@@ -44,7 +46,8 @@ C         self.me = 1
 C
 C     fn get_var(self, act: ActT, na: String) -> String:
 C         return("?")
-C
+C     fn do_its(self, glob: GlobT, what: String, act: Int):
+C         return
 
 All Comp struct
 
@@ -103,6 +106,9 @@ C         except:
 C            print("except ${name}c_" + String(self.me) + "_" + na  )
 C         return("??")
 C
+C     fn do_its(self, glob: GlobT, what: String, act: Int):
+C         return
+C
 
 Break
 
@@ -135,6 +141,9 @@ C         except:
 C            print("except ${name}c_" + String(self.me) + "_" + na  )
 C         return("??")
 C
+C     fn do_its(self, glob: GlobT, what: String, act: Int):
+C         return
+C
 
 Break
 
@@ -165,6 +174,12 @@ C             return( act.names["${name}c_" + String(self.me) + "_" + na ] )
 C         except:
 C            print("except ${name}c_" + String(self.me) + "_" + na  )
 C         return("??")
+C
+C     fn do_its(self, glob: GlobT, what: String, act: Int):
+
+Its Comp_parent its
+
+C         return
 C
 
 ----------------------------------------------------------------
@@ -275,4 +290,11 @@ C         var i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].${.struct.name}l_to = self.me + 1
 
+----------------------------------------------------------------
+Actor its Comp
+----------------------------------------------------------------
+
+C         if what == "${name}c":
+C             for i in range( self.${name}l_from, self.${name}l_to ):
+C                 go_act(glob.dats.ap_${name}l[i], glob, act)
 

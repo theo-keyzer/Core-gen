@@ -1,7 +1,7 @@
 from collections import Dict, DynamicVector
 
 from inputs import StringKey, Input
-
+from gen import GlobT, go_act
 
 struct ActT():
     var names : Dict[StringKey, String]
@@ -48,8 +48,10 @@ struct CmdT(CollectionElement):
 
 trait Kp():
 
-   fn get_var(self, act: ActT, na: String) -> String:
-       ...
+    fn get_var(self, act: ActT, na: String) -> String:
+        ...
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        ...
 
 @register_passable("trivial")
 struct KpArgs(Kp):
@@ -60,7 +62,8 @@ struct KpArgs(Kp):
 
     fn get_var(self, act: ActT, na: String) -> String:
         return("?")
-
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
 @register_passable("trivial")
 struct KpComp(Kp,CollectionElement):
     var me: Int
@@ -92,6 +95,15 @@ struct KpComp(Kp,CollectionElement):
            print("except Comp_" + String(self.me) + "_" + na  )
         return("??")
 
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        if what == "Element":
+            for i in range( self.element_from, self.element_to ):
+                go_act(glob.dats.ap_element[i], glob, act)
+        if what == "Ref":
+            for i in range( self.ref_from, self.ref_to ):
+                go_act(glob.dats.ap_ref[i], glob, act)
+        return
+
 @register_passable("trivial")
 struct KpElement(Kp,CollectionElement):
     var me: Int
@@ -114,6 +126,9 @@ struct KpElement(Kp,CollectionElement):
         except:
            print("except Element_" + String(self.me) + "_" + na  )
         return("??")
+
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
 
 @register_passable("trivial")
 struct KpRef(Kp,CollectionElement):
@@ -141,6 +156,9 @@ struct KpRef(Kp,CollectionElement):
            print("except Ref_" + String(self.me) + "_" + na  )
         return("??")
 
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
+
 @register_passable("trivial")
 struct KpActor(Kp,CollectionElement):
     var me: Int
@@ -166,6 +184,9 @@ struct KpActor(Kp,CollectionElement):
         except:
            print("except Actor_" + String(self.me) + "_" + na  )
         return("??")
+
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
 
 @register_passable("trivial")
 struct KpAll(Kp,CollectionElement):
@@ -194,6 +215,9 @@ struct KpAll(Kp,CollectionElement):
            print("except All_" + String(self.me) + "_" + na  )
         return("??")
 
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
+
 @register_passable("trivial")
 struct KpDu(Kp,CollectionElement):
     var me: Int
@@ -219,6 +243,9 @@ struct KpDu(Kp,CollectionElement):
         except:
            print("except Du_" + String(self.me) + "_" + na  )
         return("??")
+
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
 
 @register_passable("trivial")
 struct KpIts(Kp,CollectionElement):
@@ -247,6 +274,9 @@ struct KpIts(Kp,CollectionElement):
            print("except Its_" + String(self.me) + "_" + na  )
         return("??")
 
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
+
 @register_passable("trivial")
 struct KpC(Kp,CollectionElement):
     var me: Int
@@ -267,6 +297,9 @@ struct KpC(Kp,CollectionElement):
            print("except C_" + String(self.me) + "_" + na  )
         return("??")
 
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
+
 @register_passable("trivial")
 struct KpCs(Kp,CollectionElement):
     var me: Int
@@ -286,6 +319,9 @@ struct KpCs(Kp,CollectionElement):
         except:
            print("except Cs_" + String(self.me) + "_" + na  )
         return("??")
+
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
 
 @register_passable("trivial")
 struct KpOut(Kp,CollectionElement):
@@ -309,6 +345,9 @@ struct KpOut(Kp,CollectionElement):
            print("except Out_" + String(self.me) + "_" + na  )
         return("??")
 
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
+
 @register_passable("trivial")
 struct KpBreak(Kp,CollectionElement):
     var me: Int
@@ -331,6 +370,9 @@ struct KpBreak(Kp,CollectionElement):
            print("except Break_" + String(self.me) + "_" + na  )
         return("??")
 
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
+
 @register_passable("trivial")
 struct KpUnique(Kp,CollectionElement):
     var me: Int
@@ -352,4 +394,7 @@ struct KpUnique(Kp,CollectionElement):
         except:
            print("except Unique_" + String(self.me) + "_" + na  )
         return("??")
+
+    fn do_its(self, glob: GlobT, what: String, act: Int):
+        return
 
