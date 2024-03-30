@@ -1,41 +1,42 @@
-from collections import Dict, DynamicVector
+from collections import Dict
+from collections.list import List
 
 from inputs import StringKey, Input
 from gen import GlobT, go_act
 
 struct ActT():
-    var names : Dict[StringKey, String]
-    var index : Dict[StringKey, Int]
-    var ap_comp : DynamicVector[KpComp]
-    var ap_element : DynamicVector[KpElement]
-    var ap_ref : DynamicVector[KpRef]
-    var ap_cmds : DynamicVector[CmdT]
-    var ap_actor : DynamicVector[KpActor]
-    var ap_all : DynamicVector[KpAll]
-    var ap_du : DynamicVector[KpDu]
-    var ap_its : DynamicVector[KpIts]
-    var ap_c : DynamicVector[KpC]
-    var ap_cs : DynamicVector[KpCs]
-    var ap_out : DynamicVector[KpOut]
-    var ap_break : DynamicVector[KpBreak]
-    var ap_unique : DynamicVector[KpUnique]
+    var names : Dict[String, String]
+    var index : Dict[String, Int]
+    var ap_comp : List[KpComp]
+    var ap_element : List[KpElement]
+    var ap_ref : List[KpRef]
+    var ap_cmds : List[CmdT]
+    var ap_actor : List[KpActor]
+    var ap_all : List[KpAll]
+    var ap_du : List[KpDu]
+    var ap_its : List[KpIts]
+    var ap_c : List[KpC]
+    var ap_cs : List[KpCs]
+    var ap_out : List[KpOut]
+    var ap_break : List[KpBreak]
+    var ap_unique : List[KpUnique]
 
     fn __init__(inout self):
-        self.names = Dict[StringKey, String]()
-        self.index = Dict[StringKey, Int]()
-        self.ap_comp = DynamicVector[KpComp]()
-        self.ap_element = DynamicVector[KpElement]()
-        self.ap_ref = DynamicVector[KpRef]()
-        self.ap_cmds = DynamicVector[CmdT]()
-        self.ap_actor = DynamicVector[KpActor]()
-        self.ap_all = DynamicVector[KpAll]()
-        self.ap_du = DynamicVector[KpDu]()
-        self.ap_its = DynamicVector[KpIts]()
-        self.ap_c = DynamicVector[KpC]()
-        self.ap_cs = DynamicVector[KpCs]()
-        self.ap_out = DynamicVector[KpOut]()
-        self.ap_break = DynamicVector[KpBreak]()
-        self.ap_unique = DynamicVector[KpUnique]()
+        self.names = Dict[String, String]()
+        self.index = Dict[String, Int]()
+        self.ap_comp = List[KpComp]()
+        self.ap_element = List[KpElement]()
+        self.ap_ref = List[KpRef]()
+        self.ap_cmds = List[CmdT]()
+        self.ap_actor = List[KpActor]()
+        self.ap_all = List[KpAll]()
+        self.ap_du = List[KpDu]()
+        self.ap_its = List[KpIts]()
+        self.ap_c = List[KpC]()
+        self.ap_cs = List[KpCs]()
+        self.ap_out = List[KpOut]()
+        self.ap_break = List[KpBreak]()
+        self.ap_unique = List[KpUnique]()
 
 @register_passable("trivial")
 struct CmdT(CollectionElement):

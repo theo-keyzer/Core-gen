@@ -1,7 +1,7 @@
 
 import structs,run,gen
 
-from inputs import StringKey, Input
+from inputs import Input
 
 fn main() raises :
 

@@ -5,56 +5,56 @@ from inputs import Input
 fn load(inout act: structs.ActT, inout ff: Input, tok: String, ln: Int):
         if tok == "Comp":
             var kp = structs.KpComp(ff, ln, act)
-            act.ap_comp.push_back(kp)
+            act.ap_comp.append(kp)
         if tok == "Element":
             var kp = structs.KpElement(ff, ln, act)
-            act.ap_element.push_back(kp)
+            act.ap_element.append(kp)
         if tok == "Ref":
             var kp = structs.KpRef(ff, ln, act)
-            act.ap_ref.push_back(kp)
+            act.ap_ref.append(kp)
         if tok == "Actor":
             var kp = structs.KpActor(ff, ln, act)
-            act.ap_actor.push_back(kp)
+            act.ap_actor.append(kp)
         if tok == "All":
             var kp = structs.KpAll(ff, ln, act)
-            act.ap_all.push_back(kp)
+            act.ap_all.append(kp)
             var cmd = structs.CmdT("All", kp.me)
-            act.ap_cmds.push_back(cmd)
+            act.ap_cmds.append(cmd)
         if tok == "Du":
             var kp = structs.KpDu(ff, ln, act)
-            act.ap_du.push_back(kp)
+            act.ap_du.append(kp)
             var cmd = structs.CmdT("Du", kp.me)
-            act.ap_cmds.push_back(cmd)
+            act.ap_cmds.append(cmd)
         if tok == "Its":
             var kp = structs.KpIts(ff, ln, act)
-            act.ap_its.push_back(kp)
+            act.ap_its.append(kp)
             var cmd = structs.CmdT("Its", kp.me)
-            act.ap_cmds.push_back(cmd)
+            act.ap_cmds.append(cmd)
         if tok == "C":
             var kp = structs.KpC(ff, ln, act)
-            act.ap_c.push_back(kp)
+            act.ap_c.append(kp)
             var cmd = structs.CmdT("C", kp.me)
-            act.ap_cmds.push_back(cmd)
+            act.ap_cmds.append(cmd)
         if tok == "Cs":
             var kp = structs.KpCs(ff, ln, act)
-            act.ap_cs.push_back(kp)
+            act.ap_cs.append(kp)
             var cmd = structs.CmdT("Cs", kp.me)
-            act.ap_cmds.push_back(cmd)
+            act.ap_cmds.append(cmd)
         if tok == "Out":
             var kp = structs.KpOut(ff, ln, act)
-            act.ap_out.push_back(kp)
+            act.ap_out.append(kp)
             var cmd = structs.CmdT("Out", kp.me)
-            act.ap_cmds.push_back(cmd)
+            act.ap_cmds.append(cmd)
         if tok == "Break":
             var kp = structs.KpBreak(ff, ln, act)
-            act.ap_break.push_back(kp)
+            act.ap_break.append(kp)
             var cmd = structs.CmdT("Break", kp.me)
-            act.ap_cmds.push_back(cmd)
+            act.ap_cmds.append(cmd)
         if tok == "Unique":
             var kp = structs.KpUnique(ff, ln, act)
-            act.ap_unique.push_back(kp)
+            act.ap_unique.append(kp)
             var cmd = structs.CmdT("Unique", kp.me)
-            act.ap_cmds.push_back(cmd)
+            act.ap_cmds.append(cmd)
 
 fn refs(inout act: structs.ActT):
     for i in range( len(act.ap_comp) ):

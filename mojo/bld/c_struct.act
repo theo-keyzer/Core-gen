@@ -2,21 +2,22 @@
 Actor main .
 ----------------------------------------------------------------
 
-C from collections import Dict, DynamicVector
+C from collections import Dict
+C from collections.list import List
 C
 C from inputs import StringKey, Input
 C from gen import GlobT, go_act
 C
 C struct ActT():
-C     var names : Dict[StringKey, String]
-C     var index : Dict[StringKey, Int]
+C     var names : Dict[String, String]
+C     var index : Dict[String, Int]
 
 All Comp vec
 
 C
 C     fn __init__(inout self):
-C         self.names = Dict[StringKey, String]()
-C         self.index = Dict[StringKey, Int]()
+C         self.names = Dict[String, String]()
+C         self.index = Dict[String, Int]()
 
 All Comp vec2
 
@@ -55,25 +56,25 @@ All Comp struct
 Actor vec Comp name = Actor
 ----------------------------------------------------------------
 
-C     var ap_cmds : DynamicVector[CmdT]
+C     var ap_cmds : List[CmdT]
 
 ----------------------------------------------------------------
 Actor vec Comp
 ----------------------------------------------------------------
 
-C     var ap_${name}l : DynamicVector[Kp${name}c]
+C     var ap_${name}l : List[Kp${name}c]
 
 ----------------------------------------------------------------
 Actor vec2 Comp name = Actor
 ----------------------------------------------------------------
 
-C         self.ap_cmds = DynamicVector[CmdT]()
+C         self.ap_cmds = List[CmdT]()
 
 ----------------------------------------------------------------
 Actor vec2 Comp
 ----------------------------------------------------------------
 
-C         self.ap_${name}l = DynamicVector[Kp${name}c]()
+C         self.ap_${name}l = List[Kp${name}c]()
 
 ----------------------------------------------------------------
 Actor struct Comp name = Actor

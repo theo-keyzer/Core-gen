@@ -21,9 +21,9 @@ Actor load . parent.name = Actor
 
 C         if tok == "${name}c":
 C             var kp = structs.Kp${name}c(ff, ln, act)
-C             act.ap_${name}l.push_back(kp)
+C             act.ap_${name}l.append(kp)
 C             var cmd = structs.CmdT("${name}c", kp.me)
-C             act.ap_cmds.push_back(cmd)
+C             act.ap_cmds.append(cmd)
 
 Break
 
@@ -33,7 +33,7 @@ Actor load .
 
 C         if tok == "${name}c":
 C             var kp = structs.Kp${name}c(ff, ln, act)
-C             act.ap_${name}l.push_back(kp)
+C             act.ap_${name}l.append(kp)
 
 ----------------------------------------------------------------
 Actor refs .

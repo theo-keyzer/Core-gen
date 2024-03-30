@@ -1,37 +1,14 @@
-from collections import DynamicVector, KeyElement
-
-fn vector(*values: StringLiteral) -> DynamicVector[StringLiteral]:
-    var elements_list: VariadicList[StringLiteral] = values
-    var result = DynamicVector[StringLiteral]()
-    result.clear()
-    for i in range(len(elements_list)):
-        result.push_back(values[i])
-    return result
-
-
-@value
-struct StringKey(KeyElement):
-    var s: String
-
-    fn __init__(inout self, owned s: String):
-        self.s = s ^
-
-    fn __init__(inout self, s: StringLiteral):
-        self.s = String(s)
-
-    fn __hash__(self) -> Int:
-        return hash(self.s)
-
-    fn __eq__(self, other: Self) -> Bool:
-        return self.s == other.s
+from collections import KeyElement
+from collections.list import List
+from collections import Dict
 
 
 struct Input:
-    var lines: DynamicVector[String]
+    var lines: List[String]
     var pos: Int
     
     fn __init__(inout self, owned s: String):
-        self.lines = DynamicVector[String]()
+        self.lines = List[String]()
         self.pos = 0
         self.get_lines(s)
 
@@ -41,7 +18,7 @@ struct Input:
         while p < len(s):
             var c = s[p]
             if c == '\n' or c == '\r':
-                self.lines.push_back( s[b:p] )
+                self.lines.append( s[b:p] )
                 b = p + 1
             p += 1
 
