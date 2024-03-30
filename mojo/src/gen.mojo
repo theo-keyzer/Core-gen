@@ -69,3 +69,16 @@ fn tocase(s: String, c: String) -> String:
     if c == "c":
         return( s[0].upper() + s[1:].lower() )
     return(s)
+
+fn sub_list(s: String, pos: Int) -> String : 
+    try:
+        var ss = s.split(".")
+        if pos >= len(ss):
+            return("")
+        var ret: String = ""
+        for i in range(pos, len(ss)):
+            ret += ss[i]
+        return(ret)
+    except:
+        return("")
+

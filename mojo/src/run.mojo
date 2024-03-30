@@ -66,6 +66,11 @@ fn refs(inout act: structs.ActT):
 
     for i in range( len(act.ap_ref) ):
         try:
+            var p = act.names["Ref_" + String(i) + "_element" ]
+            act.ap_ref[i].k_elementp = act.index[String(act.ap_ref[i].parentp) + "_Element_" + p]
+        except:
+            print("except " + "Ref_" + String(i) + "_element" + " : " + String(act.ap_ref[i].parentp) + "_Element_"  )
+        try:
             var p = act.names["Ref_" + String(i) + "_comp" ]
             act.ap_ref[i].k_compp = act.index["Comp_" + p]
         except:

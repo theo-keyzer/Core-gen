@@ -121,6 +121,7 @@ C struct Kp${name}c(Kp,CollectionElement):
 C     var me: Int
 C     var me2: Int
 
+Its parent parent_field_p
 -Its Element val_inc
 Its Element val_inc2
 
@@ -155,6 +156,7 @@ C @register_passable("trivial")
 C struct Kp${name}c(Kp,CollectionElement):
 C     var me: Int
 
+Its parent parent_field_p
 Its Element val_inc2
 Its Comp_parent from_to
 
@@ -169,6 +171,10 @@ Its parent parent_field
 
 C
 C     fn get_var(self, act: ActT, na: String) -> String:
+
+Its parent parent_field_var
+Its Ref_comp other_var
+
 C         try:
 C             return( act.names["${name}c_" + String(self.me) + "_" + na ] )
 C         except:
@@ -181,6 +187,12 @@ Its Comp_parent its
 
 C         return
 C
+
+----------------------------------------------------------------
+Actor parent_field_p Comp
+----------------------------------------------------------------
+
+C     var parentp : Int
 
 ----------------------------------------------------------------
 Actor val_inc Element mw = C1     var k_${name}l: StringLiteral
@@ -243,6 +255,11 @@ Actor index Element parent.find = Find
 C         act.index[ "${parent.name}c_" + na ] = self.me
 
 ----------------------------------------------------------------
+Actor index Element parent.find = FindIn
+----------------------------------------------------------------
+
+
+----------------------------------------------------------------
 Actor ele_act . mw in C1,R1,F1,L1
 ----------------------------------------------------------------
 
@@ -276,9 +293,11 @@ C         act.names[ "${parent.name}c_" + String(self.me) + "_${name} " ] = ff.g
 Actor parent_field Comp .struct.parent.name = Actor
 ----------------------------------------------------------------
 
+C         self.parentp = -1
 C         var i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].cmds_to = self.me2 + 1
+C             self.parentp = i-1
 
 Break
 
@@ -286,9 +305,20 @@ Break
 Actor parent_field Comp
 ----------------------------------------------------------------
 
+C         self.parentp = -1
 C         var i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].${.struct.name}l_to = self.me + 1
+C             self.parentp = i-1
+
+Du parent_field_in
+
+----------------------------------------------------------------
+Actor parent_field_in Comp .struct.find = FindIn
+----------------------------------------------------------------
+
+C             var s = String(self.parentp) + "_${.struct.name}c_" + na
+C             act.index[ s ] = self.me
 
 ----------------------------------------------------------------
 Actor its Comp
@@ -297,4 +327,35 @@ Actor its Comp
 C         if what == "${name}c":
 C             for i in range( self.${name}l_from, self.${name}l_to ):
 C                 go_act(glob.dats.ap_${name}l[i], glob, act)
+
+----------------------------------------------------------------
+Actor other_var Ref
+----------------------------------------------------------------
+
+C         try:
+C             var ss = na.split(".")
+C             if ss[0] == "${parent.name}c_${element.name}l":
+C                 for i in range( len(act.ap_${parent.name}l) ):
+C                     if act.ap_${parent.name}l[i].k_${element.name}lp == self.me:
+C                         return( act.ap_${parent.name}l[i].get_var(act, ss[1]) )
+C         except:
+C            print("except ${element.name}c_" + String(self.me) + "_" + na  )
+
+----------------------------------------------------------------
+Actor parent_field_var Comp
+----------------------------------------------------------------
+
+C         try:
+C             var ss = na.split(".")
+C             if ss[0] == "parent":
+C                 return( act.ap_${name}l[ self.parentp ].get_var(act, ss[1]) )
+C         except:
+C            print("except ${name}c_" + String(self.me) + "_" + na  )
+
+-C 		if va[0] == "parent" # ${}
+-C 			if parentp >= 0 && va.size > 1
+-C 				return( glob.dats.ap_${name}l[ parentp ].get_var(glob, va[1..],lno) )
+-C 			end
+-C 		end
+
 

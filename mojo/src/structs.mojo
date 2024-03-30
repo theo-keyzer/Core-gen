@@ -90,6 +90,22 @@ struct KpComp(Kp,CollectionElement):
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
+            var ss = na.split(".")
+            if ss[0] == "Comp_parent":
+                for i in range( len(act.ap_comp) ):
+                    if act.ap_comp[i].k_parentp == self.me:
+                        return( act.ap_comp[i].get_var(act, ss[1]) )
+        except:
+           print("except Parent_" + String(self.me) + "_" + na  )
+        try:
+            var ss = na.split(".")
+            if ss[0] == "Ref_comp":
+                for i in range( len(act.ap_ref) ):
+                    if act.ap_ref[i].k_compp == self.me:
+                        return( act.ap_ref[i].get_var(act, ss[1]) )
+        except:
+           print("except Comp_" + String(self.me) + "_" + na  )
+        try:
             return( act.names["Comp_" + String(self.me) + "_" + na ] )
         except:
            print("except Comp_" + String(self.me) + "_" + na  )
@@ -107,6 +123,7 @@ struct KpComp(Kp,CollectionElement):
 @register_passable("trivial")
 struct KpElement(Kp,CollectionElement):
     var me: Int
+    var parentp : Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me = len( act.ap_element )
@@ -116,11 +133,29 @@ struct KpElement(Kp,CollectionElement):
         act.names[ "Element_" + String(self.me) + "_mw2" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Element_" + String(self.me) + "_pad" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Element_" + String(self.me) + "_doc" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].element_to = self.me + 1
+            self.parentp = i-1
+            var s = String(self.parentp) + "_Element_" + na
+            act.index[ s ] = self.me
 
     fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            var ss = na.split(".")
+            if ss[0] == "parent":
+                return( act.ap_comp[ self.parentp ].get_var(act, ss[1]) )
+        except:
+           print("except Comp_" + String(self.me) + "_" + na  )
+        try:
+            var ss = na.split(".")
+            if ss[0] == "Ref_element":
+                for i in range( len(act.ap_ref) ):
+                    if act.ap_ref[i].k_elementp == self.me:
+                        return( act.ap_ref[i].get_var(act, ss[1]) )
+        except:
+           print("except Element_" + String(self.me) + "_" + na  )
         try:
             return( act.names["Element_" + String(self.me) + "_" + na ] )
         except:
@@ -133,6 +168,7 @@ struct KpElement(Kp,CollectionElement):
 @register_passable("trivial")
 struct KpRef(Kp,CollectionElement):
     var me: Int
+    var parentp : Int
     var k_elementp: Int
     var k_compp: Int
 
@@ -145,11 +181,19 @@ struct KpRef(Kp,CollectionElement):
         act.names[ "Ref_" + String(self.me) + "_opt" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref_" + String(self.me) + "_var" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Ref_" + String(self.me) + "_doc" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].ref_to = self.me + 1
+            self.parentp = i-1
 
     fn get_var(self, act: ActT, na: String) -> String:
+        try:
+            var ss = na.split(".")
+            if ss[0] == "parent":
+                return( act.ap_comp[ self.parentp ].get_var(act, ss[1]) )
+        except:
+           print("except Comp_" + String(self.me) + "_" + na  )
         try:
             return( act.names["Ref_" + String(self.me) + "_" + na ] )
         except:
@@ -192,6 +236,7 @@ struct KpActor(Kp,CollectionElement):
 struct KpAll(Kp,CollectionElement):
     var me: Int
     var me2: Int
+    var parentp : Int
     var k_actorp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
@@ -204,9 +249,11 @@ struct KpAll(Kp,CollectionElement):
         act.names[ "All_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "All_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "All_" + String(self.me) + "_args" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
+            self.parentp = i-1
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
@@ -222,6 +269,7 @@ struct KpAll(Kp,CollectionElement):
 struct KpDu(Kp,CollectionElement):
     var me: Int
     var me2: Int
+    var parentp : Int
     var k_actorp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
@@ -233,9 +281,11 @@ struct KpDu(Kp,CollectionElement):
         act.names[ "Du_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Du_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Du_" + String(self.me) + "_args" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
+            self.parentp = i-1
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
@@ -251,6 +301,7 @@ struct KpDu(Kp,CollectionElement):
 struct KpIts(Kp,CollectionElement):
     var me: Int
     var me2: Int
+    var parentp : Int
     var k_actorp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
@@ -263,9 +314,11 @@ struct KpIts(Kp,CollectionElement):
         act.names[ "Its_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Its_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Its_" + String(self.me) + "_args" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
+            self.parentp = i-1
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
@@ -281,14 +334,17 @@ struct KpIts(Kp,CollectionElement):
 struct KpC(Kp,CollectionElement):
     var me: Int
     var me2: Int
+    var parentp : Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_c )
         act.names[ "C_" + String(self.me) + "_desc" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
+            self.parentp = i-1
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
@@ -304,14 +360,17 @@ struct KpC(Kp,CollectionElement):
 struct KpCs(Kp,CollectionElement):
     var me: Int
     var me2: Int
+    var parentp : Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_cs )
         act.names[ "Cs_" + String(self.me) + "_desc" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
+            self.parentp = i-1
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
@@ -327,6 +386,7 @@ struct KpCs(Kp,CollectionElement):
 struct KpOut(Kp,CollectionElement):
     var me: Int
     var me2: Int
+    var parentp : Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
@@ -334,9 +394,11 @@ struct KpOut(Kp,CollectionElement):
         act.names[ "Out_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Out_" + String(self.me) + "_pad" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Out_" + String(self.me) + "_desc" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
+            self.parentp = i-1
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
@@ -352,6 +414,7 @@ struct KpOut(Kp,CollectionElement):
 struct KpBreak(Kp,CollectionElement):
     var me: Int
     var me2: Int
+    var parentp : Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
@@ -359,9 +422,11 @@ struct KpBreak(Kp,CollectionElement):
         act.names[ "Break_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Break_" + String(self.me) + "_on" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Break_" + String(self.me) + "_vars" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
+            self.parentp = i-1
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
@@ -377,6 +442,7 @@ struct KpBreak(Kp,CollectionElement):
 struct KpUnique(Kp,CollectionElement):
     var me: Int
     var me2: Int
+    var parentp : Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
@@ -384,9 +450,11 @@ struct KpUnique(Kp,CollectionElement):
         act.names[ "Unique_" + String(self.me) + "_cmd" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Unique_" + String(self.me) + "_key" ] = ff.getw( ff.lines[ln], 1 )
         act.names[ "Unique_" + String(self.me) + "_value" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].cmds_to = self.me2 + 1
+            self.parentp = i-1
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
