@@ -9,24 +9,25 @@ struct GlobT():
         self.dats = structs.ActT()
 
 fn go_act[T: structs.Kp](dat: T, glob: GlobT, act: Int):
-    var attr = glob.acts.ap_actor[act].get_var(glob.acts, "attr")
-    var val = glob.acts.ap_actor[act].get_var(glob.acts, "value")
+    var attr = glob.acts.ap_actor[act].k_attr
+    var val = glob.acts.ap_actor[act].k_value
     if attr != "E_O_L":
         var aval = dat.get_var(glob.dats, attr)
         if aval != val:
+#            print(val,aval)
             return
     for c in range(glob.acts.ap_actor[act].cmds_from, glob.acts.ap_actor[act].cmds_to):
         var cmd = glob.acts.ap_cmds[c]
         if cmd.cmd == "C":
             var cc = glob.acts.ap_c[ cmd.ind ]
-            print( strs(dat, glob, cc.get_var(glob.acts, "desc") ) )
+            print( strs(dat, glob, cc.k_desc) )
         if cmd.cmd == "All":
             var all = glob.acts.ap_all[ cmd.ind ]
-            var what = all.get_var(glob.acts, "what")
+            var what = all.k_what
             do_all(glob, what, all.k_actorp)
         if cmd.cmd == "Its":
             var its = glob.acts.ap_its[ cmd.ind ]
-            var what = its.get_var(glob.acts, "what")
+            var what = its.k_what
             dat.do_its(glob, what, its.k_actorp)
 
 fn do_all(glob: GlobT, what: String, act: Int):

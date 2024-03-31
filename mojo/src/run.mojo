@@ -6,15 +6,23 @@ fn load(inout act: structs.ActT, inout ff: Input, tok: String, ln: Int):
         if tok == "Comp":
             var kp = structs.KpComp(ff, ln, act)
             act.ap_comp.append(kp)
+            var cmd = structs.CmdT("Comp", kp.me)
+            act.ap_cmds.append(cmd)
         if tok == "Element":
             var kp = structs.KpElement(ff, ln, act)
             act.ap_element.append(kp)
+            var cmd = structs.CmdT("Element", kp.me)
+            act.ap_cmds.append(cmd)
         if tok == "Ref":
             var kp = structs.KpRef(ff, ln, act)
             act.ap_ref.append(kp)
+            var cmd = structs.CmdT("Ref", kp.me)
+            act.ap_cmds.append(cmd)
         if tok == "Actor":
             var kp = structs.KpActor(ff, ln, act)
             act.ap_actor.append(kp)
+            var cmd = structs.CmdT("Actor", kp.me)
+            act.ap_cmds.append(cmd)
         if tok == "All":
             var kp = structs.KpAll(ff, ln, act)
             act.ap_all.append(kp)
@@ -78,21 +86,21 @@ fn refs(inout act: structs.ActT):
 
     for i in range( len(act.ap_all) ):
         try:
-            var p = act.names["All_" + String(i) + "_actor" ]
+            var p = act.ap_all[i].k_actor
             act.ap_all[i].k_actorp = act.index["Actor_" + p]
         except:
             print("except All_" + String(i) + "_actor Actor_"  )
 
     for i in range( len(act.ap_du) ):
         try:
-            var p = act.names["Du_" + String(i) + "_actor" ]
+            var p = act.ap_du[i].k_actor
             act.ap_du[i].k_actorp = act.index["Actor_" + p]
         except:
             print("except Du_" + String(i) + "_actor Actor_"  )
 
     for i in range( len(act.ap_its) ):
         try:
-            var p = act.names["Its_" + String(i) + "_actor" ]
+            var p = act.ap_its[i].k_actor
             act.ap_its[i].k_actorp = act.index["Actor_" + p]
         except:
             print("except Its_" + String(i) + "_actor Actor_"  )

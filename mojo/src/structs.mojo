@@ -65,9 +65,11 @@ struct KpArgs(Kp):
         return("?")
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
+
 @register_passable("trivial")
 struct KpComp(Kp,CollectionElement):
     var me: Int
+    var me2: Int
     var k_parentp: Int
     var element_from: Int
     var element_to: Int
@@ -75,6 +77,7 @@ struct KpComp(Kp,CollectionElement):
     var ref_to: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+        self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_comp )
         self.k_parentp = -1
         self.element_from = len( act.ap_element )
@@ -124,9 +127,11 @@ struct KpComp(Kp,CollectionElement):
 @register_passable("trivial")
 struct KpElement(Kp,CollectionElement):
     var me: Int
+    var me2: Int
     var parentp : Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+        self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_element )
         var na = ff.getw( ff.lines[ln], 1 )
         act.names[ "Element_" + String(self.me) + "_name" ] = na
@@ -169,11 +174,13 @@ struct KpElement(Kp,CollectionElement):
 @register_passable("trivial")
 struct KpRef(Kp,CollectionElement):
     var me: Int
+    var me2: Int
     var parentp : Int
     var k_elementp: Int
     var k_compp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+        self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_ref )
         self.k_elementp = -1
         self.k_compp = -1
@@ -204,24 +211,31 @@ struct KpRef(Kp,CollectionElement):
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
 
-@register_passable("trivial")
+@value
 struct KpActor(Kp,CollectionElement):
     var me: Int
+    var me2: Int
     var cmds_from: Int
     var cmds_to: Int
+    var k_name: String
+    var k_comp: String
+    var k_attr: String
+    var k_eq: String
+    var k_value: String
+    var k_cc: String
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+        self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_actor )
         self.cmds_from = len( act.ap_cmds )
         self.cmds_to = len( act.ap_cmds )
-        var na = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Actor_" + String(self.me) + "_name" ] = na
-        act.index[ "Actor_" + na ] = self.me
-        act.names[ "Actor_" + String(self.me) + "_comp" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Actor_" + String(self.me) + "_attr" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Actor_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Actor_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Actor_" + String(self.me) + "_cc" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_name = ff.getw( ff.lines[ln], 1 )
+        act.index[ "Actor_" + self.k_name ] = self.me
+        self.k_comp = ff.getw( ff.lines[ln], 1 )
+        self.k_attr = ff.getw( ff.lines[ln], 1 )
+        self.k_eq = ff.getw( ff.lines[ln], 1 )
+        self.k_value = ff.getw( ff.lines[ln], 1 )
+        self.k_cc = ff.getws( ff.lines[ln], 1 )
 
     fn get_var(self, act: ActT, na: String) -> String:
         try:
@@ -233,23 +247,29 @@ struct KpActor(Kp,CollectionElement):
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
 
-@register_passable("trivial")
+@value
 struct KpAll(Kp,CollectionElement):
     var me: Int
     var me2: Int
     var parentp : Int
+    var k_what: String
+    var k_actor: String
+    var k_attr: String
+    var k_eq: String
+    var k_value: String
+    var k_args: String
     var k_actorp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_all )
         self.k_actorp = -1
-        act.names[ "All_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "All_" + String(self.me) + "_actor" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "All_" + String(self.me) + "_attr" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "All_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "All_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "All_" + String(self.me) + "_args" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_actor = ff.getw( ff.lines[ln], 1 )
+        self.k_attr = ff.getw( ff.lines[ln], 1 )
+        self.k_eq = ff.getw( ff.lines[ln], 1 )
+        self.k_value = ff.getw( ff.lines[ln], 1 )
+        self.k_args = ff.getws( ff.lines[ln], 1 )
         self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
@@ -266,22 +286,27 @@ struct KpAll(Kp,CollectionElement):
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
 
-@register_passable("trivial")
+@value
 struct KpDu(Kp,CollectionElement):
     var me: Int
     var me2: Int
     var parentp : Int
+    var k_actor: String
+    var k_attr: String
+    var k_eq: String
+    var k_value: String
+    var k_args: String
     var k_actorp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_du )
         self.k_actorp = -1
-        act.names[ "Du_" + String(self.me) + "_actor" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Du_" + String(self.me) + "_attr" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Du_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Du_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Du_" + String(self.me) + "_args" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_actor = ff.getw( ff.lines[ln], 1 )
+        self.k_attr = ff.getw( ff.lines[ln], 1 )
+        self.k_eq = ff.getw( ff.lines[ln], 1 )
+        self.k_value = ff.getw( ff.lines[ln], 1 )
+        self.k_args = ff.getws( ff.lines[ln], 1 )
         self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
@@ -298,23 +323,29 @@ struct KpDu(Kp,CollectionElement):
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
 
-@register_passable("trivial")
+@value
 struct KpIts(Kp,CollectionElement):
     var me: Int
     var me2: Int
     var parentp : Int
+    var k_what: String
+    var k_actor: String
+    var k_attr: String
+    var k_eq: String
+    var k_value: String
+    var k_args: String
     var k_actorp: Int
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_its )
         self.k_actorp = -1
-        act.names[ "Its_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Its_" + String(self.me) + "_actor" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Its_" + String(self.me) + "_attr" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Its_" + String(self.me) + "_eq" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Its_" + String(self.me) + "_value" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Its_" + String(self.me) + "_args" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_actor = ff.getw( ff.lines[ln], 1 )
+        self.k_attr = ff.getw( ff.lines[ln], 1 )
+        self.k_eq = ff.getw( ff.lines[ln], 1 )
+        self.k_value = ff.getw( ff.lines[ln], 1 )
+        self.k_args = ff.getws( ff.lines[ln], 1 )
         self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
@@ -331,16 +362,17 @@ struct KpIts(Kp,CollectionElement):
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
 
-@register_passable("trivial")
+@value
 struct KpC(Kp,CollectionElement):
     var me: Int
     var me2: Int
     var parentp : Int
+    var k_desc: String
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_c )
-        act.names[ "C_" + String(self.me) + "_desc" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_desc = ff.getws( ff.lines[ln], 1 )
         self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
@@ -357,16 +389,17 @@ struct KpC(Kp,CollectionElement):
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
 
-@register_passable("trivial")
+@value
 struct KpCs(Kp,CollectionElement):
     var me: Int
     var me2: Int
     var parentp : Int
+    var k_desc: String
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_cs )
-        act.names[ "Cs_" + String(self.me) + "_desc" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_desc = ff.getws( ff.lines[ln], 1 )
         self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
@@ -383,18 +416,21 @@ struct KpCs(Kp,CollectionElement):
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
 
-@register_passable("trivial")
+@value
 struct KpOut(Kp,CollectionElement):
     var me: Int
     var me2: Int
     var parentp : Int
+    var k_what: String
+    var k_pad: String
+    var k_desc: String
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_out )
-        act.names[ "Out_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Out_" + String(self.me) + "_pad" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Out_" + String(self.me) + "_desc" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_pad = ff.getw( ff.lines[ln], 1 )
+        self.k_desc = ff.getws( ff.lines[ln], 1 )
         self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
@@ -411,18 +447,21 @@ struct KpOut(Kp,CollectionElement):
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
 
-@register_passable("trivial")
+@value
 struct KpBreak(Kp,CollectionElement):
     var me: Int
     var me2: Int
     var parentp : Int
+    var k_what: String
+    var k_on: String
+    var k_vars: String
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_break )
-        act.names[ "Break_" + String(self.me) + "_what" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Break_" + String(self.me) + "_on" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Break_" + String(self.me) + "_vars" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_on = ff.getw( ff.lines[ln], 1 )
+        self.k_vars = ff.getws( ff.lines[ln], 1 )
         self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
@@ -439,18 +478,21 @@ struct KpBreak(Kp,CollectionElement):
     fn do_its(self, glob: GlobT, what: String, act: Int):
         return
 
-@register_passable("trivial")
+@value
 struct KpUnique(Kp,CollectionElement):
     var me: Int
     var me2: Int
     var parentp : Int
+    var k_cmd: String
+    var k_key: String
+    var k_value: String
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_unique )
-        act.names[ "Unique_" + String(self.me) + "_cmd" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Unique_" + String(self.me) + "_key" ] = ff.getw( ff.lines[ln], 1 )
-        act.names[ "Unique_" + String(self.me) + "_value" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_cmd = ff.getw( ff.lines[ln], 1 )
+        self.k_key = ff.getw( ff.lines[ln], 1 )
+        self.k_value = ff.getws( ff.lines[ln], 1 )
         self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:

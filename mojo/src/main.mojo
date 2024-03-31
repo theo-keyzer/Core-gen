@@ -21,7 +21,7 @@ fn main() raises :
         var tok = ff.getw( ff.lines[ln], 0 )
         run.load(glob.dats, ff, tok, ln)
     run.refs(glob.dats)
-    print( glob.dats.ap_comp[1].get_var(glob.dats, "name") )
+#    print( glob.dats.ap_comp[1].get_var(glob.dats, "name") )
     var dat = structs.KpArgs()
     gen.go_act(dat,glob, 0)
 

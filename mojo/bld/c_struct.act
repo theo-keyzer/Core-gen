@@ -49,6 +49,7 @@ C     fn get_var(self, act: ActT, na: String) -> String:
 C         return("?")
 C     fn do_its(self, glob: GlobT, what: String, act: Int):
 C         return
+C
 
 All Comp struct
 
@@ -80,23 +81,25 @@ C         self.ap_${name}l = List[Kp${name}c]()
 Actor struct Comp name = Actor
 ----------------------------------------------------------------
 
-C @register_passable("trivial")
+C @value
 C struct Kp${name}c(Kp,CollectionElement):
 C     var me: Int
+C     var me2: Int
 C     var cmds_from: Int
 C     var cmds_to: Int
 
--Its Element val_inc
+Its Element val_inc
 Its Element val_inc2
 
 C
 C     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+C         self.me2 = len( act.ap_cmds )
 C         self.me = len( act.ap_${name}l )
 C         self.cmds_from = len( act.ap_cmds )
 C         self.cmds_to = len( act.ap_cmds )
 
 Its Element val_inc3
-Its Element ele
+Its Element ele_act
 Its parent parent_field
 
 C
@@ -117,13 +120,13 @@ Break
 Actor struct Comp parent.name = Actor
 ----------------------------------------------------------------
 
-C @register_passable("trivial")
+C @value
 C struct Kp${name}c(Kp,CollectionElement):
 C     var me: Int
 C     var me2: Int
 
 Its parent parent_field_p
--Its Element val_inc
+Its Element val_inc
 Its Element val_inc2
 
 C
@@ -132,7 +135,7 @@ C         self.me2 = len( act.ap_cmds )
 C         self.me = len( act.ap_${name}l )
 
 Its Element val_inc3
-Its Element ele
+Its Element ele_act
 Its parent parent_field
 
 C
@@ -156,6 +159,7 @@ Actor struct Comp
 C @register_passable("trivial")
 C struct Kp${name}c(Kp,CollectionElement):
 C     var me: Int
+C     var me2: Int
 
 Its parent parent_field_p
 Its Element val_inc2
@@ -163,6 +167,7 @@ Its Comp_parent from_to
 
 C
 C     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+C         self.me2 = len( act.ap_cmds )
 C         self.me = len( act.ap_${name}l )
 
 Its Element val_inc3
@@ -196,13 +201,13 @@ Actor parent_field_p Comp
 C     var parentp : Int
 
 ----------------------------------------------------------------
-Actor val_inc Element mw = C1     var k_${name}l: StringLiteral
-Actor val_inc Element mw = CS     var k_${name}l: StringLiteral
-Actor val_inc Element mw = V1     var k_${name}l: StringLiteral
-Actor val_inc Element mw = R1     var k_${name}l: StringLiteral
-Actor val_inc Element mw = F1     var k_${name}l: StringLiteral
-Actor val_inc Element mw = L1     var k_${name}l: StringLiteral
-Actor val_inc Element mw = M1     var k_${name}l: StringLiteral
+Actor val_inc Element mw = C1     var k_${name}l: String
+Actor val_inc Element mw = CS     var k_${name}l: String
+Actor val_inc Element mw = V1     var k_${name}l: String
+Actor val_inc Element mw = R1     var k_${name}l: String
+Actor val_inc Element mw = F1     var k_${name}l: String
+Actor val_inc Element mw = L1     var k_${name}l: String
+Actor val_inc Element mw = M1     var k_${name}l: String
 ----------------------------------------------------------------
 Actor val_inc2 Element mw = R1     var k_${name}lp: Int
 Actor val_inc2 Element mw = F1     var k_${name}lp: Int
@@ -265,6 +270,18 @@ Actor ele_act . mw in C1,R1,F1,L1
 ----------------------------------------------------------------
 
 C         self.k_${name}l = ff.getw( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor ele_act Element name = name
+----------------------------------------------------------------
+
+Du index_act
+
+----------------------------------------------------------------
+Actor index_act Element parent.find = Find
+----------------------------------------------------------------
+
+C         act.index[ "${parent.name}c_" + self.k_${name}l ] = self.me
 
 ----------------------------------------------------------------
 Actor ele_act . mw = V1
