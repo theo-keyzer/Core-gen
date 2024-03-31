@@ -62,7 +62,7 @@ Actor refs_ele . mw = R1
 ----------------------------------------------------------------
 
 C         try:
-C             var p = act.names["${parent.name}c_" + String(i) + "_${name}l" ]
+C             var p = act.names["${.refs.name}c_" + String(i) + "_${name}l" ]
 C             act.ap_${parent.name}l[i].k_${name}lp = act.index["${Ref_element.comp.name}c_" + p]
 C         except:
 C             print("except ${parent.name}c_" + String(i) + "_${name}l ${Ref_element.comp.name}c_"  )

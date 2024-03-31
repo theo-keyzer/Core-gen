@@ -1,21 +1,51 @@
 import structs
 
+@value
+struct WinT(CollectionElement):
+    var name: String
+    var me2: Int
+
+    fn __init__(inout self):
+        self.name = "a"
+        self.me2 = 0
+
 struct GlobT():
     var acts: structs.ActT
     var dats: structs.ActT
+    var wins: List[WinT]
+    var winp: Int
 
     fn __init__(inout self):
         self.acts = structs.ActT()
         self.dats = structs.ActT()
+        self.wins = List[WinT]()
+        self.winp = -1
 
-fn go_act[T: structs.Kp](dat: T, glob: GlobT, act: Int):
+#		new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1", "", "", "");
+#		go_act(glob, kp);
+
+fn new_act(inout glob: GlobT):
+    var winp = glob.winp+1;
+    if len(glob.wins) <= winp:
+        glob.wins.append( WinT() )
+
+
+fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
+#    print( glob.winp, len( glob.wins) )
+    glob.winp = glob.winp+1
+    glob.wins[ glob.winp ].me2 = dat.get_me2()
+    glob.wins[ glob.winp ].name = glob.acts.ap_actor[act].k_name
     var attr = glob.acts.ap_actor[act].k_attr
     var val = glob.acts.ap_actor[act].k_value
     if attr != "E_O_L":
         var aval = dat.get_var(glob.dats, attr)
         if aval != val:
-#            print(val,aval)
+            glob.winp = glob.winp-1
             return
+    go_cmds(dat, glob, act)
+    glob.winp = glob.winp-1
+
+fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
     for c in range(glob.acts.ap_actor[act].cmds_from, glob.acts.ap_actor[act].cmds_to):
         var cmd = glob.acts.ap_cmds[c]
         if cmd.cmd == "C":
@@ -24,16 +54,42 @@ fn go_act[T: structs.Kp](dat: T, glob: GlobT, act: Int):
         if cmd.cmd == "All":
             var all = glob.acts.ap_all[ cmd.ind ]
             var what = all.k_what
+            new_act(glob)
             do_all(glob, what, all.k_actorp)
         if cmd.cmd == "Its":
             var its = glob.acts.ap_its[ cmd.ind ]
             var what = its.k_what
+            new_act(glob)
             dat.do_its(glob, what, its.k_actorp)
 
-fn do_all(glob: GlobT, what: String, act: Int):
+fn do_all(inout glob: GlobT, what: String, act: Int):
     if what == "Comp":
         for i in range( len(glob.dats.ap_comp) ):
             go_act(glob.dats.ap_comp[i], glob, act)
+
+
+fn d_get_var(glob: GlobT, i: Int, va: String) -> String:
+    var me2 = glob.wins[i].me2
+    if glob.dats.ap_cmds[ me2 ].cmd == "Comp":
+        return( glob.dats.ap_comp[ glob.dats.ap_cmds[ me2 ].ind ].get_var(glob.dats, va) )
+    if glob.dats.ap_cmds[ me2 ].cmd == "Element":
+        return( glob.dats.ap_element[ glob.dats.ap_cmds[ me2 ].ind ].get_var(glob.dats, va) )
+    if glob.dats.ap_cmds[ me2 ].cmd == "Ref":
+        return( glob.dats.ap_ref[ glob.dats.ap_cmds[ me2 ].ind ].get_var(glob.dats, va) )
+    return("? d_get_var ?")
+
+fn s_get_var[T: structs.Kp](dat: T, glob: GlobT, va: String) -> String:
+    try:
+        var ss = va.split(".")
+        if ss[0] == "":
+#            return( ss[1] )
+            for i in range( glob.winp, 0, -1):
+                if ss[1] == glob.wins[i].name:
+                    return( d_get_var(glob, i, ss[2]) )
+    except:
+        print("s_get_var"  )
+    var val = dat.get_var(glob.dats, va)
+    return val
 
 
 fn strs[T: structs.Kp](dat: T, glob: GlobT, s: String) -> String:
@@ -52,7 +108,8 @@ fn strs[T: structs.Kp](dat: T, glob: GlobT, s: String) -> String:
         if s[i] == '}':
             if bp > 0:
                 var va = s[bp+1:i]
-                va = dat.get_var(glob.dats, va)
+                va = s_get_var(dat, glob, va)
+#                va = dat.get_var(glob.dats, va)
                 if len(s) > i+1:
                     i += 1
                     va = tocase(va, s[i])
