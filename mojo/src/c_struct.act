@@ -194,6 +194,7 @@ C         return(self.me2)
 C
 C     fn get_var(self, act: ActT, na: String) -> String:
 
+Its Ref ref_var
 Its parent parent_field_var
 Its Ref_comp other_var
 
@@ -381,15 +382,22 @@ Actor parent_field_var Comp
 
 C         try:
 C             var ss = na.split(".")
-C             if ss[0] == "parent":
+C             if ss[0] == "parent" and len(ss) > 1 and self.parentp >= 0:
 C                 return( act.ap_${name}l[ self.parentp ].get_var(act, ss[1]) )
 C         except:
 C            print("except ${name}c_" + String(self.me) + "_" + na  )
 
--C 		if va[0] == "parent" # ${}
--C 			if parentp >= 0 && va.size > 1
--C 				return( glob.dats.ap_${name}l[ parentp ].get_var(glob, va[1..],lno) )
--C 			end
--C 		end
+
+----------------------------------------------------------------
+Actor ref_var Ref
+----------------------------------------------------------------
+
+C         try:
+C             var ss = na.split(".")
+C             if ss[0] == "${element.name}l" and len(ss) > 1 and self.k_${element.name}lp >= 0:
+C                 return( act.ap_${comp.name}l[ self.k_${element.name}lp ].get_var(act, ss[1]) )
+C         except:
+C            print("except ${comp.name}c_" + String(self.me) + "_" + na  )
+
 
 

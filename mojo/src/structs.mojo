@@ -105,6 +105,12 @@ struct KpComp(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: String) -> String:
         try:
             var ss = na.split(".")
+            if ss[0] == "parent" and len(ss) > 1 and self.k_parentp >= 0:
+                return( act.ap_comp[ self.k_parentp ].get_var(act, ss[1]) )
+        except:
+           print("except Comp_" + String(self.me) + "_" + na  )
+        try:
+            var ss = na.split(".")
             if ss[0] == "Comp_parent":
                 for i in range( len(act.ap_comp) ):
                     if act.ap_comp[i].k_parentp == self.me:
@@ -163,7 +169,7 @@ struct KpElement(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: String) -> String:
         try:
             var ss = na.split(".")
-            if ss[0] == "parent":
+            if ss[0] == "parent" and len(ss) > 1 and self.parentp >= 0:
                 return( act.ap_comp[ self.parentp ].get_var(act, ss[1]) )
         except:
            print("except Comp_" + String(self.me) + "_" + na  )
@@ -214,7 +220,19 @@ struct KpRef(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: String) -> String:
         try:
             var ss = na.split(".")
-            if ss[0] == "parent":
+            if ss[0] == "element" and len(ss) > 1 and self.k_elementp >= 0:
+                return( act.ap_element[ self.k_elementp ].get_var(act, ss[1]) )
+        except:
+           print("except Element_" + String(self.me) + "_" + na  )
+        try:
+            var ss = na.split(".")
+            if ss[0] == "comp" and len(ss) > 1 and self.k_compp >= 0:
+                return( act.ap_comp[ self.k_compp ].get_var(act, ss[1]) )
+        except:
+           print("except Comp_" + String(self.me) + "_" + na  )
+        try:
+            var ss = na.split(".")
+            if ss[0] == "parent" and len(ss) > 1 and self.parentp >= 0:
                 return( act.ap_comp[ self.parentp ].get_var(act, ss[1]) )
         except:
            print("except Comp_" + String(self.me) + "_" + na  )

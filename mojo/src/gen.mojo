@@ -32,20 +32,32 @@ fn new_act(inout glob: GlobT):
 
 fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
 #    print( glob.winp, len( glob.wins) )
+    var name = glob.acts.ap_actor[act].k_name
     glob.winp = glob.winp+1
     glob.wins[ glob.winp ].me2 = dat.get_me2()
-    glob.wins[ glob.winp ].name = glob.acts.ap_actor[act].k_name
-    var attr = glob.acts.ap_actor[act].k_attr
-    var val = glob.acts.ap_actor[act].k_value
-    if attr != "E_O_L":
-        var aval = dat.get_var(glob.dats, attr)
-        if aval != val:
-            glob.winp = glob.winp-1
-            return
-    go_cmds(dat, glob, act)
+    glob.wins[ glob.winp ].name = name
+    for a in range( len( glob.acts.ap_actor ) ):
+        if name != glob.acts.ap_actor[a].k_name:
+            continue
+        var attr = glob.acts.ap_actor[a].k_attr
+        var val = glob.acts.ap_actor[a].k_value
+        var cc = glob.acts.ap_actor[a].k_cc
+        var eq = glob.acts.ap_actor[a].k_eq
+        if attr != "E_O_L":
+            var aval = dat.get_var(glob.dats, attr)
+#            var aval = s_get_var(dat, glob, attr)
+#            if aval != val:
+            if chk(eq, aval, val) == False:
+#                print(eq,aval,val)
+                continue
+        if cc != "":
+            print(cc)
+        var ret = go_cmds(dat, glob, a)
+        if ret != 0:
+            break
     glob.winp = glob.winp-1
 
-fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
+fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
     for c in range(glob.acts.ap_actor[act].cmds_from, glob.acts.ap_actor[act].cmds_to):
         var cmd = glob.acts.ap_cmds[c]
         if cmd.cmd == "C":
@@ -61,6 +73,29 @@ fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
             var what = its.k_what
             new_act(glob)
             dat.do_its(glob, what, its.k_actorp)
+        if cmd.cmd == "Du":
+            var du = glob.acts.ap_du[ cmd.ind ]
+            new_act(glob)
+            go_act(dat, glob, du.k_actorp)
+        if cmd.cmd == "Break":
+            return(1)
+    return(0)
+
+fn chk(eq: String, aval: String, val: String) -> Bool:
+    if eq == "=":
+        if aval == val:
+            return(True)
+        return(False)
+    if eq == "in":
+        try:
+            var ss = val.split(",")
+            for i in range( len(ss) ):
+                if aval == ss[i]:
+                    return(True)
+            return(False)
+        except:
+            return(False)
+    return(False)
 
 fn do_all(inout glob: GlobT, what: String, act: Int):
     if what == "Comp":
