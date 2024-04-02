@@ -35,7 +35,7 @@ C trait Kp():
 C
 C     fn get_me2(self) -> Int:
 C         ...
-C     fn get_var(self, act: ActT, na: String) -> String:
+C     fn get_var(self, act: ActT, na: List[String]) -> String:
 C         ...
 C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
 C         ...
@@ -52,7 +52,7 @@ C
 C     fn get_me2(self) -> Int:
 C         return(self.me2)
 C
-C     fn get_var(self, act: ActT, na: String) -> String:
+C     fn get_var(self, act: ActT, na: List[String]) -> String:
 C         return("?")
 C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
 C         return
@@ -113,11 +113,11 @@ C
 C     fn get_me2(self) -> Int:
 C         return(self.me2)
 C
-C     fn get_var(self, act: ActT, na: String) -> String:
+C     fn get_var(self, act: ActT, na: List[String]) -> String:
 C         try:
-C             return( act.names["${name}c_" + String(self.me) + "_" + na ] )
+C             return( act.names["${name}c_" + String(self.me) + "_" + na[0] ] )
 C         except:
-C            print("except ${name}c_" + String(self.me) + "_" + na  )
+C            print("except ${name}c_" + String(self.me) + "_" + na[0]  )
 C         return("??")
 C
 C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -152,11 +152,11 @@ C
 C     fn get_me2(self) -> Int:
 C         return(self.me2)
 C
-C     fn get_var(self, act: ActT, na: String) -> String:
+C     fn get_var(self, act: ActT, na: List[String]) -> String:
 C         try:
-C             return( act.names["${name}c_" + String(self.me) + "_" + na ] )
+C             return( act.names["${name}c_" + String(self.me) + "_" + na[0] ] )
 C         except:
-C            print("except ${name}c_" + String(self.me) + "_" + na  )
+C            print("except ${name}c_" + String(self.me) + "_" + na[0]  )
 C         return("??")
 C
 C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -192,21 +192,24 @@ C
 C     fn get_me2(self) -> Int:
 C         return(self.me2)
 C
-C     fn get_var(self, act: ActT, na: String) -> String:
+C     fn get_var(self, act: ActT, na: List[String]) -> String:
 
 Its Ref ref_var
 Its parent parent_field_var
 Its Ref_comp other_var
 
 C         try:
-C             return( act.names["${name}c_" + String(self.me) + "_" + na ] )
+C             return( act.names["${name}c_" + String(self.me) + "_" + na[0] ] )
 C         except:
-C            print("except ${name}c_" + String(self.me) + "_" + na  )
+C            print("except ${name}c_" + String(self.me) + "_" + na[0]  )
 C         return("??")
 C
 C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
 
 Its Comp_parent its
+Its parent parent_field_func
+Its Ref ref_func
+Its Ref_comp other_func
 
 C         return
 C
@@ -367,37 +370,48 @@ C                 go_act(glob.dats.ap_${name}l[i], glob, act)
 Actor other_var Ref
 ----------------------------------------------------------------
 
-C         try:
-C             var ss = na.split(".")
-C             if ss[0] == "${parent.name}c_${element.name}l":
-C                 for i in range( len(act.ap_${parent.name}l) ):
-C                     if act.ap_${parent.name}l[i].k_${element.name}lp == self.me:
-C                         return( act.ap_${parent.name}l[i].get_var(act, ss[1]) )
-C         except:
-C            print("except ${element.name}c_" + String(self.me) + "_" + na  )
+C         if na[0] == "${parent.name}c_${element.name}l":
+C             for i in range( len(act.ap_${parent.name}l) ):
+C                 if act.ap_${parent.name}l[i].k_${element.name}lp == self.me:
+C                     return( act.ap_${parent.name}l[i].get_var(act, na[1:]) )
 
 ----------------------------------------------------------------
 Actor parent_field_var Comp
 ----------------------------------------------------------------
 
-C         try:
-C             var ss = na.split(".")
-C             if ss[0] == "parent" and len(ss) > 1 and self.parentp >= 0:
-C                 return( act.ap_${name}l[ self.parentp ].get_var(act, ss[1]) )
-C         except:
-C            print("except ${name}c_" + String(self.me) + "_" + na  )
+C         if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
+C             return( act.ap_${name}l[ self.parentp ].get_var(act, na[1:]) )
 
 
 ----------------------------------------------------------------
 Actor ref_var Ref
 ----------------------------------------------------------------
 
-C         try:
-C             var ss = na.split(".")
-C             if ss[0] == "${element.name}l" and len(ss) > 1 and self.k_${element.name}lp >= 0:
-C                 return( act.ap_${comp.name}l[ self.k_${element.name}lp ].get_var(act, ss[1]) )
-C         except:
-C            print("except ${comp.name}c_" + String(self.me) + "_" + na  )
+C         if na[0] == "${element.name}l" and len(na) > 1 and self.k_${element.name}lp >= 0:
+C             return( act.ap_${comp.name}l[ self.k_${element.name}lp ].get_var(act, na[1:]) )
+
+----------------------------------------------------------------
+Actor other_func Ref
+----------------------------------------------------------------
+
+C         if what == "${parent.name}c_${element.name}l":
+C             for i in range( len( glob.dats.ap_${parent.name}l ) ):
+C                 if glob.dats.ap_${parent.name}l[i].k_${element.name}lp == self.me:
+C                     go_act(glob.dats.ap_${parent.name}l[i], glob, act)
+
+----------------------------------------------------------------
+Actor parent_field_func Comp
+----------------------------------------------------------------
+
+C         if what == "parent" and self.parentp >= 0:
+C             go_act(glob.dats.ap_${name}l[ self.parentp ], glob, act)
+
+----------------------------------------------------------------
+Actor ref_func Ref
+----------------------------------------------------------------
+
+C         if what == "${element.name}l" and self.k_${element.name}lp >= 0:
+C             go_act(glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ], glob, act)
 
 
 

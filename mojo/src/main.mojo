@@ -20,6 +20,14 @@ fn main() raises :
     for ln in range( len( ff.lines ) ):
         var tok = ff.getw( ff.lines[ln], 0 )
         run.load(glob.dats, ff, tok, ln)
+
+    f = open("act.unit", "r")
+    ff = Input( f.read() )
+    f.close()
+    for ln in range( len( ff.lines ) ):
+        var tok = ff.getw( ff.lines[ln], 0 )
+        run.load(glob.dats, ff, tok, ln)
+
     run.refs(glob.dats)
     var dat = structs.KpArgs()
     gen.new_act(glob)

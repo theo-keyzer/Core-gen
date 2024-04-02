@@ -44,14 +44,14 @@ fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
         var cc = glob.acts.ap_actor[a].k_cc
         var eq = glob.acts.ap_actor[a].k_eq
         if attr != "E_O_L":
-            var aval = dat.get_var(glob.dats, attr)
-#            var aval = s_get_var(dat, glob, attr)
+#            var aval = dat.get_var(glob.dats, attr)
+            var aval = s_get_var(dat, glob, attr)
 #            if aval != val:
             if chk(eq, aval, val) == False:
 #                print(eq,aval,val)
                 continue
         if cc != "":
-            print(cc)
+            print( strs(dat, glob, cc) )
         var ret = go_cmds(dat, glob, a)
         if ret != 0:
             break
@@ -103,7 +103,7 @@ fn do_all(inout glob: GlobT, what: String, act: Int):
             go_act(glob.dats.ap_comp[i], glob, act)
 
 
-fn d_get_var(glob: GlobT, i: Int, va: String) -> String:
+fn d_get_var(glob: GlobT, i: Int, va: List[String]) -> String:
     var me2 = glob.wins[i].me2
     if glob.dats.ap_cmds[ me2 ].cmd == "Comp":
         return( glob.dats.ap_comp[ glob.dats.ap_cmds[ me2 ].ind ].get_var(glob.dats, va) )
@@ -120,11 +120,12 @@ fn s_get_var[T: structs.Kp](dat: T, glob: GlobT, va: String) -> String:
 #            return( ss[1] )
             for i in range( glob.winp, 0, -1):
                 if ss[1] == glob.wins[i].name:
-                    return( d_get_var(glob, i, ss[2]) )
+                    return( d_get_var(glob, i, ss[2:]) )
+        var val = dat.get_var(glob.dats, ss)
+        return val
     except:
         print("s_get_var"  )
-    var val = dat.get_var(glob.dats, va)
-    return val
+        return("????")
 
 
 fn strs[T: structs.Kp](dat: T, glob: GlobT, s: String) -> String:
