@@ -4,10 +4,12 @@ import structs
 struct WinT(CollectionElement):
     var name: String
     var me2: Int
+    var lcnt: Int
 
     fn __init__(inout self):
         self.name = "a"
         self.me2 = 0
+        self.lcnt = 0
 
 struct GlobT():
     var acts: structs.ActT
@@ -28,10 +30,10 @@ fn new_act(inout glob: GlobT):
     var winp = glob.winp+1;
     if len(glob.wins) <= winp:
         glob.wins.append( WinT() )
+    glob.wins[winp ].lcnt = 0
 
 
 fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
-#    print( glob.winp, len( glob.wins) )
     var name = glob.acts.ap_actor[act].k_name
     glob.winp = glob.winp+1
     glob.wins[ glob.winp ].me2 = dat.get_me2()
@@ -44,15 +46,13 @@ fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
         var cc = glob.acts.ap_actor[a].k_cc
         var eq = glob.acts.ap_actor[a].k_eq
         if attr != "E_O_L":
-#            var aval = dat.get_var(glob.dats, attr)
             var aval = s_get_var(dat, glob, attr)
-#            if aval != val:
             if chk(eq, aval, val) == False:
-#                print(eq,aval,val)
                 continue
         if cc != "":
             print( strs(dat, glob, cc) )
         var ret = go_cmds(dat, glob, a)
+        glob.wins[ glob.winp ].lcnt += 1
         if ret != 0:
             break
     glob.winp = glob.winp-1
@@ -63,6 +63,10 @@ fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
         if cmd.cmd == "C":
             var cc = glob.acts.ap_c[ cmd.ind ]
             print( strs(dat, glob, cc.k_desc) )
+        if cmd.cmd == "Cf":
+            if glob.wins[ glob.winp ].lcnt == 0:
+                var cf = glob.acts.ap_cf[ cmd.ind ]
+                print( strs(dat, glob, cf.k_desc) )
         if cmd.cmd == "All":
             var all = glob.acts.ap_all[ cmd.ind ]
             var what = all.k_what

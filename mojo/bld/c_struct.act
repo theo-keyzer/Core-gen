@@ -114,10 +114,6 @@ C     fn get_me2(self) -> Int:
 C         return(self.me2)
 C
 C     fn get_var(self, act: ActT, na: List[String]) -> String:
-C         try:
-C             return( act.names["${name}c_" + String(self.me) + "_" + na[0] ] )
-C         except:
-C            print("except ${name}c_" + String(self.me) + "_" + na[0]  )
 C         return("??")
 C
 C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -153,10 +149,6 @@ C     fn get_me2(self) -> Int:
 C         return(self.me2)
 C
 C     fn get_var(self, act: ActT, na: List[String]) -> String:
-C         try:
-C             return( act.names["${name}c_" + String(self.me) + "_" + na[0] ] )
-C         except:
-C            print("except ${name}c_" + String(self.me) + "_" + na[0]  )
 C         return("??")
 C
 C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -201,8 +193,8 @@ Its Ref_comp other_var
 C         try:
 C             return( act.names["${name}c_" + String(self.me) + "_" + na[0] ] )
 C         except:
-C            print("except ${name}c_" + String(self.me) + "_" + na[0]  )
-C         return("??")
+-C            print("except ${name}c_" + String(self.me) + "_" + na[0]  )
+C             return("? ${name}c_" + String(self.me) + "_" + na[0] + " ?")
 C
 C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
 

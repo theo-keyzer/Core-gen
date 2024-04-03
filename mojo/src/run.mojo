@@ -48,6 +48,11 @@ fn load(inout act: structs.ActT, inout ff: Input, tok: String, ln: Int):
             act.ap_cs.append(kp)
             var cmd = structs.CmdT("Cs", kp.me)
             act.ap_cmds.append(cmd)
+        if tok == "Cf":
+            var kp = structs.KpCf(ff, ln, act)
+            act.ap_cf.append(kp)
+            var cmd = structs.CmdT("Cf", kp.me)
+            act.ap_cmds.append(cmd)
         if tok == "Out":
             var kp = structs.KpOut(ff, ln, act)
             act.ap_out.append(kp)
@@ -70,38 +75,44 @@ fn refs(inout act: structs.ActT):
             var p = act.names["Comp_" + String(i) + "_parent" ]
             act.ap_comp[i].k_parentp = act.index["Comp_" + p]
         except:
-            print("except Comp_" + String(i) + "_parent Comp_"  )
+            if "." != ".":
+                print("except Comp_" + String(i) + "_parent Comp_"  )
 
     for i in range( len(act.ap_ref) ):
         try:
             var p = act.names["Ref_" + String(i) + "_element" ]
             act.ap_ref[i].k_elementp = act.index[String(act.ap_ref[i].parentp) + "_Element_" + p]
         except:
-            print("except " + "Ref_" + String(i) + "_element" + " : " + String(act.ap_ref[i].parentp) + "_Element_"  )
+            if "check" != ".":
+                print("except " + "Ref_" + String(i) + "_element" + " : " + String(act.ap_ref[i].parentp) + "_Element_"  )
         try:
             var p = act.names["Ref_" + String(i) + "_comp" ]
             act.ap_ref[i].k_compp = act.index["Comp_" + p]
         except:
-            print("except Ref_" + String(i) + "_comp Comp_"  )
+            if "check" != ".":
+                print("except Ref_" + String(i) + "_comp Comp_"  )
 
     for i in range( len(act.ap_all) ):
         try:
             var p = act.ap_all[i].k_actor
             act.ap_all[i].k_actorp = act.index["Actor_" + p]
         except:
-            print("except All_" + String(i) + "_actor Actor_"  )
+            if "check" != ".":
+                print("except All_" + String(i) + "_actor Actor_"  )
 
     for i in range( len(act.ap_du) ):
         try:
             var p = act.ap_du[i].k_actor
             act.ap_du[i].k_actorp = act.index["Actor_" + p]
         except:
-            print("except Du_" + String(i) + "_actor Actor_"  )
+            if "check" != ".":
+                print("except Du_" + String(i) + "_actor Actor_"  )
 
     for i in range( len(act.ap_its) ):
         try:
             var p = act.ap_its[i].k_actor
             act.ap_its[i].k_actorp = act.index["Actor_" + p]
         except:
-            print("except Its_" + String(i) + "_actor Actor_"  )
+            if "check" != ".":
+                print("except Its_" + String(i) + "_actor Actor_"  )
 

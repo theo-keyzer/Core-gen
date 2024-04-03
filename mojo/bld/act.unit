@@ -81,6 +81,15 @@ Comp Cs parent Actor
 	Element desc   V1 DESC * code to output.
 
 ----------------------------------------------------------------
+Comp Cf parent Actor
+----------------------------------------------------------------
+* Output code to file if it is the first item in the loop
+* A simpler version of Out delay
+----------------------------------------------------------------
+
+	Element desc   V1 DESC * code to output.
+
+----------------------------------------------------------------
 Comp Out parent Actor
 ----------------------------------------------------------------
 * Output control

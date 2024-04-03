@@ -17,6 +17,7 @@ struct ActT():
     var ap_its : List[KpIts]
     var ap_c : List[KpC]
     var ap_cs : List[KpCs]
+    var ap_cf : List[KpCf]
     var ap_out : List[KpOut]
     var ap_break : List[KpBreak]
     var ap_unique : List[KpUnique]
@@ -34,6 +35,7 @@ struct ActT():
         self.ap_its = List[KpIts]()
         self.ap_c = List[KpC]()
         self.ap_cs = List[KpCs]()
+        self.ap_cf = List[KpCf]()
         self.ap_out = List[KpOut]()
         self.ap_break = List[KpBreak]()
         self.ap_unique = List[KpUnique]()
@@ -116,8 +118,7 @@ struct KpComp(Kp,CollectionElement):
         try:
             return( act.names["Comp_" + String(self.me) + "_" + na[0] ] )
         except:
-           print("except Comp_" + String(self.me) + "_" + na[0]  )
-        return("??")
+            return("? Comp_" + String(self.me) + "_" + na[0] + " ?")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
         if what == "Element":
@@ -174,8 +175,7 @@ struct KpElement(Kp,CollectionElement):
         try:
             return( act.names["Element_" + String(self.me) + "_" + na[0] ] )
         except:
-           print("except Element_" + String(self.me) + "_" + na[0]  )
-        return("??")
+            return("? Element_" + String(self.me) + "_" + na[0] + " ?")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
         if what == "parent" and self.parentp >= 0:
@@ -223,8 +223,7 @@ struct KpRef(Kp,CollectionElement):
         try:
             return( act.names["Ref_" + String(self.me) + "_" + na[0] ] )
         except:
-           print("except Ref_" + String(self.me) + "_" + na[0]  )
-        return("??")
+            return("? Ref_" + String(self.me) + "_" + na[0] + " ?")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
         if what == "parent" and self.parentp >= 0:
@@ -265,10 +264,6 @@ struct KpActor(Kp,CollectionElement):
         return(self.me2)
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
-        try:
-            return( act.names["Actor_" + String(self.me) + "_" + na[0] ] )
-        except:
-           print("except Actor_" + String(self.me) + "_" + na[0]  )
         return("??")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -307,10 +302,6 @@ struct KpAll(Kp,CollectionElement):
         return(self.me2)
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
-        try:
-            return( act.names["All_" + String(self.me) + "_" + na[0] ] )
-        except:
-           print("except All_" + String(self.me) + "_" + na[0]  )
         return("??")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -347,10 +338,6 @@ struct KpDu(Kp,CollectionElement):
         return(self.me2)
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
-        try:
-            return( act.names["Du_" + String(self.me) + "_" + na[0] ] )
-        except:
-           print("except Du_" + String(self.me) + "_" + na[0]  )
         return("??")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -389,10 +376,6 @@ struct KpIts(Kp,CollectionElement):
         return(self.me2)
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
-        try:
-            return( act.names["Its_" + String(self.me) + "_" + na[0] ] )
-        except:
-           print("except Its_" + String(self.me) + "_" + na[0]  )
         return("??")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -419,10 +402,6 @@ struct KpC(Kp,CollectionElement):
         return(self.me2)
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
-        try:
-            return( act.names["C_" + String(self.me) + "_" + na[0] ] )
-        except:
-           print("except C_" + String(self.me) + "_" + na[0]  )
         return("??")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -449,10 +428,32 @@ struct KpCs(Kp,CollectionElement):
         return(self.me2)
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
-        try:
-            return( act.names["Cs_" + String(self.me) + "_" + na[0] ] )
-        except:
-           print("except Cs_" + String(self.me) + "_" + na[0]  )
+        return("??")
+
+    fn do_its(self, inout glob: GlobT, what: String, act: Int):
+        return
+
+@value
+struct KpCf(Kp,CollectionElement):
+    var me: Int
+    var me2: Int
+    var parentp : Int
+    var k_desc: String
+
+    fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
+        self.me2 = len( act.ap_cmds )
+        self.me = len( act.ap_cf )
+        self.k_desc = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
+        var i = len( act.ap_actor )
+        if i > 0:
+            act.ap_actor[i-1].cmds_to = self.me2 + 1
+            self.parentp = i-1
+
+    fn get_me2(self) -> Int:
+        return(self.me2)
+
+    fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -483,10 +484,6 @@ struct KpOut(Kp,CollectionElement):
         return(self.me2)
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
-        try:
-            return( act.names["Out_" + String(self.me) + "_" + na[0] ] )
-        except:
-           print("except Out_" + String(self.me) + "_" + na[0]  )
         return("??")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -517,10 +514,6 @@ struct KpBreak(Kp,CollectionElement):
         return(self.me2)
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
-        try:
-            return( act.names["Break_" + String(self.me) + "_" + na[0] ] )
-        except:
-           print("except Break_" + String(self.me) + "_" + na[0]  )
         return("??")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):
@@ -551,10 +544,6 @@ struct KpUnique(Kp,CollectionElement):
         return(self.me2)
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
-        try:
-            return( act.names["Unique_" + String(self.me) + "_" + na[0] ] )
-        except:
-           print("except Unique_" + String(self.me) + "_" + na[0]  )
         return("??")
 
     fn do_its(self, inout glob: GlobT, what: String, act: Int):

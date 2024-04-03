@@ -6,7 +6,7 @@ from inputs import Input
 fn main() raises :
 
     var glob = gen.GlobT()
-    var  f = open("c_struct.act", "r")
+    var  f = open("c_run.act", "r")
     var ff = Input( f.read() )
     f.close()
     for ln in range( len( ff.lines ) ):
