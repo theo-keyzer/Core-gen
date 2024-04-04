@@ -5,11 +5,16 @@ struct WinT(CollectionElement):
     var name: String
     var me2: Int
     var lcnt: Int
+    var du: Bool
+
+# The Du cmd is for nested if/case
+# The control flow (Break) in the Duing actor aplies to the caling actor
 
     fn __init__(inout self):
         self.name = "a"
         self.me2 = 0
         self.lcnt = 0
+        self.du = False
 
 struct GlobT():
     var acts: structs.ActT
@@ -38,6 +43,7 @@ fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
     glob.winp = glob.winp+1
     glob.wins[ glob.winp ].me2 = dat.get_me2()
     glob.wins[ glob.winp ].name = name
+    var prev = False
     for a in range( len( glob.acts.ap_actor ) ):
         if name != glob.acts.ap_actor[a].k_name:
             continue
@@ -47,8 +53,10 @@ fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
         var eq = glob.acts.ap_actor[a].k_eq
         if attr != "E_O_L":
             var aval = s_get_var(dat, glob, attr)
-            if chk(eq, aval, val) == False:
+            if chk(eq, aval, val, prev) == False:
+                prev = False
                 continue
+            prev = True
         if cc != "":
             print( strs(dat, glob, cc) )
         var ret = go_cmds(dat, glob, a)
@@ -80,12 +88,18 @@ fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
         if cmd.cmd == "Du":
             var du = glob.acts.ap_du[ cmd.ind ]
             new_act(glob)
+            glob.wins[ glob.winp + 1 ].du = True
             go_act(dat, glob, du.k_actorp)
         if cmd.cmd == "Break":
             return(1)
     return(0)
 
-fn chk(eq: String, aval: String, val: String) -> Bool:
+fn chk(eqa: String, aval: String, val: String, prev: Bool) -> Bool:
+    var eq = eqa
+    if eq[0] == "&":
+        if prev == False:
+            return( False )
+        eq = eq[1:]
     if eq == "=":
         if aval == val:
             return(True)
