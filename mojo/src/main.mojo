@@ -6,7 +6,7 @@ from inputs import Input
 fn main() raises :
 
     var glob = gen.GlobT()
-    var  f = open("c_run.act", "r")
+    var  f = open("c_struct.act", "r")
     var ff = Input( f.read() )
     f.close()
     for ln in range( len( ff.lines ) ):
@@ -31,6 +31,6 @@ fn main() raises :
     run.refs(glob.dats)
     var dat = structs.KpArgs()
     gen.new_act(glob)
-    gen.go_act(dat,glob, 0)
+    var ret = gen.go_act(dat,glob, 0)
 
 

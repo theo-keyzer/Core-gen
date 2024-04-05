@@ -55,7 +55,7 @@ trait Kp():
         ...
     fn get_var(self, act: ActT, na: List[String]) -> String:
         ...
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
         ...
 
 @register_passable("trivial")
@@ -72,8 +72,8 @@ struct KpArgs(Kp):
 
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("?")
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @register_passable("trivial")
 struct KpComp(Kp,CollectionElement):
@@ -120,24 +120,32 @@ struct KpComp(Kp,CollectionElement):
         except:
             return("? Comp_" + String(self.me) + "_" + na[0] + " ?")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
         if what == "Element":
             for i in range( self.element_from, self.element_to ):
-                go_act(glob.dats.ap_element[i], glob, act)
+                var ret = go_act(glob.dats.ap_element[i], glob, act)
+                if ret != 0:
+                    return(ret)
         if what == "Ref":
             for i in range( self.ref_from, self.ref_to ):
-                go_act(glob.dats.ap_ref[i], glob, act)
+                var ret = go_act(glob.dats.ap_ref[i], glob, act)
+                if ret != 0:
+                    return(ret)
         if what == "parent" and self.k_parentp >= 0:
-            go_act(glob.dats.ap_comp[ self.k_parentp ], glob, act)
+            return( go_act(glob.dats.ap_comp[ self.k_parentp ], glob, act) )
         if what == "Comp_parent":
             for i in range( len( glob.dats.ap_comp ) ):
                 if glob.dats.ap_comp[i].k_parentp == self.me:
-                    go_act(glob.dats.ap_comp[i], glob, act)
+                    var ret = go_act(glob.dats.ap_comp[i], glob, act)
+                    if ret != 0:
+                        return(ret)
         if what == "Ref_comp":
             for i in range( len( glob.dats.ap_ref ) ):
                 if glob.dats.ap_ref[i].k_compp == self.me:
-                    go_act(glob.dats.ap_ref[i], glob, act)
-        return
+                    var ret = go_act(glob.dats.ap_ref[i], glob, act)
+                    if ret != 0:
+                        return(ret)
+        return(0)
 
 @register_passable("trivial")
 struct KpElement(Kp,CollectionElement):
@@ -177,14 +185,16 @@ struct KpElement(Kp,CollectionElement):
         except:
             return("? Element_" + String(self.me) + "_" + na[0] + " ?")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
         if what == "parent" and self.parentp >= 0:
-            go_act(glob.dats.ap_comp[ self.parentp ], glob, act)
+            return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
         if what == "Ref_element":
             for i in range( len( glob.dats.ap_ref ) ):
                 if glob.dats.ap_ref[i].k_elementp == self.me:
-                    go_act(glob.dats.ap_ref[i], glob, act)
-        return
+                    var ret = go_act(glob.dats.ap_ref[i], glob, act)
+                    if ret != 0:
+                        return(ret)
+        return(0)
 
 @register_passable("trivial")
 struct KpRef(Kp,CollectionElement):
@@ -225,14 +235,14 @@ struct KpRef(Kp,CollectionElement):
         except:
             return("? Ref_" + String(self.me) + "_" + na[0] + " ?")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
         if what == "parent" and self.parentp >= 0:
-            go_act(glob.dats.ap_comp[ self.parentp ], glob, act)
+            return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
         if what == "element" and self.k_elementp >= 0:
-            go_act(glob.dats.ap_element[ self.k_elementp ], glob, act)
+            return( go_act(glob.dats.ap_element[ self.k_elementp ], glob, act) )
         if what == "comp" and self.k_compp >= 0:
-            go_act(glob.dats.ap_comp[ self.k_compp ], glob, act)
-        return
+            return( go_act(glob.dats.ap_comp[ self.k_compp ], glob, act) )
+        return(0)
 
 @value
 struct KpActor(Kp,CollectionElement):
@@ -266,8 +276,8 @@ struct KpActor(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @value
 struct KpAll(Kp,CollectionElement):
@@ -304,8 +314,8 @@ struct KpAll(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @value
 struct KpDu(Kp,CollectionElement):
@@ -340,8 +350,8 @@ struct KpDu(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @value
 struct KpIts(Kp,CollectionElement):
@@ -378,8 +388,8 @@ struct KpIts(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @value
 struct KpC(Kp,CollectionElement):
@@ -404,8 +414,8 @@ struct KpC(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @value
 struct KpCs(Kp,CollectionElement):
@@ -430,8 +440,8 @@ struct KpCs(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @value
 struct KpCf(Kp,CollectionElement):
@@ -456,8 +466,8 @@ struct KpCf(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @value
 struct KpOut(Kp,CollectionElement):
@@ -486,8 +496,8 @@ struct KpOut(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @value
 struct KpBreak(Kp,CollectionElement):
@@ -495,15 +505,15 @@ struct KpBreak(Kp,CollectionElement):
     var me2: Int
     var parentp : Int
     var k_what: String
-    var k_on: String
-    var k_vars: String
+    var k_pad: String
+    var k_actor: String
 
     fn __init__(inout self, inout ff: Input, ln: Int, inout act: ActT): 
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_break )
         self.k_what = ff.getw( ff.lines[ln], 1 )
-        self.k_on = ff.getw( ff.lines[ln], 1 )
-        self.k_vars = ff.getws( ff.lines[ln], 1 )
+        self.k_pad = ff.getw( ff.lines[ln], 1 )
+        self.k_actor = ff.getw( ff.lines[ln], 1 )
         self.parentp = -1
         var i = len( act.ap_actor )
         if i > 0:
@@ -516,8 +526,8 @@ struct KpBreak(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 
 @value
 struct KpUnique(Kp,CollectionElement):
@@ -546,6 +556,6 @@ struct KpUnique(Kp,CollectionElement):
     fn get_var(self, act: ActT, na: List[String]) -> String:
         return("??")
 
-    fn do_its(self, inout glob: GlobT, what: String, act: Int):
-        return
+    fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+        return(0)
 

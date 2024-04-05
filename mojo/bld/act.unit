@@ -113,10 +113,8 @@ Comp Break parent Actor
 		Opt   actor        * continue with calling actor - break actor case.
 		Opt   loop         * continue after calling All, Its cmd - break loop chain.
 		Opt   cmd          * continue with actor case - break cmd list.
-	Element on    C1      WORD * on what condition.
-		Opt   on_error     * if var has errors.
-		Opt   on_ok        * if var has no errors.
-	Element vars  V1      WORD * var strings to eval - ${a}  ${b}
+	Element pad   C1 WORD      * padding (of)
+	Element actor C1 ACTOR     * which actor to break
 
 ----------------------------------------------------------------
 Comp Unique parent Actor

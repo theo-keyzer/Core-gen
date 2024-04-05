@@ -29,13 +29,13 @@ C             act.ap_cmds.append(cmd)
 Actor refs . parent.name = Actor
 ----------------------------------------------------------------
 
--Out delay
+Out delay
 
--C     for i in range( len(act.ap_${name}l) ):
+C     for i in range( len(act.ap_${name}l) ):
 		
 Its Element refs_ele_act
 
--C
+C
 
 Break
 
@@ -43,20 +43,18 @@ Break
 Actor refs .
 ----------------------------------------------------------------
 
--Out delay
+Out delay
 
--C     for i in range( len(act.ap_${name}l) ):
+C     for i in range( len(act.ap_${name}l) ):
 		
 Its Element refs_ele
 
--C
+C
 
 ----------------------------------------------------------------
 Actor refs_ele_act . mw = R1
 ----------------------------------------------------------------
 
-Cf
-Cf     for i in range( len(act.ap_${.refs.name}l) ):
 C         try:
 C             var p = act.ap_${parent.name}l[i].k_${name}l
 C             act.ap_${parent.name}l[i].k_${name}lp = act.index["${Ref_element.comp.name}c_" + p]
@@ -68,8 +66,6 @@ C                 print("except ${parent.name}c_" + String(i) + "_${name}l ${Ref
 Actor refs_ele . mw in R1,RS
 ----------------------------------------------------------------
 
-Cf
-Cf     for i in range( len(act.ap_${.refs.name}l) ):
 C         try:
 C             var p = act.names["${.refs.name}c_" + String(i) + "_${name}l" ]
 C             act.ap_${.refs.name}l[i].k_${name}lp = act.index["${Ref_element.comp.name}c_" + p]
@@ -81,8 +77,6 @@ C                 print("except ${.refs.name}c_" + String(i) + "_${name}l ${Ref_
 Actor refs_ele . mw in F1,FS
 ----------------------------------------------------------------
 
-Cf
-Cf     for i in range( len(act.ap_${.refs.name}l) ):
 C         try:
 C             var p = act.names["${.refs.name}c_" + String(i) + "_${name}l" ]
 C             act.ap_${.refs.name}l[i].k_${name}lp = act.index[String(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_" + p]

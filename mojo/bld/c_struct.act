@@ -37,7 +37,7 @@ C     fn get_me2(self) -> Int:
 C         ...
 C     fn get_var(self, act: ActT, na: List[String]) -> String:
 C         ...
-C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
+C     fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
 C         ...
 C
 C @register_passable("trivial")
@@ -54,8 +54,8 @@ C         return(self.me2)
 C
 C     fn get_var(self, act: ActT, na: List[String]) -> String:
 C         return("?")
-C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
-C         return
+C     fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+C         return(0)
 C
 
 All Comp struct
@@ -116,8 +116,8 @@ C
 C     fn get_var(self, act: ActT, na: List[String]) -> String:
 C         return("??")
 C
-C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
-C         return
+C     fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+C         return(0)
 C
 
 Break
@@ -151,8 +151,8 @@ C
 C     fn get_var(self, act: ActT, na: List[String]) -> String:
 C         return("??")
 C
-C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
-C         return
+C     fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
+C         return(0)
 C
 
 Break
@@ -196,14 +196,14 @@ C         except:
 -C            print("except ${name}c_" + String(self.me) + "_" + na[0]  )
 C             return("? ${name}c_" + String(self.me) + "_" + na[0] + " ?")
 C
-C     fn do_its(self, inout glob: GlobT, what: String, act: Int):
+C     fn do_its(self, inout glob: GlobT, what: String, act: Int) -> Int:
 
 Its Comp_parent its
 Its parent parent_field_func
 Its Ref ref_func
 Its Ref_comp other_func
 
-C         return
+C         return(0)
 C
 
 ----------------------------------------------------------------
@@ -356,7 +356,9 @@ Actor its Comp
 
 C         if what == "${name}c":
 C             for i in range( self.${name}l_from, self.${name}l_to ):
-C                 go_act(glob.dats.ap_${name}l[i], glob, act)
+C                 var ret = go_act(glob.dats.ap_${name}l[i], glob, act)
+C                 if ret != 0:
+C                     return(ret)
 
 ----------------------------------------------------------------
 Actor other_var Ref
@@ -389,21 +391,23 @@ Actor other_func Ref
 C         if what == "${parent.name}c_${element.name}l":
 C             for i in range( len( glob.dats.ap_${parent.name}l ) ):
 C                 if glob.dats.ap_${parent.name}l[i].k_${element.name}lp == self.me:
-C                     go_act(glob.dats.ap_${parent.name}l[i], glob, act)
+C                     var ret = go_act(glob.dats.ap_${parent.name}l[i], glob, act)
+C                     if ret != 0:
+C                         return(ret)
 
 ----------------------------------------------------------------
 Actor parent_field_func Comp
 ----------------------------------------------------------------
 
 C         if what == "parent" and self.parentp >= 0:
-C             go_act(glob.dats.ap_${name}l[ self.parentp ], glob, act)
+C             return( go_act(glob.dats.ap_${name}l[ self.parentp ], glob, act) )
 
 ----------------------------------------------------------------
 Actor ref_func Ref
 ----------------------------------------------------------------
 
 C         if what == "${element.name}l" and self.k_${element.name}lp >= 0:
-C             go_act(glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ], glob, act)
+C             return( go_act(glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ], glob, act) )
 
 
 

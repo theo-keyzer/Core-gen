@@ -5,7 +5,7 @@ struct WinT(CollectionElement):
     var name: String
     var me2: Int
     var lcnt: Int
-    var du: Bool
+    var brk_act: Bool
 
 # The Du cmd is for nested if/case
 # The control flow (Break) in the Duing actor aplies to the caling actor
@@ -14,7 +14,7 @@ struct WinT(CollectionElement):
         self.name = "a"
         self.me2 = 0
         self.lcnt = 0
-        self.du = False
+        self.brk_act = False
 
 struct GlobT():
     var acts: structs.ActT
@@ -28,17 +28,16 @@ struct GlobT():
         self.wins = List[WinT]()
         self.winp = -1
 
-#		new_act(glob, glob.acts.ap_actor[0].k_name, "", "run:1", "", "", "");
-#		go_act(glob, kp);
 
 fn new_act(inout glob: GlobT):
     var winp = glob.winp+1;
     if len(glob.wins) <= winp:
         glob.wins.append( WinT() )
-    glob.wins[winp ].lcnt = 0
+    glob.wins[winp].lcnt = 0
+    glob.wins[winp].brk_act = False
 
 
-fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
+fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
     var name = glob.acts.ap_actor[act].k_name
     glob.winp = glob.winp+1
     glob.wins[ glob.winp ].me2 = dat.get_me2()
@@ -53,17 +52,24 @@ fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int):
         var eq = glob.acts.ap_actor[a].k_eq
         if attr != "E_O_L":
             var aval = s_get_var(dat, glob, attr)
-            if chk(eq, aval, val, prev) == False:
-                prev = False
+            prev = chk(eq, aval, val, prev)
+            if prev == False:
                 continue
-            prev = True
         if cc != "":
             print( strs(dat, glob, cc) )
         var ret = go_cmds(dat, glob, a)
         glob.wins[ glob.winp ].lcnt += 1
-        if ret != 0:
-            break
+        if ret == 0:
+            continue
+        var nret = ret
+        if ret == 2:
+            nret = 0
+        if ret < 0 and glob.wins[ glob.winp ].brk_act == True:
+            nret = 0-ret
+        glob.winp = glob.winp-1
+        return(nret)
     glob.winp = glob.winp-1
+    return(0)
 
 fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
     for c in range(glob.acts.ap_actor[act].cmds_from, glob.acts.ap_actor[act].cmds_to):
@@ -79,19 +85,35 @@ fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
             var all = glob.acts.ap_all[ cmd.ind ]
             var what = all.k_what
             new_act(glob)
-            do_all(glob, what, all.k_actorp)
+            var ret = do_all(glob, what, all.k_actorp)
+            if ret > 1 or ret < 0:
+                return(ret)
         if cmd.cmd == "Its":
             var its = glob.acts.ap_its[ cmd.ind ]
             var what = its.k_what
             new_act(glob)
-            dat.do_its(glob, what, its.k_actorp)
+            var ret = dat.do_its(glob, what, its.k_actorp)
+            if ret > 1 or ret < 0:
+                return(ret)
         if cmd.cmd == "Du":
             var du = glob.acts.ap_du[ cmd.ind ]
             new_act(glob)
-            glob.wins[ glob.winp + 1 ].du = True
-            go_act(dat, glob, du.k_actorp)
+            var ret = go_act(dat, glob, du.k_actorp)
+            if ret != 0:
+                return(ret)
         if cmd.cmd == "Break":
-            return(1)
+            var brk = glob.acts.ap_break[ cmd.ind ]
+            var ret = 0
+            if brk.k_what == "E_O_L" or brk.k_what == "actor":
+                ret = 2
+            if brk.k_what == "loop":
+                ret = 1
+            if brk.k_actor != "E_O_L":
+                for i in range( glob.winp-1, -1, -1):
+                    if brk.k_actor == glob.wins[i].name:
+                        glob.wins[i+1].brk_act = True
+                        ret = 0 - ret
+            return(ret)
     return(0)
 
 fn chk(eqa: String, aval: String, val: String, prev: Bool) -> Bool:
@@ -115,10 +137,13 @@ fn chk(eqa: String, aval: String, val: String, prev: Bool) -> Bool:
             return(False)
     return(False)
 
-fn do_all(inout glob: GlobT, what: String, act: Int):
+fn do_all(inout glob: GlobT, what: String, act: Int) -> Int:
     if what == "Comp":
         for i in range( len(glob.dats.ap_comp) ):
-            go_act(glob.dats.ap_comp[i], glob, act)
+            var ret = go_act(glob.dats.ap_comp[i], glob, act)
+            if ret != 0:
+                return(ret)
+    return(0)
 
 
 fn d_get_var(glob: GlobT, i: Int, va: List[String]) -> String:
@@ -136,7 +161,7 @@ fn s_get_var[T: structs.Kp](dat: T, glob: GlobT, va: String) -> String:
         var ss = va.split(".")
         if ss[0] == "":
 #            return( ss[1] )
-            for i in range( glob.winp, 0, -1):
+            for i in range( glob.winp, -1, -1):
                 if ss[1] == glob.wins[i].name:
                     return( d_get_var(glob, i, ss[2:]) )
         var val = dat.get_var(glob.dats, ss)
