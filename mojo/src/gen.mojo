@@ -6,6 +6,12 @@ struct WinT(CollectionElement):
     var me2: Int
     var lcnt: Int
     var brk_act: Bool
+    var cur_act: Int
+    var cur_pos: Int
+    var on_pos: Int
+    var is_on: Bool
+    var is_trig: Bool
+    var is_prev: Bool
 
 # The Du cmd is for nested if/case
 # The control flow (Break) in the Duing actor aplies to the caling actor
@@ -15,6 +21,12 @@ struct WinT(CollectionElement):
         self.me2 = 0
         self.lcnt = 0
         self.brk_act = False
+        self.cur_act = 0
+        self.cur_pos = 0
+        self.on_pos = 0
+        self.is_on = False
+        self.is_trig = False
+        self.is_prev = False
 
 struct GlobT():
     var acts: structs.ActT
@@ -33,9 +45,13 @@ fn new_act(inout glob: GlobT):
     var winp = glob.winp+1;
     if len(glob.wins) <= winp:
         glob.wins.append( WinT() )
-    glob.wins[winp].lcnt = 0
+    glob.wins[winp].lcnt = -1
     glob.wins[winp].brk_act = False
-
+    if (winp == 0):
+        return
+    if glob.wins[winp-1].is_on or glob.wins[winp-1].is_prev:
+        if glob.wins[winp-1].is_trig == False: 
+            glob.wins[winp].is_prev = True
 
 fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
     var name = glob.acts.ap_actor[act].k_name
@@ -57,9 +73,10 @@ fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
                 continue
         if cc != "":
             print( strs(dat, glob, cc) )
-        var ret = go_cmds(dat, glob, a)
+        glob.wins[ glob.winp ].cur_act = a;
         glob.wins[ glob.winp ].lcnt += 1
-        if ret == 0:
+        var ret = go_cmds(dat, glob, a)
+        if ret == 0 or ret == 3:
             continue
         var nret = ret
         if ret == 2:
@@ -72,9 +89,15 @@ fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
     return(0)
 
 fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
+    glob.wins[glob.winp].is_on   = False
+    glob.wins[glob.winp].is_trig = False
     for c in range(glob.acts.ap_actor[act].cmds_from, glob.acts.ap_actor[act].cmds_to):
+        glob.wins[glob.winp].cur_pos = c
         var cmd = glob.acts.ap_cmds[c]
         if cmd.cmd == "C":
+            if glob.wins[glob.winp].is_on and glob.wins[glob.winp].is_trig == False:
+                continue
+            trig(glob,glob.winp)
             var cc = glob.acts.ap_c[ cmd.ind ]
             print( strs(dat, glob, cc.k_desc) )
         if cmd.cmd == "Cf":
@@ -101,6 +124,14 @@ fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
             var ret = go_act(dat, glob, du.k_actorp)
             if ret != 0:
                 return(ret)
+        if cmd.cmd == "Out":
+            var out = glob.acts.ap_out[ cmd.ind ]
+            if out.k_what == "delay":
+                glob.wins[ glob.winp ].is_on = True
+                glob.wins[ glob.winp ].on_pos = c
+            if out.k_what == "normal":
+                glob.wins[ glob.winp ].is_on = False
+                glob.wins[ glob.winp ].is_trig = False
         if cmd.cmd == "Break":
             var brk = glob.acts.ap_break[ cmd.ind ]
             var ret = 0
@@ -108,6 +139,8 @@ fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
                 ret = 2
             if brk.k_what == "loop":
                 ret = 1
+            if brk.k_what == "cmds":
+                ret = 3
             if brk.k_actor != "E_O_L":
                 for i in range( glob.winp-1, -1, -1):
                     if brk.k_actor == glob.wins[i].name:
@@ -115,6 +148,30 @@ fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
                         ret = 0 - ret
             return(ret)
     return(0)
+
+fn trig(inout glob: GlobT, winp: Int):
+    if glob.wins[winp].is_prev == False or winp == 0:
+        return
+    glob.wins[winp].is_prev = False
+    var prev = winp - 1
+    if glob.wins[ prev ].is_on == False and glob.wins[ prev ].is_prev == False:
+        return
+    if glob.wins[ prev ].is_trig == True:
+        return
+    glob.wins[ prev ].is_trig = True
+    re_go_cmds(glob, prev )
+
+
+fn re_go_cmds(inout glob: GlobT, winp: Int):
+    trig(glob,winp);
+    var a = glob.acts.ap_actor[ glob.wins[winp].cur_act ];
+    var me2 = glob.wins[winp].me2
+    for c in range(glob.wins[winp].on_pos, glob.wins[winp].cur_pos):
+        var cmd = glob.acts.ap_cmds[c]
+        if cmd.cmd == "C":
+            var cc = glob.acts.ap_c[ cmd.ind ]
+            if glob.dats.ap_cmds[ me2 ].cmd == "Comp":
+                print( strs(glob.dats.ap_comp[ glob.dats.ap_cmds[ me2 ].ind ], glob, cc.k_desc) )
 
 fn chk(eqa: String, aval: String, val: String, prev: Bool) -> Bool:
     var eq = eqa
