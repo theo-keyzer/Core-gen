@@ -1,4 +1,4 @@
-import structs
+import structs, run
 
 @value
 struct WinT(CollectionElement):
@@ -67,12 +67,12 @@ fn go_act[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
         var cc = glob.acts.ap_actor[a].k_cc
         var eq = glob.acts.ap_actor[a].k_eq
         if attr != "E_O_L":
-            var aval = s_get_var(dat, glob, attr)
+            var aval = s_get_var(dat, glob, attr, glob.winp, True)
             prev = chk(eq, aval, val, prev)
             if prev == False:
                 continue
         if cc != "":
-            print( strs(dat, glob, cc) )
+            print( strs(dat, glob, cc, glob.winp, True) )
         glob.wins[ glob.winp ].cur_act = a;
         glob.wins[ glob.winp ].lcnt += 1
         var ret = go_cmds(dat, glob, a)
@@ -99,11 +99,11 @@ fn go_cmds[T: structs.Kp](dat: T, inout glob: GlobT, act: Int) -> Int:
                 continue
             trig(glob,glob.winp)
             var cc = glob.acts.ap_c[ cmd.ind ]
-            print( strs(dat, glob, cc.k_desc) )
+            print( strs(dat, glob, cc.k_desc, glob.winp, True) )
         if cmd.cmd == "Cf":
             if glob.wins[ glob.winp ].lcnt == 0:
                 var cf = glob.acts.ap_cf[ cmd.ind ]
-                print( strs(dat, glob, cf.k_desc) )
+                print( strs(dat, glob, cf.k_desc, glob.winp, True) )
         if cmd.cmd == "All":
             var all = glob.acts.ap_all[ cmd.ind ]
             var what = all.k_what
@@ -169,9 +169,9 @@ fn re_go_cmds(inout glob: GlobT, winp: Int):
     for c in range(glob.wins[winp].on_pos, glob.wins[winp].cur_pos):
         var cmd = glob.acts.ap_cmds[c]
         if cmd.cmd == "C":
+            var dat = structs.KpArgs()
             var cc = glob.acts.ap_c[ cmd.ind ]
-            if glob.dats.ap_cmds[ me2 ].cmd == "Comp":
-                print( strs(glob.dats.ap_comp[ glob.dats.ap_cmds[ me2 ].ind ], glob, cc.k_desc) )
+            print( strs(dat, glob, cc.k_desc, winp, False) )
 
 fn chk(eqa: String, aval: String, val: String, prev: Bool) -> Bool:
     var eq = eqa
@@ -181,6 +181,10 @@ fn chk(eqa: String, aval: String, val: String, prev: Bool) -> Bool:
         eq = eq[1:]
     if eq == "=":
         if aval == val:
+            return(True)
+        return(False)
+    if eq == "!=":
+        if aval != val:
             return(True)
         return(False)
     if eq == "in":
@@ -203,32 +207,22 @@ fn do_all(inout glob: GlobT, what: String, act: Int) -> Int:
     return(0)
 
 
-fn d_get_var(glob: GlobT, i: Int, va: List[String]) -> String:
-    var me2 = glob.wins[i].me2
-    if glob.dats.ap_cmds[ me2 ].cmd == "Comp":
-        return( glob.dats.ap_comp[ glob.dats.ap_cmds[ me2 ].ind ].get_var(glob.dats, va) )
-    if glob.dats.ap_cmds[ me2 ].cmd == "Element":
-        return( glob.dats.ap_element[ glob.dats.ap_cmds[ me2 ].ind ].get_var(glob.dats, va) )
-    if glob.dats.ap_cmds[ me2 ].cmd == "Ref":
-        return( glob.dats.ap_ref[ glob.dats.ap_cmds[ me2 ].ind ].get_var(glob.dats, va) )
-    return("? d_get_var ?")
-
-fn s_get_var[T: structs.Kp](dat: T, glob: GlobT, va: String) -> String:
+fn s_get_var[T: structs.Kp](dat: T, glob: GlobT, va: String, winp: Int, hasDat: Bool) -> String:
     try:
         var ss = va.split(".")
         if ss[0] == "":
-#            return( ss[1] )
-            for i in range( glob.winp, -1, -1):
+            for i in range(winp, -1, -1):
                 if ss[1] == glob.wins[i].name:
-                    return( d_get_var(glob, i, ss[2:]) )
-        var val = dat.get_var(glob.dats, ss)
-        return val
+                    return( run.d_get_var( glob.dats, glob.dats.ap_cmds[ glob.wins[i].me2 ], ss[2:] ) )
+        if hasDat == False:
+            return( run.d_get_var( glob.dats, glob.dats.ap_cmds[ glob.wins[winp].me2 ], ss ) )
+        return( dat.get_var(glob.dats, ss) )
     except:
         print("s_get_var"  )
         return("????")
 
 
-fn strs[T: structs.Kp](dat: T, glob: GlobT, s: String) -> String:
+fn strs[T: structs.Kp](dat: T, glob: GlobT, s: String, winp: Int, hasDat: Bool) -> String:
     var ret: String = ""
     var pos = 0
     var dp = -3
@@ -244,7 +238,7 @@ fn strs[T: structs.Kp](dat: T, glob: GlobT, s: String) -> String:
         if s[i] == '}':
             if bp > 0:
                 var va = s[bp+1:i]
-                va = s_get_var(dat, glob, va)
+                va = s_get_var(dat, glob, va, winp, hasDat)
 #                va = dat.get_var(glob.dats, va)
                 if len(s) > i+1:
                     i += 1

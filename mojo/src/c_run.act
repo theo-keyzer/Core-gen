@@ -15,6 +15,20 @@ C fn refs(inout act: structs.ActT):
 
 All Comp refs
 
+C fn d_get_var(dats: structs.ActT, cmt: structs.CmdT, va: List[String]) -> String:
+
+All Comp get_var
+
+C     return("? d_get_var ?")
+C
+
+----------------------------------------------------------------
+Actor get_var . parent.name != Actor
+----------------------------------------------------------------
+
+C     if cmt.cmd == "${name}c":
+C         return( dats.ap_${name}l[ cmt.ind ].get_var(dats, va) )
+
 ----------------------------------------------------------------
 Actor load .
 ----------------------------------------------------------------

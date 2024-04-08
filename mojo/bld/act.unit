@@ -112,7 +112,7 @@ Comp Break parent Actor
 	Element what  C1      WORD * what to break
 		Opt   actor        * continue with calling actor - break actor case.
 		Opt   loop         * continue after calling All, Its cmd - break loop chain.
-		Opt   cmd          * continue with actor case - break cmd list.
+		Opt   cmds         * continue with actor case - break cmd list.
 	Element pad   C1 WORD      * padding (of)
 	Element actor C1 ACTOR     * which actor to break
 

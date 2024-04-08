@@ -116,3 +116,14 @@ fn refs(inout act: structs.ActT):
             if "check" != ".":
                 print("except Its_" + String(i) + "_actor Actor_"  )
 
+fn d_get_var(dats: structs.ActT, cmt: structs.CmdT, va: List[String]) -> String:
+    if cmt.cmd == "Comp":
+        return( dats.ap_comp[ cmt.ind ].get_var(dats, va) )
+    if cmt.cmd == "Element":
+        return( dats.ap_element[ cmt.ind ].get_var(dats, va) )
+    if cmt.cmd == "Ref":
+        return( dats.ap_ref[ cmt.ind ].get_var(dats, va) )
+    if cmt.cmd == "Actor":
+        return( dats.ap_actor[ cmt.ind ].get_var(dats, va) )
+    return("? d_get_var ?")
+
