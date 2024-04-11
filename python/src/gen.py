@@ -4,7 +4,6 @@ class WinT:
     def __init__(self):
         self.dat = structs.Kp()
         self.name = ""
-        self.me2 = 0
         self.lcnt = 0
         self.brk_act = False
         self.cur_act = 0
@@ -22,7 +21,6 @@ class GlobT:
         self.winp = -1
 
 def new_act(glob):
-#    glob.winp += 1
     winp = glob.winp + 1
     if len(glob.wins) <= winp:
         glob.wins.append(WinT())
@@ -35,15 +33,11 @@ def new_act(glob):
             glob.wins[winp].is_prev = True
 
 def go_act(dat, glob, act):
-#    print('her')
     name = glob.acts.ap_actor[act].k_name
-#    print( len( glob.wins ), glob.winp )
     glob.winp += 1
     glob.wins[glob.winp].dat = dat;
-    glob.wins[glob.winp].me2 = dat.get_me2()
     glob.wins[glob.winp].name = name
     prev = False
-#    print('her3')
     for a in range(len(glob.acts.ap_actor)):
         if name != glob.acts.ap_actor[a].k_name:
             continue
@@ -52,12 +46,12 @@ def go_act(dat, glob, act):
         cc = glob.acts.ap_actor[a].k_cc
         eq = glob.acts.ap_actor[a].k_eq
         if attr != "E_O_L":
-            aval = s_get_var(dat, glob, attr, glob.winp, True)
+            aval = s_get_var(glob, attr, glob.winp)
             prev = chk(eq, aval, val, prev)
             if not prev:
                 continue
         if cc != "":
-            print(strs(dat, glob, cc, glob.winp, True))
+            print(strs(glob, cc, glob.winp))
         glob.wins[glob.winp].cur_act = a
         glob.wins[glob.winp].lcnt += 1
         ret = go_cmds(dat, glob, a)
@@ -74,7 +68,6 @@ def go_act(dat, glob, act):
     return 0
 
 def go_cmds(dat, glob: GlobT, act: int) -> int:
-#    print('her12')
     glob.wins[glob.winp].is_on = False
     glob.wins[glob.winp].is_trig = False
     for c in range(glob.acts.ap_actor[act].cmds_from, glob.acts.ap_actor[act].cmds_to):
@@ -85,11 +78,11 @@ def go_cmds(dat, glob: GlobT, act: int) -> int:
                 continue
             trig(glob, glob.winp)
             cc = glob.acts.ap_c[cmd.ind]
-            print(strs(dat, glob, cc.k_desc, glob.winp, True))
+            print(strs(glob, cc.k_desc, glob.winp))
         elif cmd.cmd == "Cf":
             if glob.wins[glob.winp].lcnt == 0:
                 cf = glob.acts.ap_cf[cmd.ind]
-                print(strs(dat, glob, cf.k_desc, glob.winp, True))
+                print(strs(glob, cf.k_desc, glob.winp))
         elif cmd.cmd == "All":
             all = glob.acts.ap_all[cmd.ind]
             what = all.k_what
@@ -150,13 +143,11 @@ def trig(glob, winp):
 def re_go_cmds(glob, winp):
     trig(glob, winp)
     a = glob.acts.ap_actor[glob.wins[winp].cur_act]
-    me2 = glob.wins[winp].me2
     for c in range(glob.wins[winp].on_pos, glob.wins[winp].cur_pos):
         cmd = glob.acts.ap_cmds[c]
         if cmd.cmd == "C":
-            dat = structs.KpArgs()
             cc = glob.acts.ap_c[cmd.ind]
-            print(strs(dat, glob, cc.k_desc, winp, False))
+            print(strs(glob, cc.k_desc, winp))
 
 # Remaining functions and classes omitted for brevity
 
@@ -189,9 +180,7 @@ def do_all(glob: GlobT, what: str, act: int) -> int:
                 return ret
     return 0
 
-def s_get_var(dat, glob: GlobT, va: str, winp: int, hasDat: bool) -> str:
-#    ss = va.split(".")
-#    return dat.get_var(glob.dats, ss)
+def s_get_var(glob: GlobT, va: str, winp: int) -> str:
     try:
         ss = va.split(".")
         if ss[0] == "":
@@ -203,7 +192,7 @@ def s_get_var(dat, glob: GlobT, va: str, winp: int, hasDat: bool) -> str:
         print("s_get_var")
         return "????"
 
-def strs(dat, glob: GlobT, s: str, winp: int, hasDat: bool) -> str:
+def strs(glob: GlobT, s: str, winp: int) -> str:
     ret = ""
     pos = 0
     dp = -3
@@ -219,7 +208,7 @@ def strs(dat, glob: GlobT, s: str, winp: int, hasDat: bool) -> str:
         if s[i] == '}':
             if bp > 0:
                 va = s[bp + 1:i]
-                va = s_get_var(dat, glob, va, winp, hasDat)
+                va = s_get_var(glob, va, winp)
                 if len(s) > i + 1:
                     i += 1
                     va = tocase(va, s[i])
