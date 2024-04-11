@@ -1,0 +1,136 @@
+----------------------------------------------------------------
+Comp Actor parent . Find
+----------------------------------------------------------------
+* Loader definition for actors.
+* These are like routines the generator calls
+* for generating code.
+* Actors group on name
+----------------------------------------------------------------
+
+	Element name   C1 NAME  * of actor
+	Element comp   C1 COMP  * what it belongs to
+	Element attr   C1 WORD  * what to check
+	Element eq     C1 WORD  * to equal
+	Element value  C1 WORD  * this
+	Element cc     V1 WORD  * code to generate.
+
+----------------------------------------------------------------
+Comp All parent Actor
+----------------------------------------------------------------
+* An actor calling type.
+* For each component call this actor.
+* The match is for the component.
+----------------------------------------------------------------
+
+	Element what    C1 WORD    * what to look for
+	Element actor   R1 ACTOR   * what actor to run for it
+	Element attr    C1 WORD    * what to check
+	Element eq      C1 WORD    * to equal
+	Element value   C1 WORD    * this
+	Element args    V1 WORD    * arg data value
+
+Ref actor Actor check
+
+----------------------------------------------------------------
+Comp Du parent Actor
+----------------------------------------------------------------
+* An actor calling type.
+* Coditional call to actor
+----------------------------------------------------------------
+
+	Element actor  R1 ACTOR * what actor to run for it
+	Element attr   C1 WORD  * what to check
+	Element eq     C1 WORD  * to equal
+	Element value  C1 WORD  * this
+	Element args   V1 WORD  * arg data value
+	
+Ref actor Actor check
+
+----------------------------------------------------------------
+Comp Its parent Actor
+----------------------------------------------------------------
+* Call this actor
+* For each child or reference of this def
+* The match is for the component.
+* Its what actor . . . args - to bypass the match
+----------------------------------------------------------------
+
+	Element what    C1 WORD      * to look for
+	Element actor   R1 ACTOR     * what to do
+	Element attr    C1 WORD      * what to check
+	Element eq      C1 WORD      * to equal
+	Element value   C1 WORD      * this
+	Element args    V1 WORD      * arg data value
+	
+Ref actor Actor check
+	
+----------------------------------------------------------------
+Comp C parent Actor
+----------------------------------------------------------------
+* Output code to file.
+----------------------------------------------------------------
+
+	Element desc   V1 DESC * code to output.
+
+----------------------------------------------------------------
+Comp Cs parent Actor
+----------------------------------------------------------------
+* Output code sniplet to file - no newline
+----------------------------------------------------------------
+
+	Element desc   V1 DESC * code to output.
+
+----------------------------------------------------------------
+Comp Cf parent Actor
+----------------------------------------------------------------
+* Output code to file if it is the first item in the loop
+* A simpler version of Out delay
+----------------------------------------------------------------
+
+	Element desc   V1 DESC * code to output.
+
+----------------------------------------------------------------
+Comp Out parent Actor
+----------------------------------------------------------------
+* Output control
+* delay: output is off until first C in next actor
+* normal: back to normal
+* off: cascade all output  off
+----------------------------------------------------------------
+
+	Element what   C1 WORD      * to look for
+	Element pad    C1 WORD      * to look for
+	Element desc   V1 DESC * code to buffer.
+
+----------------------------------------------------------------
+Comp Break parent Actor
+----------------------------------------------------------------
+* Break out of actor loop
+* To not do the default one
+----------------------------------------------------------------
+
+	Element what  C1      WORD * what to break
+		Opt   actor        * continue with calling actor - break actor case.
+		Opt   loop         * continue after calling All, Its cmd - break loop chain.
+		Opt   cmds         * continue with actor case - break cmd list.
+	Element pad   C1 WORD      * padding (of)
+	Element actor C1 ACTOR     * which actor to break
+
+----------------------------------------------------------------
+Comp Unique parent Actor
+----------------------------------------------------------------
+* Used to not duplicate output.
+* Exit the actor if found
+* Add value to key
+*
+* Cmd add   (key) - add to key, ends actor if found.
+* Cmd check (key) - ends actor if there, does not add
+* Cmd clear (key) - removes a key entry
+* Cmd clear       - clears the keys
+----------------------------------------------------------------
+
+	Element cmd    C1 WORD  * add / clear
+	Element key    C1 WORD  * compare key
+	Element value  V1 WORD  * value to add to key
+
+
