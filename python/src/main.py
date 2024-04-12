@@ -17,10 +17,13 @@ def main():
             ff = Input(f.read())
     
         for ln in range(len(ff.lines)):
+            lno = fa[i] + ":" + str(ln+1)
             tok = ff.getw(ff.lines[ln], 0)
-            run.load(glob.acts, ff, tok, ln)
+            run.load(glob.acts, ff, tok, ln, lno)
     
-    run.refs(glob.acts)
+    err = run.refs(glob.acts)
+    if err:
+        glob.load_errs = True
 
     fa = sys.argv[2].split(",")
     for i in range(0, len(fa) ):
@@ -28,14 +31,20 @@ def main():
             ff = Input(f.read())
     
         for ln in range(len(ff.lines)):
+            lno = fa[i] + ":" + str(ln+1)
             tok = ff.getw(ff.lines[ln], 0)
-            run.load(glob.dats, ff, tok, ln)
+            run.load(glob.dats, ff, tok, ln, lno)
 
     run.refs(glob.dats)
+    if err:
+        glob.load_errs = True
+
     dat = structs.KpArgs()
     gen.new_act(glob)
     ret = gen.go_act(dat, glob, 0)
-
+    if glob.load_errs or glob.run_errs:
+        print('Errors')
+        sys.exit(1)
 try:
     main()
 except Exception as e:

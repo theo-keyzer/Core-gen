@@ -7,10 +7,10 @@ class ActT:
     def __init__(self):
         self.names = {}
         self.index = {}
+        self.ap_cmds = []
         self.ap_comp = []
         self.ap_element = []
         self.ap_ref = []
-        self.ap_cmds = []
         self.ap_actor = []
         self.ap_all = []
         self.ap_du = []
@@ -22,20 +22,21 @@ class ActT:
         self.ap_break = []
         self.ap_unique = []
 
-class CmdT:
-    def __init__(self, cmd: str, ind: int):
-        self.cmd = cmd
-        self.ind = ind
-
 class Kp:
     def get_me2(self) -> int:
         pass
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         pass
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         pass
+
+class CmdT:
+    def __init__(self, cmd: str, ind: int, dat: Kp):
+        self.cmd = cmd
+        self.ind = ind
+        self.dat = dat
 
 class KpArgs(Kp):
     def __init__(self):
@@ -45,17 +46,21 @@ class KpArgs(Kp):
     def get_me2(self) -> int:
         return self.me2
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return "?"
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return ("?", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return 0
 
 class KpComp(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_comp)
+        self.cmds_from = len( act.ap_cmds )
+        self.cmds_to = len( act.ap_cmds )
         self.names = {}
+        self.names["k_comp"] = "Comp";
         self.k_parentp = -1
         self.element_from = len( act.ap_element )
         self.element_to = len( act.ap_element )
@@ -72,21 +77,21 @@ class KpComp(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
-            return( act.ap_comp[ self.k_parentp ].get_var(act, na[1:]) )
+            return( act.ap_comp[ self.k_parentp ].get_var(act, na[1:], lno) )
         if na[0] == "Comp_parent":
             for i in range( len(act.ap_comp) ):
                 if act.ap_comp[i].k_parentp == self.me:
-                    return( act.ap_comp[i].get_var(act, na[1:]) )
+                    return( act.ap_comp[i].get_var(act, na[1:], lno) )
         if na[0] == "Ref_comp":
             for i in range( len(act.ap_ref) ):
                 if act.ap_ref[i].k_compp == self.me:
-                    return( act.ap_ref[i].get_var(act, na[1:]) )
+                    return( act.ap_ref[i].get_var(act, na[1:], lno) )
         try:
-            return( self.names[ na[0] ] )
+            return( self.names[ na[0] ], False )
         except:
-            return("? Comp_" + str(self.me) + "_" + na[0] + " ?")
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Comp?", True );
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         if what == "Element":
@@ -116,10 +121,14 @@ class KpComp(Kp):
         return(0)
 
 class KpElement(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_element)
+        self.cmds_from = len( act.ap_cmds )
+        self.cmds_to = len( act.ap_cmds )
         self.names = {}
+        self.names["k_comp"] = "Element";
         na = ff.getw( ff.lines[ln], 1 )
         self.names[ "name" ] = na
         self.names[ "mw" ] = ff.getw( ff.lines[ln], 1 )
@@ -129,6 +138,7 @@ class KpElement(Kp):
         self.parentp = -1
         i = len( act.ap_comp )
         if i > 0:
+            act.ap_comp[i-1].cmds_to = self.me2 + 1
             act.ap_comp[i-1].element_to = self.me + 1
             self.parentp = i-1
             s = str(self.parentp) + "_Element_" + na
@@ -137,17 +147,17 @@ class KpElement(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
-            return( act.ap_comp[ self.parentp ].get_var(act, na[1:]) )
+            return( act.ap_comp[ self.parentp ].get_var(act, na[1:], lno) )
         if na[0] == "Ref_element":
             for i in range( len(act.ap_ref) ):
                 if act.ap_ref[i].k_elementp == self.me:
-                    return( act.ap_ref[i].get_var(act, na[1:]) )
+                    return( act.ap_ref[i].get_var(act, na[1:], lno) )
         try:
-            return( self.names[ na[0] ] )
+            return( self.names[ na[0] ], False )
         except:
-            return("? Element_" + str(self.me) + "_" + na[0] + " ?")
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Element?", True );
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         if what == "parent" and self.parentp >= 0:
@@ -161,10 +171,14 @@ class KpElement(Kp):
         return(0)
 
 class KpRef(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_ref)
+        self.cmds_from = len( act.ap_cmds )
+        self.cmds_to = len( act.ap_cmds )
         self.names = {}
+        self.names["k_comp"] = "Ref";
         self.k_elementp = -1
         self.k_compp = -1
         self.names[ "element" ] = ff.getw( ff.lines[ln], 1 )
@@ -175,23 +189,24 @@ class KpRef(Kp):
         self.parentp = -1
         i = len( act.ap_comp )
         if i > 0:
+            act.ap_comp[i-1].cmds_to = self.me2 + 1
             act.ap_comp[i-1].ref_to = self.me + 1
             self.parentp = i-1
 
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         if na[0] == "element" and len(na) > 1 and self.k_elementp >= 0:
-            return( act.ap_element[ self.k_elementp ].get_var(act, na[1:]) )
+            return( act.ap_element[ self.k_elementp ].get_var(act, na[1:], lno) )
         if na[0] == "comp" and len(na) > 1 and self.k_compp >= 0:
-            return( act.ap_comp[ self.k_compp ].get_var(act, na[1:]) )
+            return( act.ap_comp[ self.k_compp ].get_var(act, na[1:], lno) )
         if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
-            return( act.ap_comp[ self.parentp ].get_var(act, na[1:]) )
+            return( act.ap_comp[ self.parentp ].get_var(act, na[1:], lno) )
         try:
-            return( self.names[ na[0] ] )
+            return( self.names[ na[0] ], False )
         except:
-            return("? Ref_" + str(self.me) + "_" + na[0] + " ?")
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Ref?", True );
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         if what == "parent" and self.parentp >= 0:
@@ -203,7 +218,8 @@ class KpRef(Kp):
         return(0)
 
 class KpActor(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len( act.ap_cmds )
         self.me = len( act.ap_actor )
         self.cmds_from = len( act.ap_cmds )
@@ -219,14 +235,15 @@ class KpActor(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)
 
 class KpAll(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_all)
         self.k_actorp = -1
@@ -245,14 +262,15 @@ class KpAll(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)
 
 class KpDu(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_du)
         self.k_actorp = -1
@@ -270,14 +288,15 @@ class KpDu(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)
 
 class KpIts(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_its)
         self.k_actorp = -1
@@ -296,14 +315,15 @@ class KpIts(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)
 
 class KpC(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_c)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
@@ -316,14 +336,15 @@ class KpC(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)
 
 class KpCs(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_cs)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
@@ -336,14 +357,15 @@ class KpCs(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)
 
 class KpCf(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_cf)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
@@ -356,14 +378,15 @@ class KpCf(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)
 
 class KpOut(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_out)
         self.k_what = ff.getw( ff.lines[ln], 1 )
@@ -378,14 +401,15 @@ class KpOut(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)
 
 class KpBreak(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_break)
         self.k_what = ff.getw( ff.lines[ln], 1 )
@@ -400,14 +424,15 @@ class KpBreak(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)
 
 class KpUnique(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
         self.me2 = len(act.ap_cmds)
         self.me = len(act.ap_unique)
         self.k_cmd = ff.getw( ff.lines[ln], 1 )
@@ -422,8 +447,8 @@ class KpUnique(Kp):
     def get_me2(self) -> int:
         return(self.me2)
 
-    def get_var(self, act: ActT, na: List[str]) -> str:
-        return("??")
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
 
     def do_its(self, glob: GlobT, what: str, act: int) -> int:
         return(0)

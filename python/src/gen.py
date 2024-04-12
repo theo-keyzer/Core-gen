@@ -15,6 +15,8 @@ class WinT:
 
 class GlobT:
     def __init__(self):
+        self.load_errs = False
+        self.run_errs = False
         self.acts = structs.ActT()
         self.dats = structs.ActT()
         self.wins = []
@@ -45,13 +47,14 @@ def go_act(dat, glob, act):
         val = glob.acts.ap_actor[a].k_value
         cc = glob.acts.ap_actor[a].k_cc
         eq = glob.acts.ap_actor[a].k_eq
+        lno = glob.acts.ap_actor[a].line_no
         if attr != "E_O_L":
-            aval = s_get_var(glob, attr, glob.winp)
+            aval,err = s_get_var(glob, attr, glob.winp, lno)
             prev = chk(eq, aval, val, prev)
             if not prev:
                 continue
         if cc != "":
-            print(strs(glob, cc, glob.winp))
+            print(strs(glob, cc, glob.winp, lno))
         glob.wins[glob.winp].cur_act = a
         glob.wins[glob.winp].lcnt += 1
         ret = go_cmds(dat, glob, a)
@@ -77,12 +80,14 @@ def go_cmds(dat, glob: GlobT, act: int) -> int:
             if glob.wins[glob.winp].is_on and not glob.wins[glob.winp].is_trig:
                 continue
             trig(glob, glob.winp)
-            cc = glob.acts.ap_c[cmd.ind]
-            print(strs(glob, cc.k_desc, glob.winp))
+#            cc = glob.acts.ap_c[cmd.ind]
+            cc = cmd.dat
+            st = strs(glob, cc.k_desc, glob.winp, cc.line_no)
+            print( st )
         elif cmd.cmd == "Cf":
             if glob.wins[glob.winp].lcnt == 0:
                 cf = glob.acts.ap_cf[cmd.ind]
-                print(strs(glob, cf.k_desc, glob.winp))
+                print(strs(glob, cf.k_desc, glob.winp, cf.line_no))
         elif cmd.cmd == "All":
             all = glob.acts.ap_all[cmd.ind]
             what = all.k_what
@@ -147,9 +152,8 @@ def re_go_cmds(glob, winp):
         cmd = glob.acts.ap_cmds[c]
         if cmd.cmd == "C":
             cc = glob.acts.ap_c[cmd.ind]
-            print(strs(glob, cc.k_desc, winp))
+            print(strs(glob, cc.k_desc, winp, cc.line_no))
 
-# Remaining functions and classes omitted for brevity
 
 def chk(eqa: str, aval: str, val: str, prev: bool) -> bool:
     eq = eqa
@@ -180,19 +184,19 @@ def do_all(glob: GlobT, what: str, act: int) -> int:
                 return ret
     return 0
 
-def s_get_var(glob: GlobT, va: str, winp: int) -> str:
+def s_get_var(glob: GlobT, va: str, winp: int, lno: str) -> (str, bool):
     try:
         ss = va.split(".")
         if ss[0] == "":
             for i in range(winp, -1, -1):
                 if ss[1] == glob.wins[i].name:
-                    return glob.wins[i].dat.get_var(glob.dats, ss[2:])
-        return glob.wins[winp].dat.get_var(glob.dats, ss)
+                    return glob.wins[i].dat.get_var(glob.dats, ss[2:], lno)
+        return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
     except Exception as e:
-        print("s_get_var")
-        return "????"
+#        print("s_get_var")
+        return ("????", True)
 
-def strs(glob: GlobT, s: str, winp: int) -> str:
+def strs(glob: GlobT, s: str, winp: int, lno: str) -> str:
     ret = ""
     pos = 0
     dp = -3
@@ -208,10 +212,13 @@ def strs(glob: GlobT, s: str, winp: int) -> str:
         if s[i] == '}':
             if bp > 0:
                 va = s[bp + 1:i]
-                va = s_get_var(glob, va, winp)
-                if len(s) > i + 1:
-                    i += 1
-                    va = tocase(va, s[i])
+                va, err = s_get_var(glob, va, winp, lno)
+                if err:
+                    glob.run_errs = True
+                else:
+                    if len(s) > i + 1:
+                        i += 1
+                        va = tocase(va, s[i])
                 ret += va
                 pos = i + 1
                 bp = -3

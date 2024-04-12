@@ -6,16 +6,17 @@ C import structs
 C 
 C from inputs import Input
 C
-C def load(act: structs.ActT, ff: Input, tok: str, ln: int):
+C def load(act: structs.ActT, ff: Input, tok: str, ln: int, lno: str):
 
 All Comp load
 
 C
-C def refs(act: structs.ActT):
--C     pass
+C def refs(act: structs.ActT) -> bool:
+C     err = False
 
 All Comp refs
 
+C     return err
 
 ----------------------------------------------------------------
 Actor get_var . parent.name != Actor
@@ -29,9 +30,9 @@ Actor load .
 ----------------------------------------------------------------
 
 C         if tok == "${name}c":
-C             kp = structs.Kp${name}c(ff, ln, act)
+C             kp = structs.Kp${name}c(ff, ln, act, lno)
 C             act.ap_${name}l.append(kp)
-C             cmd = structs.CmdT("${name}c", kp.me)
+C             cmd = structs.CmdT("${name}c", kp.me, kp)
 C             act.ap_cmds.append(cmd)
 
 ----------------------------------------------------------------
@@ -69,6 +70,7 @@ C             p = act.ap_${parent.name}l[i].k_${name}l
 C             act.ap_${parent.name}l[i].k_${name}lp = act.index["${Ref_element.comp.name}c_" + p]
 C         except:
 C             if "${Ref_element.opt} " != ".":
+C                 err = True
 C                 print("except ${parent.name}c_" + str(i) + "_${name}l ${Ref_element.comp.name}c_"  )
 
 ----------------------------------------------------------------
@@ -80,6 +82,7 @@ C             p = act.ap_${.refs.name}l[i].names[ "${name}l" ]
 C             act.ap_${.refs.name}l[i].k_${name}lp = act.index["${Ref_element.comp.name}c_" + p]
 C         except:
 C             if "${Ref_element.opt} " != ".":
+C                 err = True
 C                 print("except ${.refs.name}c_" + str(i) + "_${name}l ${Ref_element.comp.name}c_"  )
 
 ----------------------------------------------------------------
@@ -91,6 +94,7 @@ C             p = act.ap_${.refs.name}l[i].names[ "${name}l" ]
 C             act.ap_${.refs.name}l[i].k_${name}lp = act.index[ str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_" + p]
 C         except:
 C             if "${Ref_element.opt} " != ".":
+C                 err = True
 C                 print("except " + "${.refs.name}c_" + str(i) + "_${name}l" + " : " + str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_"  )
 
 
