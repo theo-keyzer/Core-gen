@@ -53,4 +53,23 @@ Comp Ref parent Comp
 Ref element Element check
 Ref comp Comp       check
 	
+----------------------------------------------------------------
+Comp Ref2 parent Comp
+----------------------------------------------------------------
+* Relation of element to comp and child of comp
+----------------------------------------------------------------
+
+	Element element  F1 ELEMENT       * link to remote element
+	Element comp     R1 COMP          * linking Comp
+	Element element2 F1 ELEMENT       * use this link for remote parent
+	Element opt      C1 WORD          * optional or check - error if not found
+		Opt check                 * check
+		Opt .                     * optional value to use
+	Element var      C1 WORD          * not used
+	Element doc      V1 WORD          * doc string
+	
+Ref element  Element check
+Ref comp     Comp    check
+Ref element2 Element check
+	
 

@@ -13,15 +13,6 @@ class WinT:
         self.is_trig = False
         self.is_prev = False
 
-class GlobT:
-    def __init__(self):
-        self.load_errs = False
-        self.run_errs = False
-        self.acts = structs.ActT()
-        self.dats = structs.ActT()
-        self.wins = []
-        self.winp = -1
-
 def new_act(glob):
     winp = glob.winp + 1
     if len(glob.wins) <= winp:
@@ -70,54 +61,53 @@ def go_act(dat, glob, act):
     glob.winp -= 1
     return 0
 
-def go_cmds(dat, glob: GlobT, act: int) -> int:
+def go_cmds(dat, glob, act: int) -> int:
     glob.wins[glob.winp].is_on = False
     glob.wins[glob.winp].is_trig = False
-    for c in range(glob.acts.ap_actor[act].cmds_from, glob.acts.ap_actor[act].cmds_to):
+    for c in range(glob.acts.ap_actor[act].all_from, glob.acts.ap_actor[act].all_to):
         glob.wins[glob.winp].cur_pos = c
-        cmd = glob.acts.ap_cmds[c]
-        if cmd.cmd == "C":
+        cmd = glob.acts.kp_all[c]
+        if isinstance(cmd,structs.KpC):
             if glob.wins[glob.winp].is_on and not glob.wins[glob.winp].is_trig:
                 continue
             trig(glob, glob.winp)
-#            cc = glob.acts.ap_c[cmd.ind]
-            cc = cmd.dat
+            cc = cmd
             st = strs(glob, cc.k_desc, glob.winp, cc.line_no)
             print( st )
-        elif cmd.cmd == "Cf":
+        elif isinstance(cmd,structs.KpCf):
             if glob.wins[glob.winp].lcnt == 0:
-                cf = glob.acts.ap_cf[cmd.ind]
+                cf = cmd
                 print(strs(glob, cf.k_desc, glob.winp, cf.line_no))
-        elif cmd.cmd == "All":
-            all = glob.acts.ap_all[cmd.ind]
+        elif isinstance(cmd,structs.KpAll):
+            all = cmd
             what = all.k_what
             new_act(glob)
-            ret = do_all(glob, what, all.k_actorp)
+            ret = structs.do_all(glob, what, all.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
-        elif cmd.cmd == "Its":
-            its = glob.acts.ap_its[cmd.ind]
+        elif isinstance(cmd,structs.KpIts):
+            its = cmd
             what = its.k_what
             new_act(glob)
             ret = dat.do_its(glob, what, its.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
-        elif cmd.cmd == "Du":
-            du = glob.acts.ap_du[cmd.ind]
+        elif isinstance(cmd,structs.KpDu):
+            du = cmd
             new_act(glob)
             ret = go_act(dat, glob, du.k_actorp)
             if ret != 0:
                 return ret
-        elif cmd.cmd == "Out":
-            out = glob.acts.ap_out[cmd.ind]
+        elif isinstance(cmd,structs.KpOut):
+            out = cmd
             if out.k_what == "delay":
                 glob.wins[glob.winp].is_on = True
                 glob.wins[glob.winp].on_pos = c
             elif out.k_what == "normal":
                 glob.wins[glob.winp].is_on = False
                 glob.wins[glob.winp].is_trig = False
-        elif cmd.cmd == "Break":
-            brk = glob.acts.ap_break[cmd.ind]
+        elif isinstance(cmd,structs.KpBreak):
+            brk = cmd
             ret = 0
             if brk.k_what == "E_O_L" or brk.k_what == "actor":
                 ret = 2
@@ -149,9 +139,9 @@ def re_go_cmds(glob, winp):
     trig(glob, winp)
     a = glob.acts.ap_actor[glob.wins[winp].cur_act]
     for c in range(glob.wins[winp].on_pos, glob.wins[winp].cur_pos):
-        cmd = glob.acts.ap_cmds[c]
-        if cmd.cmd == "C":
-            cc = glob.acts.ap_c[cmd.ind]
+        cmd = glob.acts.kp_all[c]
+        if isinstance(cmd,structs.KpC):
+            cc = cmd
             print(strs(glob, cc.k_desc, winp, cc.line_no))
 
 
@@ -176,7 +166,7 @@ def chk(eqa: str, aval: str, val: str, prev: bool) -> bool:
             return False
     return False
 
-def do_all(glob: GlobT, what: str, act: int) -> int:
+def do_allx(glob, what: str, act: int) -> int:
     if what == "Comp":
         for i in range(len(glob.dats.ap_comp)):
             ret = go_act(glob.dats.ap_comp[i], glob, act)
@@ -184,7 +174,7 @@ def do_all(glob: GlobT, what: str, act: int) -> int:
                 return ret
     return 0
 
-def s_get_var(glob: GlobT, va: str, winp: int, lno: str) -> (str, bool):
+def s_get_var(glob, va: str, winp: int, lno: str) -> (str, bool):
     try:
         ss = va.split(".")
         if ss[0] == "":
@@ -196,7 +186,7 @@ def s_get_var(glob: GlobT, va: str, winp: int, lno: str) -> (str, bool):
 #        print("s_get_var")
         return ("????", True)
 
-def strs(glob: GlobT, s: str, winp: int, lno: str) -> str:
+def strs(glob, s: str, winp: int, lno: str) -> str:
     ret = ""
     pos = 0
     dp = -3

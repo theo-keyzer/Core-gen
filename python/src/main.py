@@ -9,7 +9,7 @@ def main():
     if len(sys.argv) < 2:
         print('Missing args')
         return
-    glob = gen.GlobT()
+    glob = structs.GlobT()
     
     fa = sys.argv[1].split(",")
     for i in range(0, len(fa) ):

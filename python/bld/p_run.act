@@ -6,24 +6,18 @@ C import structs
 C 
 C from inputs import Input
 C
-C def load(act: structs.ActT, ff: Input, tok: str, ln: int, lno: str):
+C def load(act, ff: Input, tok: str, ln: int, lno: str):
 
 All Comp load
 
 C
-C def refs(act: structs.ActT) -> bool:
+C def refs(act) -> bool:
 C     err = False
 
 All Comp refs
 
 C     return err
-
-----------------------------------------------------------------
-Actor get_var . parent.name != Actor
-----------------------------------------------------------------
-
-C     if cmt.cmd == "${name}c":
-C         return( dats.ap_${name}l[ cmt.ind ].get_var(dats, va) )
+C
 
 ----------------------------------------------------------------
 Actor load .
@@ -32,8 +26,7 @@ Actor load .
 C         if tok == "${name}c":
 C             kp = structs.Kp${name}c(ff, ln, act, lno)
 C             act.ap_${name}l.append(kp)
-C             cmd = structs.CmdT("${name}c", kp.me, kp)
-C             act.ap_cmds.append(cmd)
+C             act.kp_all.append(kp)
 
 ----------------------------------------------------------------
 Actor refs . parent.name = Actor

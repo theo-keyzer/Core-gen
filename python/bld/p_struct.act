@@ -2,21 +2,27 @@
 Actor main .
 ----------------------------------------------------------------
 
-from typing import Dict, List
-
 C from typing import Dict, List
 C
 C from inputs import Input
-C from gen import GlobT, go_act
+C from gen import go_act
 C
 C class ActT:
 C     def __init__(self):
-C         self.names = {}
 C         self.index = {}
-C         self.ap_cmds = []
+C         self.kp_all = []
 
 All Comp vec
 
+C
+C class GlobT:
+C     def __init__(self):
+C         self.load_errs = False
+C         self.run_errs = False
+C         self.acts = ActT()
+C         self.dats = ActT()
+C         self.wins = []
+C         self.winp = -1
 C
 C class Kp:
 C     def get_me2(self) -> int:
@@ -27,12 +33,6 @@ C         pass
 C
 C     def do_its(self, glob: GlobT, what: str, act: int) -> int:
 C         pass
-C
-C class CmdT:
-C     def __init__(self, cmd: str, ind: int, dat: Kp):
-C         self.cmd = cmd
-C         self.ind = ind
-C         self.dat = dat
 C
 C class KpArgs(Kp):
 C     def __init__(self):
@@ -51,11 +51,23 @@ C
 
 All Comp struct
 
+C
+C def do_all(glob, what: str, act: int) -> int:
+
+All Comp all
+
+C     return 0
+
 ----------------------------------------------------------------
-Actor vec Comp name = Actor
+Actor all Comp  parent.name != Actor
 ----------------------------------------------------------------
 
--C         self.ap_cmds = []
+C     if what == "${name}c":
+C         for i in range(len(glob.dats.ap_${name}l)):
+C             ret = go_act(glob.dats.ap_${name}l[i], glob, act)
+C             if ret != 0:
+C                 return ret
+C         return 0
 
 ----------------------------------------------------------------
 Actor vec Comp
@@ -70,10 +82,10 @@ Actor struct Comp name = Actor
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
 C         self.line_no = lno
-C         self.me2 = len( act.ap_cmds )
+C         self.me2 = len( act.kp_all )
 C         self.me = len( act.ap_${name}l )
-C         self.cmds_from = len( act.ap_cmds )
-C         self.cmds_to = len( act.ap_cmds )
+C         self.all_from = len( act.kp_all )
+C         self.all_to = len( act.kp_all )
 
 Its Element val_inc3
 Its Element ele_act
@@ -99,7 +111,7 @@ Actor struct Comp parent.name = Actor
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
 C         self.line_no = lno
-C         self.me2 = len(act.ap_cmds)
+C         self.me2 = len(act.kp_all)
 C         self.me = len(act.ap_${name}l)
 
 Its Element val_inc3
@@ -126,10 +138,10 @@ Actor struct Comp
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
 C         self.line_no = lno
-C         self.me2 = len(act.ap_cmds)
+C         self.me2 = len(act.kp_all)
 C         self.me = len(act.ap_${name}l)
-C         self.cmds_from = len( act.ap_cmds )
-C         self.cmds_to = len( act.ap_cmds )
+C         self.all_from = len( act.kp_all )
+C         self.all_to = len( act.kp_all )
 C         self.names = {}
 C         self.names["k_comp"] = "${name}c";
 
@@ -261,7 +273,7 @@ Actor parent_field Comp .struct.parent.name = Actor
 C         self.parentp = -1
 C         i = len( act.ap_${name}l )
 C         if i > 0:
-C             act.ap_${name}l[i-1].cmds_to = self.me2 + 1
+C             act.ap_${name}l[i-1].all_to = self.me2 + 1
 C             self.parentp = i-1
 
 Break
@@ -273,7 +285,7 @@ Actor parent_field Comp
 C         self.parentp = -1
 C         i = len( act.ap_${name}l )
 C         if i > 0:
-C             act.ap_${name}l[i-1].cmds_to = self.me2 + 1
+C             act.ap_${name}l[i-1].all_to = self.me2 + 1
 C             act.ap_${name}l[i-1].${.struct.name}l_to = self.me + 1
 C             self.parentp = i-1
 
