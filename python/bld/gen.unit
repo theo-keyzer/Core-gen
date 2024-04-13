@@ -72,4 +72,46 @@ Ref element  Element check
 Ref comp     Comp    check
 Ref element2 Element check
 	
+----------------------------------------------------------------
+Comp Ref3 parent Comp
+----------------------------------------------------------------
+* Relation of element to comp and child of comp
+----------------------------------------------------------------
+
+	Element element  F1 ELEMENT       * link to remote element
+	Element comp     R1 COMP          * linking and ref Comp
+	Element element2 F1 ELEMENT       * use this element 
+	Element comp_ref R1 COMP          * ref Comp if comps differ
+	Element element3 C1 WORD          * use this link from element for remote parent
+	Element opt      C1 WORD          * optional or check - error if not found
+		Opt check                 * check
+		Opt .                     * optional value to use
+	Element var      C1 WORD          * not used
+	Element doc      V1 WORD          * doc string
+	
+Ref element  Element check
+Ref comp     Comp    check
+Ref comp_ref Comp    check
+Ref element2 Element check
+	
+----------------------------------------------------------------
+Comp Refq parent Comp
+----------------------------------------------------------------
+* Relation of element to comp and child of comp
+----------------------------------------------------------------
+
+	Element element  F1 ELEMENT       * link to remote element
+	Element comp     R1 COMP          * link to Comp
+	Element element2 C1 ELEMENT       * use this element in parent for the parent
+	Element comp_ref R1 COMP          * parent's Comp
+-	Element element3 C1 WORD          * target element, child of parent
+	Element opt      C1 WORD          * optional or check - error if not found
+		Opt check                 * check
+		Opt .                     * optional value to use
+	Element var      C1 WORD          * not used
+	Element doc      V1 WORD          * doc string
+	
+Ref element  Element check
+Ref comp     Comp    check
+Ref comp_ref Comp    check
 

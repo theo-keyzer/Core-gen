@@ -64,8 +64,7 @@ C             act.ap_${parent.name}l[i].k_${name}lp = act.index["${Ref_element.c
 C         except:
 C             if "${Ref_element.opt} " != ".":
 C                 err = True
--C                 print("except ${parent.name}c_" + str(i) + "_${name}l ${Ref_element.comp.name}c_"  )
-C                 print("${Ref_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
+C                 print("except ${parent.name}c_" + str(i) + "_${name}l ${Ref_element.comp.name}c_"  )
 
 ----------------------------------------------------------------
 Actor refs_ele . mw in R1,RS
@@ -77,8 +76,7 @@ C             act.ap_${.refs.name}l[i].k_${name}lp = act.index["${Ref_element.co
 C         except:
 C             if "${Ref_element.opt} " != ".":
 C                 err = True
--C                 print("except ${.refs.name}c_" + str(i) + "_${name}l ${Ref_element.comp.name}c_"  )
-C                 print("${Ref_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
+C                 print("except ${.refs.name}c_" + str(i) + "_${name}l ${Ref_element.comp.name}c_"  )
 
 ----------------------------------------------------------------
 Actor refs_ele . mw in F1,FS
@@ -90,7 +88,6 @@ C             act.ap_${.refs.name}l[i].k_${name}lp = act.index[ str(act.ap_${.re
 C         except:
 C             if "${Ref_element.opt} " != ".":
 C                 err = True
--C                 print("except " + "${.refs.name}c_" + str(i) + "_${name}l" + " : " + str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_"  )
-C                 print( str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
+C                 print("except " + "${.refs.name}c_" + str(i) + "_${name}l" + " : " + str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_"  )
 
 

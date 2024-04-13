@@ -35,7 +35,7 @@ def main():
             tok = ff.getw(ff.lines[ln], 0)
             run.load(glob.dats, ff, tok, ln, lno)
 
-    run.refs(glob.dats)
+    err = run.refs(glob.dats)
     if err:
         glob.load_errs = True
 
