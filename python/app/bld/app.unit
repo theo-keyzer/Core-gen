@@ -59,7 +59,7 @@ Comp Field parent Table FindIn
 		Opt search                 * popup search window for value on capture screen
 		Opt normal                 * normal input text
 
-Ref type Type ?
+Ref type Type .
 
 ----------------------------------------------------------------
 Comp Attrs parent Field FindIn
