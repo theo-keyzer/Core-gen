@@ -80,14 +80,14 @@ def go_cmds(dat, glob, act: int) -> int:
                 print(strs(glob, cf.k_desc, glob.winp, cf.line_no))
         elif isinstance(cmd,structs.KpAll):
             all = cmd
-            what = all.k_what
+            what = all.k_what.split(".")
             new_act(glob)
             ret = structs.do_all(glob, what, all.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
         elif isinstance(cmd,structs.KpIts):
             its = cmd
-            what = its.k_what
+            what = its.k_what.split(".")
             new_act(glob)
             ret = dat.do_its(glob, what, its.k_actorp)
             if ret > 1 or ret < 0:

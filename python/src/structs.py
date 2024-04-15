@@ -40,7 +40,7 @@ class Kp:
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         pass
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         pass
 
 class KpArgs(Kp):
@@ -54,7 +54,7 @@ class KpArgs(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return ("?", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return 0
 
 class KpComp(Kp):
@@ -124,73 +124,103 @@ class KpComp(Kp):
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Comp?", True );
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
-        if what == "Element":
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "Element":
             for i in range( self.element_from, self.element_to ):
                 ret = go_act(glob.dats.ap_element[i], glob, act)
                 if ret != 0:
                     return(ret)
-        if what == "Ref":
+        if what[0] == "Ref":
             for i in range( self.ref_from, self.ref_to ):
                 ret = go_act(glob.dats.ap_ref[i], glob, act)
                 if ret != 0:
                     return(ret)
-        if what == "Ref2":
+        if what[0] == "Ref2":
             for i in range( self.ref2_from, self.ref2_to ):
                 ret = go_act(glob.dats.ap_ref2[i], glob, act)
                 if ret != 0:
                     return(ret)
-        if what == "Ref3":
+        if what[0] == "Ref3":
             for i in range( self.ref3_from, self.ref3_to ):
                 ret = go_act(glob.dats.ap_ref3[i], glob, act)
                 if ret != 0:
                     return(ret)
-        if what == "Refq":
+        if what[0] == "Refq":
             for i in range( self.refq_from, self.refq_to ):
                 ret = go_act(glob.dats.ap_refq[i], glob, act)
                 if ret != 0:
                     return(ret)
-        if what == "parent" and self.k_parentp >= 0:
+        if what[0] == "parent" and self.k_parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.k_parentp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.k_parentp ], glob, act) )
-        if what == "Comp_parent":
+        if what[0] == "Comp_parent":
             for i in range( len( glob.dats.ap_comp ) ):
                 if glob.dats.ap_comp[i].k_parentp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_comp[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_comp[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Ref_comp":
+        if what[0] == "Ref_comp":
             for i in range( len( glob.dats.ap_ref ) ):
                 if glob.dats.ap_ref[i].k_compp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_ref[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_ref[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Ref2_comp":
+        if what[0] == "Ref2_comp":
             for i in range( len( glob.dats.ap_ref2 ) ):
                 if glob.dats.ap_ref2[i].k_compp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_ref2[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_ref2[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Ref3_comp":
+        if what[0] == "Ref3_comp":
             for i in range( len( glob.dats.ap_ref3 ) ):
                 if glob.dats.ap_ref3[i].k_compp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_ref3[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_ref3[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Ref3_comp_ref":
+        if what[0] == "Ref3_comp_ref":
             for i in range( len( glob.dats.ap_ref3 ) ):
                 if glob.dats.ap_ref3[i].k_comp_refp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_ref3[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_ref3[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Refq_comp":
+        if what[0] == "Refq_comp":
             for i in range( len( glob.dats.ap_refq ) ):
                 if glob.dats.ap_refq[i].k_compp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_refq[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_refq[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Refq_comp_ref":
+        if what[0] == "Refq_comp_ref":
             for i in range( len( glob.dats.ap_refq ) ):
                 if glob.dats.ap_refq[i].k_comp_refp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_refq[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_refq[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -255,42 +285,68 @@ class KpElement(Kp):
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Element?", True );
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
-        if what == "parent" and self.parentp >= 0:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "parent" and self.parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
-        if what == "Ref_element":
+        if what[0] == "Ref_element":
             for i in range( len( glob.dats.ap_ref ) ):
                 if glob.dats.ap_ref[i].k_elementp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_ref[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_ref[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Ref2_element":
+        if what[0] == "Ref2_element":
             for i in range( len( glob.dats.ap_ref2 ) ):
                 if glob.dats.ap_ref2[i].k_elementp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_ref2[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_ref2[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Ref2_element2":
+        if what[0] == "Ref2_element2":
             for i in range( len( glob.dats.ap_ref2 ) ):
                 if glob.dats.ap_ref2[i].k_element2p == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_ref2[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_ref2[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Ref3_element":
+        if what[0] == "Ref3_element":
             for i in range( len( glob.dats.ap_ref3 ) ):
                 if glob.dats.ap_ref3[i].k_elementp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_ref3[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_ref3[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Ref3_element2":
+        if what[0] == "Ref3_element2":
             for i in range( len( glob.dats.ap_ref3 ) ):
                 if glob.dats.ap_ref3[i].k_element2p == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_ref3[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_ref3[i], glob, act)
                     if ret != 0:
                         return(ret)
-        if what == "Refq_element":
+        if what[0] == "Refq_element":
             for i in range( len( glob.dats.ap_refq ) ):
                 if glob.dats.ap_refq[i].k_elementp == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_refq[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
                     ret = go_act(glob.dats.ap_refq[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -334,12 +390,18 @@ class KpRef(Kp):
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Ref?", True );
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
-        if what == "parent" and self.parentp >= 0:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "parent" and self.parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
-        if what == "element" and self.k_elementp >= 0:
+        if what[0] == "element" and self.k_elementp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_element[ self.k_elementp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_element[ self.k_elementp ], glob, act) )
-        if what == "comp" and self.k_compp >= 0:
+        if what[0] == "comp" and self.k_compp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.k_compp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.k_compp ], glob, act) )
         return(0)
 
@@ -385,14 +447,22 @@ class KpRef2(Kp):
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Ref2?", True );
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
-        if what == "parent" and self.parentp >= 0:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "parent" and self.parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
-        if what == "element" and self.k_elementp >= 0:
+        if what[0] == "element" and self.k_elementp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_element[ self.k_elementp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_element[ self.k_elementp ], glob, act) )
-        if what == "comp" and self.k_compp >= 0:
+        if what[0] == "comp" and self.k_compp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.k_compp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.k_compp ], glob, act) )
-        if what == "element2" and self.k_element2p >= 0:
+        if what[0] == "element2" and self.k_element2p >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_element[ self.k_element2p ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_element[ self.k_element2p ], glob, act) )
         return(0)
 
@@ -443,16 +513,26 @@ class KpRef3(Kp):
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Ref3?", True );
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
-        if what == "parent" and self.parentp >= 0:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "parent" and self.parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
-        if what == "element" and self.k_elementp >= 0:
+        if what[0] == "element" and self.k_elementp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_element[ self.k_elementp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_element[ self.k_elementp ], glob, act) )
-        if what == "comp" and self.k_compp >= 0:
+        if what[0] == "comp" and self.k_compp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.k_compp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.k_compp ], glob, act) )
-        if what == "comp_ref" and self.k_comp_refp >= 0:
+        if what[0] == "comp_ref" and self.k_comp_refp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.k_comp_refp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.k_comp_refp ], glob, act) )
-        if what == "element2" and self.k_element2p >= 0:
+        if what[0] == "element2" and self.k_element2p >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_element[ self.k_element2p ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_element[ self.k_element2p ], glob, act) )
         return(0)
 
@@ -499,14 +579,22 @@ class KpRefq(Kp):
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Refq?", True );
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
-        if what == "parent" and self.parentp >= 0:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "parent" and self.parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
-        if what == "element" and self.k_elementp >= 0:
+        if what[0] == "element" and self.k_elementp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_element[ self.k_elementp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_element[ self.k_elementp ], glob, act) )
-        if what == "comp" and self.k_compp >= 0:
+        if what[0] == "comp" and self.k_compp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.k_compp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.k_compp ], glob, act) )
-        if what == "comp_ref" and self.k_comp_refp >= 0:
+        if what[0] == "comp_ref" and self.k_comp_refp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.k_comp_refp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.k_comp_refp ], glob, act) )
         return(0)
 
@@ -531,7 +619,7 @@ class KpActor(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 class KpAll(Kp):
@@ -558,7 +646,7 @@ class KpAll(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 class KpDu(Kp):
@@ -584,7 +672,7 @@ class KpDu(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 class KpIts(Kp):
@@ -611,7 +699,7 @@ class KpIts(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 class KpC(Kp):
@@ -632,7 +720,7 @@ class KpC(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 class KpCs(Kp):
@@ -653,7 +741,7 @@ class KpCs(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 class KpCf(Kp):
@@ -674,7 +762,7 @@ class KpCf(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 class KpOut(Kp):
@@ -697,7 +785,7 @@ class KpOut(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 class KpBreak(Kp):
@@ -720,7 +808,7 @@ class KpBreak(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 class KpUnique(Kp):
@@ -743,48 +831,48 @@ class KpUnique(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         return("??", True)
 
-    def do_its(self, glob: GlobT, what: str, act: int) -> int:
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
 
-def do_all(glob, what: str, act: int) -> int:
-    if what == "Comp":
+def do_all(glob, what: List[str], act: int) -> int:
+    if what[0] == "Comp":
         for i in range(len(glob.dats.ap_comp)):
             ret = go_act(glob.dats.ap_comp[i], glob, act)
             if ret != 0:
                 return ret
         return 0
-    if what == "Element":
+    if what[0] == "Element":
         for i in range(len(glob.dats.ap_element)):
             ret = go_act(glob.dats.ap_element[i], glob, act)
             if ret != 0:
                 return ret
         return 0
-    if what == "Ref":
+    if what[0] == "Ref":
         for i in range(len(glob.dats.ap_ref)):
             ret = go_act(glob.dats.ap_ref[i], glob, act)
             if ret != 0:
                 return ret
         return 0
-    if what == "Ref2":
+    if what[0] == "Ref2":
         for i in range(len(glob.dats.ap_ref2)):
             ret = go_act(glob.dats.ap_ref2[i], glob, act)
             if ret != 0:
                 return ret
         return 0
-    if what == "Ref3":
+    if what[0] == "Ref3":
         for i in range(len(glob.dats.ap_ref3)):
             ret = go_act(glob.dats.ap_ref3[i], glob, act)
             if ret != 0:
                 return ret
         return 0
-    if what == "Refq":
+    if what[0] == "Refq":
         for i in range(len(glob.dats.ap_refq)):
             ret = go_act(glob.dats.ap_refq[i], glob, act)
             if ret != 0:
                 return ret
         return 0
-    if what == "Actor":
+    if what[0] == "Actor":
         for i in range(len(glob.dats.ap_actor)):
             ret = go_act(glob.dats.ap_actor[i], glob, act)
             if ret != 0:

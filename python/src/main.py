@@ -19,6 +19,8 @@ def main():
         for ln in range(len(ff.lines)):
             lno = fa[i] + ":" + str(ln+1)
             tok = ff.getw(ff.lines[ln], 0)
+            if tok == "E_O_F":
+                break
             run.load(glob.acts, ff, tok, ln, lno)
     
     err = run.refs(glob.acts)
@@ -33,6 +35,8 @@ def main():
         for ln in range(len(ff.lines)):
             lno = fa[i] + ":" + str(ln+1)
             tok = ff.getw(ff.lines[ln], 0)
+            if tok == "E_O_F":
+                break
             run.load(glob.dats, ff, tok, ln, lno)
 
     err = run.refs(glob.dats)

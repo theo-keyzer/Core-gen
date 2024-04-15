@@ -15,6 +15,7 @@ C def refs(act) -> bool:
 C     err = False
 
 All Comp refs
+All Comp refs2
 
 C     return err
 C
@@ -55,6 +56,19 @@ Its Element refs_ele
 C
 
 ----------------------------------------------------------------
+Actor refs2 .
+----------------------------------------------------------------
+
+Out delay
+
+C     for i in range( len(act.ap_${name}l) ):
+C         t = -2
+		
+Its Element refs_ele2
+
+C
+
+----------------------------------------------------------------
 Actor refs_ele_act . mw = R1
 ----------------------------------------------------------------
 
@@ -64,7 +78,6 @@ C             act.ap_${parent.name}l[i].k_${name}lp = act.index["${Ref_element.c
 C         except:
 C             if "${Ref_element.opt} " != ".":
 C                 err = True
--C                 print("except ${parent.name}c_" + str(i) + "_${name}l ${Ref_element.comp.name}c_"  )
 C                 print("${Ref_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
 
 ----------------------------------------------------------------
@@ -77,7 +90,6 @@ C             act.ap_${.refs.name}l[i].k_${name}lp = act.index["${Ref_element.co
 C         except:
 C             if "${Ref_element.opt} " != ".":
 C                 err = True
--C                 print("except ${.refs.name}c_" + str(i) + "_${name}l ${Ref_element.comp.name}c_"  )
 C                 print("${Ref_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
 
 ----------------------------------------------------------------
@@ -90,7 +102,20 @@ C             act.ap_${.refs.name}l[i].k_${name}lp = act.index[ str(act.ap_${.re
 C         except:
 C             if "${Ref_element.opt} " != ".":
 C                 err = True
--C                 print("except " + "${.refs.name}c_" + str(i) + "_${name}l" + " : " + str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_"  )
 C                 print( str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
+
+----------------------------------------------------------------
+Actor refs_ele2 . mw in L1,LS
+----------------------------------------------------------------
+
+C         try:
+C             t = act.ap_${.refs2.name}l[i].k_${Ref2_element.element2.name}lp
+C             p = act.ap_${.refs2.name}l[i].names[ "${name}l" ]
+C             act.ap_${.refs2.name}l[i].k_${name}lp = act.index[ str(t) + "_${Ref2_element.comp.name}c_" + p]
+C         except:
+C             if "${Ref2_element.opt} " != ".":
+C                 err = True
+C                 print( str(t) + "_${Ref2_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
+
 
 

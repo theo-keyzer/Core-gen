@@ -31,7 +31,7 @@ C
 C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
 C         pass
 C
-C     def do_its(self, glob: GlobT, what: str, act: int) -> int:
+C     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
 C         pass
 C
 C class KpArgs(Kp):
@@ -45,14 +45,14 @@ C
 C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
 C         return ("?", True)
 C
-C     def do_its(self, glob: GlobT, what: str, act: int) -> int:
+C     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
 C         return 0
 C
 
 All Comp struct
 
 C
-C def do_all(glob, what: str, act: int) -> int:
+C def do_all(glob, what: List[str], act: int) -> int:
 
 All Comp all
 
@@ -62,7 +62,7 @@ C     return 0
 Actor all Comp  parent.name != Actor
 ----------------------------------------------------------------
 
-C     if what == "${name}c":
+C     if what[0] == "${name}c":
 C         for i in range(len(glob.dats.ap_${name}l)):
 C             ret = go_act(glob.dats.ap_${name}l[i], glob, act)
 C             if ret != 0:
@@ -98,7 +98,7 @@ C
 C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
 C         return("??", True)
 C
-C     def do_its(self, glob: GlobT, what: str, act: int) -> int:
+C     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
 C         return(0)
 C
 
@@ -125,7 +125,7 @@ C
 C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
 C         return("??", True)
 C
-C     def do_its(self, glob: GlobT, what: str, act: int) -> int:
+C     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
 C         return(0)
 C
 
@@ -157,22 +157,28 @@ C
 C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
 
 Its Ref ref_var
+Its Ref2 ref_var
+Its Ref3 ref_var
 Its parent parent_field_var
 Its Ref_comp other_var
+Its Ref2_comp other_var
+Its Ref3_comp other_var
 
 C         try:
 C             return( self.names[ na[0] ], False )
 C         except:
--C            print("except ${name}c_" + str(self.me) + "_" + na[0]  )
 C             return("?" + na[0] + "?" + self.line_no + "," + lno + ",${name}c?", True );
--C             return("? ${name}c_" + str(self.me) + "_" + na[0] + " ?", True)
 C
-C     def do_its(self, glob: GlobT, what: str, act: int) -> int:
+C     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
 
 Its Comp_parent its
 Its parent parent_field_func
 Its Ref ref_func
+Its Ref2 ref_func
+Its Ref3 ref_func
 Its Ref_comp other_func
+Its Ref2_comp other_func
+Its Ref3_comp other_func
 
 C         return(0)
 C
@@ -302,7 +308,7 @@ C             act.index[ s ] = self.me
 Actor its Comp
 ----------------------------------------------------------------
 
-C         if what == "${name}c":
+C         if what[0] == "${name}c":
 C             for i in range( self.${name}l_from, self.${name}l_to ):
 C                 ret = go_act(glob.dats.ap_${name}l[i], glob, act)
 C                 if ret != 0:
@@ -336,9 +342,13 @@ C             return( act.ap_${comp.name}l[ self.k_${element.name}lp ].get_var(a
 Actor other_func Ref
 ----------------------------------------------------------------
 
-C         if what == "${parent.name}c_${element.name}l":
+C         if what[0] == "${parent.name}c_${element.name}l":
 C             for i in range( len( glob.dats.ap_${parent.name}l ) ):
 C                 if glob.dats.ap_${parent.name}l[i].k_${element.name}lp == self.me:
+C                     if len(what) > 1:
+C                         ret = glob.dats.ap_${parent.name}l[i].do_its(glob, what[1:], act)
+C                         if ret != 0:
+C                             return(ret)
 C                     ret = go_act(glob.dats.ap_${parent.name}l[i], glob, act)
 C                     if ret != 0:
 C                         return(ret)
@@ -347,14 +357,18 @@ C                         return(ret)
 Actor parent_field_func Comp
 ----------------------------------------------------------------
 
-C         if what == "parent" and self.parentp >= 0:
+C         if what[0] == "parent" and self.parentp >= 0:
+C             if len(what) > 1:
+C                 return( glob.dats.ap_${name}l[ self.parentp ].do_its(glob, what[1:], act) )
 C             return( go_act(glob.dats.ap_${name}l[ self.parentp ], glob, act) )
 
 ----------------------------------------------------------------
 Actor ref_func Ref
 ----------------------------------------------------------------
 
-C         if what == "${element.name}l" and self.k_${element.name}lp >= 0:
+C         if what[0] == "${element.name}l" and self.k_${element.name}lp >= 0:
+C             if len(what) > 1:
+C                 return( glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ].do_its(glob, what[1:], act) )
 C             return( go_act(glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ], glob, act) )
 
 
