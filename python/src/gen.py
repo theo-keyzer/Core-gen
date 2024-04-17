@@ -74,6 +74,13 @@ def go_cmds(dat, glob, act: int) -> int:
             cc = cmd
             st = strs(glob, cc.k_desc, glob.winp, cc.line_no)
             print( st )
+        if isinstance(cmd,structs.KpCs):
+            if glob.wins[glob.winp].is_on and not glob.wins[glob.winp].is_trig:
+                continue
+            trig(glob, glob.winp)
+            cc = cmd
+            st = strs(glob, cc.k_desc, glob.winp, cc.line_no)
+            print( st, end="" )
         elif isinstance(cmd,structs.KpCf):
             if glob.wins[glob.winp].lcnt == 0:
                 cf = cmd
@@ -143,6 +150,9 @@ def re_go_cmds(glob, winp):
         if isinstance(cmd,structs.KpC):
             cc = cmd
             print(strs(glob, cc.k_desc, winp, cc.line_no))
+        if isinstance(cmd,structs.KpCs):
+            cc = cmd
+            print( strs(glob, cc.k_desc, winp, cc.line_no), end="")
 
 
 def chk(eqa: str, aval: str, val: str, prev: bool) -> bool:

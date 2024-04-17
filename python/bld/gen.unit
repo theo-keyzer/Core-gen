@@ -36,6 +36,17 @@ Comp Element parent Comp FindIn
 	Element doc  V1 WORD  * documentation string
 
 ----------------------------------------------------------------
+Comp Opt parent Element FindIn
+----------------------------------------------------------------
+* Select options for element.
+* Add meaning to documentation
+----------------------------------------------------------------
+
+	Element name      C1 WORD  * name of value option
+	Element pad       C1 WORD  * separator
+	Element doc       V1 WORD  * documentation string
+	
+----------------------------------------------------------------
 Comp Ref parent Comp
 ----------------------------------------------------------------
 * Relation of element to comp

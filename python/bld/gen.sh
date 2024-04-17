@@ -4,3 +4,5 @@ if [ $? != 0 ]; then echo p_struct.act gen.unit,act.unit has errors; fi
 python ../src/main.py p_run.act gen.unit,act.unit >src/run.py
 if [ $? != 0 ]; then echo p_run.act gen.unit,act.unit has errors; fi
 
+python ../src/main.py p_grammer.act gen.unit >src/units.lark
+
