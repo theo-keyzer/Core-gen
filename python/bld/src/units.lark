@@ -1,0 +1,35 @@
+  ?start: lines
+
+  lines: line*
+
+  line: COMMENT | NL  | comp_def | actor_def
+  comp_def: "Comp" P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL (COMMENT | NL | element_def | ref_def | ref2_def | ref3_def | refq_def)*
+  element_def: "Element" P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL (COMMENT | NL | opt_def)*
+  opt_def: "Opt" P1_WORD? P1_WORD? V1_WORD? NL
+  ref_def: "Ref" P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL
+  ref2_def: "Ref2" P1_WORD? P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL
+  ref3_def: "Ref3" P1_WORD? P1_WORD? P1_WORD? P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL
+  refq_def: "Refq" P1_WORD? P1_WORD? P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL
+  actor_def: "Actor" P1_WORD? P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL (COMMENT | NL | all_def | du_def | its_def | c_def | cs_def | cf_def | out_def | break_def | unique_def)*
+  all_def: "All" P1_WORD? P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL
+  du_def: "Du" P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL
+  its_def: "Its" P1_WORD? P1_WORD? P1_WORD? P1_WORD? P1_WORD? V1_WORD? NL
+  c_def: "C" V1_WORD? NL
+  cs_def: "Cs" V1_WORD? NL
+  cf_def: "Cf" V1_WORD? NL
+  out_def: "Out" P1_WORD? P1_WORD? V1_WORD? NL
+  break_def: "Break" P1_WORD? P1_WORD? P1_WORD? NL
+  unique_def: "Unique" P1_WORD? P1_WORD? V1_WORD? NL
+
+    %import common.CNAME -> C1_NAME
+    %import common.WORD -> C1_WORD
+    %import common.NEWLINE -> NL
+    %import common.WS_INLINE
+    %import common.WS
+   
+    COMMENT: /[-*][^\n]+/
+    V1_WORD: /[^\n]+/
+    P1_WORD: /[a-zA-z0-9.;*?\\\/]+/
+    %ignore WS_INLINE
+    %ignore WS
+
