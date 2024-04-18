@@ -7,3 +7,6 @@ if [ $? != 0 ]; then echo p_run.act gen.unit,act.unit has errors; fi
 python ../src/main.py p_grammer.act gen.unit,act.unit >src/units.lark
 if [ $? != 0 ]; then echo p_grammer.act gen.unit,act.unit has errors; fi
 
+python ../src/main.py p_parser.act gen.unit,act.unit >src/units.py
+if [ $? != 0 ]; then echo p_grammer.act gen.unit,act.unit has errors; fi
+

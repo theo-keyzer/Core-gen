@@ -40,7 +40,8 @@ def go_act(dat, glob, act):
         eq = glob.acts.ap_actor[a].k_eq
         lno = glob.acts.ap_actor[a].line_no
         if attr != "E_O_L":
-            aval,err = s_get_var(glob, attr, glob.winp, lno)
+            ss = attr.split(".")
+            aval,err = s_get_var(glob, ss, glob.winp, lno)
             prev = chk(eq, aval, val, prev)
             if not prev:
                 continue
@@ -176,25 +177,22 @@ def chk(eqa: str, aval: str, val: str, prev: bool) -> bool:
             return False
     return False
 
-def do_allx(glob, what: str, act: int) -> int:
-    if what == "Comp":
-        for i in range(len(glob.dats.ap_comp)):
-            ret = go_act(glob.dats.ap_comp[i], glob, act)
-            if ret != 0:
-                return ret
-    return 0
-
-def s_get_var(glob, va: str, winp: int, lno: str) -> (str, bool):
+def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
     try:
-        ss = va.split(".")
-        if ss[0] == "":
-            for i in range(winp, -1, -1):
-                if ss[1] == glob.wins[i].name:
-                    return glob.wins[i].dat.get_var(glob.dats, ss[2:], lno)
-        return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
+        if len( ss[0] ) != 0:
+            return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
+        if len(ss) == 1:
+            return( glob.wins[winp].dat.line_no + ", " + lno )
+        if ss[1] == "+":
+            return( str( glob.wins[winp].lcnt+1 ), False )
+        if ss[1] == '-':
+            return( str( glob.wins[winp].lcnt ), False )
+        for i in range(winp, -1, -1):
+            if ss[1] == glob.wins[i].name:
+#                return glob.wins[i].dat.get_var(glob.dats, ss[2:], lno)
+                return( s_get_var(glob, ss[2:], i, lno) )
     except Exception as e:
-#        print("s_get_var")
-        return ("????", True)
+        return ("?" + str(ss) + "?", True)
 
 def strs(glob, s: str, winp: int, lno: str) -> str:
     ret = ""
@@ -212,7 +210,8 @@ def strs(glob, s: str, winp: int, lno: str) -> str:
         if s[i] == '}':
             if bp > 0:
                 va = s[bp + 1:i]
-                va, err = s_get_var(glob, va, winp, lno)
+                ss = va.split(".")
+                va, err = s_get_var(glob, ss, winp, lno)
                 if err:
                     glob.run_errs = True
                 else:

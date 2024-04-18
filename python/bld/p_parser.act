@@ -1,0 +1,33 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C from lark import Lark, Transformer
+C
+C # check for optional values
+C
+C class LoaderTransformer(Transformer):
+
+All Comp def
+
+C
+C parser = Lark(loader_grammar, parser='lalr', transformer=LoaderTransformer())
+C
+
+----------------------------------------------------------------
+Actor def .
+----------------------------------------------------------------
+
+C     def ${name}l_def(self, items):
+C         names = {}
+
+Its Element ele
+
+C         return(names)
+
+----------------------------------------------------------------
+Actor ele .
+----------------------------------------------------------------
+
+C         names[ "${name}l" = items[${.-} ].value
+
