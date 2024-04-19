@@ -42,7 +42,7 @@ def go_act(dat, glob, act):
         if attr != "E_O_L":
             ss = attr.split(".")
             aval,err = s_get_var(glob, ss, glob.winp, lno)
-            prev = chk(eq, aval, val, prev)
+            prev = chk(eq, aval, val, prev, err)
             if not prev:
                 continue
         if cc != "":
@@ -156,11 +156,15 @@ def re_go_cmds(glob, winp):
             print( strs(glob, cc.k_desc, winp, cc.line_no), end="")
 
 
-def chk(eqa: str, aval: str, val: str, prev: bool) -> bool:
+def chk(eqa: str, aval: str, val: str, prev: bool, attr_err: bool) -> bool:
     eq = eqa
     if eq[0] == "&":
         if not prev:
             return False
+        eq = eq[1:]
+    if eq[0] == "|":
+        if prev:
+            return True
         eq = eq[1:]
     if eq == "=":
         return aval == val
@@ -175,6 +179,19 @@ def chk(eqa: str, aval: str, val: str, prev: bool) -> bool:
             return False
         except:
             return False
+    elif eq == "has":
+        try:
+            ss = aval.split(",")
+            for i in range(len(ss)):
+                if val == ss[i]:
+                    return True
+            return False
+        except:
+            return False
+    if eq == "?":
+        return attr_err
+    if eq == "!?":
+        return not attr_err
     return False
 
 def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
@@ -182,17 +199,27 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
         if len( ss[0] ) != 0:
             return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
         if len(ss) == 1:
-            return( glob.wins[winp].dat.line_no + ", " + lno )
+            return( glob.wins[winp].dat.line_no + ", " + lno, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )
         if ss[1] == '-':
             return( str( glob.wins[winp].lcnt ), False )
+        if len(ss) < 3:
+            return ("?" + str(ss) + "?" + lno + "?", True)
+        if ss[1] == "0":
+            if glob.wins[winp].lcnt != 0:
+                return( "", False )
+            return( ss[2], False )
+        if ss[1] == "1":
+            if glob.wins[winp].lcnt == 0:
+                return( "", False )
+            return( ss[2], False )
         for i in range(winp, -1, -1):
             if ss[1] == glob.wins[i].name:
-#                return glob.wins[i].dat.get_var(glob.dats, ss[2:], lno)
                 return( s_get_var(glob, ss[2:], i, lno) )
+        return ("?" + str(ss) + "?" + lno + "?", True)
     except Exception as e:
-        return ("?" + str(ss) + "?", True)
+        return ("?" + str(ss) + "?" + lno + "?", True)
 
 def strs(glob, s: str, winp: int, lno: str) -> str:
     ret = ""

@@ -9,6 +9,7 @@ class ActT:
         self.kp_all = []
         self.ap_comp = []
         self.ap_element = []
+        self.ap_opt = []
         self.ap_ref = []
         self.ap_ref2 = []
         self.ap_ref3 = []
@@ -47,12 +48,16 @@ class KpArgs(Kp):
     def __init__(self):
         self.me = 1
         self.me2 = 1
+        self.names = {}
 
     def get_me2(self) -> int:
         return self.me2
 
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return ("?", True)
+        try:
+            return( self.names[ na[0] ], False )
+        except:
+            return("?" + na[0] + "?" + self.line_no + "," + lno + "?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return 0
@@ -235,6 +240,8 @@ class KpElement(Kp):
         self.all_to = len( act.kp_all )
         self.names = {}
         self.names["k_comp"] = "Element";
+        self.opt_from = len( act.ap_opt )
+        self.opt_to = len( act.ap_opt )
         na = ff.getw( ff.lines[ln], 1 )
         self.names[ "name" ] = na
         self.names[ "mw" ] = ff.getw( ff.lines[ln], 1 )
@@ -249,6 +256,8 @@ class KpElement(Kp):
             self.parentp = i-1
             s = str(self.parentp) + "_Element_" + na
             act.index[ s ] = self.me
+        else:
+            print( "No Comp parent for Element" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -286,6 +295,11 @@ class KpElement(Kp):
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Element?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "Opt":
+            for i in range( self.opt_from, self.opt_to ):
+                ret = go_act(glob.dats.ap_opt[i], glob, act)
+                if ret != 0:
+                    return(ret)
         if what[0] == "parent" and self.parentp >= 0:
             if len(what) > 1:
                 return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
@@ -352,6 +366,48 @@ class KpElement(Kp):
                         return(ret)
         return(0)
 
+class KpOpt(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_opt)
+        self.all_from = len( act.kp_all )
+        self.all_to = len( act.kp_all )
+        self.names = {}
+        self.names["k_comp"] = "Opt";
+        na = ff.getw( ff.lines[ln], 1 )
+        self.names[ "name" ] = na
+        self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
+        self.parentp = -1
+        i = len( act.ap_element )
+        if i > 0:
+            act.ap_element[i-1].all_to = self.me2 + 1
+            act.ap_element[i-1].opt_to = self.me + 1
+            self.parentp = i-1
+            s = str(self.parentp) + "_Opt_" + na
+            act.index[ s ] = self.me
+        else:
+            print( "No Element parent for Opt" )
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
+            return( act.ap_element[ self.parentp ].get_var(act, na[1:], lno) )
+        try:
+            return( self.names[ na[0] ], False )
+        except:
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Opt?", True );
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "parent" and self.parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_element[ self.parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_element[ self.parentp ], glob, act) )
+        return(0)
+
 class KpRef(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
         self.line_no = lno
@@ -374,6 +430,8 @@ class KpRef(Kp):
             act.ap_comp[i-1].all_to = self.me2 + 1
             act.ap_comp[i-1].ref_to = self.me + 1
             self.parentp = i-1
+        else:
+            print( "No Comp parent for Ref" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -429,6 +487,8 @@ class KpRef2(Kp):
             act.ap_comp[i-1].all_to = self.me2 + 1
             act.ap_comp[i-1].ref2_to = self.me + 1
             self.parentp = i-1
+        else:
+            print( "No Comp parent for Ref2" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -493,6 +553,8 @@ class KpRef3(Kp):
             act.ap_comp[i-1].all_to = self.me2 + 1
             act.ap_comp[i-1].ref3_to = self.me + 1
             self.parentp = i-1
+        else:
+            print( "No Comp parent for Ref3" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -561,6 +623,8 @@ class KpRefq(Kp):
             act.ap_comp[i-1].all_to = self.me2 + 1
             act.ap_comp[i-1].refq_to = self.me + 1
             self.parentp = i-1
+        else:
+            print( "No Comp parent for Refq" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -639,6 +703,8 @@ class KpAll(Kp):
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.parentp = i-1
+        else:
+            print( "No Actor parent for All" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -665,6 +731,8 @@ class KpDu(Kp):
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.parentp = i-1
+        else:
+            print( "No Actor parent for Du" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -692,6 +760,8 @@ class KpIts(Kp):
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.parentp = i-1
+        else:
+            print( "No Actor parent for Its" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -713,6 +783,8 @@ class KpC(Kp):
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.parentp = i-1
+        else:
+            print( "No Actor parent for C" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -734,6 +806,8 @@ class KpCs(Kp):
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.parentp = i-1
+        else:
+            print( "No Actor parent for Cs" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -755,6 +829,8 @@ class KpCf(Kp):
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.parentp = i-1
+        else:
+            print( "No Actor parent for Cf" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -778,6 +854,8 @@ class KpOut(Kp):
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.parentp = i-1
+        else:
+            print( "No Actor parent for Out" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -801,6 +879,8 @@ class KpBreak(Kp):
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.parentp = i-1
+        else:
+            print( "No Actor parent for Break" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -824,6 +904,8 @@ class KpUnique(Kp):
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.parentp = i-1
+        else:
+            print( "No Actor parent for Unique" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -845,6 +927,12 @@ def do_all(glob, what: List[str], act: int) -> int:
     if what[0] == "Element":
         for i in range(len(glob.dats.ap_element)):
             ret = go_act(glob.dats.ap_element[i], glob, act)
+            if ret != 0:
+                return ret
+        return 0
+    if what[0] == "Opt":
+        for i in range(len(glob.dats.ap_opt)):
+            ret = go_act(glob.dats.ap_opt[i], glob, act)
             if ret != 0:
                 return ret
         return 0

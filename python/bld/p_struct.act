@@ -38,12 +38,16 @@ C class KpArgs(Kp):
 C     def __init__(self):
 C         self.me = 1
 C         self.me2 = 1
+C         self.names = {}
 C
 C     def get_me2(self) -> int:
 C         return self.me2
 C
 C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-C         return ("?", True)
+C         try:
+C             return( self.names[ na[0] ], False )
+C         except:
+C             return("?" + na[0] + "?" + self.line_no + "," + lno + "?", True );
 C
 C     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
 C         return 0
@@ -281,6 +285,9 @@ C         i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].all_to = self.me2 + 1
 C             self.parentp = i-1
+C         else:
+C             print( "No ${name}c parent for ${.struct.name}c" )
+-C             glob.load_errs = True
 
 Break
 
@@ -296,6 +303,10 @@ C             act.ap_${name}l[i-1].${.struct.name}l_to = self.me + 1
 C             self.parentp = i-1
 
 Du parent_field_in
+
+C         else:
+C             print( "No ${name}c parent for ${.struct.name}c" )
+-C             glob.load_errs = True
 
 ----------------------------------------------------------------
 Actor parent_field_in Comp .struct.find = FindIn

@@ -27,6 +27,10 @@ def main():
     if err:
         glob.load_errs = True
 
+    if len( glob.acts.ap_actor ) == 0:
+        print("No actor to run")
+        return
+
     fa = sys.argv[2].split(",")
     for i in range(0, len(fa) ):
         with open(fa[i], "r") as f:
@@ -44,6 +48,8 @@ def main():
         glob.load_errs = True
 
     dat = structs.KpArgs()
+    for i in range(0, len(sys.argv) ):
+        dat.names[ str(i) ] = sys.argv[i]
     gen.new_act(glob)
     ret = gen.go_act(dat, glob, 0)
     if glob.load_errs or glob.run_errs:

@@ -11,6 +11,10 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
             kp = structs.KpElement(ff, ln, act, lno)
             act.ap_element.append(kp)
             act.kp_all.append(kp)
+        if tok == "Opt":
+            kp = structs.KpOpt(ff, ln, act, lno)
+            act.ap_opt.append(kp)
+            act.kp_all.append(kp)
         if tok == "Ref":
             kp = structs.KpRef(ff, ln, act, lno)
             act.ap_ref.append(kp)
