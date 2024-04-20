@@ -2,11 +2,12 @@
 Actor main .
 ----------------------------------------------------------------
 
-C   ?start: lines
+C ?start: lines
 C
-C   lines: line*
+C ines: line*
 C
-Cs   line: COMMENT | NL 
+Cs line: COMMENT | NL 
+
 
 All Comp def
 
@@ -15,17 +16,21 @@ C
 All Comp def2
 
 C
-C     %import common.CNAME -> C1_NAME
-C     %import common.WORD -> C1_WORD
-C     %import common.NEWLINE -> NL
-C     %import common.WS_INLINE
-C     %import common.WS
-C    
-C     COMMENT: /[-*][^\n]+/
-C     V1_WORD: /[^\n]+/
-C     P1_WORD: /[a-zA-z0-9.;*?\\\/]+/
-C     %ignore WS_INLINE
-C     %ignore WS
+C NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
+C WORD: QUOTED_WORD | UNQUOTED_WORD
+C QUOTED_WORD: /"[^"]*"/
+C UNQUOTED_WORD: /[^\s]+/
+C TEXT: /[^\n\r]*[\n\r]/
+C WS: /[ \t]*/
+C SWS: /[ \t]/
+C COMMENT: /[-*][^\n\r]+/
+C LF: /[\n\r]*/
+C
+C %ignore WS
+C %ignore SWS
+C %ignore LF
+C %ignore COMMENT
+
 C
 
 ----------------------------------------------------------------
@@ -44,12 +49,8 @@ Its Element ele
 
 Cs  NL
 
-Du def3
-
-C
-
 ----------------------------------------------------------------
-Actor def3 .
+Actor def2 .
 ----------------------------------------------------------------
 
 Out delay
@@ -61,16 +62,26 @@ Its Comp_parent childs
 Cs )*
 
 ----------------------------------------------------------------
+Actor def2 .
+----------------------------------------------------------------
+
+C
+
+----------------------------------------------------------------
 Actor ele . mw in C1,R1,F1,L1,M1,N1,P1,Q1
 ----------------------------------------------------------------
 
-Cs  P1_WORD?
+Cs  WS WORD?
 
 ----------------------------------------------------------------
 Actor ele . mw in V1
 ----------------------------------------------------------------
 
-Cs  V1_WORD?
+Cs  SWS TEXT
+
+* The TEXT token includes a NL - do not want the NL in def2
+
+Break cmds of def2
 
 ----------------------------------------------------------------
 Actor childs .
