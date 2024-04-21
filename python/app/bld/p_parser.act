@@ -1,0 +1,41 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C from lark import Lark, Transformer
+C
+C class LoaderTransformer(Transformer):
+
+All Comp def
+
+C
+C parser = Lark(loader_grammar, parser='lalr', transformer=LoaderTransformer())
+C
+
+----------------------------------------------------------------
+Actor def .
+----------------------------------------------------------------
+
+C     def ${name}l_def(self, items):
+C         names = {}
+C         names[ "me" ] = "${name}c"
+C         try:
+
+Its Element ele
+
+C         except:
+C             pass
+C         return(names)
+
+----------------------------------------------------------------
+Actor ele . mw = V1
+----------------------------------------------------------------
+
+C             if len(items) > ${.+} : names[ "${name}l" ] = items[${.-} ].value[1:]
+
+----------------------------------------------------------------
+Actor ele . mw != V1
+----------------------------------------------------------------
+
+C             if len(items) > ${.+} : names[ "${name}l" ] = items[${.-} ].value.lstrip()
+
