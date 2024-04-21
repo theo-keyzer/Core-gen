@@ -1,38 +1,35 @@
 ?start: lines
 
-ines: line*
+lines: line*
 
 line: COMMENT | NL  | comp_def | actor_def
-  comp_def: "Comp" WS WORD? WS WORD? WS WORD? WS WORD? SWS TEXT (COMMENT | NL | element_def | ref_def | ref2_def | ref3_def | refq_def)*
-  element_def: "Element" WS WORD? WS WORD? WS WORD? WS WORD? SWS TEXT (COMMENT | NL | opt_def)*
-  opt_def: "Opt" WS WORD? WS WORD? SWS TEXT
-  ref_def: "Ref" WS WORD? WS WORD? WS WORD? WS WORD? SWS TEXT
-  ref2_def: "Ref2" WS WORD? WS WORD? WS WORD? WS WORD? WS WORD? SWS TEXT
-  ref3_def: "Ref3" WS WORD? WS WORD? WS WORD? WS WORD? WS WORD? WS WORD? WS WORD? SWS TEXT
-  refq_def: "Refq" WS WORD? WS WORD? WS WORD? WS WORD? WS WORD? WS WORD? SWS TEXT
-  actor_def: "Actor" WS WORD? WS WORD? WS WORD? WS WORD? WS WORD? SWS TEXT (COMMENT | NL | all_def | du_def | its_def | c_def | cs_def | cf_def | out_def | break_def | unique_def)*
-  all_def: "All" WS WORD? WS WORD? SWS TEXT
-  du_def: "Du" WS WORD? WS WORD? WS WORD? WS WORD? SWS TEXT
-  its_def: "Its" WS WORD? WS WORD? SWS TEXT
-  c_def: "C" SWS TEXT
-  cs_def: "Cs" SWS TEXT
-  cf_def: "Cf" SWS TEXT
-  out_def: "Out" WS WORD? WS WORD? SWS TEXT
-  break_def: "Break" WS WORD? WS WORD? WS WORD? NL
-  unique_def: "Unique" WS WORD? WS WORD? SWS TEXT
+  comp_def: WS? "Comp" WORD? WORD? WORD? WORD? TEXT? NL (COMMENT | NL | element_def | ref_def | ref2_def | ref3_def | refq_def)*
+  element_def: WS? "Element" WORD? WORD? WORD? WORD? TEXT? NL (COMMENT | NL | opt_def)*
+  opt_def: WS? "Opt" WORD? WORD? TEXT? NL
+  ref_def: WS? "Ref" WORD? WORD? WORD? WORD? TEXT? NL
+  ref2_def: WS? "Ref2" WORD? WORD? WORD? WORD? WORD? TEXT? NL
+  ref3_def: WS? "Ref3" WORD? WORD? WORD? WORD? WORD? WORD? WORD? TEXT? NL
+  refq_def: WS? "Refq" WORD? WORD? WORD? WORD? WORD? WORD? TEXT? NL
+  actor_def: WS? "Actor" WORD? WORD? WORD? WORD? WORD? TEXT? NL (COMMENT | NL | all_def | du_def | its_def | c_def | cs_def | cf_def | out_def | break_def | unique_def)*
+  all_def: WS? "All" WORD? WORD? TEXT? NL
+  du_def: WS? "Du" WORD? WORD? WORD? WORD? TEXT? NL
+  its_def: WS? "Its" WORD? WORD? TEXT? NL
+  c_def: WS? "C" TEXT? NL
+  cs_def: WS? "Cs" TEXT? NL
+  cf_def: WS? "Cf" TEXT? NL
+  out_def: WS? "Out" WORD? WORD? TEXT? NL
+  break_def: WS? "Break" WORD? WORD? WORD? NL
+  unique_def: WS? "Unique" WORD? WORD? TEXT? NL
 
 NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
-WORD: QUOTED_WORD | UNQUOTED_WORD
+WORDS: QUOTED_WORD | WORD
 QUOTED_WORD: /"[^"]*"/
-UNQUOTED_WORD: /[^\s]+/
-TEXT: /[^\n\r]*[\n\r]/
-WS: /[ \t]*/
-SWS: /[ \t]/
+WORD: /[ \t]*//[^\s]+/
+TEXT: /[ \t]//[^\n\r]+/
 COMMENT: /[-*][^\n\r]+/
-LF: /[\n\r]*/
+NL: /[\n\r]/
+WS: /[ \t]+/
 
 %ignore WS
-%ignore SWS
-%ignore LF
 %ignore COMMENT
 
