@@ -2,15 +2,15 @@
 
 lines: line*
 
-line: COMMENT | NL  | comp_def | actor_def
-  comp_def: WS? "Comp" WORD? WORD? WORD? WORD? TEXT? NL (COMMENT | NL | element_def | ref_def | ref2_def | ref3_def | refq_def)*
-  element_def: WS? "Element" WORD? WORD? WORD? WORD? TEXT? NL (COMMENT | NL | opt_def)*
+line: COMMENT | NL  | comp_def | element_def | opt_def | ref_def | ref2_def | ref3_def | refq_def | actor_def | all_def | du_def | its_def | c_def | cs_def | cf_def | out_def | break_def | unique_def
+  comp_def: WS? "Comp" WORD? WORD? WORD? WORD? TEXT? NL
+  element_def: WS? "Element" WORD? WORD? WORD? WORD? TEXT? NL
   opt_def: WS? "Opt" WORD? WORD? TEXT? NL
   ref_def: WS? "Ref" WORD? WORD? WORD? WORD? TEXT? NL
   ref2_def: WS? "Ref2" WORD? WORD? WORD? WORD? WORD? TEXT? NL
   ref3_def: WS? "Ref3" WORD? WORD? WORD? WORD? WORD? WORD? WORD? TEXT? NL
   refq_def: WS? "Refq" WORD? WORD? WORD? WORD? WORD? WORD? TEXT? NL
-  actor_def: WS? "Actor" WORD? WORD? WORD? WORD? WORD? TEXT? NL (COMMENT | NL | all_def | du_def | its_def | c_def | cs_def | cf_def | out_def | break_def | unique_def)*
+  actor_def: WS? "Actor" WORD? WORD? WORD? WORD? WORD? TEXT? NL
   all_def: WS? "All" WORD? WORD? TEXT? NL
   du_def: WS? "Du" WORD? WORD? WORD? WORD? TEXT? NL
   its_def: WS? "Its" WORD? WORD? TEXT? NL
