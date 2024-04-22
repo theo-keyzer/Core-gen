@@ -112,13 +112,14 @@ would return the result if `!= 0`.
 The other implementations make use of a depth value that gets inc/dec.
 It can go back further. The problem is the `Du` command `Do/Jump` 
 that may or may not be between the loops.
-
+The python version has a `Break (actor,loop,cmd) for actor_name` to
+break further back to the actor_name.
 #### Condition
 Break condition.
 The `Break cmd on_error ${val}`, evals the variable string with the `strs` function.
 If the variables are missing, it would break out of the `go_cmds`.
 The `no_error`, would break when the variables are present - doing checks.
-
+The python version has no break condition, rather relies on the actor match for missing variables
 ### Call
 Actor calls.
 The `All, Its and Du` commands, calls the `new_act` function to set up
@@ -144,6 +145,7 @@ Actor have a case like match on all the actors of the same name.
 The `&=` would be false if the previous one failed. The `|=` would be true if the previous one was true.
 The variable has a `?` option like `name? = tb1`. This would fail if `name` does not exist.
 No error is printed and the global errors flag is not updated - not seen as an error.
+The python version uses the `?` like `name ?` to test is name exits.
 
 #### Matching
 Match cases.
