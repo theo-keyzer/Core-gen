@@ -1,0 +1,72 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C from lark import Lark, Transformer
+C
+C loader_grammar = r"""
+C """
+C
+C input_text = """
+C """
+C
+C class LoaderTransformer(Transformer):
+
+C     def start(self, items):
+C         new_items = []
+C         for i in range(0, len(items) ):
+C             if isinstance(items[i], dict) or isinstance(items[i], list):
+C                 new_items.append( items[i])
+C         return(new_items)
+C
+C     def get_toks(self, items):
+C         toks = []
+C         for i in range(0, len(items) ):
+C             if isinstance(items[i], dict) or isinstance(items[i], list):
+C                 continue;
+C             if items[i].type != 'NL':
+C                 toks.append( items[i])
+C         return(toks)
+C        
+
+All Comp def
+
+C parser = Lark(loader_grammar, parser='lalr', transformer=LoaderTransformer())
+C tree = parser.parse(input_text)
+C print(tree)
+C
+
+----------------------------------------------------------------
+Actor def .
+----------------------------------------------------------------
+
+C     def ${name}l_def(self, items):
+C         toks = self.get_toks(items)
+C         new_items = []
+C         names = {}
+C         names[ "me" ] = "${name}c"
+C         try:
+
+Its Element ele
+
+C         except:
+C             pass
+C         new_items.append(names)
+C         for i in range(0, len(items) ):
+C             if isinstance(items[i], dict) or isinstance(items[i], list):
+C                 new_items.append( items[i])
+C         return(new_items)
+C
+
+----------------------------------------------------------------
+Actor ele . mw = V1
+----------------------------------------------------------------
+
+C             if len(toks) > ${.-} : names[ "${name}l" ] = toks[${.-} ].value[1:]
+
+----------------------------------------------------------------
+Actor ele . mw != V1
+----------------------------------------------------------------
+
+C             if len(toks) > ${.-} : names[ "${name}l" ] = toks[${.-} ].value.lstrip()
+

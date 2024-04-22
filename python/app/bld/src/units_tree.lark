@@ -1,0 +1,61 @@
+?start: _line*
+
+_line: COMMENT | NLS  | node_def | graph_def | matrix_def | table_def | type_def | actor_def
+  node_def: WS? "Node" WORD? WORD? WORD? WORD? WORD? WORD? NL (COMMENT | NL | link_def)*
+  link_def: WS? "Link" WORD? NL
+  graph_def: WS? "Graph" WORD? WORD? TEXT? NL
+  matrix_def: WS? "Matrix" WORD? WORD? WORD? WORD? WORD? NL
+  table_def: WS? "Table" WORD? WORD? WORD? NL (COMMENT | NL | field_def | of_def | join_def | join2_def)*
+  field_def: WS? "Field" WORD? WORD? WORD? WORD? WORD? NL (COMMENT | NL | attrs_def)*
+  attrs_def: WS? "Attrs" WORD? NL
+  of_def: WS? "Of" WORD? WORD? WORD? WORD? TEXT? NL
+  join_def: WS? "Join" WORD? WORD? WORD? WORD? WORD? NL
+  join2_def: WS? "Join2" WORD? WORD? WORD? WORD? NL
+  type_def: WS? "Type" WORD? TEXT? NL (COMMENT | NL | data_def | attr_def | where_def | logic_def)*
+  data_def: WS? "Data" WORD? WORD? TEXT? NL
+  attr_def: WS? "Attr" WORD? WORD? WORD? WORD? WORD? WORD? WORD? TEXT? NL
+  where_def: WS? "Where" WORD? WORD? WORD? WORD? WORD? TEXT? NL
+  logic_def: WS? "Logic" WORD? WORD? WORD? NL
+  actor_def: WS? "Actor" WORD? WORD? WORD? WORD? WORD? TEXT? NL (COMMENT | NL | dbcreate_def | dbload_def | dbselect_def | all_def | du_def | new_def | refs_def | var_def | its_def | c_def | cs_def | cf_def | include_def | out_def | break_def | unique_def | collect_def | hash_def | group_def | add_def | clear_def | check_def | json_def | yaml_def | xml_def)*
+  dbcreate_def: WS? "Dbcreate" WORD? WORD? NL
+  dbload_def: WS? "Dbload" WORD? WORD? NL
+  dbselect_def: WS? "Dbselect" WORD? WORD? TEXT? NL
+  all_def: WS? "All" WORD? WORD? WORD? WORD? WORD? TEXT? NL
+  du_def: WS? "Du" WORD? WORD? WORD? WORD? TEXT? NL
+  new_def: WS? "New" WORD? WORD? TEXT? NL
+  refs_def: WS? "Refs" WORD? NL
+  var_def: WS? "Var" WORD? WORD? TEXT? NL
+  its_def: WS? "Its" WORD? WORD? WORD? WORD? WORD? TEXT? NL
+  c_def: WS? "C" TEXT? NL
+  cs_def: WS? "Cs" TEXT? NL
+  cf_def: WS? "Cf" TEXT? NL
+  include_def: WS? "Include" WORD? TEXT? NL
+  out_def: WS? "Out" WORD? WORD? TEXT? NL
+  break_def: WS? "Break" WORD? WORD? WORD? NL
+  unique_def: WS? "Unique" WORD? WORD? TEXT? NL
+  collect_def: WS? "Collect" WORD? WORD? NL
+  hash_def: WS? "Hash" WORD? WORD? WORD? TEXT? NL
+  group_def: WS? "Group" WORD? WORD? WORD? TEXT? NL
+  add_def: WS? "Add" WORD? WORD? WORD? TEXT? NL
+  clear_def: WS? "Clear" WORD? WORD? WORD? TEXT? NL
+  check_def: WS? "Check" WORD? WORD? WORD? TEXT? NL
+  json_def: WS? "Json" WORD? WORD? TEXT? NL
+  yaml_def: WS? "Yaml" WORD? WORD? TEXT? NL
+  xml_def: WS? "Xml" WORD? WORD? TEXT? NL
+
+NAME: /[ \t]*//[a-zA-Z_][a-zA-Z0-9_]*/
+TAG: NAME COL?
+COL: /[:]/
+WORDS: QUOTED_WORD | WORD
+QUOTED_WORD: /"[^"]*"/
+WORD: /[ \t]*//[^\s]+/
+TEXT: /[ \t]//[^\n\r]+/
+COMMENT: /[-*][^\n\r]+/
+NL: /[\n\r]/
+WS: /[ \t]+/
+NLS: /[\n\r]/
+
+%ignore WS
+%ignore NLS
+%ignore COMMENT
+

@@ -10,3 +10,9 @@ if [ $? != 0 ]; then echo p_grammer.act app.unit,sample.unit,act.unit has errors
 python ../../src/main.py p_parser.act app.unit,sample.unit,act.unit >src/units.py
 if [ $? != 0 ]; then echo p_parser.act app.unit,sample.unit,act.unit has errors; fi
 
+python ../../src/main.py p_gram_tree.act app.unit,sample.unit,act.unit >src/units_tree.lark
+if [ $? != 0 ]; then echo p_gram_tree.act app.unit,sample.unit,act.unit has errors; fi
+
+python ../../src/main.py p_parser_tree.act app.unit,sample.unit,act.unit >src/units_tree.py
+if [ $? != 0 ]; then echo p_parser_tree.act app.unit,sample.unit,act.unit has errors; fi
+
