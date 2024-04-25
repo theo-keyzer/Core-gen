@@ -29,7 +29,11 @@ Ref domain Domain ?
 ----------------------------------------------------------------
 Comp A parent Frame FindIn
 ----------------------------------------------------------------
+* Use domain from parent
+* The U0 is a hidden field - only has the pointer
+----------------------------------------------------------------
 
+	Element domain     U0 Domain     * the domain of frame
 	Element model      L1 Model      * ref to model
 	Element name       C1 WORD       * a name
 	Element pad        C1 WORD       * padding
@@ -37,13 +41,10 @@ Comp A parent Frame FindIn
 
 -Refq model Model domain Frame ?
 
-	Element domain     U0 Domain
 
 Refu domain Domain parentp Frame k_domainp
 Ref2 model Model domain
 
-Use domain from parent
-The U1 is a hidden field - only has the pointer
 
 ----------------------------------------------------------------
 Comp Use parent A

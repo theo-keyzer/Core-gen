@@ -72,22 +72,20 @@ Comp Of parent Table
 ----------------------------------------------------------------
 
 	Element field    F1 Field     * Field name
+	Element type     U0 Field     * Use type from field
 	Element attr     L1 Attr      * Attr name
 	Element from     L1 Attr      * Attr name
 	Element op       C1 WORD      * (=, >, like)
 	Element value    V1 WORD      * Select value
 
-	Element type     U0 Field     * Field name
 
 Ref    field Field             check
--Ref3   attr  Attr  field Field type ?
--Ref3   from  Attr  attr Attr table ?
-
 Refu   type  Type k_fieldp Field k_typep
 Ref2   attr Attr type
 Ref2   from Attr type
 
-- Use type from field
+-Ref3   attr  Attr  field Field type ?
+-Ref3   from  Attr  attr Attr table ?
 
 
 ----------------------------------------------------------------

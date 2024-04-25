@@ -15,8 +15,7 @@ C def refs(act) -> bool:
 C     err = False
 
 All Comp refs
-All Comp refsu
-All Comp refs2
+All Comp refs_other
 
 C     return err
 C
@@ -57,7 +56,7 @@ Its Element refs_ele
 C
 
 ----------------------------------------------------------------
-Actor refs2 .
+Actor refs_other Comp
 ----------------------------------------------------------------
 
 Out delay
@@ -65,20 +64,7 @@ Out delay
 C     for i in range( len(act.ap_${name}l) ):
 C         t = -2
 		
-Its Element refs_ele2
-
-C
-
-----------------------------------------------------------------
-Actor refsu .
-----------------------------------------------------------------
-
-Out delay
-
-C     for i in range( len(act.ap_${name}l) ):
-C         t = -2
-		
-Its Element refs_eleu
+Its Element refs_ele_other
 
 C
 
@@ -119,25 +105,25 @@ C                 err = True
 C                 print( str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
 
 ----------------------------------------------------------------
-Actor refs_ele2 . mw in L1,LS
+Actor refs_ele_other . mw in L1,LS
 ----------------------------------------------------------------
 
 C         try:
-C             t = act.ap_${.refs2.name}l[i].k_${Ref2_element.element2.name}lp
-C             p = act.ap_${.refs2.name}l[i].names[ "${name}l" ]
-C             act.ap_${.refs2.name}l[i].k_${name}lp = act.index[ str(t) + "_${Ref2_element.comp.name}c_" + p]
+C             t = act.ap_${.refs_other.name}l[i].k_${Ref2_element.element2.name}lp
+C             p = act.ap_${.refs_other.name}l[i].names[ "${name}l" ]
+C             act.ap_${.refs_other.name}l[i].k_${name}lp = act.index[ str(t) + "_${Ref2_element.comp.name}c_" + p]
 C         except:
 C             if "${Ref2_element.opt} " != ".":
 C                 err = True
 C                 print( str(t) + "_${Ref2_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
 
 ----------------------------------------------------------------
-Actor refs_eleu . mw in U0
+Actor refs_ele_other . mw in U0
 ----------------------------------------------------------------
 
 C         try:
-C             t = act.ap_${.refsu.name}l[i].${Refu_element.element2.name}l
-C             act.ap_${.refsu.name}l[i].k_${name}lp = act.ap_${Refu_element.comp_ref.name}l[t].${Refu_element.element3.name}l
+C             t = act.ap_${.refs_other.name}l[i].${Refu_element.element2.name}l
+C             act.ap_${.refs_other.name}l[i].k_${name}lp = act.ap_${Refu_element.comp_ref.name}l[t].${Refu_element.element3.name}l
 C         except:
 C             if "${Refu_element.opt} " != ".":
 C                 err = True

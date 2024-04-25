@@ -65,6 +65,7 @@ Comp Where parent Type
 ----------------------------------------------------------------
 
 	Element attr     F1 Attr      * Field name
+	Element table    U0 Table     * the table of the attr
 	Element from_id  L1 Attr      * From id
 	Element eq       C1 WORD      * =
 	Element id       F1 Attr      * id
@@ -73,15 +74,10 @@ Comp Where parent Type
 
 Ref      attr Attr                   check
 Ref        id Attr                   check
-Ref3  from_id Attr   attr Attr table check
-
-	Element table    U0 Table
--	Element from_id2 L1 Attr
-
 Refu    table Table  k_attrp Attr k_tablep
 Ref2  from_id Attr   table
 
-- Use table from attr
+-Ref3  from_id Attr   attr Attr table check
 
 ----------------------------------------------------------------
 Comp Logic parent Type
