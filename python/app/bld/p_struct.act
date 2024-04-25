@@ -194,7 +194,7 @@ Actor parent_field_p Comp
 C     var parentp : Int
 
 ----------------------------------------------------------------
-Actor val_inc3 Element mw in R1,F1,L1,M1,Q1,RS,FS,LS,MS,QS
+Actor val_inc3 Element mw in R1,F1,L1,M1,Q1,U0,RS,FS,LS,MS,QS
 ----------------------------------------------------------------
 
 C         self.k_${name}lp = -1

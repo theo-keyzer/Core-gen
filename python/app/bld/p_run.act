@@ -15,6 +15,7 @@ C def refs(act) -> bool:
 C     err = False
 
 All Comp refs
+All Comp refsu
 All Comp refs2
 
 C     return err
@@ -69,6 +70,19 @@ Its Element refs_ele2
 C
 
 ----------------------------------------------------------------
+Actor refsu .
+----------------------------------------------------------------
+
+Out delay
+
+C     for i in range( len(act.ap_${name}l) ):
+C         t = -2
+		
+Its Element refs_eleu
+
+C
+
+----------------------------------------------------------------
 Actor refs_ele_act . mw = R1
 ----------------------------------------------------------------
 
@@ -117,5 +131,16 @@ C             if "${Ref2_element.opt} " != ".":
 C                 err = True
 C                 print( str(t) + "_${Ref2_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
 
+----------------------------------------------------------------
+Actor refs_eleu . mw in U0
+----------------------------------------------------------------
+
+C         try:
+C             t = act.ap_${.refsu.name}l[i].${Refu_element.element2.name}l
+C             act.ap_${.refsu.name}l[i].k_${name}lp = act.ap_${Refu_element.comp_ref.name}l[t].${Refu_element.element3.name}l
+C         except:
+C             if "${Refu_element.opt} " != ".":
+C                 err = True
+C                 print( str(t) + "_${Refu_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
 
 

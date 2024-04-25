@@ -56,6 +56,7 @@ def go_act(dat, glob, act):
         if ret == 2:
             nret = 0
         if ret < 0 and glob.wins[glob.winp].brk_act:
+#            print( name )
             nret = -ret
         glob.winp -= 1
         return nret
@@ -122,12 +123,16 @@ def go_cmds(dat, glob, act: int) -> int:
             elif brk.k_what == "loop":
                 ret = 1
             elif brk.k_what == "cmds":
+#                print("is brk " + brk.k_actor)
                 ret = 3
             if brk.k_actor != "E_O_L":
+#                print( brk.k_actor )
                 for i in range(glob.winp - 1, -1, -1):
+#                    print(i)
                     if brk.k_actor == glob.wins[i].name:
                         glob.wins[i + 1].brk_act = True
                         ret = -ret
+#                        print("is")
             return ret
     return 0
 

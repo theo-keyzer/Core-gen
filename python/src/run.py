@@ -23,13 +23,9 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
             kp = structs.KpRef2(ff, ln, act, lno)
             act.ap_ref2.append(kp)
             act.kp_all.append(kp)
-        if tok == "Ref3":
-            kp = structs.KpRef3(ff, ln, act, lno)
-            act.ap_ref3.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Refq":
-            kp = structs.KpRefq(ff, ln, act, lno)
-            act.ap_refq.append(kp)
+        if tok == "Refu":
+            kp = structs.KpRefu(ff, ln, act, lno)
+            act.ap_refu.append(kp)
             act.kp_all.append(kp)
         if tok == "Actor":
             kp = structs.KpActor(ff, ln, act, lno)
@@ -122,58 +118,28 @@ def refs(act) -> bool:
                 err = True
                 print( str(act.ap_ref2[i].parentp) + "_Element_" + p + " not found " + act.ap_ref2[i].line_no)
 
-    for i in range( len(act.ap_ref3) ):
+    for i in range( len(act.ap_refu) ):
         try:
-            p = act.ap_ref3[i].names[ "element" ]
-            act.ap_ref3[i].k_elementp = act.index[ str(act.ap_ref3[i].parentp) + "_Element_" + p]
+            p = act.ap_refu[i].names[ "element" ]
+            act.ap_refu[i].k_elementp = act.index[ str(act.ap_refu[i].parentp) + "_Element_" + p]
         except:
             if "check" != ".":
                 err = True
-                print( str(act.ap_ref3[i].parentp) + "_Element_" + p + " not found " + act.ap_ref3[i].line_no)
+                print( str(act.ap_refu[i].parentp) + "_Element_" + p + " not found " + act.ap_refu[i].line_no)
         try:
-            p = act.ap_ref3[i].names[ "comp" ]
-            act.ap_ref3[i].k_compp = act.index["Comp_" + p]
+            p = act.ap_refu[i].names[ "comp" ]
+            act.ap_refu[i].k_compp = act.index["Comp_" + p]
         except:
             if "check" != ".":
                 err = True
-                print("Comp_" + p + " not found " + act.ap_ref3[i].line_no)
+                print("Comp_" + p + " not found " + act.ap_refu[i].line_no)
         try:
-            p = act.ap_ref3[i].names[ "element2" ]
-            act.ap_ref3[i].k_element2p = act.index[ str(act.ap_ref3[i].parentp) + "_Element_" + p]
+            p = act.ap_refu[i].names[ "comp_ref" ]
+            act.ap_refu[i].k_comp_refp = act.index["Comp_" + p]
         except:
             if "check" != ".":
                 err = True
-                print( str(act.ap_ref3[i].parentp) + "_Element_" + p + " not found " + act.ap_ref3[i].line_no)
-        try:
-            p = act.ap_ref3[i].names[ "comp_ref" ]
-            act.ap_ref3[i].k_comp_refp = act.index["Comp_" + p]
-        except:
-            if "check" != ".":
-                err = True
-                print("Comp_" + p + " not found " + act.ap_ref3[i].line_no)
-
-    for i in range( len(act.ap_refq) ):
-        try:
-            p = act.ap_refq[i].names[ "element" ]
-            act.ap_refq[i].k_elementp = act.index[ str(act.ap_refq[i].parentp) + "_Element_" + p]
-        except:
-            if "check" != ".":
-                err = True
-                print( str(act.ap_refq[i].parentp) + "_Element_" + p + " not found " + act.ap_refq[i].line_no)
-        try:
-            p = act.ap_refq[i].names[ "comp" ]
-            act.ap_refq[i].k_compp = act.index["Comp_" + p]
-        except:
-            if "check" != ".":
-                err = True
-                print("Comp_" + p + " not found " + act.ap_refq[i].line_no)
-        try:
-            p = act.ap_refq[i].names[ "comp_ref" ]
-            act.ap_refq[i].k_comp_refp = act.index["Comp_" + p]
-        except:
-            if "check" != ".":
-                err = True
-                print("Comp_" + p + " not found " + act.ap_refq[i].line_no)
+                print("Comp_" + p + " not found " + act.ap_refu[i].line_no)
 
     for i in range( len(act.ap_all) ):
         try:
