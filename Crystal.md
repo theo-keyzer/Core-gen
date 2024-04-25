@@ -256,6 +256,8 @@ It uses the `attr` field (the one with the `F1`) to get to `Attr` node. In that 
 The `from_id, attr` can be different node types.
 The refs run in a sequence at `Element` level. First it does the `F1, R1` ones, then the the `M1, L1` ones.
 
+The python version uses a `Refu` and `Ref2` to replace the `Ref3`
+
 Sample of def file.
 
 ```
@@ -332,6 +334,8 @@ Refq model Model domain Frame ?
 The `Refq` uses the `Q1` field `model`. The link goes to node of type `Model`.
 It uses the `domain` field (the one with the `R1`) to be used as the parent `(Domain)` to find the `Model` in.
 This is the same as `L1` except the `domain` field is not in `A`, but in `A's` parent, `Frame`.
+
+The python version uses a `Refu` and `Ref2` to replace the `Refq`
 
 
 ```
