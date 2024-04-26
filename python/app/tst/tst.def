@@ -57,7 +57,7 @@ Table Open as op
 
 Field User user VAR
 
-Of user location_id location_name = test
+-Of user location_id location_name = test
 
 
 

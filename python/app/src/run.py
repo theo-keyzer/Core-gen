@@ -63,6 +63,38 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
             kp = structs.KpLogic(ff, ln, act, lno)
             act.ap_logic.append(kp)
             act.kp_all.append(kp)
+        if tok == "Domain":
+            kp = structs.KpDomain(ff, ln, act, lno)
+            act.ap_domain.append(kp)
+            act.kp_all.append(kp)
+        if tok == "Model":
+            kp = structs.KpModel(ff, ln, act, lno)
+            act.ap_model.append(kp)
+            act.kp_all.append(kp)
+        if tok == "Frame":
+            kp = structs.KpFrame(ff, ln, act, lno)
+            act.ap_frame.append(kp)
+            act.kp_all.append(kp)
+        if tok == "A":
+            kp = structs.KpA(ff, ln, act, lno)
+            act.ap_a.append(kp)
+            act.kp_all.append(kp)
+        if tok == "Use":
+            kp = structs.KpUse(ff, ln, act, lno)
+            act.ap_use.append(kp)
+            act.kp_all.append(kp)
+        if tok == "Grid":
+            kp = structs.KpGrid(ff, ln, act, lno)
+            act.ap_grid.append(kp)
+            act.kp_all.append(kp)
+        if tok == "Col":
+            kp = structs.KpCol(ff, ln, act, lno)
+            act.ap_col.append(kp)
+            act.kp_all.append(kp)
+        if tok == "R":
+            kp = structs.KpR(ff, ln, act, lno)
+            act.ap_r.append(kp)
+            act.kp_all.append(kp)
         if tok == "Actor":
             kp = structs.KpActor(ff, ln, act, lno)
             act.ap_actor.append(kp)
@@ -272,6 +304,33 @@ def refs(act) -> bool:
                 err = True
                 print( str(act.ap_logic[i].parentp) + "_Attr_" + p + " not found " + act.ap_logic[i].line_no)
 
+    for i in range( len(act.ap_frame) ):
+        try:
+            p = act.ap_frame[i].names[ "domain" ]
+            act.ap_frame[i].k_domainp = act.index["Domain_" + p]
+        except:
+            if "." != ".":
+                err = True
+                print("Domain_" + p + " not found " + act.ap_frame[i].line_no)
+
+    for i in range( len(act.ap_col) ):
+        try:
+            p = act.ap_col[i].names[ "name" ]
+            act.ap_col[i].k_namep = act.index["Grid_" + p]
+        except:
+            if "." != ".":
+                err = True
+                print("Grid_" + p + " not found " + act.ap_col[i].line_no)
+
+    for i in range( len(act.ap_r) ):
+        try:
+            p = act.ap_r[i].names[ "name" ]
+            act.ap_r[i].k_namep = act.index["Grid_" + p]
+        except:
+            if "." != ".":
+                err = True
+                print("Grid_" + p + " not found " + act.ap_r[i].line_no)
+
     for i in range( len(act.ap_dbselect) ):
         try:
             p = act.ap_dbselect[i].k_actor
@@ -308,6 +367,32 @@ def refs(act) -> bool:
                 err = True
                 print("Actor_" + p + " not found " + act.ap_its[i].line_no)
 
+    for i in range( len(act.ap_of) ):
+        t = -2
+        try:
+            t = act.ap_of[i].k_fieldp
+            act.ap_of[i].k_typep = act.ap_field[t].k_typep
+        except:
+            if "E_O_L" != ".":
+                err = True
+                print( str(t) + "_Type_" + p + " not found " + act.ap_of[i].line_no)
+        try:
+            t = act.ap_of[i].k_typep
+            p = act.ap_of[i].names[ "attr" ]
+            act.ap_of[i].k_attrp = act.index[ str(t) + "_Attr_" + p]
+        except:
+            if "E_O_L" != ".":
+                err = True
+                print( str(t) + "_Attr_" + p + " not found " + act.ap_of[i].line_no)
+        try:
+            t = act.ap_of[i].k_typep
+            p = act.ap_of[i].names[ "from" ]
+            act.ap_of[i].k_fromp = act.index[ str(t) + "_Attr_" + p]
+        except:
+            if "E_O_L" != ".":
+                err = True
+                print( str(t) + "_Attr_" + p + " not found " + act.ap_of[i].line_no)
+
     for i in range( len(act.ap_join) ):
         t = -2
         try:
@@ -337,6 +422,53 @@ def refs(act) -> bool:
             if "check" != ".":
                 err = True
                 print( str(t) + "_Attrs_" + p + " not found " + act.ap_join2[i].line_no)
+
+    for i in range( len(act.ap_where) ):
+        t = -2
+        try:
+            t = act.ap_where[i].k_attrp
+            act.ap_where[i].k_tablep = act.ap_attr[t].k_tablep
+        except:
+            if "E_O_L" != ".":
+                err = True
+                print( str(t) + "_Table_" + p + " not found " + act.ap_where[i].line_no)
+        try:
+            t = act.ap_where[i].k_tablep
+            p = act.ap_where[i].names[ "from_id" ]
+            act.ap_where[i].k_from_idp = act.index[ str(t) + "_Attr_" + p]
+        except:
+            if "E_O_L" != ".":
+                err = True
+                print( str(t) + "_Attr_" + p + " not found " + act.ap_where[i].line_no)
+
+    for i in range( len(act.ap_a) ):
+        t = -2
+        try:
+            t = act.ap_a[i].parentp
+            act.ap_a[i].k_domainp = act.ap_frame[t].k_domainp
+        except:
+            if "." != ".":
+                err = True
+                print( str(t) + "_Domain_" + p + " not found " + act.ap_a[i].line_no)
+        try:
+            t = act.ap_a[i].k_domainp
+            p = act.ap_a[i].names[ "model" ]
+            act.ap_a[i].k_modelp = act.index[ str(t) + "_Model_" + p]
+        except:
+            if "." != ".":
+                err = True
+                print( str(t) + "_Model_" + p + " not found " + act.ap_a[i].line_no)
+
+    for i in range( len(act.ap_use) ):
+        t = -2
+        try:
+            t = act.ap_use[i].k_framep
+            p = act.ap_use[i].names[ "a" ]
+            act.ap_use[i].k_ap = act.index[ str(t) + "_A_" + p]
+        except:
+            if "." != ".":
+                err = True
+                print( str(t) + "_A_" + p + " not found " + act.ap_use[i].line_no)
 
     return err
 

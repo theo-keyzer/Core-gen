@@ -24,7 +24,7 @@ Comp Frame parent Model FindIn
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
-Ref domain Domain ?
+Ref domain Domain .
 
 ----------------------------------------------------------------
 Comp A parent Frame FindIn
@@ -34,7 +34,7 @@ Comp A parent Frame FindIn
 ----------------------------------------------------------------
 
 	Element domain     U0 Domain     * the domain of frame
-	Element model      L1 Model      * ref to model
+	Element model      LS Model      * ref to model
 	Element name       C1 WORD       * a name
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
@@ -42,8 +42,8 @@ Comp A parent Frame FindIn
 -Refq model Model domain Frame ?
 
 
-Refu domain Domain parentp Frame k_domainp
-Ref2 model Model domain
+Refu domain Domain parentp Frame k_domainp .
+Ref2 model Model domain .
 
 
 ----------------------------------------------------------------
@@ -55,8 +55,8 @@ Comp Use parent A
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
-Refq frame Frame model A ?
-Ref2 a A frame ?
+Refq frame Frame model A .
+Ref2 a A frame .
 
 ----------------------------------------------------------------
 Comp Grid parent . Find
@@ -76,7 +76,7 @@ Comp Col parent Grid FindIn
 	Element file       C1 WORD       * optional file to include
 	Element info       V1 WORD       * info
 
-Ref name Grid ?
+Ref name Grid .
 
 ----------------------------------------------------------------
 Comp R parent Col FindIn
@@ -86,5 +86,5 @@ Comp R parent Col FindIn
 	Element file       C1 WORD       * optional file to include
 	Element info       V1 WORD       * info
 
-Ref name Grid ?
+Ref name Grid .
 
