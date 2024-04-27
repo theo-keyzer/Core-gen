@@ -159,19 +159,19 @@ Actor refs_ele_other . mw in U0
 ----------------------------------------------------------------
 
 C         try:
-C             t = act.ap_${.refs_other.name}l[i].${Refu_element.element2.name}l
+C             t = act.ap_${.refs_other.name}l[i].${Refu_element.element2}l
 C             if t == -1:
 C                 cnt = cnt + 1
 C                 if check:
 C                     err = True
-C                     print( "${Refu_element.element2.name}l not resolved " + act.ap_${parent.name}l[i].line_no)
+C                     print( "${Refu_element.element2}l not resolved " + act.ap_${parent.name}l[i].line_no)
 C             else:
 C                 act.ap_${.refs_other.name}l[i].k_${name}lp = -2
-C             act.ap_${.refs_other.name}l[i].k_${name}lp = act.ap_${Refu_element.comp_ref.name}l[t].${Refu_element.element3.name}l
+C             act.ap_${.refs_other.name}l[i].k_${name}lp = act.ap_${Refu_element.comp_ref.name}l[t].${Refu_element.element3}l
 C         except:
 C             if "${Refu_element.opt} " != ".":
 C                 if check:
 C                     err = True
-C                     print( "${Refu_element.element2.name}l = " + str(t) + " " + act.ap_${parent.name}l[i].line_no)
+C                     print( "${Refu_element.element2}l = " + str(t) + " " + act.ap_${parent.name}l[i].line_no)
 
 
