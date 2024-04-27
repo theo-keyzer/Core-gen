@@ -282,7 +282,7 @@ C         self.names[ "${name} " ] = ff.getwsw( ff.lines[ln], 1 )
 Actor parent_field Comp .struct.parent.name = Actor
 ----------------------------------------------------------------
 
-C         self.parentp = -1
+C         self.parentp = -2
 C         i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].all_to = self.me2 + 1
@@ -297,7 +297,7 @@ Break
 Actor parent_field Comp
 ----------------------------------------------------------------
 
-C         self.parentp = -1
+C         self.parentp = -2
 C         i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].all_to = self.me2 + 1

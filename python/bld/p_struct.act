@@ -162,13 +162,15 @@ C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
 
 Its Ref ref_var
 Its Ref2 ref_var
-Its Ref3 ref_var
+Its Refu ref_var
 Its parent parent_field_var
 Its Ref_comp other_var
 Its Ref2_comp other_var
-Its Ref3_comp other_var
+Its Refu_comp other_var
 
 C         try:
+C             if len(na) > 1:
+C                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",${name}c?", True );
 C             return( self.names[ na[0] ], False )
 C         except:
 C             return("?" + na[0] + "?" + self.line_no + "," + lno + ",${name}c?", True );
@@ -179,10 +181,10 @@ Its Comp_parent its
 Its parent parent_field_func
 Its Ref ref_func
 Its Ref2 ref_func
-Its Ref3 ref_func
+Its Refu ref_func
 Its Ref_comp other_func
 Its Ref2_comp other_func
-Its Ref3_comp other_func
+Its Refu_comp other_func
 
 C         return(0)
 C
@@ -274,13 +276,13 @@ C         self.names[ "${name} " ] = ff.getws( ff.lines[ln], 1 )
 Actor ele . mw in CS,RS,FS,LS,MS,NS,PS,QS
 ----------------------------------------------------------------
 
-C         self.names[ "${name} " ] = ff.getsw( ff.lines[ln], 1 )
+C         self.names[ "${name} " ] = ff.getwsw( ff.lines[ln], 1 )
 
 ----------------------------------------------------------------
 Actor parent_field Comp .struct.parent.name = Actor
 ----------------------------------------------------------------
 
-C         self.parentp = -1
+C         self.parentp = -2
 C         i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].all_to = self.me2 + 1
@@ -295,7 +297,7 @@ Break
 Actor parent_field Comp
 ----------------------------------------------------------------
 
-C         self.parentp = -1
+C         self.parentp = -2
 C         i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].all_to = self.me2 + 1
@@ -321,6 +323,11 @@ Actor its Comp
 
 C         if what[0] == "${name}c":
 C             for i in range( self.${name}l_from, self.${name}l_to ):
+C                 if len(what) > 1:
+C                     ret = glob.dats.ap_${name}l[i].do_its(glob, what[1:], act)
+C                     if ret != 0:
+C                         return(ret)
+C                     continue
 C                 ret = go_act(glob.dats.ap_${name}l[i], glob, act)
 C                 if ret != 0:
 C                     return(ret)
@@ -360,6 +367,7 @@ C                     if len(what) > 1:
 C                         ret = glob.dats.ap_${parent.name}l[i].do_its(glob, what[1:], act)
 C                         if ret != 0:
 C                             return(ret)
+C                         continue
 C                     ret = go_act(glob.dats.ap_${parent.name}l[i], glob, act)
 C                     if ret != 0:
 C                         return(ret)
