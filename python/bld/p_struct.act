@@ -21,6 +21,7 @@ C         self.load_errs = False
 C         self.run_errs = False
 C         self.acts = ActT()
 C         self.dats = ActT()
+C         self.arg = ""
 C         self.wins = []
 C         self.winp = -1
 C

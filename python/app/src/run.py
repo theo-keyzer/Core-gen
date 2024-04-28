@@ -2,6 +2,25 @@ import structs
 
 from inputs import Input
 
+def refs(act) -> bool:
+    err = False
+    err = ref(act)
+    er, cnt = ref_other(act, True)
+    err = err or er
+    return err
+
+def refs_multi_pass(act) -> bool:
+    err = ref(act)
+    prev = 1000
+    for i in range(0,6):
+        er, cnt = ref_other(act, False)
+        if cnt == 0 or cnt == prev:
+            break
+        prev = cnt
+    er, cnt = ref_other(act, True)
+    err = err or er
+    return err
+
 def load(act, ff: Input, tok: str, ln: int, lno: str):
         if tok == "Node":
             kp = structs.KpNode(ff, ln, act, lno)
@@ -200,10 +219,11 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
             act.ap_xml.append(kp)
             act.kp_all.append(kp)
 
-def refs(act) -> bool:
+def ref(act) -> bool:
     err = False
     for i in range( len(act.ap_node) ):
         try:
+            act.ap_node[i].k_parentp = -2
             p = act.ap_node[i].names[ "parent" ]
             act.ap_node[i].k_parentp = act.index["Node_" + p]
         except:
@@ -213,6 +233,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_link) ):
         try:
+            act.ap_link[i].k_top = -2
             p = act.ap_link[i].names[ "to" ]
             act.ap_link[i].k_top = act.index["Node_" + p]
         except:
@@ -222,6 +243,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_field) ):
         try:
+            act.ap_field[i].k_typep = -2
             p = act.ap_field[i].names[ "type" ]
             act.ap_field[i].k_typep = act.index["Type_" + p]
         except:
@@ -231,6 +253,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_of) ):
         try:
+            act.ap_of[i].k_fieldp = -2
             p = act.ap_of[i].names[ "field" ]
             act.ap_of[i].k_fieldp = act.index[ str(act.ap_of[i].parentp) + "_Field_" + p]
         except:
@@ -240,6 +263,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_join) ):
         try:
+            act.ap_join[i].k_field1p = -2
             p = act.ap_join[i].names[ "field1" ]
             act.ap_join[i].k_field1p = act.index[ str(act.ap_join[i].parentp) + "_Field_" + p]
         except:
@@ -247,6 +271,7 @@ def refs(act) -> bool:
                 err = True
                 print( str(act.ap_join[i].parentp) + "_Field_" + p + " not found " + act.ap_join[i].line_no)
         try:
+            act.ap_join[i].k_table2p = -2
             p = act.ap_join[i].names[ "table2" ]
             act.ap_join[i].k_table2p = act.index["Table_" + p]
         except:
@@ -256,6 +281,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_join2) ):
         try:
+            act.ap_join2[i].k_field1p = -2
             p = act.ap_join2[i].names[ "field1" ]
             act.ap_join2[i].k_field1p = act.index[ str(act.ap_join2[i].parentp) + "_Field_" + p]
         except:
@@ -263,6 +289,7 @@ def refs(act) -> bool:
                 err = True
                 print( str(act.ap_join2[i].parentp) + "_Field_" + p + " not found " + act.ap_join2[i].line_no)
         try:
+            act.ap_join2[i].k_table2p = -2
             p = act.ap_join2[i].names[ "table2" ]
             act.ap_join2[i].k_table2p = act.index["Table_" + p]
         except:
@@ -272,6 +299,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_attr) ):
         try:
+            act.ap_attr[i].k_tablep = -2
             p = act.ap_attr[i].names[ "table" ]
             act.ap_attr[i].k_tablep = act.index["Type_" + p]
         except:
@@ -281,6 +309,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_where) ):
         try:
+            act.ap_where[i].k_attrp = -2
             p = act.ap_where[i].names[ "attr" ]
             act.ap_where[i].k_attrp = act.index[ str(act.ap_where[i].parentp) + "_Attr_" + p]
         except:
@@ -288,6 +317,7 @@ def refs(act) -> bool:
                 err = True
                 print( str(act.ap_where[i].parentp) + "_Attr_" + p + " not found " + act.ap_where[i].line_no)
         try:
+            act.ap_where[i].k_idp = -2
             p = act.ap_where[i].names[ "id" ]
             act.ap_where[i].k_idp = act.index[ str(act.ap_where[i].parentp) + "_Attr_" + p]
         except:
@@ -297,6 +327,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_logic) ):
         try:
+            act.ap_logic[i].k_attrp = -2
             p = act.ap_logic[i].names[ "attr" ]
             act.ap_logic[i].k_attrp = act.index[ str(act.ap_logic[i].parentp) + "_Attr_" + p]
         except:
@@ -306,6 +337,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_frame) ):
         try:
+            act.ap_frame[i].k_domainp = -2
             p = act.ap_frame[i].names[ "domain" ]
             act.ap_frame[i].k_domainp = act.index["Domain_" + p]
         except:
@@ -315,6 +347,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_col) ):
         try:
+            act.ap_col[i].k_namep = -2
             p = act.ap_col[i].names[ "name" ]
             act.ap_col[i].k_namep = act.index["Grid_" + p]
         except:
@@ -324,6 +357,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_r) ):
         try:
+            act.ap_r[i].k_namep = -2
             p = act.ap_r[i].names[ "name" ]
             act.ap_r[i].k_namep = act.index["Grid_" + p]
         except:
@@ -333,6 +367,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_dbselect) ):
         try:
+            act.ap_dbselect[i].k_actorp = -2
             p = act.ap_dbselect[i].k_actor
             act.ap_dbselect[i].k_actorp = act.index["Actor_" + p]
         except:
@@ -342,6 +377,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_all) ):
         try:
+            act.ap_all[i].k_actorp = -2
             p = act.ap_all[i].k_actor
             act.ap_all[i].k_actorp = act.index["Actor_" + p]
         except:
@@ -351,6 +387,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_du) ):
         try:
+            act.ap_du[i].k_actorp = -2
             p = act.ap_du[i].k_actor
             act.ap_du[i].k_actorp = act.index["Actor_" + p]
         except:
@@ -360,6 +397,7 @@ def refs(act) -> bool:
 
     for i in range( len(act.ap_its) ):
         try:
+            act.ap_its[i].k_actorp = -2
             p = act.ap_its[i].k_actor
             act.ap_its[i].k_actorp = act.index["Actor_" + p]
         except:
@@ -367,108 +405,201 @@ def refs(act) -> bool:
                 err = True
                 print("Actor_" + p + " not found " + act.ap_its[i].line_no)
 
+    return(err)
+
+def ref_other(act, check: bool) -> (bool, int):
+    err = False
+    cnt = 0
     for i in range( len(act.ap_of) ):
         t = -2
         try:
             t = act.ap_of[i].k_fieldp
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "k_fieldp not resolved " + act.ap_of[i].line_no)
+            else:
+                act.ap_of[i].k_typep = -2
             act.ap_of[i].k_typep = act.ap_field[t].k_typep
         except:
             if "E_O_L" != ".":
-                err = True
-                print( str(t) + "_Type_" + p + " not found " + act.ap_of[i].line_no)
+                if check:
+                    err = True
+                    print( "k_fieldp = " + str(t) + " " + act.ap_of[i].line_no)
         try:
             t = act.ap_of[i].k_typep
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "type not resolved " + act.ap_of[i].line_no)
+            else:
+                act.ap_of[i].k_attrp = -2
             p = act.ap_of[i].names[ "attr" ]
             act.ap_of[i].k_attrp = act.index[ str(t) + "_Attr_" + p]
         except:
             if "E_O_L" != ".":
-                err = True
-                print( str(t) + "_Attr_" + p + " not found " + act.ap_of[i].line_no)
+                if check:
+                    err = True
+                    print( str(t) + "_Attr_" + p + " not found " + act.ap_of[i].line_no)
         try:
             t = act.ap_of[i].k_typep
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "type not resolved " + act.ap_of[i].line_no)
+            else:
+                act.ap_of[i].k_fromp = -2
             p = act.ap_of[i].names[ "from" ]
             act.ap_of[i].k_fromp = act.index[ str(t) + "_Attr_" + p]
         except:
             if "E_O_L" != ".":
-                err = True
-                print( str(t) + "_Attr_" + p + " not found " + act.ap_of[i].line_no)
+                if check:
+                    err = True
+                    print( str(t) + "_Attr_" + p + " not found " + act.ap_of[i].line_no)
 
     for i in range( len(act.ap_join) ):
         t = -2
         try:
             t = act.ap_join[i].k_table2p
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "table2 not resolved " + act.ap_join[i].line_no)
+            else:
+                act.ap_join[i].k_field2p = -2
             p = act.ap_join[i].names[ "field2" ]
             act.ap_join[i].k_field2p = act.index[ str(t) + "_Field_" + p]
         except:
             if "check" != ".":
-                err = True
-                print( str(t) + "_Field_" + p + " not found " + act.ap_join[i].line_no)
+                if check:
+                    err = True
+                    print( str(t) + "_Field_" + p + " not found " + act.ap_join[i].line_no)
 
     for i in range( len(act.ap_join2) ):
         t = -2
         try:
             t = act.ap_join2[i].k_table2p
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "table2 not resolved " + act.ap_join2[i].line_no)
+            else:
+                act.ap_join2[i].k_field2p = -2
             p = act.ap_join2[i].names[ "field2" ]
             act.ap_join2[i].k_field2p = act.index[ str(t) + "_Field_" + p]
         except:
             if "check" != ".":
-                err = True
-                print( str(t) + "_Field_" + p + " not found " + act.ap_join2[i].line_no)
+                if check:
+                    err = True
+                    print( str(t) + "_Field_" + p + " not found " + act.ap_join2[i].line_no)
         try:
             t = act.ap_join2[i].k_field2p
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "field2 not resolved " + act.ap_join2[i].line_no)
+            else:
+                act.ap_join2[i].k_attr2p = -2
             p = act.ap_join2[i].names[ "attr2" ]
             act.ap_join2[i].k_attr2p = act.index[ str(t) + "_Attrs_" + p]
         except:
             if "check" != ".":
-                err = True
-                print( str(t) + "_Attrs_" + p + " not found " + act.ap_join2[i].line_no)
+                if check:
+                    err = True
+                    print( str(t) + "_Attrs_" + p + " not found " + act.ap_join2[i].line_no)
 
     for i in range( len(act.ap_where) ):
         t = -2
         try:
             t = act.ap_where[i].k_attrp
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "k_attrp not resolved " + act.ap_where[i].line_no)
+            else:
+                act.ap_where[i].k_tablep = -2
             act.ap_where[i].k_tablep = act.ap_attr[t].k_tablep
         except:
             if "E_O_L" != ".":
-                err = True
-                print( str(t) + "_Table_" + p + " not found " + act.ap_where[i].line_no)
+                if check:
+                    err = True
+                    print( "k_attrp = " + str(t) + " " + act.ap_where[i].line_no)
         try:
             t = act.ap_where[i].k_tablep
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "table not resolved " + act.ap_where[i].line_no)
+            else:
+                act.ap_where[i].k_from_idp = -2
             p = act.ap_where[i].names[ "from_id" ]
             act.ap_where[i].k_from_idp = act.index[ str(t) + "_Attr_" + p]
         except:
             if "E_O_L" != ".":
-                err = True
-                print( str(t) + "_Attr_" + p + " not found " + act.ap_where[i].line_no)
+                if check:
+                    err = True
+                    print( str(t) + "_Attr_" + p + " not found " + act.ap_where[i].line_no)
 
     for i in range( len(act.ap_a) ):
         t = -2
         try:
             t = act.ap_a[i].parentp
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "parentp not resolved " + act.ap_a[i].line_no)
+            else:
+                act.ap_a[i].k_domainp = -2
             act.ap_a[i].k_domainp = act.ap_frame[t].k_domainp
         except:
             if "." != ".":
-                err = True
-                print( str(t) + "_Domain_" + p + " not found " + act.ap_a[i].line_no)
+                if check:
+                    err = True
+                    print( "parentp = " + str(t) + " " + act.ap_a[i].line_no)
         try:
             t = act.ap_a[i].k_domainp
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "domain not resolved " + act.ap_a[i].line_no)
+            else:
+                act.ap_a[i].k_modelp = -2
             p = act.ap_a[i].names[ "model" ]
             act.ap_a[i].k_modelp = act.index[ str(t) + "_Model_" + p]
         except:
             if "." != ".":
-                err = True
-                print( str(t) + "_Model_" + p + " not found " + act.ap_a[i].line_no)
+                if check:
+                    err = True
+                    print( str(t) + "_Model_" + p + " not found " + act.ap_a[i].line_no)
 
     for i in range( len(act.ap_use) ):
         t = -2
         try:
             t = act.ap_use[i].k_framep
+            if t == -1:
+                cnt = cnt + 1
+                if check:
+                    err = True
+                    print( "frame not resolved " + act.ap_use[i].line_no)
+            else:
+                act.ap_use[i].k_ap = -2
             p = act.ap_use[i].names[ "a" ]
             act.ap_use[i].k_ap = act.index[ str(t) + "_A_" + p]
         except:
             if "." != ".":
-                err = True
-                print( str(t) + "_A_" + p + " not found " + act.ap_use[i].line_no)
+                if check:
+                    err = True
+                    print( str(t) + "_A_" + p + " not found " + act.ap_use[i].line_no)
 
-    return err
+    return(err,cnt)
 

@@ -54,9 +54,9 @@ Comp All parent Actor
 
 	Element what    C1 WORD    * what to look for
 	Element actor   R1 ACTOR   * what actor to run for it
-	Element attr    C1 WORD    * what to check
-	Element eq      C1 WORD    * to equal
-	Element value   C1 WORD    * this
+-	Element attr    C1 WORD    * what to check
+-	Element eq      C1 WORD    * to equal
+-	Element value   C1 WORD    * this
 	Element args    V1 WORD    * arg data value
 
 Ref actor Actor check
@@ -69,9 +69,9 @@ Comp Du parent Actor
 ----------------------------------------------------------------
 
 	Element actor  R1 ACTOR * what actor to run for it
-	Element attr   C1 WORD  * what to check
-	Element eq     C1 WORD  * to equal
-	Element value  C1 WORD  * this
+-	Element attr   C1 WORD  * what to check
+-	Element eq     C1 WORD  * to equal
+-	Element value  C1 WORD  * this
 	Element args   V1 WORD  * arg data value
 	
 Ref actor Actor check
@@ -115,9 +115,9 @@ Comp Its parent Actor
 
 	Element what    C1 WORD      * to look for
 	Element actor   R1 ACTOR     * what to do
-	Element attr    C1 WORD      * what to check
-	Element eq      C1 WORD      * to equal
-	Element value   C1 WORD      * this
+-	Element attr    C1 WORD      * what to check
+-	Element eq      C1 WORD      * to equal
+-	Element value   C1 WORD      * this
 	Element args    V1 WORD      * arg data value
 	
 Ref actor Actor check

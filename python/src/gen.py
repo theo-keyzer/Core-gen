@@ -13,10 +13,11 @@ class WinT:
         self.is_trig = False
         self.is_prev = False
 
-def new_act(glob):
+def new_act(glob, arg):
     winp = glob.winp + 1
     if len(glob.wins) <= winp:
         glob.wins.append(WinT())
+    glob.wins[winp].arg = arg
     glob.wins[winp].lcnt = -1
     glob.wins[winp].brk_act = False
     if winp == 0:
@@ -41,6 +42,7 @@ def go_act(dat, glob, act):
         lno = glob.acts.ap_actor[a].line_no
         if attr != "E_O_L":
             ss = attr.split(".")
+            val = strs(glob, val, glob.winp, lno)
             aval,err = s_get_var(glob, ss, glob.winp, lno)
             prev = chk(eq, aval, val, prev, err)
             if not prev:
@@ -56,7 +58,6 @@ def go_act(dat, glob, act):
         if ret == 2:
             nret = 0
         if ret < 0 and glob.wins[glob.winp].brk_act:
-#            print( name )
             nret = -ret
         glob.winp -= 1
         return nret
@@ -90,20 +91,20 @@ def go_cmds(dat, glob, act: int) -> int:
         elif isinstance(cmd,structs.KpAll):
             all = cmd
             what = all.k_what.split(".")
-            new_act(glob)
+            new_act(glob,all.k_args)
             ret = structs.do_all(glob, what, all.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
         elif isinstance(cmd,structs.KpIts):
             its = cmd
             what = its.k_what.split(".")
-            new_act(glob)
+            new_act(glob, its.k_args)
             ret = dat.do_its(glob, what, its.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
         elif isinstance(cmd,structs.KpDu):
             du = cmd
-            new_act(glob)
+            new_act(glob, du.k_args)
             ret = go_act(dat, glob, du.k_actorp)
             if ret != 0:
                 return ret
@@ -123,16 +124,12 @@ def go_cmds(dat, glob, act: int) -> int:
             elif brk.k_what == "loop":
                 ret = 1
             elif brk.k_what == "cmds":
-#                print("is brk " + brk.k_actor)
                 ret = 3
             if brk.k_actor != "E_O_L":
-#                print( brk.k_actor )
                 for i in range(glob.winp - 1, -1, -1):
-#                    print(i)
                     if brk.k_actor == glob.wins[i].name:
                         glob.wins[i + 1].brk_act = True
                         ret = -ret
-#                        print("is")
             return ret
     return 0
 
@@ -205,6 +202,8 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
         if len(ss) == 1:
             return( glob.wins[winp].dat.line_no + ", " + lno, False )
+        if ss[1] == "arg":
+            return( glob.wins[winp].arg, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )
         if ss[1] == '-':

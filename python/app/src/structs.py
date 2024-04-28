@@ -63,6 +63,7 @@ class GlobT:
         self.run_errs = False
         self.acts = ActT()
         self.dats = ActT()
+        self.arg = ""
         self.wins = []
         self.winp = -1
 
@@ -186,7 +187,7 @@ class KpLink(Kp):
         self.names["k_comp"] = "Link";
         self.k_top = -1
         self.names[ "to" ] = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_node )
         if i > 0:
             act.ap_node[i-1].all_to = self.me2 + 1
@@ -419,7 +420,7 @@ class KpField(Kp):
         self.names[ "dt" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "use" ] = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_table )
         if i > 0:
             act.ap_table[i-1].all_to = self.me2 + 1
@@ -552,7 +553,7 @@ class KpAttrs(Kp):
         self.names["k_comp"] = "Attrs";
         na = ff.getw( ff.lines[ln], 1 )
         self.names[ "name" ] = na
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_field )
         if i > 0:
             act.ap_field[i-1].all_to = self.me2 + 1
@@ -616,7 +617,7 @@ class KpOf(Kp):
         self.names[ "from" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "op" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "value" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_table )
         if i > 0:
             act.ap_table[i-1].all_to = self.me2 + 1
@@ -686,7 +687,7 @@ class KpJoin(Kp):
         self.names[ "field2" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "use" ] = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_table )
         if i > 0:
             act.ap_table[i-1].all_to = self.me2 + 1
@@ -750,7 +751,7 @@ class KpJoin2(Kp):
         self.names[ "table2" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "field2" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "attr2" ] = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_table )
         if i > 0:
             act.ap_table[i-1].all_to = self.me2 + 1
@@ -937,7 +938,7 @@ class KpData(Kp):
         self.names[ "name" ] = na
         self.names[ "op" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "value" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_type )
         if i > 0:
             act.ap_type[i-1].all_to = self.me2 + 1
@@ -985,7 +986,7 @@ class KpAttr(Kp):
         self.names[ "null" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "flags" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "desc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_type )
         if i > 0:
             act.ap_type[i-1].all_to = self.me2 + 1
@@ -1131,7 +1132,7 @@ class KpWhere(Kp):
         self.names[ "id" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "op" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "value" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_type )
         if i > 0:
             act.ap_type[i-1].all_to = self.me2 + 1
@@ -1197,7 +1198,7 @@ class KpLogic(Kp):
         self.names[ "attr" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "op" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "code" ] = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_type )
         if i > 0:
             act.ap_type[i-1].all_to = self.me2 + 1
@@ -1318,7 +1319,7 @@ class KpModel(Kp):
         self.names[ "name" ] = na
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "info" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_domain )
         if i > 0:
             act.ap_domain[i-1].all_to = self.me2 + 1
@@ -1392,7 +1393,7 @@ class KpFrame(Kp):
         self.names[ "name" ] = na
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "info" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_model )
         if i > 0:
             act.ap_model[i-1].all_to = self.me2 + 1
@@ -1457,7 +1458,7 @@ class KpA(Kp):
         self.names[ "name" ] = na
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "info" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_frame )
         if i > 0:
             act.ap_frame[i-1].all_to = self.me2 + 1
@@ -1540,7 +1541,7 @@ class KpUse(Kp):
         self.names[ "a" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "info" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_a )
         if i > 0:
             act.ap_a[i-1].all_to = self.me2 + 1
@@ -1664,7 +1665,7 @@ class KpCol(Kp):
         self.names[ "group" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "file" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "info" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_grid )
         if i > 0:
             act.ap_grid[i-1].all_to = self.me2 + 1
@@ -1725,7 +1726,7 @@ class KpR(Kp):
         self.names[ "name" ] = na
         self.names[ "file" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "info" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_col )
         if i > 0:
             act.ap_col[i-1].all_to = self.me2 + 1
@@ -1793,7 +1794,7 @@ class KpDbcreate(Kp):
         self.me = len(act.ap_dbcreate)
         self.k_where = ff.getw( ff.lines[ln], 1 )
         self.k_tbl = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -1817,7 +1818,7 @@ class KpDbload(Kp):
         self.me = len(act.ap_dbload)
         self.k_where = ff.getw( ff.lines[ln], 1 )
         self.k_tbl = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -1843,7 +1844,7 @@ class KpDbselect(Kp):
         self.k_actor = ff.getw( ff.lines[ln], 1 )
         self.k_where = ff.getw( ff.lines[ln], 1 )
         self.k_what = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -1868,11 +1869,8 @@ class KpAll(Kp):
         self.k_actorp = -1
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
-        self.k_attr = ff.getw( ff.lines[ln], 1 )
-        self.k_eq = ff.getw( ff.lines[ln], 1 )
-        self.k_value = ff.getw( ff.lines[ln], 1 )
         self.k_args = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -1896,11 +1894,8 @@ class KpDu(Kp):
         self.me = len(act.ap_du)
         self.k_actorp = -1
         self.k_actor = ff.getw( ff.lines[ln], 1 )
-        self.k_attr = ff.getw( ff.lines[ln], 1 )
-        self.k_eq = ff.getw( ff.lines[ln], 1 )
-        self.k_value = ff.getw( ff.lines[ln], 1 )
         self.k_args = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -1925,7 +1920,7 @@ class KpNew(Kp):
         self.k_where = ff.getw( ff.lines[ln], 1 )
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_line = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -1948,7 +1943,7 @@ class KpRefs(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_refs)
         self.k_where = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -1973,7 +1968,7 @@ class KpVar(Kp):
         self.k_attr = ff.getw( ff.lines[ln], 1 )
         self.k_eq = ff.getw( ff.lines[ln], 1 )
         self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -1998,11 +1993,8 @@ class KpIts(Kp):
         self.k_actorp = -1
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
-        self.k_attr = ff.getw( ff.lines[ln], 1 )
-        self.k_eq = ff.getw( ff.lines[ln], 1 )
-        self.k_value = ff.getw( ff.lines[ln], 1 )
         self.k_args = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2025,7 +2017,7 @@ class KpC(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_c)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2048,7 +2040,7 @@ class KpCs(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cs)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2071,7 +2063,7 @@ class KpCf(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cf)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2095,7 +2087,7 @@ class KpInclude(Kp):
         self.me = len(act.ap_include)
         self.k_opt = ff.getw( ff.lines[ln], 1 )
         self.k_file = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2120,7 +2112,7 @@ class KpOut(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_pad = ff.getw( ff.lines[ln], 1 )
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2145,7 +2137,7 @@ class KpBreak(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_pad = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2170,7 +2162,7 @@ class KpUnique(Kp):
         self.k_cmd = ff.getw( ff.lines[ln], 1 )
         self.k_key = ff.getw( ff.lines[ln], 1 )
         self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2194,7 +2186,7 @@ class KpCollect(Kp):
         self.me = len(act.ap_collect)
         self.k_cmd = ff.getw( ff.lines[ln], 1 )
         self.k_pocket = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2220,7 +2212,7 @@ class KpHash(Kp):
         self.k_pocket = ff.getw( ff.lines[ln], 1 )
         self.k_key = ff.getw( ff.lines[ln], 1 )
         self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2246,7 +2238,7 @@ class KpGroup(Kp):
         self.k_pocket = ff.getw( ff.lines[ln], 1 )
         self.k_key = ff.getw( ff.lines[ln], 1 )
         self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2272,7 +2264,7 @@ class KpAdd(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_item = ff.getw( ff.lines[ln], 1 )
         self.k_data = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2298,7 +2290,7 @@ class KpClear(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_item = ff.getw( ff.lines[ln], 1 )
         self.k_data = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2324,7 +2316,7 @@ class KpCheck(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_item = ff.getw( ff.lines[ln], 1 )
         self.k_data = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2349,7 +2341,7 @@ class KpJson(Kp):
         self.k_cmd = ff.getw( ff.lines[ln], 1 )
         self.k_pocket = ff.getw( ff.lines[ln], 1 )
         self.k_file = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2374,7 +2366,7 @@ class KpYaml(Kp):
         self.k_cmd = ff.getw( ff.lines[ln], 1 )
         self.k_pocket = ff.getw( ff.lines[ln], 1 )
         self.k_file = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -2399,7 +2391,7 @@ class KpXml(Kp):
         self.k_cmd = ff.getw( ff.lines[ln], 1 )
         self.k_pocket = ff.getw( ff.lines[ln], 1 )
         self.k_file = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1

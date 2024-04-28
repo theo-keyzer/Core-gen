@@ -30,6 +30,7 @@ class GlobT:
         self.run_errs = False
         self.acts = ActT()
         self.dats = ActT()
+        self.arg = ""
         self.wins = []
         self.winp = -1
 
@@ -114,6 +115,8 @@ class KpComp(Kp):
                 if act.ap_refu[i].k_comp_refp == self.me:
                     return( act.ap_refu[i].get_var(act, na[1:], lno) )
         try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Comp?", True );
             return( self.names[ na[0] ], False )
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Comp?", True );
@@ -121,21 +124,41 @@ class KpComp(Kp):
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         if what[0] == "Element":
             for i in range( self.element_from, self.element_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_element[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
                 ret = go_act(glob.dats.ap_element[i], glob, act)
                 if ret != 0:
                     return(ret)
         if what[0] == "Ref":
             for i in range( self.ref_from, self.ref_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_ref[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
                 ret = go_act(glob.dats.ap_ref[i], glob, act)
                 if ret != 0:
                     return(ret)
         if what[0] == "Ref2":
             for i in range( self.ref2_from, self.ref2_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_ref2[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
                 ret = go_act(glob.dats.ap_ref2[i], glob, act)
                 if ret != 0:
                     return(ret)
         if what[0] == "Refu":
             for i in range( self.refu_from, self.refu_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_refu[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
                 ret = go_act(glob.dats.ap_refu[i], glob, act)
                 if ret != 0:
                     return(ret)
@@ -150,6 +173,7 @@ class KpComp(Kp):
                         ret = glob.dats.ap_comp[i].do_its(glob, what[1:], act)
                         if ret != 0:
                             return(ret)
+                        continue
                     ret = go_act(glob.dats.ap_comp[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -160,6 +184,7 @@ class KpComp(Kp):
                         ret = glob.dats.ap_ref[i].do_its(glob, what[1:], act)
                         if ret != 0:
                             return(ret)
+                        continue
                     ret = go_act(glob.dats.ap_ref[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -170,6 +195,7 @@ class KpComp(Kp):
                         ret = glob.dats.ap_ref2[i].do_its(glob, what[1:], act)
                         if ret != 0:
                             return(ret)
+                        continue
                     ret = go_act(glob.dats.ap_ref2[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -180,6 +206,7 @@ class KpComp(Kp):
                         ret = glob.dats.ap_refu[i].do_its(glob, what[1:], act)
                         if ret != 0:
                             return(ret)
+                        continue
                     ret = go_act(glob.dats.ap_refu[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -190,6 +217,7 @@ class KpComp(Kp):
                         ret = glob.dats.ap_refu[i].do_its(glob, what[1:], act)
                         if ret != 0:
                             return(ret)
+                        continue
                     ret = go_act(glob.dats.ap_refu[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -212,7 +240,7 @@ class KpElement(Kp):
         self.names[ "mw2" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].all_to = self.me2 + 1
@@ -246,6 +274,8 @@ class KpElement(Kp):
                 if act.ap_refu[i].k_elementp == self.me:
                     return( act.ap_refu[i].get_var(act, na[1:], lno) )
         try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Element?", True );
             return( self.names[ na[0] ], False )
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Element?", True );
@@ -253,6 +283,11 @@ class KpElement(Kp):
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         if what[0] == "Opt":
             for i in range( self.opt_from, self.opt_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_opt[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
                 ret = go_act(glob.dats.ap_opt[i], glob, act)
                 if ret != 0:
                     return(ret)
@@ -267,6 +302,7 @@ class KpElement(Kp):
                         ret = glob.dats.ap_ref[i].do_its(glob, what[1:], act)
                         if ret != 0:
                             return(ret)
+                        continue
                     ret = go_act(glob.dats.ap_ref[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -277,6 +313,7 @@ class KpElement(Kp):
                         ret = glob.dats.ap_ref2[i].do_its(glob, what[1:], act)
                         if ret != 0:
                             return(ret)
+                        continue
                     ret = go_act(glob.dats.ap_ref2[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -287,6 +324,7 @@ class KpElement(Kp):
                         ret = glob.dats.ap_ref2[i].do_its(glob, what[1:], act)
                         if ret != 0:
                             return(ret)
+                        continue
                     ret = go_act(glob.dats.ap_ref2[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -297,6 +335,7 @@ class KpElement(Kp):
                         ret = glob.dats.ap_refu[i].do_its(glob, what[1:], act)
                         if ret != 0:
                             return(ret)
+                        continue
                     ret = go_act(glob.dats.ap_refu[i], glob, act)
                     if ret != 0:
                         return(ret)
@@ -315,7 +354,7 @@ class KpOpt(Kp):
         self.names[ "name" ] = na
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_element )
         if i > 0:
             act.ap_element[i-1].all_to = self.me2 + 1
@@ -333,6 +372,8 @@ class KpOpt(Kp):
         if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
             return( act.ap_element[ self.parentp ].get_var(act, na[1:], lno) )
         try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Opt?", True );
             return( self.names[ na[0] ], False )
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Opt?", True );
@@ -360,7 +401,7 @@ class KpRef(Kp):
         self.names[ "opt" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "var" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].all_to = self.me2 + 1
@@ -380,6 +421,8 @@ class KpRef(Kp):
         if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
             return( act.ap_comp[ self.parentp ].get_var(act, na[1:], lno) )
         try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Ref?", True );
             return( self.names[ na[0] ], False )
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Ref?", True );
@@ -417,7 +460,7 @@ class KpRef2(Kp):
         self.names[ "opt" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "var" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].all_to = self.me2 + 1
@@ -439,6 +482,8 @@ class KpRef2(Kp):
         if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
             return( act.ap_comp[ self.parentp ].get_var(act, na[1:], lno) )
         try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Ref2?", True );
             return( self.names[ na[0] ], False )
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Ref2?", True );
@@ -482,7 +527,7 @@ class KpRefu(Kp):
         self.names[ "opt" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "var" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].all_to = self.me2 + 1
@@ -504,6 +549,8 @@ class KpRefu(Kp):
         if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
             return( act.ap_comp[ self.parentp ].get_var(act, na[1:], lno) )
         try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Refu?", True );
             return( self.names[ na[0] ], False )
         except:
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Refu?", True );
@@ -560,7 +607,7 @@ class KpAll(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
         self.k_args = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -584,11 +631,8 @@ class KpDu(Kp):
         self.me = len(act.ap_du)
         self.k_actorp = -1
         self.k_actor = ff.getw( ff.lines[ln], 1 )
-        self.k_attr = ff.getw( ff.lines[ln], 1 )
-        self.k_eq = ff.getw( ff.lines[ln], 1 )
-        self.k_value = ff.getw( ff.lines[ln], 1 )
         self.k_args = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -614,7 +658,7 @@ class KpIts(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
         self.k_args = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -637,7 +681,7 @@ class KpC(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_c)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -660,7 +704,7 @@ class KpCs(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cs)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -683,7 +727,7 @@ class KpCf(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cf)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -708,7 +752,7 @@ class KpOut(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_pad = ff.getw( ff.lines[ln], 1 )
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -733,7 +777,7 @@ class KpBreak(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_pad = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
@@ -758,7 +802,7 @@ class KpUnique(Kp):
         self.k_cmd = ff.getw( ff.lines[ln], 1 )
         self.k_key = ff.getw( ff.lines[ln], 1 )
         self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -1
+        self.parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
