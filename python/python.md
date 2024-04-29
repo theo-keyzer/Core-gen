@@ -73,6 +73,14 @@ The `Refu` is the `attr.table` part and the Ref2, the `.attr` with the match.
 The second `Refu` chains to another `table2`. So `Its table2` is the same as `Its from_id.table`.
 So now another `Ref2` can go from there.
 
+To go from the `Attr` node to the `Where` node, `Its Where_attr` is the same as
+`Its parent.where` with actor match `attr = ${.prev_act.name}` and
+`Its Where_from_id`, the same as `Its parent.where` with actor match `from_id = ${.prev_act.name}`
+
+
+For refs fields, the variable names work the same as as the `Its` command.
+On the `Attr` node, it can use `${Where_attr.from_id.name}` and `${Where_from_id.attr.name}`
+
 
 
 
