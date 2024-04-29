@@ -81,6 +81,16 @@ To go from the `Attr` node to the `Where` node, `Its Where_attr` is the same as
 For refs fields, the variable names work the same as as the `Its` command.
 On the `Attr` node, it can use `${Where_attr.from_id.name}` and `${Where_from_id.attr.name}`
 
+The `Its` command can hadle none to many relations. The variables will give an error if none,
+or just use the first one. It asumes you know wat jou are doing.
+
+The `Break` command if the most mystifying of them all. Every version has a diffrent implentation of it.
+And going back to some older version's code base means its not clear what it does.
+
+This version has an option to break specifying what actor it apyies to, making more usefull and clear.
+
+
+
 
 
 
