@@ -84,10 +84,88 @@ On the `Attr` node, it can use `${Where_attr.from_id.name}` and `${Where_from_id
 The `Its` command can hadle none to many relations. The variables will give an error if none,
 or just use the first one. It asumes you know wat jou are doing.
 
+```
+----------------------------------------------------------------
+Comp Where parent Type
+----------------------------------------------------------------
+
+	Element attr     F1 Attr      * Field name
+	Element from_id  M1 Attr      * From id
+
+Ref     attr Attr check
+Ref3 from_id Attr attr Attr table check
+```
+
+This is the same example as above as used by some of the other versions.
+They use the `Ref3` that is not in this version. Just does more in one step.
+
+```
+----------------------------------------------------------------
+Comp Domain parent . Find
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+
+----------------------------------------------------------------
+Comp Model parent Domain FindIn
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+
+----------------------------------------------------------------
+Comp Frame parent Model FindIn
+----------------------------------------------------------------
+
+	Element group      N1 WORD       * search navigation group index tree
+	Element domain     R1 Domain     * ref to domain
+
+Ref domain Domain .
+
+----------------------------------------------------------------
+Comp A parent Frame FindIn
+----------------------------------------------------------------
+* Use domain from parent
+* The U0 is a hidden field - only has the pointer
+----------------------------------------------------------------
+
+	Element domain     U0 Domain     * the domain of frame
+	Element model      L1 Model      * ref to model
+
+Refu domain Domain parentp Frame k_domainp .
+Ref2 model Model domain .
+
+```
+
+Here `Its domain` is the same as `Its parent.domain`. The `Ref2` will then use the `domain`
+to find a `model` for it.
+
+```
+----------------------------------------------------------------
+Comp A parent Frame FindIn
+----------------------------------------------------------------
+
+	Element model      Q1 Model      * ref to model
+
+Refq model Model domain Frame ?
+```
+
+This is the same example as above as used by some of the other versions.
+They use the `Refq` that is not in this version. Just does more in one step.
+
+At this point it seemed that multiple steps is better because it can handle more variations.
+
+The `Refu` uses internal variable names as the parent `parentp` is not the same as a reference to a parent `k_parentp`
+Top level nodes do not have a parent, but can have a reference to one.
+
+The `Its` and the `get_var` however see them both as `parent`, so it is posible to rename `parentp` to `k_parentp`,
+then there is no need to use the internal name. The generated code can just rename it.
+
 The `Break` command if the most mystifying of them all. Every version has a diffrent implentation of it.
 And going back to some older version's code base means its not clear what it does.
 
 This version has an option to break specifying what actor it apyies to, making more usefull and clear.
+
+The `Break` command is the same as `Break actor` as it is the default.
 
 The codes returned by the break is 1 for loops, 2 for actor and 3 for commands.
 The `go_act` funtion in `gen.py`, will continue if the break was for the comands.
