@@ -22,6 +22,7 @@ class ActT:
         self.ap_cf = []
         self.ap_out = []
         self.ap_break = []
+        self.ap_store = []
         self.ap_unique = []
 
 class GlobT:
@@ -30,6 +31,7 @@ class GlobT:
         self.run_errs = False
         self.acts = ActT()
         self.dats = ActT()
+        self.store = {}
         self.arg = ""
         self.wins = []
         self.winp = -1
@@ -240,13 +242,13 @@ class KpElement(Kp):
         self.names[ "mw2" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].all_to = self.me2 + 1
             act.ap_comp[i-1].element_to = self.me + 1
-            self.parentp = i-1
-            s = str(self.parentp) + "_Element_" + na
+            self.k_parentp = i-1
+            s = str(self.k_parentp) + "_Element_" + na
             act.index[ s ] = self.me
         else:
             print( "No Comp parent for Element" )
@@ -255,8 +257,8 @@ class KpElement(Kp):
         return(self.me2)
 
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
-            return( act.ap_comp[ self.parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+            return( act.ap_comp[ self.k_parentp ].get_var(act, na[1:], lno) )
         if na[0] == "Ref_element":
             for i in range( len(act.ap_ref) ):
                 if act.ap_ref[i].k_elementp == self.me:
@@ -291,10 +293,10 @@ class KpElement(Kp):
                 ret = go_act(glob.dats.ap_opt[i], glob, act)
                 if ret != 0:
                     return(ret)
-        if what[0] == "parent" and self.parentp >= 0:
+        if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
-            return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
+                return( glob.dats.ap_comp[ self.k_parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_comp[ self.k_parentp ], glob, act) )
         if what[0] == "Ref_element":
             for i in range( len( glob.dats.ap_ref ) ):
                 if glob.dats.ap_ref[i].k_elementp == self.me:
@@ -354,13 +356,13 @@ class KpOpt(Kp):
         self.names[ "name" ] = na
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_element )
         if i > 0:
             act.ap_element[i-1].all_to = self.me2 + 1
             act.ap_element[i-1].opt_to = self.me + 1
-            self.parentp = i-1
-            s = str(self.parentp) + "_Opt_" + na
+            self.k_parentp = i-1
+            s = str(self.k_parentp) + "_Opt_" + na
             act.index[ s ] = self.me
         else:
             print( "No Element parent for Opt" )
@@ -369,8 +371,8 @@ class KpOpt(Kp):
         return(self.me2)
 
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
-            return( act.ap_element[ self.parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+            return( act.ap_element[ self.k_parentp ].get_var(act, na[1:], lno) )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Opt?", True );
@@ -379,10 +381,10 @@ class KpOpt(Kp):
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Opt?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
-        if what[0] == "parent" and self.parentp >= 0:
+        if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                return( glob.dats.ap_element[ self.parentp ].do_its(glob, what[1:], act) )
-            return( go_act(glob.dats.ap_element[ self.parentp ], glob, act) )
+                return( glob.dats.ap_element[ self.k_parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_element[ self.k_parentp ], glob, act) )
         return(0)
 
 class KpRef(Kp):
@@ -401,12 +403,12 @@ class KpRef(Kp):
         self.names[ "opt" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "var" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].all_to = self.me2 + 1
             act.ap_comp[i-1].ref_to = self.me + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Comp parent for Ref" )
 
@@ -418,8 +420,8 @@ class KpRef(Kp):
             return( act.ap_element[ self.k_elementp ].get_var(act, na[1:], lno) )
         if na[0] == "comp" and len(na) > 1 and self.k_compp >= 0:
             return( act.ap_comp[ self.k_compp ].get_var(act, na[1:], lno) )
-        if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
-            return( act.ap_comp[ self.parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+            return( act.ap_comp[ self.k_parentp ].get_var(act, na[1:], lno) )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Ref?", True );
@@ -428,10 +430,10 @@ class KpRef(Kp):
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Ref?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
-        if what[0] == "parent" and self.parentp >= 0:
+        if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
-            return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
+                return( glob.dats.ap_comp[ self.k_parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_comp[ self.k_parentp ], glob, act) )
         if what[0] == "element" and self.k_elementp >= 0:
             if len(what) > 1:
                 return( glob.dats.ap_element[ self.k_elementp ].do_its(glob, what[1:], act) )
@@ -460,12 +462,12 @@ class KpRef2(Kp):
         self.names[ "opt" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "var" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].all_to = self.me2 + 1
             act.ap_comp[i-1].ref2_to = self.me + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Comp parent for Ref2" )
 
@@ -479,8 +481,8 @@ class KpRef2(Kp):
             return( act.ap_comp[ self.k_compp ].get_var(act, na[1:], lno) )
         if na[0] == "element2" and len(na) > 1 and self.k_element2p >= 0:
             return( act.ap_element[ self.k_element2p ].get_var(act, na[1:], lno) )
-        if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
-            return( act.ap_comp[ self.parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+            return( act.ap_comp[ self.k_parentp ].get_var(act, na[1:], lno) )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Ref2?", True );
@@ -489,10 +491,10 @@ class KpRef2(Kp):
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Ref2?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
-        if what[0] == "parent" and self.parentp >= 0:
+        if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
-            return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
+                return( glob.dats.ap_comp[ self.k_parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_comp[ self.k_parentp ], glob, act) )
         if what[0] == "element" and self.k_elementp >= 0:
             if len(what) > 1:
                 return( glob.dats.ap_element[ self.k_elementp ].do_its(glob, what[1:], act) )
@@ -527,12 +529,12 @@ class KpRefu(Kp):
         self.names[ "opt" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "var" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "doc" ] = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_comp )
         if i > 0:
             act.ap_comp[i-1].all_to = self.me2 + 1
             act.ap_comp[i-1].refu_to = self.me + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Comp parent for Refu" )
 
@@ -546,8 +548,8 @@ class KpRefu(Kp):
             return( act.ap_comp[ self.k_compp ].get_var(act, na[1:], lno) )
         if na[0] == "comp_ref" and len(na) > 1 and self.k_comp_refp >= 0:
             return( act.ap_comp[ self.k_comp_refp ].get_var(act, na[1:], lno) )
-        if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
-            return( act.ap_comp[ self.parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+            return( act.ap_comp[ self.k_parentp ].get_var(act, na[1:], lno) )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Refu?", True );
@@ -556,10 +558,10 @@ class KpRefu(Kp):
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Refu?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
-        if what[0] == "parent" and self.parentp >= 0:
+        if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                return( glob.dats.ap_comp[ self.parentp ].do_its(glob, what[1:], act) )
-            return( go_act(glob.dats.ap_comp[ self.parentp ], glob, act) )
+                return( glob.dats.ap_comp[ self.k_parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_comp[ self.k_parentp ], glob, act) )
         if what[0] == "element" and self.k_elementp >= 0:
             if len(what) > 1:
                 return( glob.dats.ap_element[ self.k_elementp ].do_its(glob, what[1:], act) )
@@ -607,11 +609,11 @@ class KpAll(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
         self.k_args = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Actor parent for All" )
 
@@ -632,11 +634,11 @@ class KpDu(Kp):
         self.k_actorp = -1
         self.k_actor = ff.getw( ff.lines[ln], 1 )
         self.k_args = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Actor parent for Du" )
 
@@ -658,11 +660,11 @@ class KpIts(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
         self.k_args = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Actor parent for Its" )
 
@@ -681,11 +683,11 @@ class KpC(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_c)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Actor parent for C" )
 
@@ -704,11 +706,11 @@ class KpCs(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cs)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Actor parent for Cs" )
 
@@ -727,11 +729,11 @@ class KpCf(Kp):
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cf)
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Actor parent for Cf" )
 
@@ -752,11 +754,11 @@ class KpOut(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_pad = ff.getw( ff.lines[ln], 1 )
         self.k_desc = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Actor parent for Out" )
 
@@ -777,13 +779,37 @@ class KpBreak(Kp):
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_pad = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Actor parent for Break" )
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        return(0)
+
+class KpStore(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_store)
+        self.k_pad = ff.getw( ff.lines[ln], 1 )
+        self.k_var = ff.getw( ff.lines[ln], 1 )
+        self.k_parentp = -2
+        i = len( act.ap_actor )
+        if i > 0:
+            act.ap_actor[i-1].all_to = self.me2 + 1
+            self.k_parentp = i-1
+        else:
+            print( "No Actor parent for Store" )
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -802,11 +828,11 @@ class KpUnique(Kp):
         self.k_cmd = ff.getw( ff.lines[ln], 1 )
         self.k_key = ff.getw( ff.lines[ln], 1 )
         self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.parentp = -2
+        self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
-            self.parentp = i-1
+            self.k_parentp = i-1
         else:
             print( "No Actor parent for Unique" )
 

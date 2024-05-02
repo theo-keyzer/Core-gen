@@ -80,7 +80,7 @@ Comp Of parent Table
 
 
 Ref    field Field             check
-Refu   type  Type k_fieldp Field k_typep
+Refu   type  Type field Field type
 Ref2   attr Attr type
 Ref2   from Attr type
 

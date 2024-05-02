@@ -74,7 +74,7 @@ Comp Where parent Type
 
 Ref      attr Attr                   check
 Ref        id Attr                   check
-Refu    table Table  k_attrp Attr k_tablep
+Refu    table Table  attr Attr table
 Ref2  from_id Attr   table
 
 -Ref3  from_id Attr   attr Attr table check

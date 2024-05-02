@@ -117,6 +117,15 @@ Comp Break parent Actor
 	Element actor C1 ACTOR     * which actor to break
 
 ----------------------------------------------------------------
+Comp Store parent Actor
+----------------------------------------------------------------
+* Store current data def in a variable
+----------------------------------------------------------------
+
+	Element pad    C1 WORD      * padding (in).
+	Element var    C1 WORD      * variable to store to.
+
+----------------------------------------------------------------
 Comp Unique parent Actor
 ----------------------------------------------------------------
 * Used to not duplicate output.

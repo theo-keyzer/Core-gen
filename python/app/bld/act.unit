@@ -159,6 +159,15 @@ Comp Include parent Actor
 	Element file    V1 WORD          * file name
 
 ----------------------------------------------------------------
+Comp Store parent Actor
+----------------------------------------------------------------
+* Store current data def in a variable
+----------------------------------------------------------------
+
+	Element pad    C1 WORD      * padding (in).
+	Element var    C1 WORD      * variable to store to.
+
+----------------------------------------------------------------
 Comp Out parent Actor
 ----------------------------------------------------------------
 * Output control

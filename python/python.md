@@ -22,8 +22,6 @@ that do not have a parent (top level nodes). These are done in the first pass.
 The `Ref2` link to a node by using some other link for the parent to find the node in it.
 
 The `Refu` uses a link to a node and copies some other link of it.
-It uses the internal variable names to be able to also use the parent link.
-The internal name is `k_` `name` `p` and the parent is `parentp`
 
 These run in the second pass in the order of the the `Element`s of the `unit` files.
 Can get a `not resolved` error if some thing uses a later item.
@@ -60,10 +58,10 @@ Comp Where parent Table
 	Element from_id  L1 Attr      * From id
 	Element table2   U0 Table     * the table of the from attr
 
-Ref      attr Attr                   check
-Refu    table Table  k_attrp    Attr k_tablep
+Ref      attr Attr                           check
+Refu    table Table  attr    Attr table
 Ref2  from_id Attr   table
-Refu   table2 Table  k_from_idp Attr k_tablep
+Refu   table2 Table  from_id Attr table
 ```
 
 On the `Where` node, `Its attr` is the same as `Its parent.attr` with an actor match of `name = ${.prev_act.attr}`.
@@ -131,7 +129,7 @@ Comp A parent Frame FindIn
 	Element domain     U0 Domain     * the domain of frame
 	Element model      L1 Model      * ref to model
 
-Refu domain Domain parentp Frame k_domainp .
+Refu domain Domain parent Frame domain .
 Ref2 model Model domain .
 
 ```
@@ -153,12 +151,6 @@ This is the same example as above as used by some of the other versions.
 They use the `Refq` that is not in this version. Just does more in one step.
 
 At this point it seemed that multiple steps is better because it can handle more variations.
-
-The `Refu` uses internal variable names as the parent `parentp` is not the same as a reference to a parent `k_parentp`
-Top level nodes do not have a parent, but can have a reference to one.
-
-The `Its` and the `get_var` however see them both as `parent`, so it is posible to rename `parentp` to `k_parentp`,
-then there is no need to use the internal name. The generated code can just rename it.
 
 The `Break` command if the most mystifying of them all. Every version has a diffrent implentation of it.
 And going back to some older version's code base means its not clear what it does.

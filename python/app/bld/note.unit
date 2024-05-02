@@ -42,7 +42,7 @@ Comp A parent Frame FindIn
 -Refq model Model domain Frame ?
 
 
-Refu domain Domain parentp Frame k_domainp .
+Refu domain Domain parent Frame domain .
 Ref2 model Model domain .
 
 
@@ -50,12 +50,17 @@ Ref2 model Model domain .
 Comp Use parent A
 ----------------------------------------------------------------
 
-	Element frame      QS Frame      * ref to frame
+	Element model      U0 Model      * the model of a
+	Element frame      LS Frame      * ref to frame
 	Element a          L1 A          * ref to a in frame
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
-Refq frame Frame model A .
+Refu model Model parent A model .
+Ref2 frame Frame model .
+
+-Refq frame Frame model A .
+
 Ref2 a A frame .
 
 ----------------------------------------------------------------

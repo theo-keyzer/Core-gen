@@ -21,6 +21,7 @@ C         self.load_errs = False
 C         self.run_errs = False
 C         self.acts = ActT()
 C         self.dats = ActT()
+C         self.store = {}
 C         self.arg = ""
 C         self.wins = []
 C         self.winp = -1
@@ -283,11 +284,11 @@ C         self.names[ "${name} " ] = ff.getwsw( ff.lines[ln], 1 )
 Actor parent_field Comp .struct.parent.name = Actor
 ----------------------------------------------------------------
 
-C         self.parentp = -2
+C         self.k_parentp = -2
 C         i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].all_to = self.me2 + 1
-C             self.parentp = i-1
+C             self.k_parentp = i-1
 C         else:
 C             print( "No ${name}c parent for ${.struct.name}c" )
 -C             glob.load_errs = True
@@ -298,12 +299,12 @@ Break
 Actor parent_field Comp
 ----------------------------------------------------------------
 
-C         self.parentp = -2
+C         self.k_parentp = -2
 C         i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].all_to = self.me2 + 1
 C             act.ap_${name}l[i-1].${.struct.name}l_to = self.me + 1
-C             self.parentp = i-1
+C             self.k_parentp = i-1
 
 Du parent_field_in
 
@@ -315,7 +316,7 @@ C             print( "No ${name}c parent for ${.struct.name}c" )
 Actor parent_field_in Comp .struct.find = FindIn
 ----------------------------------------------------------------
 
-C             s = str(self.parentp) + "_${.struct.name}c_" + na
+C             s = str(self.k_parentp) + "_${.struct.name}c_" + na
 C             act.index[ s ] = self.me
 
 ----------------------------------------------------------------
@@ -346,8 +347,8 @@ C                     return( act.ap_${parent.name}l[i].get_var(act, na[1:], lno
 Actor parent_field_var Comp
 ----------------------------------------------------------------
 
-C         if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
-C             return( act.ap_${name}l[ self.parentp ].get_var(act, na[1:], lno) )
+C         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+C             return( act.ap_${name}l[ self.k_parentp ].get_var(act, na[1:], lno) )
 
 
 ----------------------------------------------------------------
@@ -377,10 +378,10 @@ C                         return(ret)
 Actor parent_field_func Comp
 ----------------------------------------------------------------
 
-C         if what[0] == "parent" and self.parentp >= 0:
+C         if what[0] == "parent" and self.k_parentp >= 0:
 C             if len(what) > 1:
-C                 return( glob.dats.ap_${name}l[ self.parentp ].do_its(glob, what[1:], act) )
-C             return( go_act(glob.dats.ap_${name}l[ self.parentp ], glob, act) )
+C                 return( glob.dats.ap_${name}l[ self.k_parentp ].do_its(glob, what[1:], act) )
+C             return( go_act(glob.dats.ap_${name}l[ self.k_parentp ], glob, act) )
 
 ----------------------------------------------------------------
 Actor ref_func Ref

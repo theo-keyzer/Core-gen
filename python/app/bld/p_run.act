@@ -127,11 +127,11 @@ Actor refs_ele . mw in F1,FS
 C         try:
 C             act.ap_${.refs.name}l[i].k_${name}lp = -2
 C             p = act.ap_${.refs.name}l[i].names[ "${name}l" ]
-C             act.ap_${.refs.name}l[i].k_${name}lp = act.index[ str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_" + p]
+C             act.ap_${.refs.name}l[i].k_${name}lp = act.index[ str(act.ap_${.refs.name}l[i].k_parentp) + "_${Ref_element.comp.name}c_" + p]
 C         except:
 C             if "${Ref_element.opt} " != ".":
 C                 err = True
-C                 print( str(act.ap_${.refs.name}l[i].parentp) + "_${Ref_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
+C                 print( str(act.ap_${.refs.name}l[i].k_parentp) + "_${Ref_element.comp.name}c_" + p + " not found " + act.ap_${parent.name}l[i].line_no)
 
 ----------------------------------------------------------------
 Actor refs_ele_other . mw in L1,LS
@@ -159,7 +159,7 @@ Actor refs_ele_other . mw in U0
 ----------------------------------------------------------------
 
 C         try:
-C             t = act.ap_${.refs_other.name}l[i].${Refu_element.element2}l
+C             t = act.ap_${.refs_other.name}l[i].k_${Refu_element.element2}lp
 C             if t == -1:
 C                 cnt = cnt + 1
 C                 if check:
@@ -167,7 +167,7 @@ C                     err = True
 C                     print( "${Refu_element.element2}l not resolved " + act.ap_${parent.name}l[i].line_no)
 C             else:
 C                 act.ap_${.refs_other.name}l[i].k_${name}lp = -2
-C             act.ap_${.refs_other.name}l[i].k_${name}lp = act.ap_${Refu_element.comp_ref.name}l[t].${Refu_element.element3}l
+C             act.ap_${.refs_other.name}l[i].k_${name}lp = act.ap_${Refu_element.comp_ref.name}l[t].k_${Refu_element.element3}lp
 C         except:
 C             if "${Refu_element.opt} " != ".":
 C                 if check:

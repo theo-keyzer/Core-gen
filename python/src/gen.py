@@ -108,6 +108,8 @@ def go_cmds(dat, glob, act: int) -> int:
             ret = go_act(dat, glob, du.k_actorp)
             if ret != 0:
                 return ret
+        elif isinstance(cmd,structs.KpStore):
+            glob.store[ cmd.k_var ] = dat
         elif isinstance(cmd,structs.KpOut):
             out = cmd
             if out.k_what == "delay":
@@ -221,6 +223,11 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
         for i in range(winp, -1, -1):
             if ss[1] == glob.wins[i].name:
                 return( s_get_var(glob, ss[2:], i, lno) )
+        try:
+            dat = glob.store[ ss[1] ]
+            return( dat.get_var(glob.dats, ss[2:], lno) )
+        except Exception as e:
+            pass
         return ("?" + str(ss) + "?" + lno + "?", True)
     except Exception as e:
         return ("?" + str(ss) + "?" + lno + "?", True)
