@@ -149,8 +149,25 @@ Refq model Model domain Frame ?
 
 This is the same example as above as used by some of the other versions.
 They use the `Refq` that is not in this version. Just does more in one step.
+Just here to explain how it worked and how to translate older examples to here.
 
-At this point it seemed that multiple steps is better because it can handle more variations.
+At this point it seemed that multiple steps is better because it can handle more variations and easier to work with.
+
+The `Refu,Ref2` are dependent on other relations that may be not resolved yet.
+For this it does a multiple passes, but can get stuck on cirular ones.
+All references start off as -1. As they get resolved they change, or go to -2 for no match.
+A count of all the -1 ones are returned and when 0, the multiple pass stop.
+If the count remains the same between passes, it mean it is stuck and not more passes are needed.
+It then does another pass to display the errors. This is only needed for when a single pass does not work.
+It is also possible to have some error in the unit files for an unresolved reference.
+An unresolved reference is an error even if no match is not.
+
+To use this option, the `err = run.refs(glob.acts)` in main.py need to be changed to `err = run.refs_multi_pass(glob.acts)`
+
+Variables can't use values from child nodes (this version). If needed, navigate with the `Its` and 
+store that node with the `Store in Lookup` command.
+Then later when needed, use the variable `${.Lookup.name}` to get the `name` value of the stored node.
+
 
 The `Break` command if the most mystifying of them all. Every version has a diffrent implentation of it.
 And going back to some older version's code base means its not clear what it does.
@@ -160,7 +177,7 @@ This version has an option to break specifying what actor it apyies to, making m
 The `Break` command is the same as `Break actor` as it is the default.
 
 The codes returned by the break is 1 for loops, 2 for actor and 3 for commands.
-The `go_act` funtion in `gen.py`, will continue if the break was for the comands.
+The `go_act` function in `gen.py`, will continue if the break was for the comands.
 It will return 0 if its is for the actor. Else return the value.
 
 The generated code for the `Its` will continue as long is the return is 0, else returns the returned value.
