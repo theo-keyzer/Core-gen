@@ -12,7 +12,7 @@ The input needs to be captued without too much detail.
 
 The core-gen is a boot strap to generate the application generator.
 For this it needs the graph diagram of the input. The app generator
-is hard coded to navigate this graph.
+is then hard coded to navigate this graph.
 
 For now see the other docs for more detail.
 
@@ -164,10 +164,16 @@ An unresolved reference is an error even if no match is not.
 
 To use this option, the `err = run.refs(glob.acts)` in main.py need to be changed to `err = run.refs_multi_pass(glob.acts)`
 
+The refs have an option flag to specify how to deal with `not found` errors. If it is `check`,
+then it will be an error. If it is `?`, then there is no error.
+Otherwise it is the optional value to use when none. It is an error if not found and the value looking for is different to this.
+It can be `(.)` or anything else like `None`.
+
 Variables can't use values from child nodes (this version). If needed, navigate with the `Its` and 
 store that node with the `Store in Lookup` command.
 Then later when needed, use the variable `${.Lookup.name}` to get the `name` value of the stored node.
-
+This can change to `Add lookup to Node` and use it like `${.Node.lookup}`
+The `Add` command can then deal with all the variations of the storage types and values.
 
 The `Break` command if the most mystifying of them all. Every version has a diffrent implentation of it.
 And going back to some older version's code base means its not clear what it does.
