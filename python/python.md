@@ -153,6 +153,51 @@ Just here to explain how it worked and how to translate older examples to here.
 
 At this point it seemed that multiple steps is better because it can handle more variations and easier to work with.
 
+From the `gen.unit` file of the base generator
+
+```
+----------------------------------------------------------------
+Comp Comp parent . Find
+----------------------------------------------------------------
+
+	Element name   C1 NAME          * of component.
+	Element parent R1 COMP          * its parent.
+
+Ref parent Comp .
+
+----------------------------------------------------------------
+Comp Element parent Comp FindIn
+----------------------------------------------------------------
+
+	Element name C1 NAME  * of element
+	Element mw   C1 WORD  * storage type
+	Element mw2  C1 WORD  * parser type - not used
+	
+----------------------------------------------------------------
+Comp Ref parent Comp
+----------------------------------------------------------------
+
+	Element element F1 ELEMENT       * link to local element
+	Element comp    R1 COMP          * link to comp
+	Element opt     C1 WORD          * optional or check - error if not found
+	
+Ref element Element check
+Ref    comp Comp    check
+	
+```
+
+This works the same way as the app unit files do.
+On a `Element` node it can get a value in a `Ref` node with `${Ref_element.opt}`
+This is because the `Ref` has a link to the `Element` on the `element` field
+and this is just a reverse of it. The `Element` node could have included `comp,opt`
+and not need the reverse link and just use `${opt}`. But then some of then use `Ref2,Refu`
+that has many more fields that also have to be included. Most of the elements do not use refs
+and would make it look messy. A usefull technique to master.
+
+Added the `p_check.act` in `app/bld` to see if the units files are correct to some degree.
+You can build simular ones to see if the input `def` files are valid for the actor files that use them
+as they just assume it is all correct. It can help with debuging.
+
 The `Refu,Ref2` are dependent on other relations that may be not resolved yet.
 For this it does a multiple passes, but can get stuck on cirular ones.
 All references start off as -1. As they get resolved they change, or go to -2 for no match.
@@ -195,6 +240,11 @@ When the `Break` command specifies the actor the break applies to, it makes the 
 and puts a flag on the actor one up in the calling stack. The actor with the flag on in the `go_act` function will return this value as positive.
 Then all the calling code will react in the same way as before. The break is then for the actor one down.
 
+There is also a `p_struct2.act` (needs an update and tests) in the `app/bld` that is intended to be used by an standalone app that does not use the `gen.py`
+and any actor files. It has  the `get_list, get_var` functions to get the values from the loaded def files.
+
+There is no point in expanding the generator to be an app. This generator started off as an app that needed the def files, 
+but the way it worked was different. Rather generate something new.
 
 
 
