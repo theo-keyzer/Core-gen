@@ -1,0 +1,161 @@
+----------------------------------------------------------------
+Domain test - test domain
+----------------------------------------------------------------
+Model try - try this model
+----------------------------------------------------------------
+
+Frame 1 info:test1 - 
+
+A notes:db * this goes to the notes model in the info domain, from info.notes.test2.try
+
+Use a:b
+
+----------------------------------------------------------------
+Domain info - info domain
+----------------------------------------------------------------
+Model notes - map of note taking app
+----------------------------------------------------------------
+
+Frame 1 test:a
+
+A some:b
+
+Frame 1 test:test2
+
+A try:model * this goes to the try model in the test domain
+
+Use test1:db * this goes to test1, db
+
+Frame 2 info:purpose - use cases
+
+A     idea:list     * list of ideas
+A   design:some     * some designs 
+A    todo:items    * todo items
+A    info:collect  * data collected
+A   model:build    * build models
+A   story:thought  * story follows a thought pattern
+A pattern:story    * need to guide the navigation through the model to create a story
+A   store:new      * store pattern in new model
+A   model:describe * need to overlap models to describe an idea
+A  repeat:info     * information can be repeated
+
+Frame 2 info:mapping - how to join
+
+A     idea:union  * union of info, knowledge, skill
+A   wisdom:idea   * how to act of the idea
+A thinking:moving * moving between the frame grids
+A   memory:path   * the path and result of the thinking
+A learning:create * create new models by adding, reorder and refactoring other models
+A   design:move   * how to get from a to b
+
+Frame 2 info:usage - how to use it
+
+A  capture:collect * collect new data for models
+A    match:find    * find correlations and missing links
+A simulate:app     * what the app needs to do
+A      doc:process * describe the process
+
+Frame 2 info:docs - making documentation
+
+A   find:info   * find relavant information in a document
+A  order:doc    * order of doument
+A   flow:detail * detail need to flow together
+A  files:data   * bulk of data can be in separate files
+A pandoc:latex  * convert markdown to latex for these files
+A   join:files  * process can join these files
+A subset:gen    * needed subset of the document can be generated
+A  index:model  * the model is like a document index
+
+----------------------------------------------------------------
+Model model - new model
+----------------------------------------------------------------
+
+Frame 1 info
+
+Frame 2 info:input - input data
+
+A keywords:value * multiple values
+A   models:from  * from the models
+
+Frame 2 info:map - join
+
+A find:in      * find keywords in the given models
+A link:between * find the links between them
+
+Frame 2 info:output
+
+A diagram:result * diagram of the result
+A    nest:limit  * limit nesting depth
+A  layout:choose * options to choose
+
+----------------------------------------------------------------
+Model match - map how to match
+----------------------------------------------------------------
+
+Frame 1 info
+
+Frame 2 info:input - list of model names
+
+A find:name  * find the a's of these names
+A join:ref   * join with the ref to other models
+A  end:print * end if all the models are reached, print maps.
+
+Frame 2 info:navigate - navigate the map
+
+A  each:grid  * for each a, move to next grid
+A  join:model * join that grid a's to other models
+A   get:path  * get shortest path to get to all the models
+A print:map   * print path, maps
+
+Frame 1 info
+
+Frame 2 info:gen - generate matching app
+
+A  build:actor * build actors to test use cases
+A   eval:work  * looks like its working
+A design:app   * design app
+A    gen:build * generate app
+A 
+----------------------------------------------------------------
+Model join - map how to join
+----------------------------------------------------------------
+
+Frame 1 info
+
+Frame 2 info:find - the a of the items found
+
+A     its:follow * follow its ref
+A     ref:to     * the ref can be either to a model or a frame
+A explore:item   * that frame or model can be explore to get to the other item, or follow its a's refs
+A   frame:frame  * move up to its frame and explore its ref and its a's ref
+A  expand:move   * move around in the model with up,down,left
+A   group:relate * items a related in some way within a group
+
+----------------------------------------------------------------
+Model design - notes app
+----------------------------------------------------------------
+
+Frame 1 info
+
+Frame 2 info:parts - needed
+
+A database:graph * some form of graph database
+A   schema:model * the model schema
+A  queries:nav   * translate navigation into database queries
+A  capture:merge * way to import, merge and capture data
+
+----------------------------------------------------------------
+Model schema - notes app
+----------------------------------------------------------------
+
+Frame 1 info
+
+Frame 2 info:formats - schema formats
+
+A links:way * the way links work
+A group:how * how groups work
+
+
+
+
+

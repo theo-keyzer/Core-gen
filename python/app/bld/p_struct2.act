@@ -1,0 +1,388 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C from typing import Dict, List
+C
+C from inputs import Input
+C
+C # for stand alone apps
+C
+C class ActT:
+C     def __init__(self):
+C         self.index = {}
+C         self.kp_all = []
+
+All Comp vec
+
+C
+C class GlobT:
+C     def __init__(self):
+C         self.load_errs = False
+C         self.run_errs = False
+C         self.acts = ActT()
+C         self.dats = ActT()
+C         self.wins = []
+C         self.winp = -1
+C
+C class Kp:
+C     def get_me2(self) -> int:
+C         pass
+C
+C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+C         pass
+C
+C     def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
+C         pass
+C
+C class KpArgs(Kp):
+C     def __init__(self):
+C         self.me = 1
+C         self.me2 = 1
+C         self.names = {}
+C
+C     def get_me2(self) -> int:
+C         return self.me2
+C
+C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+C         try:
+C             return( self.names[ na[0] ], False )
+C         except:
+C             return("?" + na[0] + "?" + self.line_no + "," + lno + "?", True );
+C
+C     def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
+C         return []
+C
+
+All Comp struct
+
+C
+C def do_all(glob, what: List[str], act: int) -> list:
+C     ret = []
+
+All Comp all
+
+C     return ret
+
+----------------------------------------------------------------
+Actor all Comp  parent.name != Actor
+----------------------------------------------------------------
+
+C     if what[0] == "${name}c":
+C         for i in range(len(glob.dats.ap_${name}l)):
+C             ret.append( glob.dats.ap_${name}l[i] )
+
+----------------------------------------------------------------
+Actor vec Comp
+----------------------------------------------------------------
+
+C         self.ap_${name}l = []
+
+----------------------------------------------------------------
+Actor struct Comp name = Actor
+----------------------------------------------------------------
+
+C class Kp${name}c(Kp):
+C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.line_no = lno
+C         self.me2 = len( act.kp_all )
+C         self.me = len( act.ap_${name}l )
+C         self.all_from = len( act.kp_all )
+C         self.all_to = len( act.kp_all )
+
+Its Element val_inc3
+Its Element ele_act
+Its parent parent_field
+
+C
+C     def get_me2(self) -> int:
+C         return(self.me2)
+C
+C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+C         return("??", True)
+C
+C     def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
+C         return( [] )
+C
+
+Break
+
+----------------------------------------------------------------
+Actor struct Comp parent.name = Actor
+----------------------------------------------------------------
+
+C class Kp${name}c(Kp):
+C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.line_no = lno
+C         self.me2 = len(act.kp_all)
+C         self.me = len(act.ap_${name}l)
+
+Its Element val_inc3
+Its Element ele_act
+Its parent parent_field
+
+C
+C     def get_me2(self) -> int:
+C         return(self.me2)
+C
+C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+C         return("??", True)
+C
+C     def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
+C         return( [] )
+C
+
+Break
+
+----------------------------------------------------------------
+Actor struct Comp
+----------------------------------------------------------------
+
+C class Kp${name}c(Kp):
+C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.line_no = lno
+C         self.me2 = len(act.kp_all)
+C         self.me = len(act.ap_${name}l)
+C         self.all_from = len( act.kp_all )
+C         self.all_to = len( act.kp_all )
+C         self.names = {}
+C         self.names["k_comp"] = "${name}c";
+
+Its Element val_inc3
+Its Comp_parent from
+Its Element ele
+Its parent parent_field
+
+C
+C     def get_me2(self) -> int:
+C         return(self.me2)
+C
+C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+
+Its Ref ref_var
+Its Ref2 ref_var
+Its Refu ref_var
+Its parent parent_field_var
+Its Ref_comp other_var
+Its Ref2_comp other_var
+Its Refu_comp other_var
+
+C         try:
+C             if len(na) > 1:
+C                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",${name}c?", True );
+C             return( self.names[ na[0] ], False )
+C         except:
+C             return("?" + na[0] + "?" + self.line_no + "," + lno + ",${name}c?", True );
+C
+C     def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
+C         ret = []
+
+Its Comp_parent its
+Its parent parent_field_func
+Its Ref ref_func
+Its Ref2 ref_func
+Its Refu ref_func
+Its Ref_comp other_func
+Its Ref2_comp other_func
+Its Refu_comp other_func
+
+C         return( ret )
+C
+
+----------------------------------------------------------------
+Actor parent_field_p Comp
+----------------------------------------------------------------
+
+C     var parentp : Int
+
+----------------------------------------------------------------
+Actor val_inc3 Element mw in R1,F1,L1,M1,Q1,U0,RS,FS,LS,MS,QS
+----------------------------------------------------------------
+
+C         self.k_${name}lp = -1
+
+----------------------------------------------------------------
+Actor from_to Comp
+----------------------------------------------------------------
+
+C     var ${name}l_from: Int
+C     var ${name}l_to: Int
+
+----------------------------------------------------------------
+Actor from Comp
+----------------------------------------------------------------
+
+C         self.${name}l_from = len( act.ap_${name}l )
+C         self.${name}l_to = len( act.ap_${name}l )
+
+----------------------------------------------------------------
+Actor ele Element name = name
+----------------------------------------------------------------
+
+C         na = ff.getw( ff.lines[ln], 1 )
+C         self.names[ "${name} " ] = na
+
+Du index
+Break
+
+----------------------------------------------------------------
+Actor index Element parent.find = Find
+----------------------------------------------------------------
+
+C         act.index[ "${parent.name}c_" + na ] = self.me
+
+----------------------------------------------------------------
+Actor index Element parent.find = FindIn
+----------------------------------------------------------------
+
+
+----------------------------------------------------------------
+Actor ele_act . mw in C1,R1,F1,L1
+----------------------------------------------------------------
+
+C         self.k_${name}l = ff.getw( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor ele_act Element name = name
+----------------------------------------------------------------
+
+Du index_act
+
+----------------------------------------------------------------
+Actor index_act Element parent.find = Find
+----------------------------------------------------------------
+
+C         act.index[ "${parent.name}c_" + self.k_${name}l ] = self.me
+
+----------------------------------------------------------------
+Actor ele_act . mw = V1
+----------------------------------------------------------------
+
+C         self.k_${name}l = ff.getws( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor ele . mw in C1,R1,F1,L1,M1,N1,P1,Q1
+----------------------------------------------------------------
+
+C         self.names[ "${name} " ] = ff.getw( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor ele . mw = V1
+----------------------------------------------------------------
+
+C         self.names[ "${name} " ] = ff.getws( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor ele . mw in CS,RS,FS,LS,MS,NS,PS,QS
+----------------------------------------------------------------
+
+C         self.names[ "${name} " ] = ff.getwsw( ff.lines[ln], 1 )
+
+----------------------------------------------------------------
+Actor parent_field Comp .struct.parent.name = Actor
+----------------------------------------------------------------
+
+C         self.k_parentp = -2
+C         i = len( act.ap_${name}l )
+C         if i > 0:
+C             act.ap_${name}l[i-1].all_to = self.me2 + 1
+C             self.k_parentp = i-1
+C         else:
+C             print( "No ${name}c parent for ${.struct.name}c" )
+-C             glob.load_errs = True
+
+Break
+
+----------------------------------------------------------------
+Actor parent_field Comp
+----------------------------------------------------------------
+
+C         self.k_parentp = -2
+C         i = len( act.ap_${name}l )
+C         if i > 0:
+C             act.ap_${name}l[i-1].all_to = self.me2 + 1
+C             act.ap_${name}l[i-1].${.struct.name}l_to = self.me + 1
+C             self.k_parentp = i-1
+
+Du parent_field_in
+
+C         else:
+C             print( "No ${name}c parent for ${.struct.name}c" )
+-C             glob.load_errs = True
+
+----------------------------------------------------------------
+Actor parent_field_in Comp .struct.find = FindIn
+----------------------------------------------------------------
+
+C             s = str(self.k_parentp) + "_${.struct.name}c_" + na
+C             act.index[ s ] = self.me
+
+----------------------------------------------------------------
+Actor its Comp
+----------------------------------------------------------------
+
+C         if what[0] == "${name}c":
+C             for i in range( self.${name}l_from, self.${name}l_to ):
+C                 if len(what) > 1:
+C                     ret.append( glob.dats.ap_${name}l[i].get_list(glob, what[1:], act) )
+C                 else:
+C                     ret.append( glob.dats.ap_${name}l[i] )
+
+----------------------------------------------------------------
+Actor other_var Ref
+----------------------------------------------------------------
+
+C         if na[0] == "${parent.name}c_${element.name}l":
+C             for i in range( len(act.ap_${parent.name}l) ):
+C                 if act.ap_${parent.name}l[i].k_${element.name}lp == self.me:
+C                     return( act.ap_${parent.name}l[i].get_var(act, na[1:], lno) )
+
+----------------------------------------------------------------
+Actor parent_field_var Comp
+----------------------------------------------------------------
+
+C         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+C             return( act.ap_${name}l[ self.k_parentp ].get_var(act, na[1:], lno) )
+
+
+----------------------------------------------------------------
+Actor ref_var Ref
+----------------------------------------------------------------
+
+C         if na[0] == "${element.name}l" and len(na) > 1 and self.k_${element.name}lp >= 0:
+C             return( act.ap_${comp.name}l[ self.k_${element.name}lp ].get_var(act, na[1:], lno) )
+
+----------------------------------------------------------------
+Actor other_func Ref
+----------------------------------------------------------------
+
+C         if what[0] == "${parent.name}c_${element.name}l":
+C             for i in range( len( glob.dats.ap_${parent.name}l ) ):
+C                 if glob.dats.ap_${parent.name}l[i].k_${element.name}lp == self.me:
+C                     if len(what) > 1:
+C                         ret.append( glob.dats.ap_${parent.name}l[i].get_list(glob, what[1:], act) )
+C                     else:
+C                         ret.append( glob.dats.ap_${parent.name}l[i] )
+
+----------------------------------------------------------------
+Actor parent_field_func Comp
+----------------------------------------------------------------
+
+C         if what[0] == "parent" and self.k_parentp >= 0:
+C             if len(what) > 1:
+C                 ret.append( glob.dats.ap_${name}l[ self.k_parentp ].get_list(glob, what[1:], act) )
+C             else:
+C                 ret.append( glob.dats.ap_${name}l[ self.k_parentp ] )
+
+----------------------------------------------------------------
+Actor ref_func Ref
+----------------------------------------------------------------
+
+C         if what[0] == "${element.name}l" and self.k_${element.name}lp >= 0:
+C             if len(what) > 1:
+C                 ret.append( glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ].get_list(glob, what[1:], act) )
+C             else:
+C                 ret.append( glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ] )
+
+
+

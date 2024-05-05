@@ -240,13 +240,11 @@ When the `Break` command specifies the actor the break applies to, it makes the 
 and puts a flag on the actor one up in the calling stack. The actor with the flag on in the `go_act` function will return this value as positive.
 Then all the calling code will react in the same way as before. The break is then for the actor one down.
 
-There is also a `p_struct2.act` (needs an update and tests) in the `app/bld` that is intended to be used by an standalone app that does not use the `gen.py`
+There is also a `p_struct2.act`  in the `app/bld` that is intended to be used by an standalone app that does not use the `gen.py`
 and any actor files. It has  the `get_list, get_var` functions to get the values from the loaded def files.
 
-There is no point in expanding the generator to be an app. This generator started off as an app that needed the def files, 
-but the way it worked was different. Rather generate something new.
-
-
+In `app/tst2` there is an example of this in `main.py` that loads a def file and navigates through the model.
+If the def files captures all the detail to generate an app, an app can also just use the def files.
 
 
 
