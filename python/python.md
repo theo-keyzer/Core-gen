@@ -217,8 +217,6 @@ It can be `(.)` or anything else like `None`.
 Variables can't use values from child nodes (this version). If needed, navigate with the `Its` and 
 store that node with the `Store in Lookup` command.
 Then later when needed, use the variable `${.Lookup.name}` to get the `name` value of the stored node.
-This can change to `Add lookup to Node` and use it like `${.Node.lookup}`
-The `Add` command can then deal with all the variations of the storage types and values.
 
 The `Break` command if the most mystifying of them all. Every version has a diffrent implentation of it.
 And going back to some older version's code base means its not clear what it does.
@@ -239,6 +237,20 @@ or continue with the calling actor.
 When the `Break` command specifies the actor the break applies to, it makes the return value negative
 and puts a flag on the actor one up in the calling stack. The actor with the flag on in the `go_act` function will return this value as positive.
 Then all the calling code will react in the same way as before. The break is then for the actor one down.
+
+The following are some later changes. This is to get the older test cases to work.
+
+`Add var N` to add the current node and `Add var Z this is ${name}` to add a string value.
+To use it is `${._var.N.name}` or `${._var.Z}`.
+`Add set S` and `Add set B abc` is to is to add to a set. Sets do not have duplicates.
+A flag gets set in the window stack if a duplicate was added.
+`Break cmds for . unique` will end this actor is the flag is set.
+`Check set B abc` does not add, only checks.
+`Clear set S` to empty it.
+`Its ._set.S actor` to call an actor with the set items, but only for node items.
+The `(_)` is there to not be an actor name. `${._arg}` is the value of the argument passes to this actor.
+Can also add a `list option`.
+
 
 There is also a `p_struct2.act`  in the `app/bld` that is intended to be used by an standalone app that does not use the `gen.py`
 and any actor files. It has  the `get_list, get_var` functions to get the values from the loaded def files.
