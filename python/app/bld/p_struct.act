@@ -21,7 +21,9 @@ C         self.load_errs = False
 C         self.run_errs = False
 C         self.acts = ActT()
 C         self.dats = ActT()
-C         self.store = {}
+C         self.vars = {}
+C         self.sets = {}
+C         self.lists = {}
 C         self.arg = ""
 C         self.wins = []
 C         self.winp = -1
@@ -87,6 +89,7 @@ Actor struct Comp name = Actor
 
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len( act.kp_all )
 C         self.me = len( act.ap_${name}l )
@@ -116,6 +119,7 @@ Actor struct Comp parent.name = Actor
 
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len(act.kp_all)
 C         self.me = len(act.ap_${name}l)
@@ -143,13 +147,15 @@ Actor struct Comp
 
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len(act.kp_all)
 C         self.me = len(act.ap_${name}l)
 C         self.all_from = len( act.kp_all )
 C         self.all_to = len( act.kp_all )
 C         self.names = {}
-C         self.names["k_comp"] = "${name}c";
+C         self.names["k_comp"] = "${name}c"
+C         self.names["k_me"] = str( self.me )
 
 Its Element val_inc3
 Its Comp_parent from
@@ -291,7 +297,7 @@ C             act.ap_${name}l[i-1].all_to = self.me2 + 1
 C             self.k_parentp = i-1
 C         else:
 C             print( "No ${name}c parent for ${.struct.name}c" )
--C             glob.load_errs = True
+C             self.err = True
 
 Break
 
@@ -310,7 +316,7 @@ Du parent_field_in
 
 C         else:
 C             print( "No ${name}c parent for ${.struct.name}c" )
--C             glob.load_errs = True
+C             self.err = True
 
 ----------------------------------------------------------------
 Actor parent_field_in Comp .struct.find = FindIn

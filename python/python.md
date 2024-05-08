@@ -238,16 +238,18 @@ When the `Break` command specifies the actor the break applies to, it makes the 
 and puts a flag on the actor one up in the calling stack. The actor with the flag on in the `go_act` function will return this value as positive.
 Then all the calling code will react in the same way as before. The break is then for the actor one down.
 
-The following are some later changes. This is to get the older test cases to work.
+The following are some changes. This is to get the older test cases to work.
 
 `Add var N` to add the current node and `Add var Z this is ${name}` to add a string value.
 To use it is `${._var.N.name}` or `${._var.Z}`.
 `Add set S` and `Add set B abc` is to is to add to a set. Sets do not have duplicates.
 A flag gets set in the window stack if a duplicate was added.
-`Break cmds for . unique` will end this actor is the flag is set.
+`Break cmds for . True` will end this actor is the flag is set.
 `Check set B abc` does not add, only checks.
+Previous versions, the `Unique,Check` commands had the `Break` builtin.
+
 `Clear set S` to empty it.
-`Its ._set.S actor` to call an actor with the set items, but only for node items.
+`Its ._set.S actor` to call an actor with the set items, for strings, use `${._str}` for the item's value.
 The `(_)` is there to not be an actor name. `${._arg}` is the value of the argument passes to this actor.
 Can also add a `list option`.
 

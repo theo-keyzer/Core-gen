@@ -13,7 +13,29 @@ C
 
 All Domain domain
 
-C Found item ${.Find.model.info} 
+C Found item ${._var.find.model.info}  ${._var.val} 
+
+Its ._set.finds tst_finds
+Its ._list.finds tst_finds
+Its ._set.uniq tst_finds_str
+
+Add set.split., A 2,3,4
+Its ._set.A tst_finds_str
+Clear set A
+Add set.split A 5.6.7
+Its ._set.A tst_finds_str
+
+----------------------------------------------------------------
+Actor tst_finds
+----------------------------------------------------------------
+
+C Found items ${name}
+
+----------------------------------------------------------------
+Actor tst_finds_str
+----------------------------------------------------------------
+
+C Found items  a str ${._str}
 
 ----------------------------------------------------------------
 Actor domain
@@ -43,10 +65,17 @@ Actor a . model.name !?
 C ${name}  ${domain.name}  ${model.name}  - ${model.info}  
 
 ----------------------------------------------------------------
-Actor a . name = find
+Actor a . name = model
 ----------------------------------------------------------------
 
-Store in Find
+-Store in Find
+Add var find
+Add var val abc
+
+Add set uniq ${name}
+Break cmds for . True
+Add set finds
+Add list finds
 
 ----------------------------------------------------------------
 Actor disp_col . .depth != 6

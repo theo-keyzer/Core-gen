@@ -12,6 +12,7 @@ class WinT:
         self.is_on = False
         self.is_trig = False
         self.is_prev = False
+        self.is_check = False
 
 def new_act(glob, arg):
     winp = glob.winp + 1
@@ -20,6 +21,7 @@ def new_act(glob, arg):
     glob.wins[winp].arg = arg
     glob.wins[winp].lcnt = -1
     glob.wins[winp].brk_act = False
+    glob.wins[winp].is_check = False
     if winp == 0:
         return
     if glob.wins[winp - 1].is_on or glob.wins[winp - 1].is_prev:
@@ -99,17 +101,34 @@ def go_cmds(dat, glob, act: int) -> int:
             its = cmd
             what = its.k_what.split(".")
             new_act(glob, its.k_args)
+            if len( what ) > 2 and len( what[0] ) == 0:
+                if what[1] == "_set" and what[2] in glob.sets:
+                    for sts in glob.sets[ what[2] ]:
+                        ret = go_act(sts,glob, its.k_actorp)
+                        if ret > 1 or ret < 0:
+                            return ret
+                if what[1] == "_list" and what[2] in glob.lists:
+                    for sts in glob.lists[ what[2] ]:
+                        ret = go_act(sts,glob, its.k_actorp)
+                        if ret > 1 or ret < 0:
+                            return ret
+                continue
             ret = dat.do_its(glob, what, its.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
         elif isinstance(cmd,structs.KpDu):
             du = cmd
-            new_act(glob, du.k_args)
+            st = strs(glob, du.k_args, glob.winp, du.line_no)
+            new_act(glob, st)
             ret = go_act(dat, glob, du.k_actorp)
             if ret != 0:
                 return ret
-        elif isinstance(cmd,structs.KpStore):
-            glob.store[ cmd.k_var ] = dat
+        elif isinstance(cmd,structs.KpAdd):
+            add_cmd(cmd,glob,dat)
+        elif isinstance(cmd,structs.KpCheck):
+            check_cmd(cmd,glob,dat)
+        elif isinstance(cmd,structs.KpClear):
+            clear_cmd(cmd,glob,dat)
         elif isinstance(cmd,structs.KpOut):
             out = cmd
             if out.k_what == "delay":
@@ -120,6 +139,10 @@ def go_cmds(dat, glob, act: int) -> int:
                 glob.wins[glob.winp].is_trig = False
         elif isinstance(cmd,structs.KpBreak):
             brk = cmd
+            if brk.k_check == "True" and glob.wins[glob.winp].is_check == False:
+                continue
+            if brk.k_check == "False" and glob.wins[glob.winp].is_check == True:
+                continue
             ret = 0
             if brk.k_what == "E_O_L" or brk.k_what == "actor":
                 ret = 2
@@ -127,13 +150,69 @@ def go_cmds(dat, glob, act: int) -> int:
                 ret = 1
             elif brk.k_what == "cmds":
                 ret = 3
-            if brk.k_actor != "E_O_L":
+            if brk.k_actor != "E_O_L" and brk.k_actor != ".":
                 for i in range(glob.winp - 1, -1, -1):
                     if brk.k_actor == glob.wins[i].name:
                         glob.wins[i + 1].brk_act = True
                         ret = -ret
             return ret
     return 0
+
+def add_cmd(cmd,glob,dat):
+    if cmd.k_data != "":
+        val = strs(glob, cmd.k_data, glob.winp, cmd.line_no)
+#        val = cmd.k_data
+    else:
+        val = dat
+    if cmd.k_what == "var":
+        glob.vars[ cmd.k_item ] = val
+    if cmd.k_what == "set":
+        if cmd.k_item in glob.sets:
+            if val in glob.sets[ cmd.k_item ]:
+                glob.wins[glob.winp].is_check = True
+            else:
+                glob.sets[ cmd.k_item ].add(val)
+        else:
+            glob.sets[ cmd.k_item ] = {val}
+        return
+    if cmd.k_what == "list":
+        if cmd.k_item in glob.lists:
+            glob.lists[ cmd.k_item ].append(val)
+        else:
+            glob.lists[ cmd.k_item ] = [val]
+        return
+    sw = cmd.k_what.split('.')
+    if len(sw) > 1 and sw[0] == "set" and sw[1] == "split":
+        sc = '.'
+        if len(sw) > 2:
+            sc = sw[2]
+        svs = val.split( sc )
+        for sv in svs:
+            if cmd.k_item in glob.sets:
+                glob.sets[ cmd.k_item ].add(sv)
+            else:
+                glob.sets[ cmd.k_item ] = {sv}
+        return
+
+
+
+def clear_cmd(cmd,glob,dat):
+    if cmd.k_what == "set":
+        if cmd.k_item in glob.sets:
+            glob.sets[ cmd.k_item ].clear()
+    if cmd.k_what == "list":
+        if cmd.k_item in glob.lists:
+            glob.lists[ cmd.k_item ].clear()
+
+def check_cmd(cmd,glob,dat):
+    if cmd.k_data != "E_O_L":
+        val = cmd.k_data
+    else:
+        val = dat
+    if cmd.k_what == "set":
+        if cmd.k_item in glob.sets:
+            if val in glob.sets[ cmd.k_item ]:
+                glob.wins[glob.winp].is_check = True
 
 def trig(glob, winp):
     if not glob.wins[winp].is_prev or winp == 0:
@@ -204,7 +283,9 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
         if len(ss) == 1:
             return( glob.wins[winp].dat.line_no + ", " + lno, False )
-        if ss[1] == "arg":
+        if ss[1] == "_str":
+            return( glob.wins[winp].dat, False )
+        if ss[1] == "_arg":
             return( glob.wins[winp].arg, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )
@@ -212,6 +293,11 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( str( glob.wins[winp].lcnt ), False )
         if len(ss) < 3:
             return ("?" + str(ss) + "?" + lno + "?", True)
+        if ss[1] == "_var":
+            dat = glob.vars[ ss[2] ]
+            if len(ss) == 3:
+                return(dat, False)
+            return( dat.get_var(glob.dats, ss[3:], lno) )
         if ss[1] == "0":
             if glob.wins[winp].lcnt != 0:
                 return( "", False )

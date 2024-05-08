@@ -118,18 +118,6 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
             kp = structs.KpActor(ff, ln, act, lno)
             act.ap_actor.append(kp)
             act.kp_all.append(kp)
-        if tok == "Dbcreate":
-            kp = structs.KpDbcreate(ff, ln, act, lno)
-            act.ap_dbcreate.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Dbload":
-            kp = structs.KpDbload(ff, ln, act, lno)
-            act.ap_dbload.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Dbselect":
-            kp = structs.KpDbselect(ff, ln, act, lno)
-            act.ap_dbselect.append(kp)
-            act.kp_all.append(kp)
         if tok == "All":
             kp = structs.KpAll(ff, ln, act, lno)
             act.ap_all.append(kp)
@@ -137,18 +125,6 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
         if tok == "Du":
             kp = structs.KpDu(ff, ln, act, lno)
             act.ap_du.append(kp)
-            act.kp_all.append(kp)
-        if tok == "New":
-            kp = structs.KpNew(ff, ln, act, lno)
-            act.ap_new.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Refs":
-            kp = structs.KpRefs(ff, ln, act, lno)
-            act.ap_refs.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Var":
-            kp = structs.KpVar(ff, ln, act, lno)
-            act.ap_var.append(kp)
             act.kp_all.append(kp)
         if tok == "Its":
             kp = structs.KpIts(ff, ln, act, lno)
@@ -166,14 +142,6 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
             kp = structs.KpCf(ff, ln, act, lno)
             act.ap_cf.append(kp)
             act.kp_all.append(kp)
-        if tok == "Include":
-            kp = structs.KpInclude(ff, ln, act, lno)
-            act.ap_include.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Store":
-            kp = structs.KpStore(ff, ln, act, lno)
-            act.ap_store.append(kp)
-            act.kp_all.append(kp)
         if tok == "Out":
             kp = structs.KpOut(ff, ln, act, lno)
             act.ap_out.append(kp)
@@ -181,22 +149,6 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
         if tok == "Break":
             kp = structs.KpBreak(ff, ln, act, lno)
             act.ap_break.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Unique":
-            kp = structs.KpUnique(ff, ln, act, lno)
-            act.ap_unique.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Collect":
-            kp = structs.KpCollect(ff, ln, act, lno)
-            act.ap_collect.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Hash":
-            kp = structs.KpHash(ff, ln, act, lno)
-            act.ap_hash.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Group":
-            kp = structs.KpGroup(ff, ln, act, lno)
-            act.ap_group.append(kp)
             act.kp_all.append(kp)
         if tok == "Add":
             kp = structs.KpAdd(ff, ln, act, lno)
@@ -209,18 +161,6 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
         if tok == "Check":
             kp = structs.KpCheck(ff, ln, act, lno)
             act.ap_check.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Json":
-            kp = structs.KpJson(ff, ln, act, lno)
-            act.ap_json.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Yaml":
-            kp = structs.KpYaml(ff, ln, act, lno)
-            act.ap_yaml.append(kp)
-            act.kp_all.append(kp)
-        if tok == "Xml":
-            kp = structs.KpXml(ff, ln, act, lno)
-            act.ap_xml.append(kp)
             act.kp_all.append(kp)
 
 def ref(act) -> bool:
@@ -372,15 +312,6 @@ def ref(act) -> bool:
             if p != ".":
                 print("Grid_" + p + " not found " + act.ap_r[i].line_no)
                 err = True
-
-    for i in range( len(act.ap_dbselect) ):
-        try:
-            act.ap_dbselect[i].k_actorp = -2
-            p = act.ap_dbselect[i].k_actor
-            act.ap_dbselect[i].k_actorp = act.index["Actor_" + p]
-        except:
-            print("Actor_" + p + " not found " + act.ap_dbselect[i].line_no)
-            err = True
 
     for i in range( len(act.ap_all) ):
         try:
