@@ -2,10 +2,10 @@
 Actor main
 ----------------------------------------------------------------
 
-Var items = ${2}
+Add set.split., items ${3}
 
 C ----------------------------------------------------------------
-C Domain gen1 - domain from ${1}  with ${2}
+C Domain gen1 - domain from ${2}  with ${3}
 C ----------------------------------------------------------------
 C Model gen2 - model
 C ----------------------------------------------------------------
@@ -13,80 +13,24 @@ C
 
 All Domain domain
 
-C Found item ${._var.find.model.info}  ${._var.val} 
-
-Its ._set.finds tst_finds
-Its ._list.finds tst_finds
-Its ._set.uniq tst_finds_str
-
-Add set.split., A 2,3,4
-Its ._set.A tst_finds_str
-Clear set A
-Add set.split A 5.6.7
-Its ._set.A tst_finds_str
-
-----------------------------------------------------------------
-Actor tst_finds
-----------------------------------------------------------------
-
-C Found items ${name}
-
-----------------------------------------------------------------
-Actor tst_finds_str
-----------------------------------------------------------------
-
-C Found items  a str ${._str}
-
 ----------------------------------------------------------------
 Actor domain
 ----------------------------------------------------------------
 
--Its Model disp_col
-Its Model.Frame.A a
+Its Model disp_col
 
 ----------------------------------------------------------------
-Actor model
+Actor disp_col . ._depth != 6
 ----------------------------------------------------------------
 
-Its Frame frame
 
-----------------------------------------------------------------
-Actor frame
-----------------------------------------------------------------
+Add set M ${.domain.name} :${name}
+Break cmds of . True
 
-Its A a
+Out delay
 
--Break loop
-
-----------------------------------------------------------------
-Actor a . model.name !?
-----------------------------------------------------------------
-
-C ${name}  ${domain.name}  ${model.name}  - ${model.info}  
-
-----------------------------------------------------------------
-Actor a . name = model
-----------------------------------------------------------------
-
--Store in Find
-Add var find
-Add var val abc
-
-Add set uniq ${name}
-Break cmds for . True
-Add set finds
-Add list finds
-
-----------------------------------------------------------------
-Actor disp_col . .depth != 6
-----------------------------------------------------------------
-
-Unique add ${.depth} ${.domain.name}n:${name}
-
--Out delay
-
--C ${ }  Frame ${.depth}  ${name}  ${pad}  ${info}
-C    Frame 5 ${name}  ${pad}  ${info}
+C Frame ${._depth}  ${name}  ${pad}  ${info}
+-C Frame 5 ${name}  ${pad}  ${info}
 
 Its Frame.A disp_items
 Its A_model.parent.parent disp_col
@@ -96,13 +40,14 @@ Its Frame.A.model disp_col
 Actor disp_items
 ----------------------------------------------------------------
 
-Its .main.items.split., disp_item
+Its ._set.items disp_item
 
 ----------------------------------------------------------------
-Actor disp_item . value = ${.disp_items.model}
+Actor disp_item . ._str = ${.disp_items.model}
 ----------------------------------------------------------------
 
 Unique add DI ${.disp_items.k_me}
 
-C ${ } A ${.disp_items.model} :${.disp_items.name}  ${.disp_items.pad}  ${.disp_items.info}
+C   A ${.disp_items.model} :${.disp_items.name}  ${.disp_items.pad}  ${.disp_items.info}
+
 

@@ -69,6 +69,7 @@ def go_act(dat, glob, act):
 def go_cmds(dat, glob, act: int) -> int:
     glob.wins[glob.winp].is_on = False
     glob.wins[glob.winp].is_trig = False
+    glob.wins[glob.winp].on_pos = -1
     for c in range(glob.acts.ap_actor[act].all_from, glob.acts.ap_actor[act].all_to):
         glob.wins[glob.winp].cur_pos = c
         cmd = glob.acts.kp_all[c]
@@ -228,6 +229,8 @@ def trig(glob, winp):
 
 def re_go_cmds(glob, winp):
     trig(glob, winp)
+    if glob.wins[winp].on_pos < 0:
+        return
     a = glob.acts.ap_actor[glob.wins[winp].cur_act]
     for c in range(glob.wins[winp].on_pos, glob.wins[winp].cur_pos):
         cmd = glob.acts.kp_all[c]
@@ -291,6 +294,8 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( str( glob.wins[winp].lcnt+1 ), False )
         if ss[1] == '-':
             return( str( glob.wins[winp].lcnt ), False )
+        if ss[1] == '_depth':
+            return( str( winp ), False )
         if len(ss) < 3:
             return ("?" + str(ss) + "?" + lno + "?", True)
         if ss[1] == "_var":
