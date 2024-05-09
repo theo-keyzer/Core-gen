@@ -5,7 +5,7 @@ Actor main
 Var items = ${2}
 
 C ----------------------------------------------------------------
-C Domain gen1 - domain from ${1}  with ${2}
+C Domain gen1 - domain from ${2}  with ${3}
 C ----------------------------------------------------------------
 C Model gen2 - model
 C ----------------------------------------------------------------
@@ -13,7 +13,7 @@ C
 
 All Domain domain
 
-C Found item ${.Find.model.info} 
+C Found item ${._var.Find.model.info} 
 
 ----------------------------------------------------------------
 Actor domain
@@ -46,7 +46,8 @@ C ${name}  ${domain.name}  ${model.name}  - ${model.info}
 Actor a . name = find
 ----------------------------------------------------------------
 
-Store in Find
+-Store in Find
+Add var Find
 
 ----------------------------------------------------------------
 Actor disp_col . .depth != 6

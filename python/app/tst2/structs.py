@@ -32,32 +32,17 @@ class ActT:
         self.ap_col = []
         self.ap_r = []
         self.ap_actor = []
-        self.ap_dbcreate = []
-        self.ap_dbload = []
-        self.ap_dbselect = []
         self.ap_all = []
         self.ap_du = []
-        self.ap_new = []
-        self.ap_refs = []
-        self.ap_var = []
         self.ap_its = []
         self.ap_c = []
         self.ap_cs = []
         self.ap_cf = []
-        self.ap_include = []
-        self.ap_store = []
         self.ap_out = []
         self.ap_break = []
-        self.ap_unique = []
-        self.ap_collect = []
-        self.ap_hash = []
-        self.ap_group = []
         self.ap_add = []
         self.ap_clear = []
         self.ap_check = []
-        self.ap_json = []
-        self.ap_yaml = []
-        self.ap_xml = []
 
 class GlobT:
     def __init__(self):
@@ -98,6 +83,7 @@ class KpArgs(Kp):
 
 class KpNode(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_node)
@@ -143,32 +129,33 @@ class KpNode(Kp):
         if what[0] == "Link":
             for i in range( self.link_from, self.link_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_link[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_link[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_link[i] )
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_node[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_node[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_node[ self.k_parentp ] )
         if what[0] == "Node_parent":
             for i in range( len( glob.dats.ap_node ) ):
                 if glob.dats.ap_node[i].k_parentp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_node[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_node[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_node[i] )
         if what[0] == "Link_to":
             for i in range( len( glob.dats.ap_link ) ):
                 if glob.dats.ap_link[i].k_top == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_link[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_link[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_link[i] )
         return( ret )
 
 class KpLink(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_link)
@@ -186,6 +173,7 @@ class KpLink(Kp):
             self.k_parentp = i-1
         else:
             print( "No Node parent for Link" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -206,18 +194,19 @@ class KpLink(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_node[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_node[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_node[ self.k_parentp ] )
         if what[0] == "to" and self.k_top >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_node[ self.k_top ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_node[ self.k_top ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_node[ self.k_top ] )
         return( ret )
 
 class KpGraph(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_graph)
@@ -248,6 +237,7 @@ class KpGraph(Kp):
 
 class KpMatrix(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_matrix)
@@ -278,6 +268,7 @@ class KpMatrix(Kp):
 
 class KpTable(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_table)
@@ -327,52 +318,53 @@ class KpTable(Kp):
         if what[0] == "Field":
             for i in range( self.field_from, self.field_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_field[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_field[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_field[i] )
         if what[0] == "Of":
             for i in range( self.of_from, self.of_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_of[i] )
         if what[0] == "Join":
             for i in range( self.join_from, self.join_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_join[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_join[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_join[i] )
         if what[0] == "Join2":
             for i in range( self.join2_from, self.join2_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_join2[i] )
         if what[0] == "Join_table2":
             for i in range( len( glob.dats.ap_join ) ):
                 if glob.dats.ap_join[i].k_table2p == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_join[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_join[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_join[i] )
         if what[0] == "Join2_table2":
             for i in range( len( glob.dats.ap_join2 ) ):
                 if glob.dats.ap_join2[i].k_table2p == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_join2[i] )
         if what[0] == "Where_table":
             for i in range( len( glob.dats.ap_where ) ):
                 if glob.dats.ap_where[i].k_tablep == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_where[i] )
         return( ret )
 
 class KpField(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_field)
@@ -399,6 +391,7 @@ class KpField(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Table parent for Field" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -440,58 +433,59 @@ class KpField(Kp):
         if what[0] == "Attrs":
             for i in range( self.attrs_from, self.attrs_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_attrs[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_attrs[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_attrs[i] )
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_table[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_table[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_table[ self.k_parentp ] )
         if what[0] == "type" and self.k_typep >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_type[ self.k_typep ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_type[ self.k_typep ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_type[ self.k_typep ] )
         if what[0] == "Of_field":
             for i in range( len( glob.dats.ap_of ) ):
                 if glob.dats.ap_of[i].k_fieldp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_of[i] )
         if what[0] == "Join_field1":
             for i in range( len( glob.dats.ap_join ) ):
                 if glob.dats.ap_join[i].k_field1p == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_join[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_join[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_join[i] )
         if what[0] == "Join2_field1":
             for i in range( len( glob.dats.ap_join2 ) ):
                 if glob.dats.ap_join2[i].k_field1p == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_join2[i] )
         if what[0] == "Join_field2":
             for i in range( len( glob.dats.ap_join ) ):
                 if glob.dats.ap_join[i].k_field2p == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_join[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_join[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_join[i] )
         if what[0] == "Join2_field2":
             for i in range( len( glob.dats.ap_join2 ) ):
                 if glob.dats.ap_join2[i].k_field2p == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_join2[i] )
         return( ret )
 
 class KpAttrs(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_attrs)
@@ -511,6 +505,7 @@ class KpAttrs(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Field parent for Attrs" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -533,20 +528,21 @@ class KpAttrs(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_field[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_field[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_field[ self.k_parentp ] )
         if what[0] == "Join2_attr2":
             for i in range( len( glob.dats.ap_join2 ) ):
                 if glob.dats.ap_join2[i].k_attr2p == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_join2[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_join2[i] )
         return( ret )
 
 class KpOf(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_of)
@@ -571,6 +567,7 @@ class KpOf(Kp):
             self.k_parentp = i-1
         else:
             print( "No Table parent for Of" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -597,33 +594,34 @@ class KpOf(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_table[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_table[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_table[ self.k_parentp ] )
         if what[0] == "field" and self.k_fieldp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_field[ self.k_fieldp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_field[ self.k_fieldp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_field[ self.k_fieldp ] )
         if what[0] == "attr" and self.k_attrp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_attr[ self.k_attrp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_attr[ self.k_attrp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_attr[ self.k_attrp ] )
         if what[0] == "from" and self.k_fromp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_attr[ self.k_fromp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_attr[ self.k_fromp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_attr[ self.k_fromp ] )
         if what[0] == "type" and self.k_typep >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_type[ self.k_typep ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_type[ self.k_typep ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_type[ self.k_typep ] )
         return( ret )
 
 class KpJoin(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_join)
@@ -647,6 +645,7 @@ class KpJoin(Kp):
             self.k_parentp = i-1
         else:
             print( "No Table parent for Join" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -671,28 +670,29 @@ class KpJoin(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_table[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_table[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_table[ self.k_parentp ] )
         if what[0] == "field1" and self.k_field1p >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_field[ self.k_field1p ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_field[ self.k_field1p ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_field[ self.k_field1p ] )
         if what[0] == "table2" and self.k_table2p >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_table[ self.k_table2p ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_table[ self.k_table2p ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_table[ self.k_table2p ] )
         if what[0] == "field2" and self.k_field2p >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_field[ self.k_field2p ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_field[ self.k_field2p ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_field[ self.k_field2p ] )
         return( ret )
 
 class KpJoin2(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_join2)
@@ -716,6 +716,7 @@ class KpJoin2(Kp):
             self.k_parentp = i-1
         else:
             print( "No Table parent for Join2" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -742,33 +743,34 @@ class KpJoin2(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_table[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_table[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_table[ self.k_parentp ] )
         if what[0] == "field1" and self.k_field1p >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_field[ self.k_field1p ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_field[ self.k_field1p ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_field[ self.k_field1p ] )
         if what[0] == "table2" and self.k_table2p >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_table[ self.k_table2p ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_table[ self.k_table2p ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_table[ self.k_table2p ] )
         if what[0] == "field2" and self.k_field2p >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_field[ self.k_field2p ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_field[ self.k_field2p ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_field[ self.k_field2p ] )
         if what[0] == "attr2" and self.k_attr2p >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_attrs[ self.k_attr2p ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_attrs[ self.k_attr2p ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_attrs[ self.k_attr2p ] )
         return( ret )
 
 class KpType(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_type)
@@ -817,52 +819,53 @@ class KpType(Kp):
         if what[0] == "Data":
             for i in range( self.data_from, self.data_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_data[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_data[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_data[i] )
         if what[0] == "Attr":
             for i in range( self.attr_from, self.attr_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_attr[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_attr[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_attr[i] )
         if what[0] == "Where":
             for i in range( self.where_from, self.where_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_where[i] )
         if what[0] == "Logic":
             for i in range( self.logic_from, self.logic_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_logic[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_logic[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_logic[i] )
         if what[0] == "Field_type":
             for i in range( len( glob.dats.ap_field ) ):
                 if glob.dats.ap_field[i].k_typep == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_field[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_field[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_field[i] )
         if what[0] == "Attr_table":
             for i in range( len( glob.dats.ap_attr ) ):
                 if glob.dats.ap_attr[i].k_tablep == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_attr[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_attr[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_attr[i] )
         if what[0] == "Of_type":
             for i in range( len( glob.dats.ap_of ) ):
                 if glob.dats.ap_of[i].k_typep == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_of[i] )
         return( ret )
 
 class KpData(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_data)
@@ -882,6 +885,7 @@ class KpData(Kp):
             self.k_parentp = i-1
         else:
             print( "No Type parent for Data" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -900,13 +904,14 @@ class KpData(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_type[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_type[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_type[ self.k_parentp ] )
         return( ret )
 
 class KpAttr(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_attr)
@@ -934,6 +939,7 @@ class KpAttr(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Type parent for Attr" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -978,60 +984,61 @@ class KpAttr(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_type[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_type[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_type[ self.k_parentp ] )
         if what[0] == "table" and self.k_tablep >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_type[ self.k_tablep ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_type[ self.k_tablep ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_type[ self.k_tablep ] )
         if what[0] == "Where_attr":
             for i in range( len( glob.dats.ap_where ) ):
                 if glob.dats.ap_where[i].k_attrp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_where[i] )
         if what[0] == "Where_id":
             for i in range( len( glob.dats.ap_where ) ):
                 if glob.dats.ap_where[i].k_idp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_where[i] )
         if what[0] == "Logic_attr":
             for i in range( len( glob.dats.ap_logic ) ):
                 if glob.dats.ap_logic[i].k_attrp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_logic[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_logic[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_logic[i] )
         if what[0] == "Of_attr":
             for i in range( len( glob.dats.ap_of ) ):
                 if glob.dats.ap_of[i].k_attrp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_of[i] )
         if what[0] == "Of_from":
             for i in range( len( glob.dats.ap_of ) ):
                 if glob.dats.ap_of[i].k_fromp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_of[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_of[i] )
         if what[0] == "Where_from_id":
             for i in range( len( glob.dats.ap_where ) ):
                 if glob.dats.ap_where[i].k_from_idp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_where[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_where[i] )
         return( ret )
 
 class KpWhere(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_where)
@@ -1057,6 +1064,7 @@ class KpWhere(Kp):
             self.k_parentp = i-1
         else:
             print( "No Type parent for Where" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1083,33 +1091,34 @@ class KpWhere(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_type[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_type[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_type[ self.k_parentp ] )
         if what[0] == "attr" and self.k_attrp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_attr[ self.k_attrp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_attr[ self.k_attrp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_attr[ self.k_attrp ] )
         if what[0] == "id" and self.k_idp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_attr[ self.k_idp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_attr[ self.k_idp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_attr[ self.k_idp ] )
         if what[0] == "from_id" and self.k_from_idp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_attr[ self.k_from_idp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_attr[ self.k_from_idp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_attr[ self.k_from_idp ] )
         if what[0] == "table" and self.k_tablep >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_table[ self.k_tablep ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_table[ self.k_tablep ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_table[ self.k_tablep ] )
         return( ret )
 
 class KpLogic(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_logic)
@@ -1129,6 +1138,7 @@ class KpLogic(Kp):
             self.k_parentp = i-1
         else:
             print( "No Type parent for Logic" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1149,18 +1159,19 @@ class KpLogic(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_type[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_type[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_type[ self.k_parentp ] )
         if what[0] == "attr" and self.k_attrp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_attr[ self.k_attrp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_attr[ self.k_attrp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_attr[ self.k_attrp ] )
         return( ret )
 
 class KpDomain(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_domain)
@@ -1200,27 +1211,28 @@ class KpDomain(Kp):
         if what[0] == "Model":
             for i in range( self.model_from, self.model_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_model[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_model[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_model[i] )
         if what[0] == "Frame_domain":
             for i in range( len( glob.dats.ap_frame ) ):
                 if glob.dats.ap_frame[i].k_domainp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_frame[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_frame[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_frame[i] )
         if what[0] == "A_domain":
             for i in range( len( glob.dats.ap_a ) ):
                 if glob.dats.ap_a[i].k_domainp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_a[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_a[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_a[i] )
         return( ret )
 
 class KpModel(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_model)
@@ -1244,6 +1256,7 @@ class KpModel(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Domain parent for Model" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1271,32 +1284,33 @@ class KpModel(Kp):
         if what[0] == "Frame":
             for i in range( self.frame_from, self.frame_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_frame[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_frame[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_frame[i] )
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_domain[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_domain[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_domain[ self.k_parentp ] )
         if what[0] == "A_model":
             for i in range( len( glob.dats.ap_a ) ):
                 if glob.dats.ap_a[i].k_modelp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_a[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_a[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_a[i] )
         if what[0] == "Use_model":
             for i in range( len( glob.dats.ap_use ) ):
                 if glob.dats.ap_use[i].k_modelp == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_use[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_use[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_use[i] )
         return( ret )
 
 class KpFrame(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_frame)
@@ -1323,6 +1337,7 @@ class KpFrame(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Model parent for Frame" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1348,30 +1363,31 @@ class KpFrame(Kp):
         if what[0] == "A":
             for i in range( self.a_from, self.a_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_a[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_a[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_a[i] )
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_model[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_model[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_model[ self.k_parentp ] )
         if what[0] == "domain" and self.k_domainp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_domain[ self.k_domainp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_domain[ self.k_domainp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_domain[ self.k_domainp ] )
         if what[0] == "Use_frame":
             for i in range( len( glob.dats.ap_use ) ):
                 if glob.dats.ap_use[i].k_framep == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_use[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_use[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_use[i] )
         return( ret )
 
 class KpA(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_a)
@@ -1398,6 +1414,7 @@ class KpA(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Frame parent for A" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1425,35 +1442,36 @@ class KpA(Kp):
         if what[0] == "Use":
             for i in range( self.use_from, self.use_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_use[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_use[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_use[i] )
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_frame[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_frame[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_frame[ self.k_parentp ] )
         if what[0] == "model" and self.k_modelp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_model[ self.k_modelp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_model[ self.k_modelp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_model[ self.k_modelp ] )
         if what[0] == "domain" and self.k_domainp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_domain[ self.k_domainp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_domain[ self.k_domainp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_domain[ self.k_domainp ] )
         if what[0] == "Use_a":
             for i in range( len( glob.dats.ap_use ) ):
                 if glob.dats.ap_use[i].k_ap == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_use[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_use[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_use[i] )
         return( ret )
 
 class KpUse(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_use)
@@ -1476,6 +1494,7 @@ class KpUse(Kp):
             self.k_parentp = i-1
         else:
             print( "No A parent for Use" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1500,28 +1519,29 @@ class KpUse(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_a[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_a[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_a[ self.k_parentp ] )
         if what[0] == "frame" and self.k_framep >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_frame[ self.k_framep ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_frame[ self.k_framep ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_frame[ self.k_framep ] )
         if what[0] == "a" and self.k_ap >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_a[ self.k_ap ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_a[ self.k_ap ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_a[ self.k_ap ] )
         if what[0] == "model" and self.k_modelp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_model[ self.k_modelp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_model[ self.k_modelp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_model[ self.k_modelp ] )
         return( ret )
 
 class KpGrid(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_grid)
@@ -1561,27 +1581,28 @@ class KpGrid(Kp):
         if what[0] == "Col":
             for i in range( self.col_from, self.col_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_col[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_col[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_col[i] )
         if what[0] == "Col_name":
             for i in range( len( glob.dats.ap_col ) ):
                 if glob.dats.ap_col[i].k_namep == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_col[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_col[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_col[i] )
         if what[0] == "R_name":
             for i in range( len( glob.dats.ap_r ) ):
                 if glob.dats.ap_r[i].k_namep == self.me:
                     if len(what) > 1:
-                        ret.append( glob.dats.ap_r[i].get_list(glob, what[1:], act) )
+                        ret.extend( glob.dats.ap_r[i].get_list(glob, what[1:], act) )
                     else:
                         ret.append( glob.dats.ap_r[i] )
         return( ret )
 
 class KpCol(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_col)
@@ -1608,6 +1629,7 @@ class KpCol(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Grid parent for Col" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1629,23 +1651,24 @@ class KpCol(Kp):
         if what[0] == "R":
             for i in range( self.r_from, self.r_to ):
                 if len(what) > 1:
-                    ret.append( glob.dats.ap_r[i].get_list(glob, what[1:], act) )
+                    ret.extend( glob.dats.ap_r[i].get_list(glob, what[1:], act) )
                 else:
                     ret.append( glob.dats.ap_r[i] )
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_grid[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_grid[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_grid[ self.k_parentp ] )
         if what[0] == "name" and self.k_namep >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_grid[ self.k_namep ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_grid[ self.k_namep ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_grid[ self.k_namep ] )
         return( ret )
 
 class KpR(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_r)
@@ -1668,6 +1691,7 @@ class KpR(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Col parent for R" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1688,18 +1712,19 @@ class KpR(Kp):
         ret = []
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_col[ self.k_parentp ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_col[ self.k_parentp ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_col[ self.k_parentp ] )
         if what[0] == "name" and self.k_namep >= 0:
             if len(what) > 1:
-                ret.append( glob.dats.ap_grid[ self.k_namep ].get_list(glob, what[1:], act) )
+                ret.extend( glob.dats.ap_grid[ self.k_namep ].get_list(glob, what[1:], act) )
             else:
                 ret.append( glob.dats.ap_grid[ self.k_namep ] )
         return( ret )
 
 class KpActor(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len( act.kp_all )
         self.me = len( act.ap_actor )
@@ -1722,82 +1747,9 @@ class KpActor(Kp):
     def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
         return( [] )
 
-class KpDbcreate(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_dbcreate)
-        self.k_where = ff.getw( ff.lines[ln], 1 )
-        self.k_tbl = ff.getw( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Dbcreate" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpDbload(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_dbload)
-        self.k_where = ff.getw( ff.lines[ln], 1 )
-        self.k_tbl = ff.getw( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Dbload" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpDbselect(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_dbselect)
-        self.k_actorp = -1
-        self.k_actor = ff.getw( ff.lines[ln], 1 )
-        self.k_where = ff.getw( ff.lines[ln], 1 )
-        self.k_what = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Dbselect" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
 class KpAll(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_all)
@@ -1812,6 +1764,7 @@ class KpAll(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for All" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1824,6 +1777,7 @@ class KpAll(Kp):
 
 class KpDu(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_du)
@@ -1837,79 +1791,7 @@ class KpDu(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Du" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpNew(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_new)
-        self.k_where = ff.getw( ff.lines[ln], 1 )
-        self.k_what = ff.getw( ff.lines[ln], 1 )
-        self.k_line = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for New" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpRefs(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_refs)
-        self.k_where = ff.getw( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Refs" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpVar(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_var)
-        self.k_attr = ff.getw( ff.lines[ln], 1 )
-        self.k_eq = ff.getw( ff.lines[ln], 1 )
-        self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Var" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1922,6 +1804,7 @@ class KpVar(Kp):
 
 class KpIts(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_its)
@@ -1936,6 +1819,7 @@ class KpIts(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Its" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1948,6 +1832,7 @@ class KpIts(Kp):
 
 class KpC(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_c)
@@ -1959,6 +1844,7 @@ class KpC(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for C" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1971,6 +1857,7 @@ class KpC(Kp):
 
 class KpCs(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cs)
@@ -1982,6 +1869,7 @@ class KpCs(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Cs" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1994,6 +1882,7 @@ class KpCs(Kp):
 
 class KpCf(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cf)
@@ -2005,54 +1894,7 @@ class KpCf(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Cf" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpInclude(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_include)
-        self.k_opt = ff.getw( ff.lines[ln], 1 )
-        self.k_file = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Include" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpStore(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_store)
-        self.k_pad = ff.getw( ff.lines[ln], 1 )
-        self.k_var = ff.getw( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Store" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -2065,6 +1907,7 @@ class KpStore(Kp):
 
 class KpOut(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_out)
@@ -2078,6 +1921,7 @@ class KpOut(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Out" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -2090,12 +1934,14 @@ class KpOut(Kp):
 
 class KpBreak(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_break)
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_pad = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
+        self.k_check = ff.getw( ff.lines[ln], 1 )
         self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
@@ -2103,107 +1949,7 @@ class KpBreak(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Break" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpUnique(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_unique)
-        self.k_cmd = ff.getw( ff.lines[ln], 1 )
-        self.k_key = ff.getw( ff.lines[ln], 1 )
-        self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Unique" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpCollect(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_collect)
-        self.k_cmd = ff.getw( ff.lines[ln], 1 )
-        self.k_pocket = ff.getw( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Collect" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpHash(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_hash)
-        self.k_cmd = ff.getw( ff.lines[ln], 1 )
-        self.k_pocket = ff.getw( ff.lines[ln], 1 )
-        self.k_key = ff.getw( ff.lines[ln], 1 )
-        self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Hash" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpGroup(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_group)
-        self.k_cmd = ff.getw( ff.lines[ln], 1 )
-        self.k_pocket = ff.getw( ff.lines[ln], 1 )
-        self.k_key = ff.getw( ff.lines[ln], 1 )
-        self.k_value = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Group" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -2216,10 +1962,10 @@ class KpGroup(Kp):
 
 class KpAdd(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_add)
-        self.k_pocket = ff.getw( ff.lines[ln], 1 )
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_item = ff.getw( ff.lines[ln], 1 )
         self.k_data = ff.getws( ff.lines[ln], 1 )
@@ -2230,6 +1976,7 @@ class KpAdd(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Add" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -2242,10 +1989,10 @@ class KpAdd(Kp):
 
 class KpClear(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_clear)
-        self.k_pocket = ff.getw( ff.lines[ln], 1 )
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_item = ff.getw( ff.lines[ln], 1 )
         self.k_data = ff.getws( ff.lines[ln], 1 )
@@ -2256,6 +2003,7 @@ class KpClear(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Clear" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -2268,10 +2016,10 @@ class KpClear(Kp):
 
 class KpCheck(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_check)
-        self.k_pocket = ff.getw( ff.lines[ln], 1 )
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_item = ff.getw( ff.lines[ln], 1 )
         self.k_data = ff.getws( ff.lines[ln], 1 )
@@ -2282,81 +2030,7 @@ class KpCheck(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Check" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpJson(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_json)
-        self.k_cmd = ff.getw( ff.lines[ln], 1 )
-        self.k_pocket = ff.getw( ff.lines[ln], 1 )
-        self.k_file = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Json" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpYaml(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_yaml)
-        self.k_cmd = ff.getw( ff.lines[ln], 1 )
-        self.k_pocket = ff.getw( ff.lines[ln], 1 )
-        self.k_file = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Yaml" )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        return("??", True)
-
-    def get_list(self, glob: GlobT, what: List[str], act: int) -> list:
-        return( [] )
-
-class KpXml(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_xml)
-        self.k_cmd = ff.getw( ff.lines[ln], 1 )
-        self.k_pocket = ff.getw( ff.lines[ln], 1 )
-        self.k_file = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_actor )
-        if i > 0:
-            act.ap_actor[i-1].all_to = self.me2 + 1
-            self.k_parentp = i-1
-        else:
-            print( "No Actor parent for Xml" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)

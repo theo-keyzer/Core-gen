@@ -32,30 +32,35 @@ def main():
     for i in range(0, len(sys.argv) ):
         dat.names[ str(i) ] = sys.argv[i]
 
-#    gen.new_act(glob, "")
-#    ret = gen.go_act(dat, glob, 0)
-
     domains = structs.do_all(glob, ["Domain"], 0)
     for domain in domains:
-        models = domain.get_list(glob, ["Model", "Frame", "A"], 0)
-        for model in models:
-            for frame in model:
-                for k_a in frame:
-                    vname = k_a.get_var(glob.dats, ["name"], lno)
-                    vmodel = k_a.get_var(glob.dats, ["model", "name"], lno)
-                    vdomain = k_a.get_var(glob.dats, ["domain","name"], lno)
-                    vinfo = k_a.get_var(glob.dats, ["model", "info"], str( sys._getframe().f_lineno ) )
-                    if vmodel[1] == True:
-                        continue
-                    print( vname[0] + " " + vdomain[0] + " " + vmodel[0] + " - " + vinfo[0] )
+        k_as = domain.get_list(glob, ["Model", "Frame", "A"], 0)
+        for k_a in k_as:
+            vmodel = k_a.get_var(glob.dats, ["model", "name"], lno)
+            if vmodel[1] == True:
+                continue
+            vname = v(glob, k_a, "name")
+            vdomain = v(glob, k_a, "domain.name")
+            vinfo = v(glob, k_a, "model.info")
+            print( vname + " " + vdomain + " " + vmodel[0] + " - " + vinfo )
+
     if glob.load_errs or glob.run_errs:
         print('Errors')
         sys.exit(1)
+
+def v(glob,kp,name) -> str:
+    lno = str( sys._getframe().f_back.f_lineno )
+    names = name.split('.')
+    val = kp.get_var(glob.dats, names, lno)
+    return( val[0] )
+
 try:
     main()
 except Exception as e:
     print("An error occurred:", e)
 
 
+# str( sys._getframe().f_lineno )
+# str( sys._getframe().f_back.f_lineno )
 
 
