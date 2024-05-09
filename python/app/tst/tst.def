@@ -24,10 +24,10 @@ Matrix C C A for 4
 Node n1  parent  . v = 9
 Node n11 parent n1 v = 9
  Link n22
-Node n12 parent n1 v = 9
+Node n12 parent n1 v = 7
 
 Node n2   parent   . v = 9
-Node n21  parent  n2 v = 9
+Node n21  parent  n2 v = 3
  Link n11
 Node n22  parent  n2 v = 9
 Node n221 parent n22 v = 9
@@ -50,14 +50,6 @@ Field . t2f1 VAR display normal,grid
 
 Join t2f1 tb1 t1f1 for grid
 Join t2f1 tb1 t1f1 for grid
-
-----------------------------------------------------------------
-Table Open as op
-----------------------------------------------------------------
-
-Field User user VAR
-
--Of user location_id location_name = test
 
 
 

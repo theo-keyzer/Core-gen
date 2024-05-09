@@ -23,14 +23,12 @@ Its Model disp_col
 Actor disp_col . ._depth != 6
 ----------------------------------------------------------------
 
-
-Add set M ${.domain.name} :${name}
+Add set M ${._depth} ${name}
 Break cmds of . True
 
 Out delay
 
 C Frame ${._depth}  ${name}  ${pad}  ${info}
--C Frame 5 ${name}  ${pad}  ${info}
 
 Its Frame.A disp_items
 Its A_model.parent.parent disp_col
@@ -46,7 +44,8 @@ Its ._set.items disp_item
 Actor disp_item . ._str = ${.disp_items.model}
 ----------------------------------------------------------------
 
-Unique add DI ${.disp_items.k_me}
+Add set DI ${._depth} ${.disp_items.k_me}
+Break cmds of . True
 
 C   A ${.disp_items.model} :${.disp_items.name}  ${.disp_items.pad}  ${.disp_items.info}
 

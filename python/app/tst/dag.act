@@ -1,0 +1,78 @@
+----------------------------------------------------------------
+Actor arg
+----------------------------------------------------------------
+
+All Node sort
+Its ._list.S disp_col
+
+C
+
+----------------------------------------------------------------
+Actor sort Node
+----------------------------------------------------------------
+
+Add set D
+Break cmds for . True
+All Node sort_item 
+
+----------------------------------------------------------------
+Actor sort_item Node
+----------------------------------------------------------------
+
+Add set D
+Break cmds for . True
+Its Link_to.parent sort_item
+Add list S
+
+----------------------------------------------------------------
+Actor disp_col
+----------------------------------------------------------------
+
+Add set A
+Break cmds for . True
+
+C ${._arg}  ${name}  - ${var}  ${eq}  ${value}
+
+Out delay
+
+C ${._arg}  {
+
+Its Link.to disp_col  ${._arg}
+
+C ${._arg}  }
+
+----------------------------------------------------------------
+
+E_O_F
+
+In tst.def:
+
+Node n1  parent  . v = 9
+Node n11 parent n1 v = 9
+ Link n22
+Node n12 parent n1 v = 9
+
+Node n2   parent   . v = 9
+Node n21  parent  n2 v = 9
+ Link n11
+Node n22  parent  n2 v = 9
+Node n221 parent n22 v = 9
+ Link n1
+
+Out dag.a:
+
+ n221 - v = 9
+ {
+  n1 - v = 9
+ }
+ n21 - v = 9
+ {
+  n11 - v = 9
+  {
+   n22 - v = 9
+  }
+ }
+ n12 - v = 9
+ n2 - v = 9
+ 
+
