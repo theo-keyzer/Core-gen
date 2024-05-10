@@ -8,3 +8,7 @@ python ../src/main.py view.act sample.def >user.sql
 python ../src/main.py  dag.act tst.def
 python ../src/main.py tst2.act tst.def,sample.def a b c d
 
+python ../src/main.py md.act gen.def >gen.md
+python ../src/main.py latex.act gen.def >gen.tex
+python ../src/main.py grid.act grid.def
+

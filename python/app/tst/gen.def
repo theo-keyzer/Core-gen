@@ -1,0 +1,129 @@
+----------------------------------------------------------------
+Grid Startup inlet/startup Start.
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+Grid Variable inlet/var Variable names.
+----------------------------------------------------------------
+
+Col Purpose 1 1 . The use cases.
+
+R Output   .  print variable value.
+R Match    .  compare value.
+
+Col Special 1 1 - Special variable names are prefixed by (.).
+
+R Global      .  .Node.item.var The item index name of a Node.
+R Window      .  .actor, the def of the actor.
+R Collections .  .Json, loaded json file.
+R Counters    .  .+, loop counter.
+R Depth       .  .depth, the actor stack depth.
+R Arg         .  .arg, argument passed from previous actor.
+R Conditional .  .0, first or rest of loop counter.
+R Eval        .  \$, the content is re evaluated.
+R Optional    .  ?, no error on var.
+
+Col Errors 1 1 inlet/var_err Variable name errors.
+
+----------------------------------------------------------------
+Grid Actor inlet/actor The actors
+----------------------------------------------------------------
+
+Col Purpose 1 1 . Use cases.
+
+R Navigate .  call actor with a def.
+R Collect  .  collect defs or strings.
+R Limit    .  break out of loops.
+R Print    .  print output text.
+
+Col name 1 1 . Command names.
+
+R All      .  actor call with all nodes of type.
+R Its      .  actor call with defs related to current node.
+R Du       .  actor call with the current node.
+R C        .  print output line.
+R Cs       .  print output with no new line.
+R Unique   .  end actor if item is not unique.
+R Collect  .  add def to a collection.
+R Group    .  add strings to a group.
+R Break    .  break out of the actor.
+R Include  .  include file context to output.
+R Out      .  delay or omitting output based on further output.
+R New      .  add new node to input data.
+R Refs     .  run loader refs after adding new nodes.
+R Var      .  create new variable in the current node.
+R Dbcreate .  create table in database from current node's def.
+R Dbload   .  load current node's data into the database.
+R Dbselect .  select data from the database.
+R Dbits    .  same format as Its, but uses the database - todo idea
+R Dbrefs   .  same as Refs, but for the database - todo idea
+
+Col Var 2 2 inlet/var_cmd Var command.
+Col Collect 2 2 inlet/collections Collection commands.
+Col Break 2 2 inlet/break_cmd Break command.
+Col Condition 2 2 inlet/break_condition Break condition.
+
+Col Call 1 1 inlet/actor_calls Actor calls.
+Col Loop 2 2 inlet/loop_counter Loop counter.
+
+Col Match 1 1 inlet/actor_match Actor matching.
+
+Col Matching 2 2 . Match cases.
+
+R Equal  .  =, var equal to value.
+R In     .  in or has, var is in a list 
+
+----------------------------------------------------------------
+Grid Input . Input files.
+----------------------------------------------------------------
+
+Col File   1 1 inlet/input_files Input files.
+Col Other  1 1 inlet/other_input_files Other input.
+Col Errors 1 1 inlet/load_err Load errors.
+
+Col Types 1 1 . Data type
+
+R Word     . C1, word.
+R String   . V1, string to end of line.
+R Ref      . R1, link to top level comp - Find - needs a Ref.
+R Local    . F1, link to local comp - same parent - needs a Ref.
+R Indirect . L1, link to child of previous link - R1 for first, L1 for chain - needs a Ref2.
+R Multi    . M1, ref to local node of an element of R1 of a node that has a L1 ref - needs a Ref3.
+R Nest     . N1, control field of a nested node.
+R Parent   . Q1, links to a node where the node's parent is referenced by a field that is in the link's parent node.
+
+Col Nest 1 1 inlet/nest Node nesting.
+
+----------------------------------------------------------------
+Grid Window . Actor stack windows
+----------------------------------------------------------------
+
+Col Purpose 1 1 . Use cases.
+
+R Store  .  stores values needed.
+R Stack  .  window are stored on the calling stack.
+R Access .  access to stack items.
+
+Col name 1 1 . Window variables.
+
+R name     . actor name
+R cnt      . loop counter
+R dat      . node instance
+R attr     . node variable
+R eq       . equation
+R value    . compare value
+R arg      . argument passed from previos actor
+R flno     . line number of the calling actor
+R is\_on   . out delay is on
+R is\_trig . out delay is triggered
+R is\_prev . previous actor has trigger
+R on\_pos  . cmd index for trigger
+R cur\_pos . current cmd index
+R cur\_act . current actor index
+
+----------------------------------------------------------------
+Grid Refs inlet/refs refs
+----------------------------------------------------------------
+
+
+
