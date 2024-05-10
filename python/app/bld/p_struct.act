@@ -193,15 +193,10 @@ Its Refu ref_func
 Its Ref_comp other_func
 Its Ref2_comp other_func
 Its Refu_comp other_func
+Its Element nested
 
 C         return(0)
 C
-
-----------------------------------------------------------------
-Actor parent_field_p Comp
-----------------------------------------------------------------
-
-C     var parentp : Int
 
 ----------------------------------------------------------------
 Actor val_inc3 Element mw in R1,F1,L1,M1,Q1,U0,RS,FS,LS,MS,QS
@@ -397,6 +392,54 @@ C         if what[0] == "${element.name}l" and self.k_${element.name}lp >= 0:
 C             if len(what) > 1:
 C                 return( glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ].do_its(glob, what[1:], act) )
 C             return( go_act(glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ], glob, act) )
+
+----------------------------------------------------------------
+Actor nested Element mw in N1,NS
+----------------------------------------------------------------
+
+C         if what[0] == "${name}l":
+C             try:
+C                 isin = False
+C                 pos = int( self.names[ "${name}l" ] )
+C                 if pos == 0:
+C                     return( 0 )
+
+Du nested_p
+
+C                     st = glob.dats.ap_${.struct.name}l[i]
+C                     if self.me == st.me:
+C                         isin = True
+C                         continue
+C                     if isin == False:
+C                         continue
+C                     pos2 = int( st.names[ "${name}l" ] )
+C                     if pos2 == 0:
+C                         continue
+C                     if pos2 <= pos:
+C                         break
+C                     if pos2 == (pos+1):
+C                         ret = go_act(st, glob, act)
+C                         if ret != 0:
+C                             return(ret)
+C             except:
+C                 return(0)
+
+----------------------------------------------------------------
+Actor nested_p Element parent.parent.name !?
+----------------------------------------------------------------
+
+C                 if self.k_parentp < 0:
+C                     return(0)
+C                 par = glob.dats.ap_${parent.parent.name}l[ self.k_parentp ]
+C                 for i in range( par.${.struct.name}l_from, par.${.struct.name}l_to ):
+
+Break
+
+----------------------------------------------------------------
+Actor nested_p Element
+----------------------------------------------------------------
+
+C                 for i in range( len( glob.dats.ap_${.struct.name}l ) ):
 
 
 

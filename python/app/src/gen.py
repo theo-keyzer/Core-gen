@@ -4,6 +4,8 @@ class WinT:
     def __init__(self):
         self.dat = structs.Kp()
         self.name = ""
+        self.item = ""
+        self.arg = ""
         self.lcnt = 0
         self.brk_act = False
         self.cur_act = 0
@@ -21,7 +23,6 @@ def new_act(glob, arg):
     glob.wins[winp].arg = arg
     glob.wins[winp].lcnt = -1
     glob.wins[winp].brk_act = False
-    glob.wins[winp].is_check = False
     if winp == 0:
         return
     if glob.wins[winp - 1].is_on or glob.wins[winp - 1].is_prev:
@@ -70,6 +71,7 @@ def go_cmds(dat, glob, act: int) -> int:
     glob.wins[glob.winp].is_on = False
     glob.wins[glob.winp].is_trig = False
     glob.wins[glob.winp].on_pos = -1
+    glob.wins[glob.winp].is_check = False
     for c in range(glob.acts.ap_actor[act].all_from, glob.acts.ap_actor[act].all_to):
         glob.wins[glob.winp].cur_pos = c
         cmd = glob.acts.kp_all[c]
@@ -98,22 +100,53 @@ def go_cmds(dat, glob, act: int) -> int:
             ret = structs.do_all(glob, what, all.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
-        elif isinstance(cmd,structs.KpIts):
+        elif isinstance(cmd,structs.KpThis):
             its = cmd
             what = its.k_what.split(".")
-            new_act(glob, its.k_args)
-            if len( what ) > 2 and len( what[0] ) == 0:
-                if what[1] == "_set" and what[2] in glob.sets:
-                    for sts in glob.sets[ what[2] ]:
-                        ret = go_act(sts,glob, its.k_actorp)
+            val = strs(glob, its.k_args, glob.winp, cmd.line_no)
+            new_act(glob, val)
+            col = ""
+            if what[0] == "set":
+                col = glob.sets
+            elif what[0] == "list":
+                col = glob.lists
+            elif what[0] == "var":
+                col = glob.vars
+            else:
+                continue
+            if len(what) > 1:
+                if what[1] in col:
+                    glob.wins[glob.winp+1].item = what[1]
+                    poc = col[ what[1] ]
+                    if what[0] == "var":
+                        ret = go_act(poc, glob, its.k_actorp)
                         if ret > 1 or ret < 0:
                             return ret
-                if what[1] == "_list" and what[2] in glob.lists:
-                    for sts in glob.lists[ what[2] ]:
+                        continue
+                    for sts in poc:
                         ret = go_act(sts,glob, its.k_actorp)
                         if ret > 1 or ret < 0:
                             return ret
                 continue
+            keys = list(col.keys())
+            for key in keys:
+                glob.wins[glob.winp+1].item = key
+                poc = col[ key ]
+                if what[0] == "var":
+                    ret = go_act(poc, glob, its.k_actorp)
+                    if ret > 1 or ret < 0:
+                        return ret
+                    continue
+                for sts in poc:
+                    ret = go_act(sts,glob, its.k_actorp)
+                    if ret > 1 or ret < 0:
+                        return ret
+            continue
+        elif isinstance(cmd,structs.KpIts):
+            its = cmd
+            what = its.k_what.split(".")
+            val = strs(glob, its.k_args, glob.winp, cmd.line_no)
+            new_act(glob, val)
             ret = dat.do_its(glob, what, its.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
@@ -290,6 +323,8 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( glob.wins[winp].dat, False )
         if ss[1] == "_arg":
             return( glob.wins[winp].arg, False )
+        if ss[1] == "_key":
+            return( glob.wins[winp].item, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )
         if ss[1] == '-':

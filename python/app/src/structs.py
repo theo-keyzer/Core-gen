@@ -34,6 +34,7 @@ class ActT:
         self.ap_all = []
         self.ap_du = []
         self.ap_its = []
+        self.ap_this = []
         self.ap_c = []
         self.ap_cs = []
         self.ap_cf = []
@@ -1505,6 +1506,33 @@ class KpFrame(Kp):
                     ret = go_act(glob.dats.ap_use[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "group":
+            try:
+                isin = False
+                pos = int( self.names[ "group" ] )
+                if pos == 0:
+                    return( 0 )
+                if self.k_parentp < 0:
+                    return(0)
+                par = glob.dats.ap_model[ self.k_parentp ]
+                for i in range( par.frame_from, par.frame_to ):
+                    st = glob.dats.ap_frame[i]
+                    if self.me == st.me:
+                        isin = True
+                        continue
+                    if isin == False:
+                        continue
+                    pos2 = int( st.names[ "group" ] )
+                    if pos2 == 0:
+                        continue
+                    if pos2 <= pos:
+                        break
+                    if pos2 == (pos+1):
+                        ret = go_act(st, glob, act)
+                        if ret != 0:
+                            return(ret)
+            except:
+                return(0)
         return(0)
 
 class KpA(Kp):
@@ -1801,6 +1829,60 @@ class KpCol(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_grid[ self.k_namep ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_grid[ self.k_namep ], glob, act) )
+        if what[0] == "index":
+            try:
+                isin = False
+                pos = int( self.names[ "index" ] )
+                if pos == 0:
+                    return( 0 )
+                if self.k_parentp < 0:
+                    return(0)
+                par = glob.dats.ap_grid[ self.k_parentp ]
+                for i in range( par.col_from, par.col_to ):
+                    st = glob.dats.ap_col[i]
+                    if self.me == st.me:
+                        isin = True
+                        continue
+                    if isin == False:
+                        continue
+                    pos2 = int( st.names[ "index" ] )
+                    if pos2 == 0:
+                        continue
+                    if pos2 <= pos:
+                        break
+                    if pos2 == (pos+1):
+                        ret = go_act(st, glob, act)
+                        if ret != 0:
+                            return(ret)
+            except:
+                return(0)
+        if what[0] == "group":
+            try:
+                isin = False
+                pos = int( self.names[ "group" ] )
+                if pos == 0:
+                    return( 0 )
+                if self.k_parentp < 0:
+                    return(0)
+                par = glob.dats.ap_grid[ self.k_parentp ]
+                for i in range( par.col_from, par.col_to ):
+                    st = glob.dats.ap_col[i]
+                    if self.me == st.me:
+                        isin = True
+                        continue
+                    if isin == False:
+                        continue
+                    pos2 = int( st.names[ "group" ] )
+                    if pos2 == 0:
+                        continue
+                    if pos2 <= pos:
+                        break
+                    if pos2 == (pos+1):
+                        ret = go_act(st, glob, act)
+                        if ret != 0:
+                            return(ret)
+            except:
+                return(0)
         return(0)
 
 class KpR(Kp):
@@ -1954,6 +2036,34 @@ class KpIts(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Its" )
+            self.err = True
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        return(0)
+
+class KpThis(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_this)
+        self.k_actorp = -1
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_actor = ff.getw( ff.lines[ln], 1 )
+        self.k_args = ff.getws( ff.lines[ln], 1 )
+        self.k_parentp = -2
+        i = len( act.ap_actor )
+        if i > 0:
+            act.ap_actor[i-1].all_to = self.me2 + 1
+            self.k_parentp = i-1
+        else:
+            print( "No Actor parent for This" )
             self.err = True
 
     def get_me2(self) -> int:

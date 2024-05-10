@@ -151,7 +151,9 @@ This is the same example as above as used by some of the other versions.
 They use the `Refq` that is not in this version. Just does more in one step.
 Just here to explain how it worked and how to translate older examples to here.
 
-At this point it seemed that multiple steps is better because it can handle more variations and easier to work with.
+The `group` element with the `N1` is a nested field. With the `Its group`, it can get to its 
+sub nodes with a value one higher than the current one, up to the one with the same level. The values of zero are skipped.
+Previous versions had more directions to navigate.
 
 From the `gen.unit` file of the base generator
 
@@ -214,9 +216,13 @@ then it will be an error. If it is `?`, then there is no error.
 Otherwise it is the optional value to use when none. It is an error if not found and the value looking for is different to this.
 It can be `(.)` or anything else like `None`.
 
+The actor match also has a `?` to match an variable not found error. The `!?`, matches with no error.
+May be it should be the other way round. Any way, there is no `not found` error.
+Need some more work on detecting errors - helps on building larger systems.
+
 Variables can't use values from child nodes (this version). If needed, navigate with the `Its` and 
-store that node with the `Store in Lookup` command.
-Then later when needed, use the variable `${.Lookup.name}` to get the `name` value of the stored node.
+store that node with the `Add var Lookup` command.
+Then later when needed, use the variable `${._var.Lookup.name}` to get the `name` value of the stored node.
 
 The `Break` command if the most mystifying of them all. Every version has a diffrent implentation of it.
 And going back to some older version's code base means its not clear what it does.
@@ -249,9 +255,14 @@ A flag gets set in the window stack if a duplicate was added.
 Previous versions, the `Unique,Check` commands had the `Break` builtin.
 
 `Clear set S` to empty it.
-`Its ._set.S actor` to call an actor with the set items, for strings, use `${._str}` for the item's value.
+`This set.S actor` to call an actor with the set items, for strings in the calling actor, use `${._str}` for the item's value.
 The `(_)` is there to not be an actor name. `${._arg}` is the value of the argument passes to this actor.
-Can also add a `list option`.
+The `${._key}` variable is the value of the key used for when all keys are used ( `This list actor` ).
+The previous versions use the `All` instead of the `This` command for this.
+
+The `match1.act` is to get a new note from items related to the given keywords.
+This can be edited and added to the the `notes.def` file.
+The `name` of `A` is the most relatavant word in the `info` field.
 
 
 There is also a `p_struct2.act`  in the `app/bld` that is intended to be used by an standalone app that does not use the `gen.py`

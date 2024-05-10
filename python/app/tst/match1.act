@@ -38,7 +38,8 @@ Its Frame.A.model disp_col
 Actor disp_items
 ----------------------------------------------------------------
 
-Its ._set.items disp_item
+-Its ._set.items disp_item
+This set.items disp_item
 
 ----------------------------------------------------------------
 Actor disp_item . ._str = ${.disp_items.model}

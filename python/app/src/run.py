@@ -130,6 +130,10 @@ def load(act, ff: Input, tok: str, ln: int, lno: str):
             kp = structs.KpIts(ff, ln, act, lno)
             act.ap_its.append(kp)
             act.kp_all.append(kp)
+        if tok == "This":
+            kp = structs.KpThis(ff, ln, act, lno)
+            act.ap_this.append(kp)
+            act.kp_all.append(kp)
         if tok == "C":
             kp = structs.KpC(ff, ln, act, lno)
             act.ap_c.append(kp)
@@ -298,9 +302,7 @@ def ref(act) -> bool:
             p = act.ap_col[i].names[ "name" ]
             act.ap_col[i].k_namep = act.index["Grid_" + p]
         except:
-            if p != ".":
-                print("Grid_" + p + " not found " + act.ap_col[i].line_no)
-                err = True
+            pass
 
     for i in range( len(act.ap_r) ):
         p = ""
@@ -309,9 +311,7 @@ def ref(act) -> bool:
             p = act.ap_r[i].names[ "name" ]
             act.ap_r[i].k_namep = act.index["Grid_" + p]
         except:
-            if p != ".":
-                print("Grid_" + p + " not found " + act.ap_r[i].line_no)
-                err = True
+            pass
 
     for i in range( len(act.ap_all) ):
         try:
@@ -338,6 +338,15 @@ def ref(act) -> bool:
             act.ap_its[i].k_actorp = act.index["Actor_" + p]
         except:
             print("Actor_" + p + " not found " + act.ap_its[i].line_no)
+            err = True
+
+    for i in range( len(act.ap_this) ):
+        try:
+            act.ap_this[i].k_actorp = -2
+            p = act.ap_this[i].k_actor
+            act.ap_this[i].k_actorp = act.index["Actor_" + p]
+        except:
+            print("Actor_" + p + " not found " + act.ap_this[i].line_no)
             err = True
 
     return(err)

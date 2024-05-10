@@ -3,7 +3,8 @@ Actor arg
 ----------------------------------------------------------------
 
 All Node sort
-Its ._list.S disp_col
+-Its ._list.S disp_col
+This list.S disp_col
 
 C
 
@@ -27,6 +28,8 @@ Add list S
 ----------------------------------------------------------------
 Actor disp_col
 ----------------------------------------------------------------
+
+C  - ${._key}
 
 Add set A
 Break cmds for . True

@@ -7,15 +7,15 @@ All Domain domain
 
 C Found item ${._var.find.model.info}  ${._var.val} 
 
-Its ._set.finds tst_finds
-Its ._list.finds tst_finds
-Its ._set.uniq tst_finds_str
+This set.finds tst_finds
+This list.finds tst_finds
+This set.uniq tst_finds_str
 
 Add set.split., A 2,3,4
-Its ._set.A tst_finds_str
+This set.A tst_finds_str
 Clear set A
 Add set.split A 5.6.7
-Its ._set.A tst_finds_str
+This set.A tst_finds_str
 
 ----------------------------------------------------------------
 Actor tst_finds

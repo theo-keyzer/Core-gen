@@ -39,9 +39,6 @@ Comp A parent Frame FindIn
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
--Refq model Model domain Frame ?
-
-
 Refu domain Domain parent Frame domain .
 Ref2 model Model domain ?
 
@@ -58,9 +55,6 @@ Comp Use parent A
 
 Refu model Model parent A model .
 Ref2 frame Frame model .
-
--Refq frame Frame model A .
-
 Ref2 a A frame .
 
 ----------------------------------------------------------------
@@ -81,7 +75,7 @@ Comp Col parent Grid FindIn
 	Element file       C1 WORD       * optional file to include
 	Element info       V1 WORD       * info
 
-Ref name Grid .
+Ref name Grid ?
 
 ----------------------------------------------------------------
 Comp R parent Col FindIn
@@ -91,5 +85,5 @@ Comp R parent Col FindIn
 	Element file       C1 WORD       * optional file to include
 	Element info       V1 WORD       * info
 
-Ref name Grid .
+Ref name Grid ?
 
