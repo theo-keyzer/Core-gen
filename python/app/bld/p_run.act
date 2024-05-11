@@ -56,7 +56,7 @@ C             act.ap_${name}l.append(kp)
 C             act.kp_all.append(kp)
 
 ----------------------------------------------------------------
-Actor refs . parent.name = Actor
+Actor refs . parent = Actor
 ----------------------------------------------------------------
 
 Out delay

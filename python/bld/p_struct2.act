@@ -5,7 +5,6 @@ Actor main .
 C from typing import Dict, List
 C
 C from inputs import Input
-C from gen import go_act
 C
 C # for stand alone apps
 C
@@ -66,7 +65,7 @@ All Comp all
 C     return ret
 
 ----------------------------------------------------------------
-Actor all Comp  parent.name != Actor
+Actor all Comp  parent != Actor
 ----------------------------------------------------------------
 
 C     if what[0] == "${name}c":
@@ -85,6 +84,7 @@ Actor struct Comp name = Actor
 
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len( act.kp_all )
 C         self.me = len( act.ap_${name}l )
@@ -109,11 +109,12 @@ C
 Break
 
 ----------------------------------------------------------------
-Actor struct Comp parent.name = Actor
+Actor struct Comp parent = Actor
 ----------------------------------------------------------------
 
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len(act.kp_all)
 C         self.me = len(act.ap_${name}l)
@@ -141,6 +142,7 @@ Actor struct Comp
 
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len(act.kp_all)
 C         self.me = len(act.ap_${name}l)
@@ -162,13 +164,15 @@ C     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
 
 Its Ref ref_var
 Its Ref2 ref_var
-Its Ref3 ref_var
+Its Refu ref_var
 Its parent parent_field_var
 Its Ref_comp other_var
 Its Ref2_comp other_var
-Its Ref3_comp other_var
+Its Refu_comp other_var
 
 C         try:
+C             if len(na) > 1:
+C                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",${name}c?", True );
 C             return( self.names[ na[0] ], False )
 C         except:
 C             return("?" + na[0] + "?" + self.line_no + "," + lno + ",${name}c?", True );
@@ -180,10 +184,10 @@ Its Comp_parent its
 Its parent parent_field_func
 Its Ref ref_func
 Its Ref2 ref_func
-Its Ref3 ref_func
+Its Refu ref_func
 Its Ref_comp other_func
 Its Ref2_comp other_func
-Its Ref3_comp other_func
+Its Refu_comp other_func
 
 C         return( ret )
 C
@@ -195,7 +199,7 @@ Actor parent_field_p Comp
 C     var parentp : Int
 
 ----------------------------------------------------------------
-Actor val_inc3 Element mw in R1,F1,L1,M1,Q1,RS,FS,LS,MS,QS
+Actor val_inc3 Element mw in R1,F1,L1,M1,Q1,U0,RS,FS,LS,MS,QS
 ----------------------------------------------------------------
 
 C         self.k_${name}lp = -1
@@ -275,20 +279,20 @@ C         self.names[ "${name} " ] = ff.getws( ff.lines[ln], 1 )
 Actor ele . mw in CS,RS,FS,LS,MS,NS,PS,QS
 ----------------------------------------------------------------
 
-C         self.names[ "${name} " ] = ff.getsw( ff.lines[ln], 1 )
+C         self.names[ "${name} " ] = ff.getwsw( ff.lines[ln], 1 )
 
 ----------------------------------------------------------------
 Actor parent_field Comp .struct.parent.name = Actor
 ----------------------------------------------------------------
 
-C         self.parentp = -1
+C         self.k_parentp = -2
 C         i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].all_to = self.me2 + 1
-C             self.parentp = i-1
+C             self.k_parentp = i-1
 C         else:
 C             print( "No ${name}c parent for ${.struct.name}c" )
--C             glob.load_errs = True
+C             self.err = True
 
 Break
 
@@ -296,24 +300,24 @@ Break
 Actor parent_field Comp
 ----------------------------------------------------------------
 
-C         self.parentp = -1
+C         self.k_parentp = -2
 C         i = len( act.ap_${name}l )
 C         if i > 0:
 C             act.ap_${name}l[i-1].all_to = self.me2 + 1
 C             act.ap_${name}l[i-1].${.struct.name}l_to = self.me + 1
-C             self.parentp = i-1
+C             self.k_parentp = i-1
 
 Du parent_field_in
 
 C         else:
 C             print( "No ${name}c parent for ${.struct.name}c" )
--C             glob.load_errs = True
+C             self.err = True
 
 ----------------------------------------------------------------
 Actor parent_field_in Comp .struct.find = FindIn
 ----------------------------------------------------------------
 
-C             s = str(self.parentp) + "_${.struct.name}c_" + na
+C             s = str(self.k_parentp) + "_${.struct.name}c_" + na
 C             act.index[ s ] = self.me
 
 ----------------------------------------------------------------
@@ -322,7 +326,10 @@ Actor its Comp
 
 C         if what[0] == "${name}c":
 C             for i in range( self.${name}l_from, self.${name}l_to ):
-C                 ret.append( glob.dats.ap_${name}l[i] )
+C                 if len(what) > 1:
+C                     ret.extend( glob.dats.ap_${name}l[i].get_list(glob, what[1:], act) )
+C                 else:
+C                     ret.append( glob.dats.ap_${name}l[i] )
 
 ----------------------------------------------------------------
 Actor other_var Ref
@@ -337,8 +344,8 @@ C                     return( act.ap_${parent.name}l[i].get_var(act, na[1:], lno
 Actor parent_field_var Comp
 ----------------------------------------------------------------
 
-C         if na[0] == "parent" and len(na) > 1 and self.parentp >= 0:
-C             return( act.ap_${name}l[ self.parentp ].get_var(act, na[1:], lno) )
+C         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+C             return( act.ap_${name}l[ self.k_parentp ].get_var(act, na[1:], lno) )
 
 
 ----------------------------------------------------------------
@@ -356,19 +363,19 @@ C         if what[0] == "${parent.name}c_${element.name}l":
 C             for i in range( len( glob.dats.ap_${parent.name}l ) ):
 C                 if glob.dats.ap_${parent.name}l[i].k_${element.name}lp == self.me:
 C                     if len(what) > 1:
-C                         ret.append( glob.dats.ap_${parent.name}l[i].get_list(glob, what[1:], act) )
-C                     else
+C                         ret.extend( glob.dats.ap_${parent.name}l[i].get_list(glob, what[1:], act) )
+C                     else:
 C                         ret.append( glob.dats.ap_${parent.name}l[i] )
 
 ----------------------------------------------------------------
 Actor parent_field_func Comp
 ----------------------------------------------------------------
 
-C         if what[0] == "parent" and self.parentp >= 0:
+C         if what[0] == "parent" and self.k_parentp >= 0:
 C             if len(what) > 1:
-C                 ret.append( glob.dats.ap_${name}l[ self.parentp ].get_list(glob, what[1:], act) )
-C             else
-C                 ret.append( glob.dats.ap_${name}l[ self.parentp ] )
+C                 ret.extend( glob.dats.ap_${name}l[ self.k_parentp ].get_list(glob, what[1:], act) )
+C             else:
+C                 ret.append( glob.dats.ap_${name}l[ self.k_parentp ] )
 
 ----------------------------------------------------------------
 Actor ref_func Ref
@@ -376,8 +383,8 @@ Actor ref_func Ref
 
 C         if what[0] == "${element.name}l" and self.k_${element.name}lp >= 0:
 C             if len(what) > 1:
-C                 ret.append( glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ].get_list(glob, what[1:], act) )
-C             else
+C                 ret.extend( glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ].get_list(glob, what[1:], act) )
+C             else:
 C                 ret.append( glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ] )
 
 

@@ -216,9 +216,31 @@ then it will be an error. If it is `?`, then there is no error.
 Otherwise it is the optional value to use when none. It is an error if not found and the value looking for is different to this.
 It can be `(.)` or anything else like `None`.
 
-The actor match also has a `?` to match an variable not found error. The `!?`, matches with no error.
-May be it should be the other way round. Any way, there is no `not found` error.
-Need some more work on detecting errors - helps on building larger systems.
+The actor match also has a `?` to match the variable not found error. The `!?`, matches with no error.
+There is no error reported when using it. Previously, no error was reported for an error on the `attr`.
+Now it does. Some fixes are needed to aviod the error.
+
+```
+----------------------------------------------------------------
+Actor a . model.name !?
+Actor a . model.name &= test
+----------------------------------------------------------------
+```
+
+Here the `!?` match for no error and `&=` matches both. The `&` is done before the error checking,
+so there is no error and the match will fail for both.
+
+The error string will be different to the value for `(=)`, but will match `(!=)` - not equal.
+
+```
+----------------------------------------------------------------
+Actor a . model = test
+----------------------------------------------------------------
+```
+
+Or in some cases, this would also work as the values are the same for both.
+
+The `?model?` error is no `model` field where as `?model.?`, is no reference to the `model`.
 
 Variables can't use values from child nodes (this version). If needed, navigate with the `Its` and 
 store that node with the `Add var Lookup` command.

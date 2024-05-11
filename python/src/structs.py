@@ -17,13 +17,15 @@ class ActT:
         self.ap_all = []
         self.ap_du = []
         self.ap_its = []
+        self.ap_this = []
         self.ap_c = []
         self.ap_cs = []
         self.ap_cf = []
         self.ap_out = []
         self.ap_break = []
-        self.ap_store = []
-        self.ap_unique = []
+        self.ap_add = []
+        self.ap_clear = []
+        self.ap_check = []
 
 class GlobT:
     def __init__(self):
@@ -31,7 +33,9 @@ class GlobT:
         self.run_errs = False
         self.acts = ActT()
         self.dats = ActT()
-        self.store = {}
+        self.vars = {}
+        self.sets = {}
+        self.lists = {}
         self.arg = ""
         self.wins = []
         self.winp = -1
@@ -66,13 +70,15 @@ class KpArgs(Kp):
 
 class KpComp(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_comp)
         self.all_from = len( act.kp_all )
         self.all_to = len( act.kp_all )
         self.names = {}
-        self.names["k_comp"] = "Comp";
+        self.names["k_comp"] = "Comp"
+        self.names["k_me"] = str( self.me )
         self.k_parentp = -1
         self.element_from = len( act.ap_element )
         self.element_to = len( act.ap_element )
@@ -227,13 +233,15 @@ class KpComp(Kp):
 
 class KpElement(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_element)
         self.all_from = len( act.kp_all )
         self.all_to = len( act.kp_all )
         self.names = {}
-        self.names["k_comp"] = "Element";
+        self.names["k_comp"] = "Element"
+        self.names["k_me"] = str( self.me )
         self.opt_from = len( act.ap_opt )
         self.opt_to = len( act.ap_opt )
         na = ff.getw( ff.lines[ln], 1 )
@@ -252,6 +260,7 @@ class KpElement(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Comp parent for Element" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -345,13 +354,15 @@ class KpElement(Kp):
 
 class KpOpt(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_opt)
         self.all_from = len( act.kp_all )
         self.all_to = len( act.kp_all )
         self.names = {}
-        self.names["k_comp"] = "Opt";
+        self.names["k_comp"] = "Opt"
+        self.names["k_me"] = str( self.me )
         na = ff.getw( ff.lines[ln], 1 )
         self.names[ "name" ] = na
         self.names[ "pad" ] = ff.getw( ff.lines[ln], 1 )
@@ -366,6 +377,7 @@ class KpOpt(Kp):
             act.index[ s ] = self.me
         else:
             print( "No Element parent for Opt" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -389,13 +401,15 @@ class KpOpt(Kp):
 
 class KpRef(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_ref)
         self.all_from = len( act.kp_all )
         self.all_to = len( act.kp_all )
         self.names = {}
-        self.names["k_comp"] = "Ref";
+        self.names["k_comp"] = "Ref"
+        self.names["k_me"] = str( self.me )
         self.k_elementp = -1
         self.k_compp = -1
         self.names[ "element" ] = ff.getw( ff.lines[ln], 1 )
@@ -411,6 +425,7 @@ class KpRef(Kp):
             self.k_parentp = i-1
         else:
             print( "No Comp parent for Ref" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -446,13 +461,15 @@ class KpRef(Kp):
 
 class KpRef2(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_ref2)
         self.all_from = len( act.kp_all )
         self.all_to = len( act.kp_all )
         self.names = {}
-        self.names["k_comp"] = "Ref2";
+        self.names["k_comp"] = "Ref2"
+        self.names["k_me"] = str( self.me )
         self.k_elementp = -1
         self.k_compp = -1
         self.k_element2p = -1
@@ -470,6 +487,7 @@ class KpRef2(Kp):
             self.k_parentp = i-1
         else:
             print( "No Comp parent for Ref2" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -511,13 +529,15 @@ class KpRef2(Kp):
 
 class KpRefu(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_refu)
         self.all_from = len( act.kp_all )
         self.all_to = len( act.kp_all )
         self.names = {}
-        self.names["k_comp"] = "Refu";
+        self.names["k_comp"] = "Refu"
+        self.names["k_me"] = str( self.me )
         self.k_elementp = -1
         self.k_compp = -1
         self.k_comp_refp = -1
@@ -537,6 +557,7 @@ class KpRefu(Kp):
             self.k_parentp = i-1
         else:
             print( "No Comp parent for Refu" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -578,6 +599,7 @@ class KpRefu(Kp):
 
 class KpActor(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len( act.kp_all )
         self.me = len( act.ap_actor )
@@ -602,6 +624,7 @@ class KpActor(Kp):
 
 class KpAll(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_all)
@@ -616,6 +639,7 @@ class KpAll(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for All" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -628,6 +652,7 @@ class KpAll(Kp):
 
 class KpDu(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_du)
@@ -641,6 +666,7 @@ class KpDu(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Du" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -653,6 +679,7 @@ class KpDu(Kp):
 
 class KpIts(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_its)
@@ -667,6 +694,35 @@ class KpIts(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Its" )
+            self.err = True
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        return(0)
+
+class KpThis(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_this)
+        self.k_actorp = -1
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_actor = ff.getw( ff.lines[ln], 1 )
+        self.k_args = ff.getws( ff.lines[ln], 1 )
+        self.k_parentp = -2
+        i = len( act.ap_actor )
+        if i > 0:
+            act.ap_actor[i-1].all_to = self.me2 + 1
+            self.k_parentp = i-1
+        else:
+            print( "No Actor parent for This" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -679,6 +735,7 @@ class KpIts(Kp):
 
 class KpC(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_c)
@@ -690,6 +747,7 @@ class KpC(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for C" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -702,6 +760,7 @@ class KpC(Kp):
 
 class KpCs(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cs)
@@ -713,6 +772,7 @@ class KpCs(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Cs" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -725,6 +785,7 @@ class KpCs(Kp):
 
 class KpCf(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_cf)
@@ -736,6 +797,7 @@ class KpCf(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Cf" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -748,6 +810,7 @@ class KpCf(Kp):
 
 class KpOut(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_out)
@@ -761,6 +824,7 @@ class KpOut(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Out" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -773,12 +837,14 @@ class KpOut(Kp):
 
 class KpBreak(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_break)
         self.k_what = ff.getw( ff.lines[ln], 1 )
         self.k_pad = ff.getw( ff.lines[ln], 1 )
         self.k_actor = ff.getw( ff.lines[ln], 1 )
+        self.k_check = ff.getw( ff.lines[ln], 1 )
         self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
@@ -786,6 +852,7 @@ class KpBreak(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for Break" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -796,20 +863,23 @@ class KpBreak(Kp):
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
-class KpStore(Kp):
+class KpAdd(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
-        self.me = len(act.ap_store)
-        self.k_pad = ff.getw( ff.lines[ln], 1 )
-        self.k_var = ff.getw( ff.lines[ln], 1 )
+        self.me = len(act.ap_add)
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_item = ff.getw( ff.lines[ln], 1 )
+        self.k_data = ff.getws( ff.lines[ln], 1 )
         self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.k_parentp = i-1
         else:
-            print( "No Actor parent for Store" )
+            print( "No Actor parent for Add" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -820,21 +890,50 @@ class KpStore(Kp):
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
         return(0)
 
-class KpUnique(Kp):
+class KpClear(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
-        self.me = len(act.ap_unique)
-        self.k_cmd = ff.getw( ff.lines[ln], 1 )
-        self.k_key = ff.getw( ff.lines[ln], 1 )
-        self.k_value = ff.getws( ff.lines[ln], 1 )
+        self.me = len(act.ap_clear)
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_item = ff.getw( ff.lines[ln], 1 )
+        self.k_data = ff.getws( ff.lines[ln], 1 )
         self.k_parentp = -2
         i = len( act.ap_actor )
         if i > 0:
             act.ap_actor[i-1].all_to = self.me2 + 1
             self.k_parentp = i-1
         else:
-            print( "No Actor parent for Unique" )
+            print( "No Actor parent for Clear" )
+            self.err = True
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        return(0)
+
+class KpCheck(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_check)
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_item = ff.getw( ff.lines[ln], 1 )
+        self.k_data = ff.getws( ff.lines[ln], 1 )
+        self.k_parentp = -2
+        i = len( act.ap_actor )
+        if i > 0:
+            act.ap_actor[i-1].all_to = self.me2 + 1
+            self.k_parentp = i-1
+        else:
+            print( "No Actor parent for Check" )
+            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)

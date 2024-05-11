@@ -21,7 +21,9 @@ C         self.load_errs = False
 C         self.run_errs = False
 C         self.acts = ActT()
 C         self.dats = ActT()
-C         self.store = {}
+C         self.vars = {}
+C         self.sets = {}
+C         self.lists = {}
 C         self.arg = ""
 C         self.wins = []
 C         self.winp = -1
@@ -65,7 +67,7 @@ All Comp all
 C     return 0
 
 ----------------------------------------------------------------
-Actor all Comp  parent.name != Actor
+Actor all Comp  parent != Actor
 ----------------------------------------------------------------
 
 C     if what[0] == "${name}c":
@@ -87,6 +89,7 @@ Actor struct Comp name = Actor
 
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len( act.kp_all )
 C         self.me = len( act.ap_${name}l )
@@ -111,11 +114,12 @@ C
 Break
 
 ----------------------------------------------------------------
-Actor struct Comp parent.name = Actor
+Actor struct Comp parent = Actor
 ----------------------------------------------------------------
 
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len(act.kp_all)
 C         self.me = len(act.ap_${name}l)
@@ -143,13 +147,15 @@ Actor struct Comp
 
 C class Kp${name}c(Kp):
 C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len(act.kp_all)
 C         self.me = len(act.ap_${name}l)
 C         self.all_from = len( act.kp_all )
 C         self.all_to = len( act.kp_all )
 C         self.names = {}
-C         self.names["k_comp"] = "${name}c";
+C         self.names["k_comp"] = "${name}c"
+C         self.names["k_me"] = str( self.me )
 
 Its Element val_inc3
 Its Comp_parent from
@@ -187,15 +193,10 @@ Its Refu ref_func
 Its Ref_comp other_func
 Its Ref2_comp other_func
 Its Refu_comp other_func
+Its Element nested
 
 C         return(0)
 C
-
-----------------------------------------------------------------
-Actor parent_field_p Comp
-----------------------------------------------------------------
-
-C     var parentp : Int
 
 ----------------------------------------------------------------
 Actor val_inc3 Element mw in R1,F1,L1,M1,Q1,U0,RS,FS,LS,MS,QS
@@ -291,7 +292,7 @@ C             act.ap_${name}l[i-1].all_to = self.me2 + 1
 C             self.k_parentp = i-1
 C         else:
 C             print( "No ${name}c parent for ${.struct.name}c" )
--C             glob.load_errs = True
+C             self.err = True
 
 Break
 
@@ -310,7 +311,7 @@ Du parent_field_in
 
 C         else:
 C             print( "No ${name}c parent for ${.struct.name}c" )
--C             glob.load_errs = True
+C             self.err = True
 
 ----------------------------------------------------------------
 Actor parent_field_in Comp .struct.find = FindIn
@@ -391,6 +392,54 @@ C         if what[0] == "${element.name}l" and self.k_${element.name}lp >= 0:
 C             if len(what) > 1:
 C                 return( glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ].do_its(glob, what[1:], act) )
 C             return( go_act(glob.dats.ap_${comp.name}l[ self.k_${element.name}lp ], glob, act) )
+
+----------------------------------------------------------------
+Actor nested Element mw in N1,NS
+----------------------------------------------------------------
+
+C         if what[0] == "${name}l":
+C             try:
+C                 isin = False
+C                 pos = int( self.names[ "${name}l" ] )
+C                 if pos == 0:
+C                     return( 0 )
+
+Du nested_p
+
+C                     st = glob.dats.ap_${.struct.name}l[i]
+C                     if self.me == st.me:
+C                         isin = True
+C                         continue
+C                     if isin == False:
+C                         continue
+C                     pos2 = int( st.names[ "${name}l" ] )
+C                     if pos2 == 0:
+C                         continue
+C                     if pos2 <= pos:
+C                         break
+C                     if pos2 == (pos+1):
+C                         ret = go_act(st, glob, act)
+C                         if ret != 0:
+C                             return(ret)
+C             except:
+C                 return(0)
+
+----------------------------------------------------------------
+Actor nested_p Element parent.parent.name !?
+----------------------------------------------------------------
+
+C                 if self.k_parentp < 0:
+C                     return(0)
+C                 par = glob.dats.ap_${parent.parent.name}l[ self.k_parentp ]
+C                 for i in range( par.${.struct.name}l_from, par.${.struct.name}l_to ):
+
+Break
+
+----------------------------------------------------------------
+Actor nested_p Element
+----------------------------------------------------------------
+
+C                 for i in range( len( glob.dats.ap_${.struct.name}l ) ):
 
 
 

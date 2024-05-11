@@ -19,7 +19,6 @@ Comp All parent Actor
 ----------------------------------------------------------------
 * An actor calling type.
 * For each component call this actor.
-* The match is for the component.
 ----------------------------------------------------------------
 
 	Element what    C1 WORD    * what to look for
@@ -35,7 +34,7 @@ Ref actor Actor check
 Comp Du parent Actor
 ----------------------------------------------------------------
 * An actor calling type.
-* Coditional call to actor
+* Call to actor with the same def
 ----------------------------------------------------------------
 
 	Element actor  R1 ACTOR * what actor to run for it
@@ -51,8 +50,6 @@ Comp Its parent Actor
 ----------------------------------------------------------------
 * Call this actor
 * For each child or reference of this def
-* The match is for the component.
-* Its what actor . . . args - to bypass the match
 ----------------------------------------------------------------
 
 	Element what    C1 WORD      * to look for
@@ -60,6 +57,19 @@ Comp Its parent Actor
 -	Element attr    C1 WORD      * what to check
 -	Element eq      C1 WORD      * to equal
 -	Element value   C1 WORD      * this
+	Element args    V1 WORD      * arg data value
+	
+Ref actor Actor check
+	
+----------------------------------------------------------------
+Comp This parent Actor
+----------------------------------------------------------------
+* Call this actor
+* For each child or item in the collection
+----------------------------------------------------------------
+
+	Element what    C1 WORD      * to look for
+	Element actor   R1 ACTOR     * what to do
 	Element args    V1 WORD      * arg data value
 	
 Ref actor Actor check
@@ -109,37 +119,42 @@ Comp Break parent Actor
 * To not do the default one
 ----------------------------------------------------------------
 
-	Element what  C1      WORD * what to break
-		Opt   actor        * continue with calling actor - break actor case.
-		Opt   loop         * continue after calling All, Its cmd - break loop chain.
-		Opt   cmds         * continue with actor case - break cmd list.
-	Element pad   C1 WORD      * padding (of)
-	Element actor C1 ACTOR     * which actor to break
+	Element what   C1      WORD * what to break
+		Opt    actor        * continue with calling actor - break actor case.
+		Opt    loop         * continue after calling All, Its cmd - break loop chain.
+		Opt    cmds         * continue with actor case - break cmd list.
+	Element pad    C1 WORD      * padding (of)
+	Element actor  C1 ACTOR     * which actor to break
+	Element check  C1 WORD      * only if not unique
 
 ----------------------------------------------------------------
-Comp Store parent Actor
+Comp Add parent Actor
 ----------------------------------------------------------------
-* Store current data def in a variable
+* Add item to pocket
 ----------------------------------------------------------------
+	
+	Element what    C1 WORD * what to add
+	Element item    C1 WORD * item or file
+	Element data    V1 WORD * data
 
-	Element pad    C1 WORD      * padding (in).
-	Element var    C1 WORD      * variable to store to.
+----------------------------------------------------------------
+Comp Clear parent Actor
+----------------------------------------------------------------
+* Clear item in pocket
+----------------------------------------------------------------
+	
+	Element what    C1 WORD * what to add
+	Element item    C1 WORD * item or file
+	Element data    V1 WORD * data
 
 ----------------------------------------------------------------
-Comp Unique parent Actor
+Comp Check parent Actor
 ----------------------------------------------------------------
-* Used to not duplicate output.
-* Exit the actor if found
-* Add value to key
-*
-* Cmd add   (key) - add to key, ends actor if found.
-* Cmd check (key) - ends actor if there, does not add
-* Cmd clear (key) - removes a key entry
-* Cmd clear       - clears the keys
+* Check item in pocket
 ----------------------------------------------------------------
-
-	Element cmd    C1 WORD  * add / clear
-	Element key    C1 WORD  * compare key
-	Element value  V1 WORD  * value to add to key
+	
+	Element what    C1 WORD * what to add
+	Element item    C1 WORD * item or file
+	Element data    V1 WORD * data
 
 

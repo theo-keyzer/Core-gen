@@ -67,7 +67,7 @@ All Comp all
 C     return 0
 
 ----------------------------------------------------------------
-Actor all Comp  parent.name != Actor
+Actor all Comp  parent != Actor
 ----------------------------------------------------------------
 
 C     if what[0] == "${name}c":
@@ -114,7 +114,7 @@ C
 Break
 
 ----------------------------------------------------------------
-Actor struct Comp parent.name = Actor
+Actor struct Comp parent = Actor
 ----------------------------------------------------------------
 
 C class Kp${name}c(Kp):
