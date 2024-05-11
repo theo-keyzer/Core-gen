@@ -2,10 +2,12 @@ import structs
 import run
 import gen
 import sys
+import traceback
 
 from inputs import Input
 
 def main():
+    err = False
     if len(sys.argv) < 2:
         print('Missing args')
         return
@@ -21,15 +23,19 @@ def main():
             tok = ff.getw(ff.lines[ln], 0)
             if tok == "E_O_F":
                 break
-            run.load(glob.acts, ff, tok, ln, lno)
-    
+            err = run.load(glob.acts, ff, tok, ln, lno)
+            if err:
+                print( 'Load errors ' + fa[i] )
+                glob.load_errs = True
+
     err = run.refs(glob.acts)
     if err:
+        print('Load ref errors ' + sys.argv[1])
         glob.load_errs = True
 
     if len( glob.acts.ap_actor ) == 0:
         print("No actor to run")
-        return
+        sys.exit(1)
 
     fa = sys.argv[2].split(",")
     for i in range(0, len(fa) ):
@@ -41,10 +47,14 @@ def main():
             tok = ff.getw(ff.lines[ln], 0)
             if tok == "E_O_F":
                 break
-            run.load(glob.dats, ff, tok, ln, lno)
+            err = run.load(glob.dats, ff, tok, ln, lno)
+            if err:
+                print( 'Load errors ' + fa[i] )
+                glob.load_errs = True
 
     err = run.refs(glob.dats)
     if err:
+        print('Load ref errors ' + sys.argv[2])
         glob.load_errs = True
 
     dat = structs.KpArgs()
@@ -58,6 +68,7 @@ def main():
 try:
     main()
 except Exception as e:
-    print("An error occurred:", e)
+    print(traceback.format_exc())
+    sys.exit(1)
 
 

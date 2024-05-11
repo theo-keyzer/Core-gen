@@ -21,84 +21,104 @@ def refs_multi_pass(act) -> bool:
     err = err or er
     return err
 
-def load(act, ff: Input, tok: str, ln: int, lno: str):
+def load(act, ff: Input, tok: str, ln: int, lno: str) -> bool:
+        err = False
         if tok == "Comp":
             kp = structs.KpComp(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_comp.append(kp)
             act.kp_all.append(kp)
         if tok == "Element":
             kp = structs.KpElement(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_element.append(kp)
             act.kp_all.append(kp)
         if tok == "Opt":
             kp = structs.KpOpt(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_opt.append(kp)
             act.kp_all.append(kp)
         if tok == "Ref":
             kp = structs.KpRef(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_ref.append(kp)
             act.kp_all.append(kp)
         if tok == "Ref2":
             kp = structs.KpRef2(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_ref2.append(kp)
             act.kp_all.append(kp)
         if tok == "Refu":
             kp = structs.KpRefu(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_refu.append(kp)
             act.kp_all.append(kp)
         if tok == "Actor":
             kp = structs.KpActor(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_actor.append(kp)
             act.kp_all.append(kp)
         if tok == "All":
             kp = structs.KpAll(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_all.append(kp)
             act.kp_all.append(kp)
         if tok == "Du":
             kp = structs.KpDu(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_du.append(kp)
             act.kp_all.append(kp)
         if tok == "Its":
             kp = structs.KpIts(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_its.append(kp)
             act.kp_all.append(kp)
         if tok == "This":
             kp = structs.KpThis(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_this.append(kp)
             act.kp_all.append(kp)
         if tok == "C":
             kp = structs.KpC(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_c.append(kp)
             act.kp_all.append(kp)
         if tok == "Cs":
             kp = structs.KpCs(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_cs.append(kp)
             act.kp_all.append(kp)
         if tok == "Cf":
             kp = structs.KpCf(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_cf.append(kp)
             act.kp_all.append(kp)
         if tok == "Out":
             kp = structs.KpOut(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_out.append(kp)
             act.kp_all.append(kp)
         if tok == "Break":
             kp = structs.KpBreak(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_break.append(kp)
             act.kp_all.append(kp)
         if tok == "Add":
             kp = structs.KpAdd(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_add.append(kp)
             act.kp_all.append(kp)
         if tok == "Clear":
             kp = structs.KpClear(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_clear.append(kp)
             act.kp_all.append(kp)
         if tok == "Check":
             kp = structs.KpCheck(ff, ln, act, lno)
+            err = err or kp.err
             act.ap_check.append(kp)
             act.kp_all.append(kp)
-
+        return(err)
 def ref(act) -> bool:
     err = False
     for i in range( len(act.ap_comp) ):

@@ -25,11 +25,13 @@ C     er, cnt = ref_other(act, True)
 C     err = err or er
 C     return err
 C
-C def load(act, ff: Input, tok: str, ln: int, lno: str):
+C def load(act, ff: Input, tok: str, ln: int, lno: str) -> bool:
+C         err = False
 
 All Comp load
 
-C
+C         return(err)
+
 C def ref(act) -> bool:
 C     err = False
 
@@ -52,6 +54,7 @@ Actor load .
 
 C         if tok == "${name}c":
 C             kp = structs.Kp${name}c(ff, ln, act, lno)
+C             err = err or kp.err
 C             act.ap_${name}l.append(kp)
 C             act.kp_all.append(kp)
 

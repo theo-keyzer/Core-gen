@@ -218,6 +218,7 @@ It can be `(.)` or anything else like `None`.
 
 The actor match also has a `?` to match the variable not found error. The `!?`, matches with no error.
 There is no error reported when using it. Previously, no error was reported for an error on the `attr`.
+The error string will be different to the value for `(=)`, but will match `(!=)` - not equal.
 Now it does. Some fixes are needed to aviod the error.
 
 ```
@@ -230,7 +231,16 @@ Actor a . model.name &= test
 Here the `!?` match for no error and `&=` matches both. The `&` is done before the error checking,
 so there is no error and the match will fail for both.
 
-The error string will be different to the value for `(=)`, but will match `(!=)` - not equal.
+
+```
+----------------------------------------------------------------
+Actor a . model.name ?
+Break
+Actor a . model.name = test
+----------------------------------------------------------------
+```
+
+Here the `Break` will break out of the actor match on error and not get to next one.
 
 ```
 ----------------------------------------------------------------
@@ -281,6 +291,13 @@ Previous versions, the `Unique,Check` commands had the `Break` builtin.
 The `(_)` is there to not be an actor name. `${._arg}` is the value of the argument passes to this actor.
 The `${._key}` variable is the value of the key used for when all keys are used ( `This list actor` ).
 The previous versions use the `All` instead of the `This` command for this.
+
+The files `run.py, structs.py` are made with the `gen.sh` in `bld, app/bld` dirs.
+They go to the `bld/src, app/bld/src` and can be copied to `src, app/src` if they look ok.
+They both use the same program from `src`, but uses different unit files.
+The `p_run.act, p_struct.act` are the same for both, but can drift.
+The `gen.py, act.unit` will drift. Better to have different app dirs for different projects
+to more reliably go back in time. There is no need to keep them in sync.
 
 The `match1.act` is to get a new note from items related to the given keywords.
 This can be edited and added to the the `notes.def` file.
