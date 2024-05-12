@@ -216,25 +216,21 @@ then it will be an error. If it is `?`, then there is no error.
 Otherwise it is the optional value to use when none. It is an error if not found and the value looking for is different to this.
 It can be `(.)` or anything else like `None`.
 
-The actor match also has a `?` to match the variable not found error. The `!?`, matches with no error.
-There is no error reported when using it. Previously, no error was reported for an error on the `attr`.
-The error string will be different to the value for `(=)`, but will match `(!=)` - not equal.
-Now it does. Some fixes are needed to aviod the error.
+The actor match also has a `?` to match the variable no error. The `??`, matches the not found error.
+There is no error reported when using it. The error can be on both sides of the equation. `name = ${name}`
 
 ```
 ----------------------------------------------------------------
-Actor a . model.name !?
-Actor a . model.name &= test
+Actor a . model.name ?= test
 ----------------------------------------------------------------
 ```
 
-Here the `!?` match for no error and `&=` matches both. The `&` is done before the error checking,
-so there is no error and the match will fail for both.
+Here the `?=` match for if no error.
 
 
 ```
 ----------------------------------------------------------------
-Actor a . model.name ?
+Actor a . model.name ??
 Break
 Actor a . model.name = test
 ----------------------------------------------------------------

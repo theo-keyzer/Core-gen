@@ -425,7 +425,7 @@ C             except:
 C                 return(0)
 
 ----------------------------------------------------------------
-Actor nested_p Element parent.parent.name !?
+Actor nested_p Element parent.parent.name ?
 ----------------------------------------------------------------
 
 C                 if self.k_parentp < 0:

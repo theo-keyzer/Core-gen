@@ -47,7 +47,7 @@ def go_act(dat, glob, act):
             ss = attr.split(".")
             val,err = strs(glob, val, glob.winp, lno, False, False)
             aval,aerr = s_get_var(glob, ss, glob.winp, lno)
-            prev = chk(glob, eq, aval, val, prev, aerr, err)
+            prev = chk(glob, eq, aval, val, prev, aerr, err, lno)
             if not prev:
                 continue
         if cc != "":
@@ -195,6 +195,7 @@ def go_cmds(dat, glob, act: int) -> int:
     return 0
 
 def add_cmd(cmd,glob,dat):
+    glob.wins[glob.winp].is_check = False
     if cmd.k_data != "":
         val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
     else:
@@ -278,20 +279,28 @@ def re_go_cmds(glob, winp):
             print(st, end="")
 
 
-def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err: bool) -> bool:
+def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err: bool, lno: str) -> bool:
     eq = eqa
+    if eq == "??":
+        return attr_err or val_err
+    if eq[0] == "?":
+        if attr_err or val_err:
+            return False
+        if len(eq) == 1:
+            return True
+        eq = eq[1:]
     if eq[0] == "&":
         if not prev:
             return False
+        if len(eq) == 1:
+            return True
         eq = eq[1:]
     if eq[0] == "|":
         if prev:
             return True
+        if len(eq) == 1:
+            return True
         eq = eq[1:]
-    if eq == "?":
-        return attr_err or val_err
-    if eq == "!?":
-        return not (attr_err or val_err)
     if val_err:
         glob.run_errs = True
         print(val)
@@ -322,6 +331,8 @@ def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err
             return False
         except:
             return False
+    print("?No actor match (" + eqa + ") " + lno + "?")
+    glob.run_errs = True
     return False
 
 def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
