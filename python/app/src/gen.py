@@ -353,13 +353,19 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( str( glob.wins[winp].lcnt ), False )
         if ss[1] == '_depth':
             return( str( winp ), False )
+        if ss[1] == "_var":
+            col = glob.vars
+            return( get_data(col, ss[1:], lno) )
+        if ss[1] == "_set":
+            col = glob.sets
+            return( get_data(col, ss[1:], lno) )
+        if ss[1] == "_list":
+            col = glob.lists
+            return( get_data(col, ss[1:], lno) )
         if len(ss) < 3:
             return ("?" + str(ss) + "?" + lno + "?", True)
-        if ss[1] == "_var":
-            dat = glob.vars[ ss[2] ]
-            if len(ss) == 3:
-                return(dat, False)
-            return( dat.get_var(glob.dats, ss[3:], lno) )
+        if ss[1] == '':
+            return( ss[2], False )
         if ss[1] == "0":
             if glob.wins[winp].lcnt != 0:
                 return( "", False )
@@ -374,6 +380,35 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
         return ("?" + str(ss) + "?" + lno + "?", True)
     except Exception as e:
         return ("?" + str(ss) + "?" + lno + "?", True)
+
+def get_data(col,what,lno) -> (str, bool):
+    if len(what) > 1:
+        if what[1] in col:
+            poc = col[ what[1] ]
+            if what[0] == "_var":
+                return( poc, False )
+            ret = ""
+            cma = True
+            for sts in poc:
+                if not isinstance(sts,str):
+                    continue
+                if cma:
+                    ret = sts
+                    cma = False
+                    continue
+                ret = ret + "," + sts
+            return(ret, False)
+        return( "?" + what[1] + "?" + lno + "?", True)
+    ret = ""
+    cma = True
+    keys = list(col.keys())
+    for key in keys:
+        if cma:
+            ret = key
+            cma = False
+            continue
+        ret = ret + "," + key
+    return(ret, False)
 
 def strs(glob, s: str, winp: int, lno: str, pr_err, is_err) -> (str, bool):
     err = False
