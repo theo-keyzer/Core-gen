@@ -4,6 +4,12 @@ if [ $? != 0 ]; then echo mtst.act note.def has errors; fi
 python ../src/main.py match1.act note.def thinking,frame,group,join,layout
 if [ $? != 0 ]; then echo match1.act note.def has errors; fi
 
+python ../src/main.py match2.act note.def thinking,frame group,join,layout
+if [ $? != 0 ]; then echo match2.act note.def has errors; fi
+
+python ../src/main.py match3.act note.def thinking,frame group,join layout
+if [ $? != 0 ]; then echo match3.act note.def has errors; fi
+
 python ../src/main.py daoimpl.act sample.def >user.java
 if [ $? != 0 ]; then echo daoimpl.act sample.def has errors; fi
 
