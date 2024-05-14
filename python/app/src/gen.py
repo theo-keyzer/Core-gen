@@ -478,6 +478,12 @@ def tocase(s: str, c: str) -> str:
         return s.lower()
     elif c == "c":
         return s[0].upper() + s[1:].lower()
+    if c.isdigit() :
+        val = int(c)
+        ss = s.split(",")
+        if len(ss) > val:
+            return( ss[val] )
+        return("")
     return s
 
 def sub_list(s: str, pos: int) -> str:
