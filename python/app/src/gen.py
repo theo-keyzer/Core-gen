@@ -30,6 +30,8 @@ def new_act(glob, arg):
             glob.wins[winp].is_prev = True
 
 def go_act(dat, glob, act):
+    if act < 0:
+        return(0)
     name = glob.acts.ap_actor[act].k_name
     glob.winp += 1
     glob.wins[glob.winp].dat = dat;
@@ -362,7 +364,7 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
         if len(ss) == 1:
             return( glob.wins[winp].dat.line_no + ", " + lno, False )
-        if ss[1] == "_str":
+        if ss[1] == "_str" and isinstance( glob.wins[winp].dat, str):
             return( glob.wins[winp].dat, False )
         if ss[1] == "_arg":
             return( glob.wins[winp].arg, False )
@@ -400,7 +402,7 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
                 return( s_get_var(glob, ss[2:], i, lno) )
         return ("?var?" + str(ss) + "?" + lno + "?", True)
     except Exception as e:
-        return ("?var?" + str(ss) + "?" + lno + "?", True)
+        return ("?err var?" + str(ss) + "?" + lno + "?", True)
 
 def get_data(col,what,lno) -> (str, bool):
     if len(what) > 1:
