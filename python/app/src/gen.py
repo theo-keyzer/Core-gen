@@ -99,8 +99,9 @@ def go_cmds(dat, glob, act: int) -> int:
                 print(st)
         elif isinstance(cmd,structs.KpAll):
             all = cmd
+            val,err = strs(glob, all.k_args, glob.winp, cmd.line_no, True, True)
             what = all.k_what.split(".")
-            new_act(glob,all.k_args)
+            new_act(glob,val)
             ret = structs.do_all(glob, what, all.k_actorp)
             if ret > 1 or ret < 0:
                 return ret

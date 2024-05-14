@@ -31,3 +31,6 @@ if [ $? != 0 ]; then echo latex.act gen.def has errors; fi
 python ../src/main.py grid.act grid.def
 if [ $? != 0 ]; then echo grid.act grid.def has errors; fi
 
+python ../src/main.py  tst5b.act tst.def check
+if [ $? != 0 ]; then echo tst5b.act tst.def has errors; fi
+
