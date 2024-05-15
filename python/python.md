@@ -283,10 +283,18 @@ A flag gets set in the window stack if a duplicate was added.
 Previous versions, the `Unique,Check` commands had the `Break` builtin.
 
 `Clear set S` to empty it.
-`This set.S actor` to call an actor with the set items, for strings in the calling actor, use `${._str}` for the item's value.
+`This set.S actor` to call an actor with the set items, for strings in the calling actor, use `${._str}` for the item's value. Nodes work as normal.
 The `(_)` is there to not be an actor name. `${._arg}` is the value of the argument passes to this actor.
-The `${._key}` variable is the value of the key used for when all keys are used ( `This list actor` ).
-The previous versions use the `All` instead of the `This` command for this.
+The `${._key}` variable is the value of the key used for when all key and values are used ( `This list. actor` ).
+The `This list actor` is for all the keys. The values are combined for strings with `(,)`.
+The `${.set.A}`, the values are combined for strings with `(,)`.
+The `${.set}`, the keys are combined for strings with `(,)`. Needs more testing.
+
+The actor match `(is)`, is to compare set strings, but orders them before comparing them.
+
+The previous versions use the `All` instead of the `This` command and had dual keys.
+
+Keys can be combined like a set `(a,b,c)`. To get the `(b)`, use `${._key}1`
 
 The files `run.py, structs.py` are made with the `gen.sh` in `bld, app/bld` dirs.
 They go to the `bld/src, app/bld/src` and can be copied to `src, app/src` if they look ok.
