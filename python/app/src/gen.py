@@ -119,7 +119,7 @@ def go_cmds(dat, glob, act: int) -> int:
                 col = glob.vars
             else:
                 continue
-            if len(what) > 1:
+            if len(what) > 1 and what[1] != "":
                 if what[1] in col:
                     glob.wins[glob.winp+1].item = what[1]
                     poc = col[ what[1] ]
@@ -136,6 +136,13 @@ def go_cmds(dat, glob, act: int) -> int:
             keys = list(col.keys())
             for key in keys:
                 glob.wins[glob.winp+1].item = key
+                if len(what) == 1:
+                    ss = [ what[0], key ]
+                    vals,err = get_data(col, ss, cmd.line_no)
+                    ret = go_act(vals, glob, its.k_actorp)
+                    if ret > 1 or ret < 0:
+                        return ret
+                    continue
                 poc = col[ key ]
                 if what[0] == "var":
                     ret = go_act(poc, glob, its.k_actorp)
@@ -257,12 +264,17 @@ def clear_cmd(cmd,glob,dat):
 def check_cmd(cmd,glob,dat):
     k_item,err = strs(glob, cmd.k_item, glob.winp, cmd.line_no, True, True)
     if cmd.k_data != "E_O_L":
-        val = cmd.k_data
+        val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
+#       val = cmd.k_data
     else:
         val = dat
     if cmd.k_what == "set":
         if k_item in glob.sets:
             if val in glob.sets[ k_item ]:
+                glob.wins[glob.winp].is_check = True
+    if cmd.k_what == "list":
+        if k_item in glob.lists:
+            if val in glob.lists[ k_item ]:
                 glob.wins[glob.winp].is_check = True
 
 def trig(glob, winp):
@@ -355,6 +367,17 @@ def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err
             return False
         except:
             return False
+    elif eq == "is":
+        try:
+            a = val.split(",")
+            b = aval.split(",")
+            a.sort()
+            b.sort()
+            if a == b:
+                return True
+            return False
+        except:
+            return False
     print("?No actor match (" + eqa + ") " + lno + "?")
     glob.run_errs = True
     return False
@@ -377,9 +400,6 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( str( glob.wins[winp].lcnt ), False )
         if ss[1] == '_depth':
             return( str( winp ), False )
-        if ss[1] == "_var":
-            col = glob.vars
-            return( get_data(col, ss[1:], lno) )
         if ss[1] == "_set":
             col = glob.sets
             return( get_data(col, ss[1:], lno) )
@@ -388,6 +408,11 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( get_data(col, ss[1:], lno) )
         if len(ss) < 3:
             return ("?var?" + str(ss) + "?" + lno + "?", True)
+        if ss[1] == "_var":
+            dat = glob.vars[ ss[2] ]
+            if len(ss) == 3:
+                return(dat, False)
+            return( dat.get_var(glob.dats, ss[3:], lno) )
         if ss[1] == '':
             return( ss[2], False )
         if ss[1] == "0":

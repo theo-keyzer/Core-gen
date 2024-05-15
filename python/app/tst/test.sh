@@ -34,3 +34,6 @@ if [ $? != 0 ]; then echo grid.act grid.def has errors; fi
 python ../src/main.py  tst5b.act tst.def check
 if [ $? != 0 ]; then echo tst5b.act tst.def has errors; fi
 
+python ../src/main.py  tst5c.act tst.def check
+if [ $? != 0 ]; then echo tst5c.act tst.def has errors; fi
+
