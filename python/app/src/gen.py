@@ -403,15 +403,20 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
         if ss[1] == "_set":
             col = glob.sets
             return( get_data(col, ss[1:], lno) )
+        if ss[1] == "_var" and len(ss) == 2:
+            col = glob.vars
+            return( get_data(col, ss[1:], lno) )
         if ss[1] == "_list":
             col = glob.lists
             return( get_data(col, ss[1:], lno) )
         if len(ss) < 3:
-            return ("?var?" + str(ss) + "?" + lno + "?", True)
+            return ("?len var?" + str(ss) + "?" + lno + "?", True)
         if ss[1] == "_var":
             dat = glob.vars[ ss[2] ]
             if len(ss) == 3:
-                return(dat, False)
+                if isinstance(dat, str):
+                    return(dat, False)
+                return ("?Kp var?" + str(ss) + "?" + lno + "?", True)
             return( dat.get_var(glob.dats, ss[3:], lno) )
         if ss[1] == '':
             return( ss[2], False )
@@ -428,14 +433,16 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
                 return( s_get_var(glob, ss[2:], i, lno) )
         return ("?var?" + str(ss) + "?" + lno + "?", True)
     except Exception as e:
-        return ("?err var?" + str(ss) + "?" + lno + "?", True)
+        return ("?" + str(e) + " var?" + str(ss) + "?" + lno + "?", True)
 
 def get_data(col,what,lno) -> (str, bool):
     if len(what) > 1:
         if what[1] in col:
             poc = col[ what[1] ]
-            if what[0] == "_var":
-                return( poc, False )
+            if what[0] == "_var" or what[0] == "var":
+                if isinstance(poc,str):
+                    return( poc, False )
+                return( "", False )
             ret = ""
             cma = True
             for sts in poc:

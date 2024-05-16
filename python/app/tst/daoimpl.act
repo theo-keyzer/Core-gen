@@ -198,9 +198,9 @@ Actor where_dup . relation = viewed
 Actor where_dup . relation in none,name,.
 ----------------------------------------------------------------
 
-Du where_none_dup mytype = VARCHAR2
+Du where_none_dup 
 
-Actor where_none_dup
+Actor where_none_dup . mytype = VARCHAR2
 
 C 		s = ${parent.name}l.get${name}c();
 C 		if(s != null && (!s.equals("")) ) sql = sql + "and UPPER(${name}u) = UPPER('" + s + "') ";
@@ -255,9 +255,9 @@ C 		if(n != null && (n != 0) ) sql = sql + "and ${name}u = '" + n + "' ";
 Actor where . relation in none,name,.
 ----------------------------------------------------------------
 
-Du where_none mytype = VARCHAR2
+Du where_none 
 
-Actor where_none
+Actor where_none . mytype = VARCHAR2
 
 C 		s = ${parent.name}l.get${name}c();
 C 		if(s != null && (!s.equals("")) ) sql = sql + "and UPPER(${name}u) = UPPER('" + s + "') ";
@@ -295,8 +295,8 @@ Actor func . relation = pk
 
 Cs 	public ${parent.name}c read${parent.name}c(
 
-Du var    mytype = VARCHAR2
-Du number mytype = NUMBER
+Du var    
+Du number 
 
 C ${name}l)
 C 	{
@@ -329,9 +329,9 @@ C 		Long newUpdateCnt = ${parent.name}l.getUpdateCnt() + 1;
 C 		return( getJdbcTemplate().update(DELETE, new Object[] { new Date(), ${parent.name}l.getModifiedBy(), newUpdateCnt, ${parent.name}l.get${name}c(), ${parent.name}l.getUpdateCnt()}));
 C 	}
 
-Actor var
+Actor var . mytype = VARCHAR2
 Cs String 
-Actor number
+Actor number . mytype = NUMBER
 Cs Long 
 
 ----------------------------------------------------------------

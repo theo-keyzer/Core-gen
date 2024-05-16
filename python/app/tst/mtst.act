@@ -17,6 +17,26 @@ Clear set A
 Add set.split A 5.6.7
 This set.A tst_finds_str
 
+Add var X abc
+
+C ${._var}
+C ${._set}
+C ${._list}
+
+C ${._set.finds}
+C ${._var.find.name}
+C ${._list.finds}
+
+This set tst_keys
+This var tst_keys
+This list tst_keys
+
+----------------------------------------------------------------
+Actor tst_keys
+----------------------------------------------------------------
+
+C Key: ${._key}  value: ${._str}
+
 ----------------------------------------------------------------
 Actor tst_finds
 ----------------------------------------------------------------
@@ -51,8 +71,8 @@ Its A a
 -Break loop
 
 ----------------------------------------------------------------
-Actor a . model.name !?
-Actor a . model.name &= model
+-Actor a . model.name !?
+Actor a . model.name ?= model
 ----------------------------------------------------------------
 
 C ${name}  ${domain.name}  ${model.name}  - ${model.info}  
