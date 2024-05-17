@@ -1,0 +1,13 @@
+It is data driven. The actors set the paths that the gen must follow,
+but it is the input data that makes it go along a path.
+If the input data is a maise, the actors would go down the available paths.
+There it can collect or print data of that location, or
+choose to not go down certain paths. The input has a location,
+but the actor also has a location. The data printed is mainly
+from the actor's location. The output goes to a file or
+get appended to a file. To build a system, lots of actor are needed
+and a script to run them. These scripts are also generated.
+
+
+
+

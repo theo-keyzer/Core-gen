@@ -294,7 +294,24 @@ The actor match `(is)`, is to compare set strings, but orders them before compar
 
 The previous versions use the `All` instead of the `This` command and had dual keys.
 
-Keys can be combined like a set `(a,b,c)`. To get the `(b)`, use `${._key}1`
+Keys can be combined like a list `a,b,c`. To get the `(b)`, use `${._key}1`
+For the actor match, use `._key.0 = a`, to to match where the first one is `('a)`
+
+`This json.filename actor_name` calls the actor with the json nodes. They can be a `dict` or a `list`.
+The variable `${._type)` is the type of the node for the actor.
+
+On that node, `Its .dict list_act2` loop through the dict, and `Its .list list_act5`, the list.
+For dicts, the `._key` is the dict name and `${._str}` the value.
+The `${._dict.name}` is the value for the name.
+
+The `strs` function in gen.py`, replaces the variable names of a string with their values.
+Some of the actor commands, calls this function for an item so that the item can be combined with variables.
+This is not done for every item, and can be added if needed. The item words can not have spaces in them,
+so combining variables like `${ab} ${bc}` need to be done with `${ab}n${bc}`
+
+There are some risks in this as dirty data can effect the outcome.
+
+`This file.filename actor_name` calls the actor with the file as a string.
 
 The files `run.py, structs.py` are made with the `gen.sh` in `bld, app/bld` dirs.
 They go to the `bld/src, app/bld/src` and can be copied to `src, app/src` if they look ok.

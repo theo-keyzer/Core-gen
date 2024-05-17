@@ -50,7 +50,9 @@ C    s ${search}   ${name}
 Add set G,${search} ${name}
 
 ----------------------------------------------------------------
-Actor graph_all Set ..G = ${._key}0
+-Actor graph_all Set ..G = ${._key}0
+
+Actor graph_all Set ._key.0 = G
 Actor graph_all Set ._str &is B-C,C-A,B-A
 ----------------------------------------------------------------
 

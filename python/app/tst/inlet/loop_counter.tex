@@ -1,0 +1,7 @@
+The \texttt{All,\ Its} command calls \texttt{new\_act} first that sets
+the next actor's counter to -1. The loop calls the \texttt{go\_act}
+function, that increments the counter on match. The \texttt{\$\{.-\}} is
+the counter value and \texttt{\$\{.+\}}, the counter +1. Also
+\texttt{\$\{.0.string\}} for first (if counter is 0) and
+\texttt{\$\{.1.string\}} for rest. The value is \texttt{string} The
+\texttt{Du} inherits this value.

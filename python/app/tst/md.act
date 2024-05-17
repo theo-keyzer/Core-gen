@@ -13,8 +13,17 @@ Actor grid
 C # ${name}c
 C ${info}
 
-Include check ${file}n.md
+-Include check ${file}n.md
+
+This file.${file}n.md include
+
 Its Col col
+
+----------------------------------------------------------------
+Actor include
+----------------------------------------------------------------
+
+C ${._str}
 
 ----------------------------------------------------------------
 Actor col . group = 1
@@ -23,7 +32,9 @@ Actor col . group = 1
 C ### ${name}c
 C ${info}
 
-Include check ${file}n.md
+-Include check ${file}n.md
+
+This file.${file}n.md include
 Out delay
 
 -C \begin{description}
@@ -39,7 +50,9 @@ Actor col . group = 2
 C #### ${name}c
 C ${info}
 
-Include check ${file}n.md
+-Include check ${file}n.md
+
+This file.${file}n.md include
 Out delay
 
 -C \begin{description}
@@ -54,6 +67,8 @@ Actor row
 
 C - ${name}  - ${info}
 
-Include check ${file}n.md
+-Include check ${file}n.md
+
+This file.${file}n.md include
 
 

@@ -1,0 +1,151 @@
+The \texttt{R1} is a ref to another node, \texttt{F1}, ref to local
+node, \texttt{L1}, ref to local node of the \texttt{R1}, M1, ref to
+local node of an element of \texttt{R1} of a node that has a \texttt{L1}
+ref.
+
+Sample of of a units file.
+
+\begin{verbatim}
+----------------------------------------------------------------
+Comp Attr parent Type FindIn
+----------------------------------------------------------------
+
+    Element table    R1 Type             * Pointer to (Type).
+    Element relation C1 WORD             * Relation type
+    Element name     C1 NAME             * Colomn name.
+
+Ref table Type check
+
+----------------------------------------------------------------
+Comp Where parent Type
+----------------------------------------------------------------
+
+    Element attr     F1 Attr      * Field name
+    Element from_id  M1 Attr      * From id
+
+Ref     attr Attr check
+Ref3 from_id Attr attr Attr table check
+\end{verbatim}
+
+The \texttt{Ref3} uses the \texttt{M1} field \texttt{from\_id}. The link
+goes to node of type \texttt{Attr}. It uses the \texttt{attr} field (the
+one with the \texttt{F1}) to get to \texttt{Attr} node. In that node it
+uses the \texttt{table} field (the one with the \texttt{R1}) to be used
+as the parent \texttt{(Type)} to find the \texttt{Attr} in. The
+\texttt{from\_id,\ attr} can be different node types. The refs run in a
+sequence at \texttt{Element} level. First it does the \texttt{F1,\ R1}
+ones, then the the \texttt{M1,\ L1} ones.
+
+Sample of def file.
+
+\begin{verbatim}
+--------------------------------------------------------
+Type User User
+--------------------------------------------------------
+
+Attr Contractor_employee     view contractor_name
+
+Where contractor_name  id_number = contractor_id
+
+---------------------------------------------
+Type Contractor_employee Contractor Employee
+---------------------------------------------
+
+Attr . . id_number
+\end{verbatim}
+
+If this data had to be loaded into a database, the foreign links need to
+be populated. Need select statements to get to the id's for this. The
+loader's refs does this.
+
+\begin{verbatim}
+Attr.tablep = Select id from type where name = 'Contractor_employee'
+Where.attrp = Select id from attr where name = 'contractor_name' and attr.parentp = parentp
+Where.from_idp = Select id from attr where name = 'id_number' and attr.parentp = Atrr[ Where.attrp ].tablep
+\end{verbatim}
+
+To use the links from the \texttt{Where} node, use
+\texttt{attr,from\_id,id}. To use it from the \texttt{Attr} node, use
+\texttt{Where\_attr,\ Where\_from\_id,\ Where\_id}. These are the
+reverse links that loops to match. The \texttt{Its} cmd will get them
+all, The variables will get the first one.
+
+The \texttt{L1} is a simpler model of this, it uses the \texttt{R1}
+instead of the \texttt{F1} to get to the parent. The \texttt{F1} share
+the same parent. The \texttt{R1} finds the parent - top level nodes.
+
+The \texttt{check} on the refs, means it is an error if it does find the
+link. A \texttt{(.)} here, means it is optional link. The value then
+also need to be a \texttt{(.)} if it is optional. If the value if
+different, then it is an error if not found. A \texttt{(?)} here means
+link if can, but no error if not.
+
+In the \texttt{db/note.unit}, the \texttt{Q1} links to a node where the
+node's parent is referenced by a field that is in the link's parent
+node.
+
+\begin{verbatim}
+----------------------------------------------------------------
+Comp Domain parent . Find
+----------------------------------------------------------------
+
+    Element name       C1 WORD       * node name
+    
+----------------------------------------------------------------
+Comp Model parent Domain FindIn
+----------------------------------------------------------------
+
+    Element name       C1 WORD       * node name
+
+----------------------------------------------------------------
+Comp Frame parent Model FindIn
+----------------------------------------------------------------
+
+    Element domain     RS WORD       * ref to domain
+    Element name       C1 WORD       * frame name
+    
+Ref domain Domain ?
+
+----------------------------------------------------------------
+Comp A parent Frame FindIn
+----------------------------------------------------------------
+
+    Element model      QS WORD       * ref to model
+    Element name       C1 WORD       * a name
+
+Refq model Model domain Frame ?
+\end{verbatim}
+
+The \texttt{Refq} uses the \texttt{Q1} field \texttt{model}. The link
+goes to node of type \texttt{Model}. It uses the \texttt{domain} field
+(the one with the \texttt{R1}) to be used as the parent
+\texttt{(Domain)} to find the \texttt{Model} in. This is the same as
+\texttt{L1} except the \texttt{domain} field is not in \texttt{A}, but
+in \texttt{A\textquotesingle{}s} parent, \texttt{Frame}.
+
+\begin{verbatim}
+----------------------------------------------------------------
+Comp Use parent A
+----------------------------------------------------------------
+
+    Element frame      QS Frame      * ref to frame
+    Element a          L1 A          * ref to a in frame
+
+Refq frame Frame model A ?
+Ref2 a A frame ?
+\end{verbatim}
+
+The \texttt{Ref2} uses the \texttt{L1} field \texttt{a}. The link goes
+to node of type \texttt{A}. It uses the \texttt{frame} field (the one
+with the \texttt{Q1}) to be used as the parent (\texttt{Frame}) to find
+the \texttt{A} in.
+
+The \texttt{CS,RS,FS,LS,MS,NS,QS} data types is the same as
+\texttt{C1,R1,F1,L1,M1,N1,Q1} except the whitespace between the words
+can be a \texttt{:}.
+
+\begin{verbatim}
+Frame 2 info:docs - making documentation
+
+A   find:info   * find relavant information in a document
+\end{verbatim}

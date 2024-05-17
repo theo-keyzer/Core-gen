@@ -27,6 +27,7 @@ if [ $? != 0 ]; then echo md.act gen.def has errors; fi
 
 python ../src/main.py latex.act gen.def >gen.tex
 if [ $? != 0 ]; then echo latex.act gen.def has errors; fi
+pdflatex gen.tex
 
 python ../src/main.py grid.act grid.def
 if [ $? != 0 ]; then echo grid.act grid.def has errors; fi
@@ -36,4 +37,13 @@ if [ $? != 0 ]; then echo tst5b.act tst.def has errors; fi
 
 python ../src/main.py  tst5c.act tst.def check
 if [ $? != 0 ]; then echo tst5c.act tst.def has errors; fi
+
+python ../src/main.py  json.act tst.def
+if [ $? != 0 ]; then echo json.act tst.def has errors; fi
+
+echo
+
+python ../src/main.py  json2.act tst.def
+if [ $? != 0 ]; then echo json2.act tst.def has errors; fi
+
 

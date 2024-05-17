@@ -1,0 +1,18 @@
+The actor loop \texttt{go\_act} works like a \texttt{case} switch.
+Actors of the same name, are the \texttt{when} cases. The command loop
+\texttt{go\_cmds}, loops through the commands in that actor. The
+\texttt{All,\ Its} loop, calls the \texttt{go\_act} function in a loop.
+The \texttt{Du} command call another actor with \texttt{go\_act}. To
+break out of the \texttt{go\_cmds}'s loop, it uses a break to end the
+loop. The \texttt{Break\ cmd} command and \texttt{Unique} does that. To
+break out of the actor loop, it returns 2. The \texttt{Break\ actor}
+does that. That ends up in the \texttt{go\_act}, that end it. To break
+out of the \texttt{Its,\ All} loop, it returns 1. The
+\texttt{Break\ loop} command does that. The actor loop \texttt{go\_act}
+would return 1 if its return is 1. The return 1 will end up in the
+calling \texttt{Its,\ All} command that will continue with the
+\texttt{go\_cmds}. The generated code loop functions would return the
+result if \texttt{!=\ 0}. The other implementations make use of a depth
+value that gets inc/dec. It can go back further. The problem is the
+\texttt{Du} command \texttt{Do/Jump} that may or may not be between the
+loops.

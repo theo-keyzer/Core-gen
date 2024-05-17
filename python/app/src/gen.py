@@ -108,10 +108,21 @@ def go_cmds(dat, glob, act: int) -> int:
                 return ret
         elif isinstance(cmd,structs.KpThis):
             its = cmd
-            what = its.k_what.split(".",1)
+            what,err = strs(glob, its.k_what, glob.winp, cmd.line_no, True, True)
+            what = what.split(".",1)
             val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
             col = ""
+            if what[0] == "file":
+                try:
+                    with open(what[1], "r") as f:
+                        ff = f.read()
+                        ret = go_act(ff, glob, its.k_actorp)
+                        if ret > 1 or ret < 0:
+                            return ret
+                except:
+                    pass
+                continue
             if what[0] == "json":
                 with open(what[1]) as fd:
                     json_data = json.load(fd)
@@ -427,6 +438,8 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
         if ss[1] == "_type":
             return( type( glob.wins[winp].dat ).__name__, False )
         if ss[1] == "_key":
+            if len( ss ) > 2:
+                return( tocase( glob.wins[winp].item, ss[2] ), False )
             return( glob.wins[winp].item, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )

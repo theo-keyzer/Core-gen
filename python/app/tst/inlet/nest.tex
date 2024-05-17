@@ -1,0 +1,16 @@
+A control field of a nested node. The value 1 is for the top level, 2,
+next level down and so on. This is to create a tree from one node type.
+To navigate to the nodes one level down, use \texttt{Its\ group.right}.
+To navigate one level up, use \texttt{Its\ group.left}. The
+\texttt{Its\ group.up} goes to the node above it of the same level. The
+\texttt{Its\ group.down}, to the node below. The value 0 is for nodes
+that do not form part of this set. There can be more than one control
+field for different tree layouts.
+
+\begin{verbatim}
+----------------------------------------------------------------
+Comp Frame parent Model FindIn
+----------------------------------------------------------------
+
+    Element group      N1 WORD       * search navigation group index tree
+\end{verbatim}
