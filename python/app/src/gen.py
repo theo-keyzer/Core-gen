@@ -1,4 +1,5 @@
 import structs
+import json
 
 class WinT:
     def __init__(self):
@@ -107,10 +108,25 @@ def go_cmds(dat, glob, act: int) -> int:
                 return ret
         elif isinstance(cmd,structs.KpThis):
             its = cmd
-            what = its.k_what.split(".")
+            what = its.k_what.split(".",1)
             val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
             col = ""
+            if what[0] == "json":
+                with open(what[1]) as fd:
+                    json_data = json.load(fd)
+                    if isinstance(json_data,dict):
+                        ret = go_act(json_data, glob, its.k_actorp)
+                        if ret > 1 or ret < 0:
+                            return ret
+                        continue
+                    if isinstance(json_data,list):
+                        for item in json_data:
+                            ret = go_act(item, glob, its.k_actorp)
+                            if ret > 1 or ret < 0:
+                                return ret
+                        continue
+                continue
             if what[0] == "set":
                 col = glob.sets
             elif what[0] == "list":
@@ -159,6 +175,22 @@ def go_cmds(dat, glob, act: int) -> int:
             what = its.k_what.split(".")
             val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
+            if len(what) > 1 and what[0] == "" and what[1] == "list":
+                for poc in dat:
+                    glob.wins[glob.winp+1].item = ""
+                    ret = go_act(poc, glob, its.k_actorp)
+                    if ret > 1 or ret < 0:
+                        return ret
+                continue
+            if len(what) > 1 and what[0] == "" and what[1] == "dict":
+                keys = list(dat.keys())
+                for key in keys:
+                    glob.wins[glob.winp+1].item = key
+                    poc = dat[ key ]
+                    ret = go_act(poc, glob, its.k_actorp)
+                    if ret > 1 or ret < 0:
+                        return ret
+                continue
             if len(what) > 1 and what[0] == "" and what[1] == "names":
                 keys = list(dat.names.keys())
                 for key in keys:
@@ -392,6 +424,8 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( glob.wins[winp].dat, False )
         if ss[1] == "_arg":
             return( glob.wins[winp].arg, False )
+        if ss[1] == "_type":
+            return( type( glob.wins[winp].dat ).__name__, False )
         if ss[1] == "_key":
             return( glob.wins[winp].item, False )
         if ss[1] == "+":
@@ -411,6 +445,9 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( get_data(col, ss[1:], lno) )
         if len(ss) < 3:
             return ("?len var?" + str(ss) + "?" + lno + "?", True)
+        if ss[1] == "_dict":
+            dat = glob.wins[winp].dat[ ss[2] ]
+            return( dat, False )
         if ss[1] == "_var":
             dat = glob.vars[ ss[2] ]
             if len(ss) == 3:
