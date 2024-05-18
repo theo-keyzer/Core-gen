@@ -238,6 +238,38 @@ def go_cmds(dat, glob, act: int) -> int:
                     if ret > 1 or ret < 0:
                         return ret
                 continue
+            if isinstance(dat, dict):
+                poc = dat
+                dot = False
+                for ji in range(0, len(what)):
+                    if len( what[ji] ) == 0:
+                        dot = True
+                        break
+                    poc = poc[ what[ji] ]
+                    if ji == 0:
+                        key = what[ji]
+                    else:
+                        key = key + "," + what[ji]
+                glob.wins[glob.winp+1].item = key
+                if dot and isinstance(poc,list):
+                    for item in poc:
+                        ret = go_act(item, glob, its.k_actorp)
+                        if ret > 1 or ret < 0:
+                            return ret
+                    continue
+                if dot and isinstance(poc,dict):
+                    keys = list(poc.keys())
+                    for keyb in keys:
+                        glob.wins[glob.winp+1].item = key + "," + keyb
+                        poc2 = poc[ keyb ]
+                        ret = go_act(poc2, glob, its.k_actorp)
+                        if ret > 1 or ret < 0:
+                            return ret
+                    continue
+                ret = go_act(poc, glob, its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
+                continue
             ret = dat.do_its(glob, what, its.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
@@ -455,6 +487,11 @@ def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err
 def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
     try:
         if len( ss[0] ) != 0:
+            dat = glob.wins[winp].dat
+            if isinstance(dat, dict):
+                for ji in range(0, len(ss)):
+                    dat = dat[ ss[ji] ]
+                return( dat, False )
             return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
         if len(ss) == 1:
             return( glob.wins[winp].dat.line_no + ", " + lno, False )
