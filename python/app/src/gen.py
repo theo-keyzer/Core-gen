@@ -111,20 +111,23 @@ def go_cmds(dat, glob, act: int) -> int:
             what,err = strs(glob, its.k_what, glob.winp, cmd.line_no, True, True)
             what = what.split(".")
             val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
+            filen,err = strs(glob, its.k_file, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
             col = ""
             if what[0] == "file":
                 try:
-                    with open(its.k_file, "r") as f:
+                    with open(filen, "r") as f:
                         ff = f.read()
                         ret = go_act(ff, glob, its.k_actorp)
                         if ret > 1 or ret < 0:
                             return ret
                 except:
-                    pass
+                    if its.k_pad != "if":
+                        print("File (" + filen + ") error")
+                        glob.run_errs = True
                 continue
             if what[0] == "json":
-                with open(its.k_file) as fd:
+                with open(filen) as fd:
                     json_data = json.load(fd)
                     key = ""
                     if len(what) == 1:
