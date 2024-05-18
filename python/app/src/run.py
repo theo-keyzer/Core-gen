@@ -163,6 +163,11 @@ def load(act, ff: Input, tok: str, ln: int, lno: str) -> bool:
             err = err or kp.err
             act.ap_this.append(kp)
             act.kp_all.append(kp)
+        if tok == "That":
+            kp = structs.KpThat(ff, ln, act, lno)
+            err = err or kp.err
+            act.ap_that.append(kp)
+            act.kp_all.append(kp)
         if tok == "C":
             kp = structs.KpC(ff, ln, act, lno)
             err = err or kp.err
@@ -384,6 +389,15 @@ def ref(act) -> bool:
             act.ap_this[i].k_actorp = act.index["Actor_" + p]
         except:
             print("Actor_" + p + " not found " + act.ap_this[i].line_no)
+            err = True
+
+    for i in range( len(act.ap_that) ):
+        try:
+            act.ap_that[i].k_actorp = -2
+            p = act.ap_that[i].k_actor
+            act.ap_that[i].k_actorp = act.index["Actor_" + p]
+        except:
+            print("Actor_" + p + " not found " + act.ap_that[i].line_no)
             err = True
 
     return(err)

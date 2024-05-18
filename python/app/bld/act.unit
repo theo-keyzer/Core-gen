@@ -75,6 +75,21 @@ Comp This parent Actor
 Ref actor Actor check
 	
 ----------------------------------------------------------------
+Comp That parent Actor
+----------------------------------------------------------------
+* Call this actor
+* For each child or item in the collection
+----------------------------------------------------------------
+
+	Element what    C1 WORD      * file or json
+	Element pad     C1 WORD      * padding (in,at)
+	Element file    C1 WORD      * file name
+	Element actor   R1 ACTOR     * what to do
+	Element args    V1 WORD      * arg data value
+	
+Ref actor Actor check
+	
+----------------------------------------------------------------
 Comp C parent Actor
 ----------------------------------------------------------------
 * Output code to file.

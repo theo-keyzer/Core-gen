@@ -106,16 +106,16 @@ def go_cmds(dat, glob, act: int) -> int:
             ret = structs.do_all(glob, what, all.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
-        elif isinstance(cmd,structs.KpThis):
+        elif isinstance(cmd,structs.KpThat):
             its = cmd
             what,err = strs(glob, its.k_what, glob.winp, cmd.line_no, True, True)
-            what = what.split(".",1)
+            what = what.split(".")
             val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
             col = ""
             if what[0] == "file":
                 try:
-                    with open(what[1], "r") as f:
+                    with open(its.k_file, "r") as f:
                         ff = f.read()
                         ret = go_act(ff, glob, its.k_actorp)
                         if ret > 1 or ret < 0:
@@ -124,8 +124,24 @@ def go_cmds(dat, glob, act: int) -> int:
                     pass
                 continue
             if what[0] == "json":
-                with open(what[1]) as fd:
+                with open(its.k_file) as fd:
                     json_data = json.load(fd)
+                    key = ""
+                    if len(what) == 1:
+                        glob.wins[glob.winp+1].item = its.k_file
+                        ret = go_act(json_data, glob, its.k_actorp)
+                        if ret > 1 or ret < 0:
+                            return ret
+                        continue
+                    for ji in range(1, len(what)):
+                        if len( what[ji] ) == 0:
+                            break
+                        json_data = json_data[ what[ji] ]
+                        if ji == 1:
+                            key = what[ji]
+                        else:
+                            key = key + "," + what[ji]
+                    glob.wins[glob.winp+1].item = key
                     if isinstance(json_data,dict):
                         ret = go_act(json_data, glob, its.k_actorp)
                         if ret > 1 or ret < 0:
@@ -138,6 +154,14 @@ def go_cmds(dat, glob, act: int) -> int:
                                 return ret
                         continue
                 continue
+            continue
+        elif isinstance(cmd,structs.KpThis):
+            its = cmd
+            what,err = strs(glob, its.k_what, glob.winp, cmd.line_no, True, True)
+            what = what.split(".",1)
+            val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
+            new_act(glob, val)
+            col = ""
             if what[0] == "set":
                 col = glob.sets
             elif what[0] == "list":
@@ -459,7 +483,10 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
         if len(ss) < 3:
             return ("?len var?" + str(ss) + "?" + lno + "?", True)
         if ss[1] == "_dict":
-            dat = glob.wins[winp].dat[ ss[2] ]
+#           dat = glob.wins[winp].dat[ ss[2] ]
+            dat = glob.wins[winp].dat
+            for ji in range(2, len(ss)):
+                dat = dat[ ss[ji] ]
             return( dat, False )
         if ss[1] == "_var":
             dat = glob.vars[ ss[2] ]

@@ -19,9 +19,7 @@ Actor grid
 C \section{${name}c}
 C ${info}
 
--Include check ${file}n.tex
-
-This file.${file}n.tex include
+That file at ${file}n.tex include
 
 Its Col col
 
@@ -38,9 +36,7 @@ Actor col . group = 1
 C \subsection{${name}c}
 C ${info}
 
--Include check ${file}n.tex
-
-This file.${file}n.tex include
+That file at ${file}n.tex include
 Out delay
 
 C \begin{description}
@@ -56,9 +52,7 @@ Actor col . group = 2
 C \subsubsection{${name}c}
 C ${info}
 
--Include check ${file}n.tex
-
-This file.${file}n.tex include
+That file at ${file}n.tex include
 Out delay
 
 C \begin{description}
@@ -73,8 +67,6 @@ Actor row
 
 C \item[${name} ] ${info}
 
--Include check ${file}n.tex
-
-This file.${file}n.tex include
+That file at ${file}n.tex include
 
 

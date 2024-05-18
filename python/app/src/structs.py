@@ -35,6 +35,7 @@ class ActT:
         self.ap_du = []
         self.ap_its = []
         self.ap_this = []
+        self.ap_that = []
         self.ap_c = []
         self.ap_cs = []
         self.ap_cf = []
@@ -2064,6 +2065,36 @@ class KpThis(Kp):
             self.k_parentp = i-1
         else:
             print( "No Actor parent for This" )
+            self.err = True
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        return("??", True)
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        return(0)
+
+class KpThat(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_that)
+        self.k_actorp = -1
+        self.k_what = ff.getw( ff.lines[ln], 1 )
+        self.k_pad = ff.getw( ff.lines[ln], 1 )
+        self.k_file = ff.getw( ff.lines[ln], 1 )
+        self.k_actor = ff.getw( ff.lines[ln], 1 )
+        self.k_args = ff.getws( ff.lines[ln], 1 )
+        self.k_parentp = -2
+        i = len( act.ap_actor )
+        if i > 0:
+            act.ap_actor[i-1].all_to = self.me2 + 1
+            self.k_parentp = i-1
+        else:
+            print( "No Actor parent for That" )
             self.err = True
 
     def get_me2(self) -> int:

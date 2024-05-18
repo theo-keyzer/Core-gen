@@ -2,14 +2,38 @@
 Actor main
 ----------------------------------------------------------------
 
-This json.per.json list_act
+That json. of per.json list_act
 
+C
+
+That json.menu.popup.menuitem in per.json list_act5
+
+C
+
+That json of per.json list_act0
+This var.Json list_act
+
+----------------------------------------------------------------
+Actor list_act02
+----------------------------------------------------------------
+
+C here02  ${._type}
+
+Its .dict list_act
+
+----------------------------------------------------------------
+Actor list_act0 Dict
+----------------------------------------------------------------
+
+C here0 ${._type}  ${._key}  ${._dict.menu.id}
+
+Add var Json
 
 ----------------------------------------------------------------
 Actor list_act Dict
 ----------------------------------------------------------------
 
-C here ${._key}
+C here ${._type}  ${._key}  ${._dict.menu.id}
 
 Its .dict list_act2
 
@@ -22,32 +46,39 @@ C here2 ${._key}  ${._dict.id}
 Its .dict list_act3
 
 ----------------------------------------------------------------
-Actor list_act3 Dict ._key = popup
+Actor list_act3 Dict ._type = dict
 ----------------------------------------------------------------
 
-C here3 ${._key}
+C here3 ${._type}  ${._key}
 
 Its .dict list_act4
 Break
 
 ----------------------------------------------------------------
-Actor list_act3  Str
+Actor list_act3  Str ._type = str
 ----------------------------------------------------------------
 
-C here3 ${._key}  ${._str}
+C here3 ${._type}  ${._key}  ${._str}
 
 ----------------------------------------------------------------
 Actor list_act4 List
 ----------------------------------------------------------------
 
-C here4 ${._key}
+C here4 ${._type}  ${._key}
 
 Its .list list_act5
 
 ----------------------------------------------------------------
-Actor list_act5 Dict
+Actor list_act5 Str ._type = str
 ----------------------------------------------------------------
 
+C here5 ${._type}  ${._key}  ${._str}
+
+----------------------------------------------------------------
+Actor list_act5 Dict ._type = dict
+----------------------------------------------------------------
+
+C here5 ${._type}
 C here5 ${._key}  ${._dict.value}
 
 Its .dict list_act6
