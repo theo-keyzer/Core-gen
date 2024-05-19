@@ -2,7 +2,7 @@
 Actor main
 ----------------------------------------------------------------
 
-That json of per.json list_act
+-That json of per.json list_act
 -That json. of per.json list_act2
 -That json.menu of per.json list_act2b
 -That json.menu. of per.json list_act3b
@@ -18,7 +18,7 @@ That json.menu.popup.menuitem. in per.json list_act5
 C b
 
 That json of per.json list_act0
--This var.Json list_act
+This var.jsonVar.menu.popup.menuitem. list_act5
 
 ----------------------------------------------------------------
 Actor list_act02
@@ -34,7 +34,7 @@ Actor list_act0 Dict
 
 C here0 ${._type}  ${._key}  ${._dict.menu.id}
 
-Add var Json
+Add var jsonVar
 
 ----------------------------------------------------------------
 Actor list_act Dict
@@ -118,8 +118,7 @@ C here5 ${._type}  ${._key}  ${._str}
 Actor list_act5 Dict ._type = dict
 ----------------------------------------------------------------
 
-C here5 ${._type}
-C here5 ${._key}  ${._dict.value}
+C here5 ${._type}  ${._key}  ${._dict.value}
 
 -Its .dict list_act6
 Its . list_act6
@@ -128,5 +127,6 @@ Its . list_act6
 Actor list_act6  Str
 ----------------------------------------------------------------
 
-C here6 ${._key}  ${._str}
+-C here6 ${._key}  ${._str}
+C here6 ${._key}  ${.}
 

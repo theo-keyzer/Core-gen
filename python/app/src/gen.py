@@ -144,7 +144,7 @@ def go_cmds(dat, glob, act: int) -> int:
         elif isinstance(cmd,structs.KpThis):
             its = cmd
             what,err = strs(glob, its.k_what, glob.winp, cmd.line_no, True, True)
-            what = what.split(".",1)
+            what = what.split(".")
             val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
             col = ""
@@ -161,12 +161,22 @@ def go_cmds(dat, glob, act: int) -> int:
                     glob.wins[glob.winp+1].item = what[1]
                     poc = col[ what[1] ]
                     if what[0] == "var":
+                        if len(what) > 2:
+                            ret = its_cmd(glob, cmd, poc, what[2:], what[1], its.k_actorp)
+                            if ret > 1 or ret < 0:
+                                return ret
+                            continue
                         ret = go_act(poc, glob, its.k_actorp)
                         if ret > 1 or ret < 0:
                             return ret
                         continue
                     for sts in poc:
-                        ret = go_act(sts,glob, its.k_actorp)
+                        if len(what) > 2:
+                            ret = its_cmd(glob, cmd, sts, what[2:], what[1], its.k_actorp)
+                            if ret > 1 or ret < 0:
+                                return ret
+                            continue
+                        ret = go_act(sts, glob, its.k_actorp)
                         if ret > 1 or ret < 0:
                             return ret
                 continue
@@ -270,7 +280,7 @@ def its_cmd(glob, cmd, dat, what, pkey, act) -> int:
         return(0)
     if isinstance(dat, list):
         for poc in dat:
-            glob.wins[glob.winp+1].item = ""
+            glob.wins[glob.winp+1].item = pkey
             ret = go_act(poc, glob, act)
             if ret > 1 or ret < 0:
                 return ret
@@ -285,7 +295,7 @@ def its_cmd(glob, cmd, dat, what, pkey, act) -> int:
                 dot = True
                 break
             poc = poc[ what[ji] ]
-            if ji == 0:
+            if key == "":
                 key = what[ji]
             else:
                 key = key + "," + what[ji]
@@ -497,8 +507,10 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
         if len(ss) == 1:
             return( glob.wins[winp].dat.line_no + ", " + lno, False )
-        if ss[1] == "_str" and isinstance( glob.wins[winp].dat, str):
+        if ss[1] == "" and isinstance( glob.wins[winp].dat, str):
             return( glob.wins[winp].dat, False )
+        if ss[1] == "_str":
+            return( str( glob.wins[winp].dat ), False )
         if ss[1] == "_arg":
             return( glob.wins[winp].arg, False )
         if ss[1] == "_type":
