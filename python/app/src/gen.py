@@ -136,27 +136,10 @@ def go_cmds(dat, glob, act: int) -> int:
                         if ret > 1 or ret < 0:
                             return ret
                         continue
-                    for ji in range(1, len(what)):
-                        if len( what[ji] ) == 0:
-                            break
-                        json_data = json_data[ what[ji] ]
-                        if ji == 1:
-                            key = what[ji]
-                        else:
-                            key = key + "," + what[ji]
-                    glob.wins[glob.winp+1].item = key
-                    if isinstance(json_data,dict):
-                        ret = go_act(json_data, glob, its.k_actorp)
-                        if ret > 1 or ret < 0:
-                            return ret
-                        continue
-                    if isinstance(json_data,list):
-                        for item in json_data:
-                            ret = go_act(item, glob, its.k_actorp)
-                            if ret > 1 or ret < 0:
-                                return ret
-                        continue
-                continue
+                    ret = its_cmd(glob, cmd, json_data, what[1:], "", its.k_actorp)
+                    if ret > 1 or ret < 0:
+                        return ret
+                    continue
             continue
         elif isinstance(cmd,structs.KpThis):
             its = cmd
@@ -213,66 +196,10 @@ def go_cmds(dat, glob, act: int) -> int:
             what = its.k_what.split(".")
             val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
-            if len(what) > 1 and what[0] == "" and what[1] == "list":
-                for poc in dat:
-                    glob.wins[glob.winp+1].item = ""
-                    ret = go_act(poc, glob, its.k_actorp)
-                    if ret > 1 or ret < 0:
-                        return ret
-                continue
-            if len(what) > 1 and what[0] == "" and what[1] == "dict":
-                keys = list(dat.keys())
-                for key in keys:
-                    glob.wins[glob.winp+1].item = key
-                    poc = dat[ key ]
-                    ret = go_act(poc, glob, its.k_actorp)
-                    if ret > 1 or ret < 0:
-                        return ret
-                continue
-            if len(what) > 1 and what[0] == "" and what[1] == "names":
-                keys = list(dat.names.keys())
-                for key in keys:
-                    glob.wins[glob.winp+1].item = key
-                    poc = dat.names[ key ]
-                    ret = go_act(poc, glob, its.k_actorp)
-                    if ret > 1 or ret < 0:
-                        return ret
-                continue
-            if isinstance(dat, dict):
-                poc = dat
-                dot = False
-                for ji in range(0, len(what)):
-                    if len( what[ji] ) == 0:
-                        dot = True
-                        break
-                    poc = poc[ what[ji] ]
-                    if ji == 0:
-                        key = what[ji]
-                    else:
-                        key = key + "," + what[ji]
-                glob.wins[glob.winp+1].item = key
-                if dot and isinstance(poc,list):
-                    for item in poc:
-                        ret = go_act(item, glob, its.k_actorp)
-                        if ret > 1 or ret < 0:
-                            return ret
-                    continue
-                if dot and isinstance(poc,dict):
-                    keys = list(poc.keys())
-                    for keyb in keys:
-                        glob.wins[glob.winp+1].item = key + "," + keyb
-                        poc2 = poc[ keyb ]
-                        ret = go_act(poc2, glob, its.k_actorp)
-                        if ret > 1 or ret < 0:
-                            return ret
-                    continue
-                ret = go_act(poc, glob, its.k_actorp)
-                if ret > 1 or ret < 0:
-                    return ret
-                continue
-            ret = dat.do_its(glob, what, its.k_actorp)
+            ret = its_cmd(glob, cmd, dat, what, "", its.k_actorp)
             if ret > 1 or ret < 0:
                 return ret
+            continue
         elif isinstance(cmd,structs.KpDu):
             du = cmd
             st,err = strs(glob, du.k_args, glob.winp, du.line_no, True, True)
@@ -314,6 +241,81 @@ def go_cmds(dat, glob, act: int) -> int:
                         ret = -ret
             return ret
     return 0
+
+def its_cmd(glob, cmd, dat, what, pkey, act) -> int:
+    if len(what) > 1 and what[0] == "" and what[1] == "list":
+        for poc in dat:
+            glob.wins[glob.winp+1].item = ""
+            ret = go_act(poc, glob, act)
+            if ret > 1 or ret < 0:
+                return ret
+        return(0)
+    if len(what) > 1 and what[0] == "" and what[1] == "dict":
+        keys = list(dat.keys())
+        for key in keys:
+            glob.wins[glob.winp+1].item = key
+            poc = dat[ key ]
+            ret = go_act(poc, glob, act)
+            if ret > 1 or ret < 0:
+                return ret
+        return(0)
+    if len(what) > 1 and what[0] == "" and what[1] == "names":
+        keys = list(dat.names.keys())
+        for keyb in keys:
+            glob.wins[glob.winp+1].item = keyb
+            poc = dat.names[ keyb ]
+            ret = go_act(poc, glob, act)
+            if ret > 1 or ret < 0:
+                return ret
+        return(0)
+    if isinstance(dat, list):
+        for poc in dat:
+            glob.wins[glob.winp+1].item = ""
+            ret = go_act(poc, glob, act)
+            if ret > 1 or ret < 0:
+                return ret
+        return(0)
+    if isinstance(dat, dict):
+        poc = dat
+        dot = False
+        key = pkey
+        glob.wins[glob.winp+1].item = key
+        for ji in range(0, len(what)):
+            if len( what[ji] ) == 0:
+                dot = True
+                break
+            poc = poc[ what[ji] ]
+            if ji == 0:
+                key = what[ji]
+            else:
+                key = key + "," + what[ji]
+        glob.wins[glob.winp+1].item = key
+        if dot and isinstance(poc,list):
+            for item in poc:
+                ret = go_act(item, glob, act)
+                if ret > 1 or ret < 0:
+                    return ret
+            return(0)
+        if dot and isinstance(poc,dict):
+            keys = list(poc.keys())
+            for keyb in keys:
+                if key == "":
+                    glob.wins[glob.winp+1].item = keyb
+                else:
+                    glob.wins[glob.winp+1].item = key + "," + keyb
+                poc2 = poc[ keyb ]
+                ret = go_act(poc2, glob, act)
+                if ret > 1 or ret < 0:
+                    return ret
+            return(0)
+        ret = go_act(poc, glob, act)
+        if ret > 1 or ret < 0:
+            return ret
+        return(0)
+    ret = dat.do_its(glob, what, act)
+    if ret > 1 or ret < 0:
+        return ret
+    return(0)
 
 def add_cmd(cmd,glob,dat):
     glob.wins[glob.winp].is_check = False

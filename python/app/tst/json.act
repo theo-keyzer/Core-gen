@@ -2,16 +2,23 @@
 Actor main
 ----------------------------------------------------------------
 
-That json. of per.json list_act
+That json of per.json list_act
+-That json. of per.json list_act2
+-That json.menu of per.json list_act2b
+-That json.menu. of per.json list_act3b
+-That json.menu.popup of per.json list_act3
+-That json.menu.popup. of per.json list_act4
+-That json.menu.popup.menuitem of per.json list_act4
+-That json.menu.popup.menuitem. of per.json list_act5
 
 C a
 
-That json.menu.popup.menuitem in per.json list_act5
+That json.menu.popup.menuitem. in per.json list_act5
 
 C b
 
 That json of per.json list_act0
-This var.Json list_act
+-This var.Json list_act
 
 ----------------------------------------------------------------
 Actor list_act02
@@ -36,7 +43,8 @@ Actor list_act Dict
 C here ${._type}  ${._key}  ${._dict.menu.id}
 C here ${._type}  ${._key}  ${menu.id}
 
-Its .dict list_act2
+-Its .dict list_act2
+Its . list_act2
 
 C c
 
@@ -97,7 +105,8 @@ Actor list_act4 List
 
 C here4 ${._type}  ${._key}
 
-Its .list list_act5
+-Its .list list_act5
+Its . list_act5
 
 ----------------------------------------------------------------
 Actor list_act5 Str ._type = str
@@ -112,7 +121,8 @@ Actor list_act5 Dict ._type = dict
 C here5 ${._type}
 C here5 ${._key}  ${._dict.value}
 
-Its .dict list_act6
+-Its .dict list_act6
+Its . list_act6
 
 ----------------------------------------------------------------
 Actor list_act6  Str
