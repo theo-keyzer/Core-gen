@@ -312,9 +312,11 @@ Some of the actor commands, calls this function for an item so that the item can
 This is not done for every item, and can be added if needed. The item words can not have spaces in them,
 so combining variables like `${ab} ${bc}` need to be done with `${ab}n${bc}`
 
-The `Its, This, That` commands are chained. The `This, That`, can only chain upto a list.
+The `Its, This, That` commands are chained but can only chain upto a list.
 
 `That file at filename actor_name` calls the actor with the file as a string.
+
+The `In on,off` command redirects the output to the `${._ins}` variable
 
 The `That db from test.db user_act SELECT * from users` does a select.
 
