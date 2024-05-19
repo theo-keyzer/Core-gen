@@ -287,8 +287,8 @@ Previous versions, the `Unique,Check` commands had the `Break` builtin.
 The `(_)` is there to not be an actor name. `${._arg}` is the value of the argument passes to this actor.
 The `${._key}` variable is the value of the key used for when all key and values are used ( `This list. actor` ).
 The `This list actor` is for all the keys. The values are combined for strings with `(,)`.
-The `${.set.A}`, the values are combined for strings with `(,)`.
-The `${.set}`, the keys are combined for strings with `(,)`. Needs more testing.
+The `${._set.A}`, the values are combined for strings with `(,)`.
+The `${._set}`, the keys are combined for strings with `(,)`. Needs more testing.
 
 The actor match `(is)`, is to compare set strings, but orders them before comparing them.
 
@@ -303,18 +303,20 @@ The variable `${._type)` is the type of the node for the actor.
 `That json.` will loop the items where `That json`, is the json object.
 `That json.menu` is the items of menu.
 
-On that node, `Its .dict list_act2` loop through the dict, and `Its .list list_act5`, the list.
-For dicts, the `._key` is the dict name and `${._str}` the value.
-The `${._dict.name}` is the value for the name. The `${._dict.menu.id}`, the dicts are chained.
+On that node, `Its . list_act2` loop through the dict, and `Its . list_act5`, the list.
+For dicts, the `._key` is the dict name and `${.}` the value. 
+The `${name}` is the value for the name. The `${menu.id}`, the dicts are chained.
 
 The `strs` function in gen.py`, replaces the variable names of a string with their values.
 Some of the actor commands, calls this function for an item so that the item can be combined with variables.
 This is not done for every item, and can be added if needed. The item words can not have spaces in them,
 so combining variables like `${ab} ${bc}` need to be done with `${ab}n${bc}`
 
-There are some risks in this as dirty data can effect the outcome.
+The `Its, This, That` commands are chained. The `This, That`, can only chain upto a list.
 
 `That file at filename actor_name` calls the actor with the file as a string.
+
+The `That db from test.db user_act SELECT * from users` does a select.
 
 The files `run.py, structs.py` are made with the `gen.sh` in `bld, app/bld` dirs.
 They go to the `bld/src, app/bld/src` and can be copied to `src, app/src` if they look ok.
