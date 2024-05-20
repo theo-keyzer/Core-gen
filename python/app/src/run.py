@@ -168,6 +168,11 @@ def load(act, ff: Input, tok: str, ln: int, lno: str) -> bool:
             err = err or kp.err
             act.ap_that.append(kp)
             act.kp_all.append(kp)
+        if tok == "In":
+            kp = structs.KpIn(ff, ln, act, lno)
+            err = err or kp.err
+            act.ap_in.append(kp)
+            act.kp_all.append(kp)
         if tok == "C":
             kp = structs.KpC(ff, ln, act, lno)
             err = err or kp.err

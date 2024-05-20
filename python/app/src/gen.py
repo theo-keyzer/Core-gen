@@ -80,25 +80,39 @@ def go_cmds(dat, glob, act: int) -> int:
     for c in range(glob.acts.ap_actor[act].all_from, glob.acts.ap_actor[act].all_to):
         glob.wins[glob.winp].cur_pos = c
         cmd = glob.acts.kp_all[c]
+        if isinstance(cmd,structs.KpIn):
+            if cmd.k_flag == "on":
+                glob.is_in = True
+            else:
+                glob.is_in = False
         if isinstance(cmd,structs.KpC):
             if glob.wins[glob.winp].is_on and not glob.wins[glob.winp].is_trig:
                 continue
             trig(glob, glob.winp)
             cc = cmd
             st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
-            print( st )
+            if glob.is_in:
+                glob.ins += st + "\n"
+            else:
+                print( st )
         if isinstance(cmd,structs.KpCs):
             if glob.wins[glob.winp].is_on and not glob.wins[glob.winp].is_trig:
                 continue
             trig(glob, glob.winp)
             cc = cmd
             st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
-            print( st, end="" )
+            if glob.is_in:
+                glob.ins += st
+            else:
+                print( st, end="" )
         elif isinstance(cmd,structs.KpCf):
             if glob.wins[glob.winp].lcnt == 0:
                 cf = cmd
                 st,err = strs(glob, cf.k_desc, glob.winp, cf.line_no, False, True)
-                print(st)
+                if glob.is_in:
+                    glob.ins += st + "\n"
+                else:
+                    print(st)
         elif isinstance(cmd,structs.KpAll):
             all = cmd
             val,err = strs(glob, all.k_args, glob.winp, cmd.line_no, True, True)
@@ -127,7 +141,10 @@ def go_cmds(dat, glob, act: int) -> int:
                         key = key + "," + keyb[0]
                 glob.wins[glob.winp+1].item = key
                 result = cur.fetchall() 
-                ret = go_act(result, glob, its.k_actorp)
+                if isinstance(result, list):
+                    ret = go_act(result, glob, its.k_actorp)
+                else:
+                    ret = go_act( [result], glob, its.k_actorp)
                 if ret > 1 or ret < 0:
                     return ret
                 continue
@@ -430,11 +447,17 @@ def re_go_cmds(glob, winp):
         if isinstance(cmd,structs.KpC):
             cc = cmd
             st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
-            print(st)
+            if glob.is_in:
+                glob.ins += st + "\n"
+            else:
+                print(st)
         if isinstance(cmd,structs.KpCs):
             cc = cmd
             st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
-            print(st, end="")
+            if glob.is_in:
+                glob.ins += st
+            else:
+                print(st, end="")
 
 
 def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err: bool, lno: str) -> bool:
@@ -528,13 +551,15 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( str( glob.wins[winp].dat ), False )
         if ss[1] == "_str":
             return( str( glob.wins[winp].dat ), False )
+        if ss[1] == "_ins":
+            return( glob.ins, False )
         if ss[1] == "_arg":
             return( glob.wins[winp].arg, False )
         if ss[1] == "_type":
             return( type( glob.wins[winp].dat ).__name__, False )
         if ss[1] == "_key":
             if len( ss ) > 2:
-                return( tocase( glob.wins[winp].item, ss[2] ), False )
+                return( tocase( glob.wins[winp].item, ss[2], glob.wins[winp].lcnt ), False )
             return( glob.wins[winp].item, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )
@@ -653,7 +678,7 @@ def strs(glob, s: str, winp: int, lno: str, pr_err, is_err) -> (str, bool):
                 else:
                     if len(s) > i + 1:
                         i += 1
-                        va = tocase(va, s[i])
+                        va = tocase(va, s[i], glob.wins[winp].lcnt)
                 ret += va
                 pos = i + 1
                 bp = -3
@@ -662,13 +687,18 @@ def strs(glob, s: str, winp: int, lno: str, pr_err, is_err) -> (str, bool):
         ret += s[pos:len(s)]
     return(ret, err)
 
-def tocase(s: str, c: str) -> str:
+def tocase(s: str, c: str, cnt: int) -> str:
     if c == "n":
         return s
     if c == "l":
         return s.lower()
     elif c == "c":
         return s[0].upper() + s[1:].lower()
+    if c == "-":
+        ss = s.split(",")
+        if len(ss) > cnt:
+            return( ss[cnt] )
+        return("")
     if c.isdigit() :
         val = int(c)
         ss = s.split(",")

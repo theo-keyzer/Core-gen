@@ -27,6 +27,8 @@ C         self.lists = {}
 C         self.arg = ""
 C         self.wins = []
 C         self.winp = -1
+C         self.is_in = False
+C         self.ins = ""
 C
 C class Kp:
 C     def get_me2(self) -> int:

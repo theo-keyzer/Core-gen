@@ -2,32 +2,33 @@
 Actor main
 --------------
 
-That db from test.db user_act SELECT * from ship
+That db from test.db rows SELECT * from ship
+-That db from test.db rows SELECT * from ship where ship_id = 2
 
 ----------------------------------
-Actor user_act . ._type = tuple
-----------------------------------
-
-C
-C old key: ${.user_act.._key}
-C new key: ${._key}
-C ${.+}  ${._type}  ${._str}  ${._tuple}
-C
-
-Its . ele
-
-----------------------------------
-Actor user_act . ._type = list
+Actor rows .
 ----------------------------------
 
 C key: ${._key}
 
-Its . user_act
+Add var key ${._key}
+
+Its . row
 
 ----------------------------------
-Actor ele .
+Actor row .
 ----------------------------------
 
-C ele ${.}
+C
+C ${.+}  ${._type}  ${._str}  ${._tuple}
+C
+
+Its . col
+
+----------------------------------
+Actor col .
+----------------------------------
+
+C col ${._var.key}- ${.}
 
 

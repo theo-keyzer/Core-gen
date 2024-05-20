@@ -2,10 +2,21 @@
 Actor main
 ----------------------------------------------------------------
 
+In on
+
+Cs ,
+C abc
+
+In off
+
+C x
+C ${._ins}
 
 All Domain domain
 
 C Found item ${._var.find.model.info}  ${._var.val} 
+
+This var.find.model its
 
 This set.finds tst_finds
 This list.finds tst_finds
@@ -30,6 +41,12 @@ C ${._list.finds}
 This set tst_keys
 This var tst_keys
 This list tst_keys
+
+----------------------------------------------------------------
+Actor its
+----------------------------------------------------------------
+
+C ${._type}
 
 ----------------------------------------------------------------
 Actor tst_keys
