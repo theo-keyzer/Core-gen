@@ -1,5 +1,6 @@
 import structs
 import json
+import sqlite3 
 
 class WinT:
     def __init__(self):
@@ -114,6 +115,22 @@ def go_cmds(dat, glob, act: int) -> int:
             filen,err = strs(glob, its.k_file, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
             col = ""
+            if what[0] == "db":
+                conn = sqlite3.connect(filen) 
+                cur = conn.cursor() 
+                cur.execute(val)
+                key = ""
+                for keyb in cur.description:
+                    if key == "":
+                        key = keyb[0]
+                    else:
+                        key = key + "," + keyb[0]
+                glob.wins[glob.winp+1].item = key
+                result = cur.fetchall() 
+                ret = go_act(result, glob, its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
+                continue
             if what[0] == "file":
                 try:
                     with open(filen, "r") as f:
@@ -278,7 +295,7 @@ def its_cmd(glob, cmd, dat, what, pkey, act) -> int:
             if ret > 1 or ret < 0:
                 return ret
         return(0)
-    if isinstance(dat, list):
+    if isinstance(dat, list) or isinstance(dat, tuple):
         for poc in dat:
             glob.wins[glob.winp+1].item = pkey
             ret = go_act(poc, glob, act)
@@ -507,8 +524,8 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
         if len(ss) == 1:
             return( glob.wins[winp].dat.line_no + ", " + lno, False )
-        if ss[1] == "" and isinstance( glob.wins[winp].dat, str):
-            return( glob.wins[winp].dat, False )
+        if ss[1] == "":
+            return( str( glob.wins[winp].dat ), False )
         if ss[1] == "_str":
             return( str( glob.wins[winp].dat ), False )
         if ss[1] == "_arg":
@@ -531,6 +548,17 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
         if ss[1] == "_var" and len(ss) == 2:
             col = glob.vars
             return( get_data(col, ss[1:], lno) )
+        if ss[1] == "_tuple":
+            dat = glob.wins[winp].dat
+            cma = True
+            ret = ""
+            for sts in dat:
+                if cma:
+                    ret = str(sts)
+                    cma = False
+                    continue
+                ret = ret + "," + sts
+            return(ret, False)
         if ss[1] == "_list":
             col = glob.lists
             return( get_data(col, ss[1:], lno) )
@@ -559,7 +587,7 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             if glob.wins[winp].lcnt == 0:
                 return( "", False )
             return( ss[2], False )
-        for i in range(winp, -1, -1):
+        for i in range(winp-1, -1, -1):
             if ss[1] == glob.wins[i].name:
                 return( s_get_var(glob, ss[2:], i, lno) )
         return ("?var?" + str(ss) + "?" + lno + "?", True)

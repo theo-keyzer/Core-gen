@@ -1,0 +1,33 @@
+--------------
+Actor main
+--------------
+
+That db from test.db user_act SELECT * from ship
+
+----------------------------------
+Actor user_act . ._type = tuple
+----------------------------------
+
+C
+C old key: ${.user_act.._key}
+C new key: ${._key}
+C ${.+}  ${._type}  ${._str}  ${._tuple}
+C
+
+Its . ele
+
+----------------------------------
+Actor user_act . ._type = list
+----------------------------------
+
+C key: ${._key}
+
+Its . user_act
+
+----------------------------------
+Actor ele .
+----------------------------------
+
+C ele ${.}
+
+
