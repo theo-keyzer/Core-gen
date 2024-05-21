@@ -301,7 +301,7 @@ For the actor match, use `._key.0 = a`, to to match where the first one is `('a)
 The variable `${._type)` is the type of the node for the actor.
 
 `That json.` will loop the items where `That json`, is the json object.
-`That json.menu` is the items of menu.
+`That json.menu` is the dict of menu.
 
 On that node, `Its . list_act2` loop through the dict, and `Its . list_act5`, the list.
 For dicts, the `._key` is the dict name and `${.}` the value. 
@@ -316,9 +316,30 @@ The `Its, This, That` commands are chained but can only chain upto a list.
 
 `That file at filename actor_name` calls the actor with the file as a string.
 
-The `In on,off` command redirects the output to the `${._ins}` variable
+The `In on,off,clear` command redirects the output to the `${._ins}` variable.
+This is global across actors. Usefull to capture json input.
 
-The `That db from test.db user_act SELECT * from users` does a select.
+```
+Add var J {"id": [1, 2, 3], "userId": 1}
+That json. string ${._var.J} str_act
+```
+
+Builds up a json string, that gets converted to a dict to be used further on.
+The generator is primary string based - a way to preserve the data types.
+
+The `That db from test.db user_act SELECT * from users` does a select from the database.
+
+```
+That url.get at https://jsonplaceholder.typicode.com/posts/1 response_list
+That url.get at https://jsonplaceholder.typicode.com/posts/ response_list {"id": [1, 2, 3], "userId":1}
+That url.post to https://jsonplaceholder.typicode.com/posts/ response_list {"userID": 1,"id": 1,"title": "Making a POST request","body": "This is the data we created."}
+```
+The url commands.
+
+The portable dir is for a version that does not want the python imports. Or you can just remove the imports and the code that relies on it.
+
+`import sqlite3, import requests` are the ones. The `sqlite3` is for the `That db` and `requests`, for `That url`.
+
 
 The files `run.py, structs.py` are made with the `gen.sh` in `bld, app/bld` dirs.
 They go to the `bld/src, app/bld/src` and can be copied to `src, app/src` if they look ok.
