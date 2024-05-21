@@ -1,0 +1,28 @@
+--------------
+Actor main
+--------------
+
+That url.get at https://jsonplaceholder.typicode.com/posts/1 response_list
+
+C a
+
+That url.get at https://jsonplaceholder.typicode.com/posts/ response_list {"id": [1, 2, 3], "userId":1}
+
+C b
+
+That url.post to https://jsonplaceholder.typicode.com/posts/ response_list {"userID": 1,"id": 1,"title": "Making a POST request","body": "This is the data we created."}
+
+----------------------------------
+Actor response_list .
+----------------------------------
+
+C here1 ${._type}  ${._key}  ${.}
+
+Its . response
+
+----------------------------------
+Actor response .
+----------------------------------
+
+C here2 ${._type}  ${.}
+

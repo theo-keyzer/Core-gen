@@ -1,7 +1,5 @@
 import structs
 import json
-import sqlite3 
-import requests
 
 class WinT:
     def __init__(self):
@@ -130,54 +128,6 @@ def go_cmds(dat, glob, act: int) -> int:
             filen,err = strs(glob, its.k_file, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
             col = ""
-            if len(what) > 1 and what[0] == "url" and what[1] == "get":
-                url = filen
-                if val == "":
-                    response = requests.get(url)
-                else:
-                    payload = json.loads(val)
-                    response = requests.get(url, params=payload)
-                glob.wins[glob.winp+1].item = str( response.status_code )
-                response_json = response.json()
-                if isinstance(response_json, list):
-                    ret = go_act(response_json, glob, its.k_actorp)
-                else:
-                    ret = go_act( [response_json], glob, its.k_actorp)
-                if ret > 1 or ret < 0:
-                    return ret
-                continue
-            if len(what) > 1 and what[0] == "url" and what[1] == "post":
-                url = filen
-                payload = json.loads(val)
-                response = requests.post(url, json=payload)
-                glob.wins[glob.winp+1].item = str( response.status_code )
-                response_json = response.json()
-                if isinstance(response_json, list):
-                    ret = go_act(response_json, glob, its.k_actorp)
-                else:
-                    ret = go_act( [response_json], glob, its.k_actorp)
-                if ret > 1 or ret < 0:
-                    return ret
-                continue
-            if what[0] == "db":
-                conn = sqlite3.connect(filen) 
-                cur = conn.cursor() 
-                cur.execute(val)
-                key = ""
-                for keyb in cur.description:
-                    if key == "":
-                        key = keyb[0]
-                    else:
-                        key = key + "," + keyb[0]
-                glob.wins[glob.winp+1].item = key
-                result = cur.fetchall() 
-                if isinstance(result, list):
-                    ret = go_act(result, glob, its.k_actorp)
-                else:
-                    ret = go_act( [result], glob, its.k_actorp)
-                if ret > 1 or ret < 0:
-                    return ret
-                continue
             if what[0] == "file":
                 try:
                     with open(filen, "r") as f:

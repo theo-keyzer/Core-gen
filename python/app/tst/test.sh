@@ -110,5 +110,12 @@ echo ::::::::::::::
 python ../src/main.py db.act note.def 
 if [ $? != 0 ]; then echo db.act note.def has errors; fi
 
+echo ::::::::::::::
+echo web.act
+echo ::::::::::::::
+
+python ../src/main.py web.act note.def 
+if [ $? != 0 ]; then echo db.act note.def has errors; fi
+
 
 
