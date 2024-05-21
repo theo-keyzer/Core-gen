@@ -117,5 +117,12 @@ echo ::::::::::::::
 python ../src/main.py web.act note.def 
 if [ $? != 0 ]; then echo db.act note.def has errors; fi
 
+echo ::::::::::::::
+echo json3.act
+echo ::::::::::::::
+
+python ../src/main.py json3.act note.def 
+if [ $? != 0 ]; then echo db.act note.def has errors; fi
+
 
 

@@ -191,19 +191,22 @@ def go_cmds(dat, glob, act: int) -> int:
                         glob.run_errs = True
                 continue
             if what[0] == "json":
-                with open(filen) as fd:
-                    json_data = json.load(fd)
-                    key = ""
-                    if len(what) == 1:
-                        glob.wins[glob.winp+1].item = its.k_file
-                        ret = go_act(json_data, glob, its.k_actorp)
-                        if ret > 1 or ret < 0:
-                            return ret
-                        continue
-                    ret = its_cmd(glob, cmd, json_data, what[1:], "", its.k_actorp)
+                if its.k_pad == "string":
+                    json_data = json.loads(filen)
+                else:
+                    with open(filen) as fd:
+                        json_data = json.load(fd)
+                key = ""
+                if len(what) == 1:
+                    glob.wins[glob.winp+1].item = its.k_file
+                    ret = go_act(json_data, glob, its.k_actorp)
                     if ret > 1 or ret < 0:
                         return ret
                     continue
+                ret = its_cmd(glob, cmd, json_data, what[1:], "", its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
+                continue
             continue
         elif isinstance(cmd,structs.KpThis):
             its = cmd
