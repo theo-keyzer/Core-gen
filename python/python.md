@@ -336,9 +336,27 @@ That url.post to https://jsonplaceholder.typicode.com/posts/ response_list {"use
 ```
 The url commands.
 
-The portable dir is for a version that does not want the python imports. Or you can just remove the imports and the code that relies on it.
+`Actor topic . .list.._key regex q\d`, here the actor does a match of a value of `q` followed by a number.
+The `.list` is the name of a previous actor and the `._key` is the key item of that actor.
+It could have been `.list.name`, so the `..` is confusing.
 
-`import sqlite3, import requests` are the ones. The `sqlite3` is for the `That db` and `requests`, for `That url`.
+```
+Add var str A(i,j) = B(i,j,k) * c(k);
+That regx string ${._var.str} response_list (\w+)\(([\w,\s]+)\)\s+=\s+(\w+)\(([\w,\s]+)\)\s*\*\s*(\w+)\(([\w,\s]+)\)
+```
+
+Here `That` calls the response_list actor with the groupings in the regular expression.
+The group items are in the `()` parts. The actor gets these as a vector.
+
+`C  ${.:3}  - ${.:3:split:1}` in the actor, get the value of the 3rd item of the group
+and the `split:1`, splits the string value and get the first item.
+
+The `${._key}` can also sometimes be a vector so instead of `${._key}1`, use `${._key:1}`
+The `${.name}s` can also be `${name:snake}`
+
+The `(:)` parts of the variable name is done with the `cmd_var` function. Only done for the `(.)` variable for now.
+The `(.)` is the item the actor is working with.
+
 
 
 The files `run.py, structs.py` are made with the `gen.sh` in `bld, app/bld` dirs.
