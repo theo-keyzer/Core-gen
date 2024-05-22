@@ -1,5 +1,7 @@
 import structs
 import json
+import re
+
 import sqlite3 
 import requests
 
@@ -189,6 +191,14 @@ def go_cmds(dat, glob, act: int) -> int:
                     if its.k_pad != "if":
                         print("File (" + filen + ") error")
                         glob.run_errs = True
+                continue
+            if what[0] == "regx":
+                match = re.match(val,filen)
+                if match:
+                    grps = match.groups()
+                    ret = go_act(grps, glob, its.k_actorp)
+                    if ret > 1 or ret < 0:
+                        return ret
                 continue
             if what[0] == "json":
                 if its.k_pad == "string":

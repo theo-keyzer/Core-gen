@@ -124,5 +124,12 @@ echo ::::::::::::::
 python ../src/main.py json3.act note.def 
 if [ $? != 0 ]; then echo db.act note.def has errors; fi
 
+echo ::::::::::::::
+echo regx.act
+echo ::::::::::::::
+
+python ../src/main.py regx.act note.def 
+if [ $? != 0 ]; then echo db.act note.def has errors; fi
+
 
 
