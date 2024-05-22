@@ -18,7 +18,7 @@ Actor list_act02 List
 
 C here02 ${._type}  ${._key}
 
-Its .list list_act
+Its . list_act
 
 ----------------------------------------------------------------
 Actor list_act0 Dict
@@ -34,7 +34,7 @@ Actor list_act Dict
 
 C here ${._type}  ${._dict.type}
 
-Its .dict list_act2
+Its . list_act2
 
 ----------------------------------------------------------------
 Actor list_act2 List ._key = children

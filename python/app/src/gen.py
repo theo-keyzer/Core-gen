@@ -51,9 +51,10 @@ def go_act(dat, glob, act):
         eq = glob.acts.ap_actor[a].k_eq
         lno = glob.acts.ap_actor[a].line_no
         if attr != "E_O_L":
-            ss = attr.split(".")
+            sc = attr.split(":")
+            ss = sc[0].split(".")
             val,err = strs(glob, val, glob.winp, lno, False, False)
-            aval,aerr = s_get_var(glob, ss, glob.winp, lno)
+            aval,aerr = s_get_var(glob, sc, ss, glob.winp, lno)
             prev = chk(glob, eq, aval, val, prev, aerr, err, lno)
             if not prev:
                 continue
@@ -575,11 +576,43 @@ def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err
             return False
         except:
             return False
+    elif eq == "regex":
+        match = re.match(val,aval)
+        if match:
+            return True
+        return False
+    elif eq == "exreg":
+        match = re.match(aval,val)
+        if match:
+            return True
+        return False
     print("?No actor match (" + eqa + ") " + lno + "?")
     glob.run_errs = True
     return False
 
-def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
+def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
+    var = varv
+    skip = 0
+    for i in range(1, len(sc)):
+        if skip > 0:
+            skip = skip - 1
+            continue
+        if sc[i] == "split":
+            var = var.split(",")
+        if sc[i].isdigit() :
+            pos = int( sc[i] )
+            if len(var) > pos:
+                var = var[pos]
+            else:
+                var = ""
+        if sc[i] == "-" :
+            if len(var) > lcnt:
+                var = var[lcnt]
+            else:
+                var = ""
+    return( str(var), False)
+
+def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, bool):
     try:
         if len( ss[0] ) != 0:
             dat = glob.wins[winp].dat
@@ -591,6 +624,8 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
         if len(ss) == 1:
             return( glob.wins[winp].dat.line_no + ", " + lno, False )
         if ss[1] == "" and len(ss) == 2:
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, glob.wins[winp].dat, glob.wins[winp].lcnt) )
             return( str( glob.wins[winp].dat ), False )
         if ss[1] == "_str":
             return( str( glob.wins[winp].dat ), False )
@@ -657,7 +692,7 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( ss[2], False )
         for i in range(winp-1, -1, -1):
             if ss[1] == glob.wins[i].name:
-                return( s_get_var(glob, ss[2:], i, lno) )
+                return( s_get_var(glob, sc, ss[2:], i, lno) )
         return ("?var?" + str(ss) + "?" + lno + "?", True)
     except Exception as e:
         return ("?" + str(e) + " var?" + str(ss) + "?" + lno + "?", True)
@@ -710,9 +745,12 @@ def strs(glob, s: str, winp: int, lno: str, pr_err, is_err) -> (str, bool):
         if s[i] == '}':
             if bp > 0:
                 va = s[bp + 1:i]
-                ss = va.split(".")
-                va, er = s_get_var(glob, ss, winp, lno)
+                sc = va.split(":")
+                ss = sc[0].split(".")
+                va, er = s_get_var(glob, sc, ss, winp, lno)
                 if er:
+                    if len(s) > i + 1:
+                        i += 1
                     err = True
                     if is_err:
                         glob.run_errs = True
