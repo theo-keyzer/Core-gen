@@ -592,11 +592,13 @@ def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err
 
 def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
     var = varv
-    skip = 0
     for i in range(1, len(sc)):
-        if skip > 0:
-            skip = skip - 1
-            continue
+        if sc[i] == "join":
+            j = ","
+            var = j.join(var)
+        if sc[i] == "keys":
+            j = ","
+            var = j.join(var)
         if sc[i] == "split":
             var = var.split(",")
         if sc[i].isdigit() :
@@ -619,8 +621,13 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
             if isinstance(dat, dict):
                 for ji in range(0, len(ss)):
                     dat = dat[ ss[ji] ]
-                return( dat, False )
-            return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
+            else:
+                dat,er = glob.wins[winp].dat.get_var(glob.dats, ss, lno)
+                if er:
+                    return( dat, True )
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, dat, glob.wins[winp].lcnt) )
+            return( dat, False )
         if len(ss) == 1:
             return( glob.wins[winp].dat.line_no + ", " + lno, False )
         if ss[1] == "" and len(ss) == 2:
@@ -638,6 +645,8 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
         if ss[1] == "_key":
             if len( ss ) > 2:
                 return( tocase( glob.wins[winp].item, ss[2], glob.wins[winp].lcnt ), False )
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, glob.wins[winp].item, glob.wins[winp].lcnt) )
             return( glob.wins[winp].item, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )
@@ -647,6 +656,12 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
             return( str( winp ), False )
         if ss[1] == "_set":
             col = glob.sets
+            if len(sc) > 1:
+                if len(ss) > 2:
+                    col = col[ ss[2] ]
+                return( cmd_var(glob, sc, col, glob.wins[winp].lcnt) )
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, col, glob.wins[winp].lcnt) )
             return( get_data(col, ss[1:], lno) )
         if ss[1] == "_var" and len(ss) == 2:
             col = glob.vars

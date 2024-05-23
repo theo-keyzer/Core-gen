@@ -346,18 +346,26 @@ That regx string ${._var.str} response_list (\w+)\(([\w,\s]+)\)\s+=\s+(\w+)\(([\
 ```
 
 Here `That` calls the response_list actor with the groupings in the regular expression.
-The group items are in the `()` parts. The actor gets these as a vector.
+The group items are in the `()` parts. The actor gets these as a list.
 
 `C  ${.:3}  - ${.:3:split:1}` in the actor, get the value of the 3rd item of the group
 and the `split:1`, splits the string value and get the first item.
 
-The `${._key}` can also sometimes be a vector so instead of `${._key}1`, use `${._key:1}`
-The `${.name}s` can also be `${name:snake}`
+The `${._key}` can also sometimes be a list so instead of `${._key}1`, use `${._key:1}`
+The `${name}s` can also be `${name:snake}` The case conversions are not done yet.
 
-The `(:)` parts of the variable name is done with the `cmd_var` function. Only done for the `(.)` variable for now.
+The `(:)` parts of the variable name is done with the `cmd_var` function. Only done for the some variables for now.
 The `(.)` is the item the actor is working with.
 
+The following changes, the old ones are going to be removed at some point.
 
+`Its .dict, Its .list` to `Its .`
+`${._str} to `${.}`
+`${._key.0}` to `${._key:split:0}` when it still a string and `${._key:0}` when it is a list.
+`${._set.G}` to `${._set.G:join}` and later with `${._set.G:sort:join}`
+`${._set}` to `${._set:join}`
+
+At some point, the extra char at the end of a variable `${name}n` is going to be removed `${name}`.
 
 The files `run.py, structs.py` are made with the `gen.sh` in `bld, app/bld` dirs.
 They go to the `bld/src, app/bld/src` and can be copied to `src, app/src` if they look ok.

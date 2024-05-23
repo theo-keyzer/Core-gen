@@ -21,7 +21,10 @@ C
 This set graph_all check
 
 C
-C ${._set.G,1}
+C x ${._set.G,2}
+C y ${._set.G,2:join}
+C x ${._set}
+C y ${._set:join}
 
 ---------------------------------------------------------------
 Actor mat_collect Matrix search in 1,2,3,4,5
@@ -37,9 +40,11 @@ Add set M,${search} ${b} -${c}
 Actor mat_all
 ----------------------------------------------------------------
 
-C  a ${._str}
+-C  a ${._str}
+C  a ${.}
 
-All Graph graph_collect ${._str}
+-All Graph graph_collect ${._str}
+All Graph graph_collect ${.}
 
 ---------------------------------------------------------------
 Actor graph_collect Graph name = ${._arg}
@@ -51,18 +56,21 @@ Add set G,${search} ${name}
 
 ----------------------------------------------------------------
 -Actor graph_all Set ..G = ${._key}0
+-Actor graph_all Set ._key.0 = G
 
-Actor graph_all Set ._key.0 = G
-Actor graph_all Set ._str &is B-C,C-A,B-A
+Actor graph_all Set ._key:split:0 = G
+Actor graph_all Set . &is B-C,C-A,B-A
 ----------------------------------------------------------------
 
-C  all ${._key}  ${._str}  
+-C  all ${._key}  ${._str}  
+C  all ${._key}  ${.}  
 
 
 ----------------------------------------------------------------
 Actor graph_all Set
 ----------------------------------------------------------------
 
-C      ${._key}  ${._str}  
+-C      ${._key}  ${._str}  
+C      ${._key}  ${.}  
 
 
