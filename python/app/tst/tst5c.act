@@ -40,10 +40,8 @@ Add set M,${search} ${b} -${c}
 Actor mat_all
 ----------------------------------------------------------------
 
--C  a ${._str}
 C  a ${.}
 
--All Graph graph_collect ${._str}
 All Graph graph_collect ${.}
 
 ---------------------------------------------------------------
@@ -55,14 +53,10 @@ C    s ${search}   ${name}
 Add set G,${search} ${name}
 
 ----------------------------------------------------------------
--Actor graph_all Set ..G = ${._key}0
--Actor graph_all Set ._key.0 = G
-
 Actor graph_all Set ._key:split:0 = G
 Actor graph_all Set .:join &is B-C,C-A,B-A
 ----------------------------------------------------------------
 
--C  all ${._key}  ${._str}  
 C  all ${._key}  ${.:join}  
 
 
@@ -70,7 +64,6 @@ C  all ${._key}  ${.:join}
 Actor graph_all Set
 ----------------------------------------------------------------
 
--C      ${._key}  ${._str}  
 C      ${._key}  ${.:join}  
 
 

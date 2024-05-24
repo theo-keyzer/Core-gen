@@ -4,6 +4,11 @@ Actor main
 
 That json of quiz.json list
 
+C ${._var.topic}
+C ${._var.topic:join}
+C ${._var.topic.options}
+C ${._var.topic.options:2}
+
 ----------------------------------------------------------------
 Actor list . ._type in dict,list
 ----------------------------------------------------------------
@@ -16,5 +21,8 @@ Actor topic . .list.._key regex q\d
 ----------------------------------------------------------------
 
 C Question: ${question}  ${answer}
+C ${.:join}
+
+Add var topic
 
 

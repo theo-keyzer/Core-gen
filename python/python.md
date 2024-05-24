@@ -354,17 +354,20 @@ and the `split:1`, splits the string value and get the first item.
 The `${._key}` can also sometimes be a list so instead of `${._key}1`, use `${._key:1}`
 The `${name}s` can also be `${name:snake}` The case conversions are not done yet.
 
-The `(:)` parts of the variable name is done with the `cmd_var` function. Only done for the some variables for now.
+The `(:)` parts of the variable name is done with the `cmd_var` function. Done for most variables.
 The `(.)` is the item the actor is working with.
 
 The following changes, the old ones are going to be removed at some point.
 
 `Its .dict, Its .list` to `Its .`
+`${._tuple}` to `${.:join}`
 `${._dict.name}` to `${name}`
 `${._str} to `${.}`
 `${._key.0}` to `${._key:split:0}` for string and `${._key:0}` when a list.
 `${._set.G}` to `${._set.G:join}` or `${._set.G:sort:join}`
 `${._set}` to `${._set:join}`
+
+The `:join` is optional, just there to get the same output as before.
 
 The `This set, This list` loops through the keys and now passes the object `(set, list)` to the actor instead of a string.
 The `${.}` is `{'5', '7', '6'}` and `${.:join}` is `6,5,7`.

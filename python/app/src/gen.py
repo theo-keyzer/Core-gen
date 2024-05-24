@@ -611,7 +611,7 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
             try:
                 for sts in var:
                     stv = sts
-                    if not isinstance(sts, str):
+                    if not isinstance(sts, str) and not isinstance(sts, bool) and not isinstance(sts, int) and sts is not None:
                         stv = type( sts ).__name__
                     if nvar == "":
                         nvar = str(stv)
@@ -619,6 +619,7 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
                         nvar = nvar + "," + str(stv)
                 var = nvar
             except Exception as e:
+                print(e)
                 var = type( var ).__name__
         if sc[i] == "keys":
             j = ","
@@ -680,18 +681,25 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
             return( str( glob.wins[winp].lcnt ), False )
         if ss[1] == '_depth':
             return( str( winp ), False )
-        if ss[1] == "_set":
-            col = glob.sets
+        if ss[1] == "_set" or ss[1] == "_list" or ss[1] == "_var":
+            if ss[1] == "_set": col = glob.sets
+            if ss[1] == "_list": col = glob.lists
+            if ss[1] == "_var": col = glob.vars
+            if len(ss) > 2:
+                col = col[ ss[2] ]
+            if len(ss) > 3 and ss[1] == "_var": 
+                if isinstance(col, dict):
+                    for ji in range(3, len(ss)):
+                        col = col[ ss[ji] ]
+                else:
+                    col,er = col.get_var(glob.dats, ss[3:], lno)
+                    if er:
+                        return( col, True )
             if len(sc) > 1:
-                if len(ss) > 2:
-                    col = col[ ss[2] ]
                 return( cmd_var(glob, sc, col, glob.wins[winp].lcnt) )
-            if len(sc) > 1:
-                return( cmd_var(glob, sc, col, glob.wins[winp].lcnt) )
-            return( get_data(col, ss[1:], lno) )
-        if ss[1] == "_var" and len(ss) == 2:
-            col = glob.vars
-            return( get_data(col, ss[1:], lno) )
+            if isinstance(col, structs.Kp):
+                return( type( col ).__name__, False )
+            return( str( col ), False )
         if ss[1] == "_tuple":
             dat = glob.wins[winp].dat
             cma = True
@@ -703,9 +711,9 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
                     continue
                 ret = ret + "," + sts
             return(ret, False)
-        if ss[1] == "_list":
-            col = glob.lists
-            return( get_data(col, ss[1:], lno) )
+#        if ss[1] == "_list":
+#            col = glob.lists
+#            return( get_data(col, ss[1:], lno) )
         if len(ss) < 3:
             return ("?len var?" + str(ss) + "?" + lno + "?", True)
         if ss[1] == "_dict":

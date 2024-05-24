@@ -27,7 +27,7 @@ C Found items ${name}
 Actor tst_finds_str
 ----------------------------------------------------------------
 
-C Found items  a str ${._str}
+C Found items  a str ${.}
 
 ----------------------------------------------------------------
 Actor domain

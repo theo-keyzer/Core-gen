@@ -30,13 +30,13 @@ This set.A tst_finds_str
 
 Add var X abc
 
-C ${._var}
-C ${._set}
-C ${._list}
+C ${._var:join}
+C ${._set:join}
+C ${._list:join}
 
-C ${._set.finds}
-C ${._var.find.name}
-C ${._list.finds}
+C q ${._set.finds:join}
+C r ${._var.find.name}
+C s ${._list.finds:join}
 
 This set tst_keys
 C a
@@ -73,7 +73,7 @@ C Found items ${name}
 Actor tst_finds_str
 ----------------------------------------------------------------
 
-C Found items  a str ${._str}
+C Found items  a str ${.}
 
 ----------------------------------------------------------------
 Actor domain

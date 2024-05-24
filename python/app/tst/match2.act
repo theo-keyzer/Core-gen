@@ -7,13 +7,13 @@ Add set.split., Ibb ${4}
 
 -Add set Ibb
 
-C ${._set}
-C ${._set.Ibb}
+C ${._set:join}
+C ${._set.Ibb:join}
 C ${..Abc}
 C
 
 Add set zz,yy,bb abc
-C ${._set}
+C ${._set:join}
 
 This set test
 This set test2
@@ -23,7 +23,7 @@ C
 All A bb
 
 ----------------------------------------------------------------
-Actor bb A model in ${._set.Ibb}
+Actor bb A model in ${._set.Ibb:join}
 ----------------------------------------------------------------
 
 C ${name}  ${model}
@@ -33,7 +33,7 @@ C ${name}  ${model}
 Its model.Frame.A aa
 
 ----------------------------------------------------------------
-Actor aa A model in ${._set.Iaa}
+Actor aa A model in ${._set.Iaa:join}
 ----------------------------------------------------------------
 
 C  ${name}  ${model}

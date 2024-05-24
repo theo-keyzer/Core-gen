@@ -14,13 +14,13 @@ C
 All Domain domain
 
 ----------------------------------------------------------------
-Actor domain
+Actor domain Domain
 ----------------------------------------------------------------
 
 Its Model disp_col
 
 ----------------------------------------------------------------
-Actor disp_col . ._depth != 6
+Actor disp_col Model ._depth != 6
 ----------------------------------------------------------------
 
 Add set M ${._depth} ${name}
@@ -35,14 +35,14 @@ Its A_model.parent.parent disp_col
 Its Frame.A.model disp_col
 
 ----------------------------------------------------------------
-Actor disp_items
+Actor disp_items A
 ----------------------------------------------------------------
 
 -Its ._set.items disp_item
 This set.items disp_item
 
 ----------------------------------------------------------------
-Actor disp_item . ._str = ${.disp_items.model}
+Actor disp_item . . = ${.disp_items.model}
 ----------------------------------------------------------------
 
 Add set DI ${._depth} ${.disp_items.k_me}

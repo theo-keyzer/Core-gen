@@ -57,5 +57,5 @@ Break
 Actor list_act2 Str
 ----------------------------------------------------------------
 
-C here2c ${._key}  ${._type}  ${._str}
+C here2c ${._key}  ${._type}  ${.}
 
