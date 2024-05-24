@@ -59,11 +59,11 @@ Add set G,${search} ${name}
 -Actor graph_all Set ._key.0 = G
 
 Actor graph_all Set ._key:split:0 = G
-Actor graph_all Set . &is B-C,C-A,B-A
+Actor graph_all Set .:join &is B-C,C-A,B-A
 ----------------------------------------------------------------
 
 -C  all ${._key}  ${._str}  
-C  all ${._key}  ${.}  
+C  all ${._key}  ${.:join}  
 
 
 ----------------------------------------------------------------
@@ -71,6 +71,6 @@ Actor graph_all Set
 ----------------------------------------------------------------
 
 -C      ${._key}  ${._str}  
-C      ${._key}  ${.}  
+C      ${._key}  ${.:join}  
 
 

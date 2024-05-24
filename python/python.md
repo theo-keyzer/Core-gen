@@ -360,10 +360,16 @@ The `(.)` is the item the actor is working with.
 The following changes, the old ones are going to be removed at some point.
 
 `Its .dict, Its .list` to `Its .`
+`${._dict.name}` to `${name}`
 `${._str} to `${.}`
-`${._key.0}` to `${._key:split:0}` when it still a string and `${._key:0}` when it is a list.
-`${._set.G}` to `${._set.G:join}` and later with `${._set.G:sort:join}`
+`${._key.0}` to `${._key:split:0}` for string and `${._key:0}` when a list.
+`${._set.G}` to `${._set.G:join}` or `${._set.G:sort:join}`
 `${._set}` to `${._set:join}`
+
+The `This set, This list` loops through the keys and now passes the object `(set, list)` to the actor instead of a string.
+The `${.}` is `{'5', '7', '6'}` and `${.:join}` is `6,5,7`.
+The `Its .` here loops the items.
+The `Its set.` and `Its set.G` is the same, the actor gets the items.
 
 At some point, the extra char at the end of a variable `${name}n` is going to be removed `${name}`.
 

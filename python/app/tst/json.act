@@ -32,7 +32,7 @@ Its . list_act
 Actor list_act0 Dict
 ----------------------------------------------------------------
 
-C here0 ${._type}  ${._key}  ${._dict.menu.id}
+C here0 ${._type}  ${._key}  ${menu.id}
 
 Add var jsonVar
 
@@ -40,7 +40,6 @@ Add var jsonVar
 Actor list_act Dict
 ----------------------------------------------------------------
 
-C here ${._type}  ${._key}  ${._dict.menu.id}
 C here ${._type}  ${._key}  ${menu.id}
 
 Its . list_act2
@@ -67,7 +66,7 @@ C here2b ${._key}  ${id}
 Actor list_act2 Dict
 ----------------------------------------------------------------
 
-C here2 ${._key}  ${._dict.id}
+C here2 ${._key}  ${id}
 
 Its . list_act3
 
@@ -116,7 +115,7 @@ C here5 ${._type}  ${._key}  ${._str}
 Actor list_act5 Dict ._type = dict
 ----------------------------------------------------------------
 
-C here5 ${._type}  ${._key}  ${._dict.value}
+C here5 ${._type}  ${._key}  ${value}
 
 Its . list_act6
 

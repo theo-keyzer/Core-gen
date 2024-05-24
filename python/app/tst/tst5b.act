@@ -23,26 +23,26 @@ C    s ${search}   ${name}
 Add set ${search} ${name}
 
 ----------------------------------------------------------------
-Actor graph_all Set ._str is A-B,B-C
+Actor graph_all Set .:join is A-B,B-C
 ----------------------------------------------------------------
 
-C  all ${._key}  ${._str} 
+C  all ${._key}  ${.:join} 
 
 Break
 
 ----------------------------------------------------------------
-Actor graph_all Set ._str is B-A,B-C,C-A
+Actor graph_all Set .:join is B-A,B-C,C-A
 ----------------------------------------------------------------
 
-C  all ${._key}  ${._str} 
+C  all ${._key}  ${.:join} 
 
 Break
 
 -----------------------------------------------------------------
-Actor graph_all Set ._str is A-C,C-A,C-B
+Actor graph_all Set .:join is A-C,C-A,C-B
 ----------------------------------------------------------------
 
-C  all ${._key}  ${._str} 
+C  all ${._key}  ${.:join} 
 
 Break
 
@@ -50,6 +50,6 @@ Break
 Actor graph_all
 ----------------------------------------------------------------
 
-C  no ${._key}  ${._str} 
+C  no ${._key}  ${.:join} 
 
 

@@ -87,8 +87,10 @@ def go_cmds(dat, glob, act: int) -> int:
         if isinstance(cmd,structs.KpIn):
             if cmd.k_flag == "on":
                 glob.is_in = True
-            else:
+            if cmd.k_flag == "off":
                 glob.is_in = False
+            if cmd.k_flag == "clear":
+                glob.ins = ""
         if isinstance(cmd,structs.KpC):
             if glob.wins[glob.winp].is_on and not glob.wins[glob.winp].is_trig:
                 continue
@@ -262,9 +264,10 @@ def go_cmds(dat, glob, act: int) -> int:
             for key in keys:
                 glob.wins[glob.winp+1].item = key
                 if len(what) == 1:
-                    ss = [ what[0], key ]
-                    vals,err = get_data(col, ss, cmd.line_no)
-                    ret = go_act(vals, glob, its.k_actorp)
+#                   ss = [ what[0], key ]
+#                   vals,err = get_data(col, ss, cmd.line_no)
+#                   ret = go_act(vals, glob, its.k_actorp)
+                    ret = go_act(col[ key ], glob, its.k_actorp)
                     if ret > 1 or ret < 0:
                         return ret
                     continue
@@ -592,10 +595,31 @@ def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err
 
 def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
     var = varv
+    if isinstance(var, structs.Kp):
+        return( type( var ).__name__, False )
     for i in range(1, len(sc)):
-        if sc[i] == "join":
-            j = ","
-            var = j.join(var)
+        if sc[i] == "sort" and not isinstance(var, str):
+            nvar = ""
+            try:
+                a = list(var)
+                a.sort()
+                var = a
+            except Exception as e:
+                var = type( var ).__name__
+        if sc[i] == "join" and not isinstance(var, str):
+            nvar = ""
+            try:
+                for sts in var:
+                    stv = sts
+                    if not isinstance(sts, str):
+                        stv = type( sts ).__name__
+                    if nvar == "":
+                        nvar = str(stv)
+                    else:
+                        nvar = nvar + "," + str(stv)
+                var = nvar
+            except Exception as e:
+                var = type( var ).__name__
         if sc[i] == "keys":
             j = ","
             var = j.join(var)
@@ -633,6 +657,8 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
         if ss[1] == "" and len(ss) == 2:
             if len(sc) > 1:
                 return( cmd_var(glob, sc, glob.wins[winp].dat, glob.wins[winp].lcnt) )
+            if isinstance(glob.wins[winp].dat, structs.Kp):
+                return( type( glob.wins[winp].dat ).__name__, False )
             return( str( glob.wins[winp].dat ), False )
         if ss[1] == "_str":
             return( str( glob.wins[winp].dat ), False )

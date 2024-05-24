@@ -32,7 +32,8 @@ Add var Json
 Actor list_act Dict
 ----------------------------------------------------------------
 
-C here ${._type}  ${._dict.type}
+-C here ${._type}  ${._dict.type}
+C here ${._type}  ${type}
 
 Its . list_act2
 
