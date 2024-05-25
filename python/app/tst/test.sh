@@ -115,28 +115,28 @@ echo web.act
 echo ::::::::::::::
 
 python ../src/main.py web.act note.def 
-if [ $? != 0 ]; then echo db.act note.def has errors; fi
+if [ $? != 0 ]; then echo web.act note.def has errors; fi
 
 echo ::::::::::::::
 echo json3.act
 echo ::::::::::::::
 
 python ../src/main.py json3.act note.def 
-if [ $? != 0 ]; then echo db.act note.def has errors; fi
+if [ $? != 0 ]; then echo json3.act note.def has errors; fi
 
 echo ::::::::::::::
 echo regx.act
 echo ::::::::::::::
 
 python ../src/main.py regx.act note.def 
-if [ $? != 0 ]; then echo db.act note.def has errors; fi
+if [ $? != 0 ]; then echo regx.act note.def has errors; fi
 
 echo ::::::::::::::
 echo json5.act
 echo ::::::::::::::
 
 python ../src/main.py json5.act note.def 
-if [ $? != 0 ]; then echo db.act note.def has errors; fi
+if [ $? != 0 ]; then echo json5.act note.def has errors; fi
 
 
 

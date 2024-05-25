@@ -16,10 +16,10 @@ C \end{document}
 Actor grid
 ----------------------------------------------------------------
 
-C \section{${name}c}
+C \section{${name:c}}
 C ${info}
 
-That file if ${file}n.tex include
+That file if ${file}.tex include
 
 Its Col col
 
@@ -33,10 +33,10 @@ C ${.}
 Actor col . group = 1
 ----------------------------------------------------------------
 
-C \subsection{${name}c}
+C \subsection{${name:c}}
 C ${info}
 
-That file if ${file}n.tex include
+That file if ${file}.tex include
 Out delay
 
 C \begin{description}
@@ -49,10 +49,10 @@ C \end{description}
 Actor col . group = 2
 ----------------------------------------------------------------
 
-C \subsubsection{${name}c}
+C \subsubsection{${name:c}}
 C ${info}
 
-That file if ${file}n.tex include
+That file if ${file}.tex include
 Out delay
 
 C \begin{description}
@@ -65,8 +65,8 @@ C \end{description}
 Actor row
 ----------------------------------------------------------------
 
-C \item[${name} ] ${info}
+C \item[${name}] ${info}
 
-That file if ${file}n.tex include
+That file if ${file}.tex include
 
 

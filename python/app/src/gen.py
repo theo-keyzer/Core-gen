@@ -264,9 +264,6 @@ def go_cmds(dat, glob, act: int) -> int:
             for key in keys:
                 glob.wins[glob.winp+1].item = key
                 if len(what) == 1:
-#                   ss = [ what[0], key ]
-#                   vals,err = get_data(col, ss, cmd.line_no)
-#                   ret = go_act(vals, glob, its.k_actorp)
                     ret = go_act(col[ key ], glob, its.k_actorp)
                     if ret > 1 or ret < 0:
                         return ret
@@ -334,22 +331,6 @@ def go_cmds(dat, glob, act: int) -> int:
     return 0
 
 def its_cmd(glob, cmd, dat, what, pkey, act) -> int:
-    if len(what) > 1 and what[0] == "" and what[1] == "list":
-        for poc in dat:
-            glob.wins[glob.winp+1].item = ""
-            ret = go_act(poc, glob, act)
-            if ret > 1 or ret < 0:
-                return ret
-        return(0)
-    if len(what) > 1 and what[0] == "" and what[1] == "dict":
-        keys = list(dat.keys())
-        for key in keys:
-            glob.wins[glob.winp+1].item = key
-            poc = dat[ key ]
-            ret = go_act(poc, glob, act)
-            if ret > 1 or ret < 0:
-                return ret
-        return(0)
     if len(what) > 1 and what[0] == "" and what[1] == "names":
         keys = list(dat.names.keys())
         for keyb in keys:
@@ -598,7 +579,14 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
     if isinstance(var, structs.Kp):
         return( type( var ).__name__, False )
     for i in range(1, len(sc)):
-        if sc[i] == "sort" and not isinstance(var, str):
+        ss = sc[i].split('.')
+        if ss[0] == "l":
+            var = var.lower()
+#        if ss[0] == "u":
+#            var = var.upper()
+        if ss[0] == "c":
+            var = var[0].upper() + var[1:].lower()
+        if ss[0] == "sort" and not isinstance(var, str):
             nvar = ""
             try:
                 a = list(var)
@@ -606,7 +594,7 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
                 var = a
             except Exception as e:
                 var = type( var ).__name__
-        if sc[i] == "join" and not isinstance(var, str):
+        if ss[0] == "join" and not isinstance(var, str):
             nvar = ""
             try:
                 for sts in var:
@@ -621,18 +609,19 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
             except Exception as e:
                 print(e)
                 var = type( var ).__name__
-        if sc[i] == "keys":
+        if ss[0] == "keys":
+            keys = list(var.keys())
             j = ","
-            var = j.join(var)
-        if sc[i] == "split":
+            var = j.join(keys)
+        if ss[0] == "split":
             var = var.split(",")
-        if sc[i].isdigit() :
+        if ss[0].isdigit() :
             pos = int( sc[i] )
             if len(var) > pos:
                 var = var[pos]
             else:
                 var = ""
-        if sc[i] == "-" :
+        if ss[0] == "-" :
             if len(var) > lcnt:
                 var = var[lcnt]
             else:
@@ -653,25 +642,27 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
             if len(sc) > 1:
                 return( cmd_var(glob, sc, dat, glob.wins[winp].lcnt) )
             return( dat, False )
-        if len(ss) == 1:
-            return( glob.wins[winp].dat.line_no + ", " + lno, False )
-        if ss[1] == "" and len(ss) == 2:
+        if len(ss) == 1 or (ss[1] == "" and len(ss) == 2):
             if len(sc) > 1:
                 return( cmd_var(glob, sc, glob.wins[winp].dat, glob.wins[winp].lcnt) )
             if isinstance(glob.wins[winp].dat, structs.Kp):
                 return( type( glob.wins[winp].dat ).__name__, False )
             return( str( glob.wins[winp].dat ), False )
-        if ss[1] == "_str":
-            return( str( glob.wins[winp].dat ), False )
+        if ss[1] == "_lno":
+            if isinstance(glob.wins[winp].dat, structs.Kp):
+                return( glob.wins[winp].dat.line_no + ", " + lno, False )
+            return( lno, False )
         if ss[1] == "_ins":
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, glob.ins, glob.wins[winp].lcnt) )
             return( glob.ins, False )
         if ss[1] == "_arg":
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, glob.wins[winp].arg, glob.wins[winp].lcnt) )
             return( glob.wins[winp].arg, False )
         if ss[1] == "_type":
             return( type( glob.wins[winp].dat ).__name__, False )
         if ss[1] == "_key":
-            if len( ss ) > 2:
-                return( tocase( glob.wins[winp].item, ss[2], glob.wins[winp].lcnt ), False )
             if len(sc) > 1:
                 return( cmd_var(glob, sc, glob.wins[winp].item, glob.wins[winp].lcnt) )
             return( glob.wins[winp].item, False )
@@ -700,35 +691,8 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
             if isinstance(col, structs.Kp):
                 return( type( col ).__name__, False )
             return( str( col ), False )
-        if ss[1] == "_tuple":
-            dat = glob.wins[winp].dat
-            cma = True
-            ret = ""
-            for sts in dat:
-                if cma:
-                    ret = str(sts)
-                    cma = False
-                    continue
-                ret = ret + "," + sts
-            return(ret, False)
-#        if ss[1] == "_list":
-#            col = glob.lists
-#            return( get_data(col, ss[1:], lno) )
         if len(ss) < 3:
             return ("?len var?" + str(ss) + "?" + lno + "?", True)
-        if ss[1] == "_dict":
-#           dat = glob.wins[winp].dat[ ss[2] ]
-            dat = glob.wins[winp].dat
-            for ji in range(2, len(ss)):
-                dat = dat[ ss[ji] ]
-            return( dat, False )
-        if ss[1] == "_var":
-            dat = glob.vars[ ss[2] ]
-            if len(ss) == 3:
-                if isinstance(dat, str):
-                    return(dat, False)
-                return ("?Kp var?" + str(ss) + "?" + lno + "?", True)
-            return( dat.get_var(glob.dats, ss[3:], lno) )
         if ss[1] == '':
             return( ss[2], False )
         if ss[1] == "0":
@@ -798,17 +762,17 @@ def strs(glob, s: str, winp: int, lno: str, pr_err, is_err) -> (str, bool):
                 ss = sc[0].split(".")
                 va, er = s_get_var(glob, sc, ss, winp, lno)
                 if er:
-                    if len(s) > i + 1:
-                        i += 1
+#                    if len(s) > i + 1:
+#                        i += 1
                     err = True
                     if is_err:
                         glob.run_errs = True
                     if pr_err:
                         print(va)
-                else:
-                    if len(s) > i + 1:
-                        i += 1
-                        va = tocase(va, s[i], glob.wins[winp].lcnt)
+#                else:
+#                    if len(s) > i + 1:
+#                        i += 1
+#                        va = tocase(va, s[i], glob.wins[winp].lcnt)
                 ret += va
                 pos = i + 1
                 bp = -3

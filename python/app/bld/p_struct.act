@@ -45,6 +45,7 @@ C     def __init__(self):
 C         self.me = 1
 C         self.me2 = 1
 C         self.names = {}
+C         self.line_no = "cmd.arg:1"
 C
 C     def get_me2(self) -> int:
 C         return self.me2

@@ -15,7 +15,7 @@ Cs Select (
 Its Field field_sel
 Its Join join_sel
 
-Cs ) from ${name}  ${value} 
+Cs ) from ${name} ${value}
 
 Its Join join_from
 Its Join join_where
@@ -26,7 +26,7 @@ C
 Actor field_sel Field use has grid
 ----------------------------------------------------------------
 
-Cs ${.1., } ${parent.value} .${name} 
+Cs ${.1., }${parent.value}.${name}
 
 ----------------------------------------------------------------
 Actor join_sel Join
@@ -38,19 +38,19 @@ Its table2.Field join_field_sel
 Actor join_field_sel Field use has grid
 ----------------------------------------------------------------
 
-Cs , ${parent.value} ${.join_sel..+} .${name} 
+Cs , ${parent.value}${.join_sel..+}.${name}
 
 ----------------------------------------------------------------
 Actor join_from Join
 ----------------------------------------------------------------
 
-Cs , ${table2.name}  ${table2.value} ${.+} 
+Cs , ${table2.name} ${table2.value}${.+}
 
 ----------------------------------------------------------------
 Actor join_where Join
 ----------------------------------------------------------------
 
-Cs  ${.0.where } ${.1.and } ${table2.value} ${.+} .${field2.name}  = ${parent.value} .${field1.name} 
+Cs  ${.0.where }${.1.and }${table2.value}${.+}.${field2.name} = ${parent.value}.${field1.name}
 
 E_O_F
 

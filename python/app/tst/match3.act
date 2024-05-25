@@ -10,6 +10,7 @@ Add set.split., Ibb ${4}
 -Add set Ibb
 
 C ${._set:join}
+C ${._set:keys}
 C ${._set.Ibb:join}
 C ${..Abc}
 C ${._set.Args:join}
@@ -38,16 +39,16 @@ This set.Args perm2
 Actor perm2 Set .perm.. != ${.}
 ----------------------------------------------------------------
 
-This set.Args perm3 ${.perm..}n,${.}
-Add set P ${.perm..}n,${.}
+This set.Args perm3 ${.perm..},${.}
+Add set P ${.perm..},${.}
 
-C 1 ${.perm..}  ${.}
+C 1 ${.perm..} ${.}
 
 ----------------------------------------------------------------
 Actor perm3 Set
 ----------------------------------------------------------------
 
--C 2 ${._arg}  ${._set.P}
+-C 2 ${._arg} ${._set.P}
 
 This set.P perm4 ${._arg}
 
@@ -55,7 +56,7 @@ This set.P perm4 ${._arg}
 Actor perm4 Set . is ${._arg}
 ----------------------------------------------------------------
 
--C 3 ${.}   is ${._arg}
+-C 3 ${.}  is ${._arg}
 
 Break cmds of perm2
 
@@ -64,7 +65,7 @@ Break cmds of perm2
 Actor get_args . ._key !in 0,1,2
 ----------------------------------------------------------------
 
-C ${.}  - ${._key}
+C ${.} - ${._key}
 
 Add set.split., Arg${._key} ${.}
 Add set Args Arg${._key}
@@ -74,17 +75,17 @@ Add set Args Arg${._key}
 Actor test . ._key in Iaa,Ibb
 ----------------------------------------------------------------
 
-C  test ${.:join}  ${._key}
+C  test ${.:join} ${._key}
 
 ----------------------------------------------------------------
 Actor test2 . ._key has yy
 ----------------------------------------------------------------
 
-C  test2 ${.:join}  ${._key}
+C  test2 ${.:join} ${._key}
 
 ----------------------------------------------------------------
 Actor test3 . ._key in ${._set.Args:join}
 ----------------------------------------------------------------
 
-C  test3 ${.:join}  ${._key}
+C  test3 ${.:join} ${._key}
 

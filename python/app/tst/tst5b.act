@@ -9,16 +9,16 @@ This set graph_all check
 Actor mat_collect Matrix search in 1,2,3,4,5,6,7
 ----------------------------------------------------------------
 
-C ${search}  ${a}n-${b}
+C ${search}  ${a}-${b}
 
-All Graph graph_collect ${a} -${b}
-All Graph graph_collect ${b} -${c}
+All Graph graph_collect ${a}-${b}
+All Graph graph_collect ${b}-${c}
 
 ---------------------------------------------------------------
 Actor graph_collect Graph name = ${._arg}
 ----------------------------------------------------------------
 
-C    s ${search}   ${name}
+C    s ${search}  ${name}
 
 Add set ${search} ${name}
 
@@ -26,7 +26,7 @@ Add set ${search} ${name}
 Actor graph_all Set .:join is A-B,B-C
 ----------------------------------------------------------------
 
-C  all ${._key}  ${.:join} 
+C  all ${._key} ${.:join} 
 
 Break
 
@@ -34,7 +34,7 @@ Break
 Actor graph_all Set .:join is B-A,B-C,C-A
 ----------------------------------------------------------------
 
-C  all ${._key}  ${.:join} 
+C  all ${._key} ${.:join} 
 
 Break
 
@@ -42,7 +42,7 @@ Break
 Actor graph_all Set .:join is A-C,C-A,C-B
 ----------------------------------------------------------------
 
-C  all ${._key}  ${.:join} 
+C  all ${._key} ${.:join} 
 
 Break
 
@@ -50,6 +50,6 @@ Break
 Actor graph_all
 ----------------------------------------------------------------
 
-C  no ${._key}  ${.:join} 
+C  no ${._key} ${.:join} 
 
 

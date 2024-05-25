@@ -10,10 +10,10 @@ All Grid grid
 Actor grid
 ----------------------------------------------------------------
 
-C # ${name}c
+C # ${name:c}
 C ${info}
 
-That file if ${file}n.md include
+That file if ${file}.md include
 
 Its Col col
 
@@ -27,10 +27,10 @@ C ${.}
 Actor col . group = 1
 ----------------------------------------------------------------
 
-C ### ${name}c
+C ### ${name:c}
 C ${info}
 
-That file if ${file}n.md include
+That file if ${file}.md include
 Out delay
 
 -C \begin{description}
@@ -43,10 +43,10 @@ Its R row
 Actor col . group = 2
 ----------------------------------------------------------------
 
-C #### ${name}c
+C #### ${name:c}
 C ${info}
 
-That file if ${file}n.md include
+That file if ${file}.md include
 Out delay
 
 -C \begin{description}
@@ -59,8 +59,8 @@ Its R row
 Actor row
 ----------------------------------------------------------------
 
-C - ${name}  - ${info}
+C - ${name} - ${info}
 
-That file if ${file}n.md include
+That file if ${file}.md include
 
 

@@ -1,5 +1,9 @@
 import structs
 import json
+import re
+
+import sqlite3 
+import requests
 
 class WinT:
     def __init__(self):
@@ -47,9 +51,10 @@ def go_act(dat, glob, act):
         eq = glob.acts.ap_actor[a].k_eq
         lno = glob.acts.ap_actor[a].line_no
         if attr != "E_O_L":
-            ss = attr.split(".")
+            sc = attr.split(":")
+            ss = sc[0].split(".")
             val,err = strs(glob, val, glob.winp, lno, False, False)
-            aval,aerr = s_get_var(glob, ss, glob.winp, lno)
+            aval,aerr = s_get_var(glob, sc, ss, glob.winp, lno)
             prev = chk(glob, eq, aval, val, prev, aerr, err, lno)
             if not prev:
                 continue
@@ -82,8 +87,10 @@ def go_cmds(dat, glob, act: int) -> int:
         if isinstance(cmd,structs.KpIn):
             if cmd.k_flag == "on":
                 glob.is_in = True
-            else:
+            if cmd.k_flag == "off":
                 glob.is_in = False
+            if cmd.k_flag == "clear":
+                glob.ins = ""
         if isinstance(cmd,structs.KpC):
             if glob.wins[glob.winp].is_on and not glob.wins[glob.winp].is_trig:
                 continue
@@ -128,6 +135,54 @@ def go_cmds(dat, glob, act: int) -> int:
             filen,err = strs(glob, its.k_file, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
             col = ""
+            if len(what) > 1 and what[0] == "url" and what[1] == "get":
+                url = filen
+                if val == "":
+                    response = requests.get(url)
+                else:
+                    payload = json.loads(val)
+                    response = requests.get(url, params=payload)
+                glob.wins[glob.winp+1].item = str( response.status_code )
+                response_json = response.json()
+                if isinstance(response_json, list):
+                    ret = go_act(response_json, glob, its.k_actorp)
+                else:
+                    ret = go_act( [response_json], glob, its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
+                continue
+            if len(what) > 1 and what[0] == "url" and what[1] == "post":
+                url = filen
+                payload = json.loads(val)
+                response = requests.post(url, json=payload)
+                glob.wins[glob.winp+1].item = str( response.status_code )
+                response_json = response.json()
+                if isinstance(response_json, list):
+                    ret = go_act(response_json, glob, its.k_actorp)
+                else:
+                    ret = go_act( [response_json], glob, its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
+                continue
+            if what[0] == "db":
+                conn = sqlite3.connect(filen) 
+                cur = conn.cursor() 
+                cur.execute(val)
+                key = ""
+                for keyb in cur.description:
+                    if key == "":
+                        key = keyb[0]
+                    else:
+                        key = key + "," + keyb[0]
+                glob.wins[glob.winp+1].item = key
+                result = cur.fetchall() 
+                if isinstance(result, list):
+                    ret = go_act(result, glob, its.k_actorp)
+                else:
+                    ret = go_act( [result], glob, its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
+                continue
             if what[0] == "file":
                 try:
                     with open(filen, "r") as f:
@@ -140,20 +195,31 @@ def go_cmds(dat, glob, act: int) -> int:
                         print("File (" + filen + ") error")
                         glob.run_errs = True
                 continue
+            if what[0] == "regx":
+                match = re.match(val,filen)
+                if match:
+                    grps = match.groups()
+                    ret = go_act(grps, glob, its.k_actorp)
+                    if ret > 1 or ret < 0:
+                        return ret
+                continue
             if what[0] == "json":
-                with open(filen) as fd:
-                    json_data = json.load(fd)
-                    key = ""
-                    if len(what) == 1:
-                        glob.wins[glob.winp+1].item = its.k_file
-                        ret = go_act(json_data, glob, its.k_actorp)
-                        if ret > 1 or ret < 0:
-                            return ret
-                        continue
-                    ret = its_cmd(glob, cmd, json_data, what[1:], "", its.k_actorp)
+                if its.k_pad == "string":
+                    json_data = json.loads(filen)
+                else:
+                    with open(filen) as fd:
+                        json_data = json.load(fd)
+                key = ""
+                if len(what) == 1:
+                    glob.wins[glob.winp+1].item = its.k_file
+                    ret = go_act(json_data, glob, its.k_actorp)
                     if ret > 1 or ret < 0:
                         return ret
                     continue
+                ret = its_cmd(glob, cmd, json_data, what[1:], "", its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
+                continue
             continue
         elif isinstance(cmd,structs.KpThis):
             its = cmd
@@ -198,9 +264,10 @@ def go_cmds(dat, glob, act: int) -> int:
             for key in keys:
                 glob.wins[glob.winp+1].item = key
                 if len(what) == 1:
-                    ss = [ what[0], key ]
-                    vals,err = get_data(col, ss, cmd.line_no)
-                    ret = go_act(vals, glob, its.k_actorp)
+#                   ss = [ what[0], key ]
+#                   vals,err = get_data(col, ss, cmd.line_no)
+#                   ret = go_act(vals, glob, its.k_actorp)
+                    ret = go_act(col[ key ], glob, its.k_actorp)
                     if ret > 1 or ret < 0:
                         return ret
                     continue
@@ -512,34 +579,106 @@ def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err
             return False
         except:
             return False
+    elif eq == "regex":
+        match = re.match(val,aval)
+        if match:
+            return True
+        return False
+    elif eq == "exreg":
+        match = re.match(aval,val)
+        if match:
+            return True
+        return False
     print("?No actor match (" + eqa + ") " + lno + "?")
     glob.run_errs = True
     return False
 
-def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
+def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
+    var = varv
+    if isinstance(var, structs.Kp):
+        return( type( var ).__name__, False )
+    for i in range(1, len(sc)):
+        ss = sc[i].split('.')
+        if sc[i] == "sort" and not isinstance(var, str):
+            nvar = ""
+            try:
+                a = list(var)
+                a.sort()
+                var = a
+            except Exception as e:
+                var = type( var ).__name__
+        if ss[0] == "join" and not isinstance(var, str):
+            nvar = ""
+            try:
+                for sts in var:
+                    stv = sts
+                    if not isinstance(sts, str) and not isinstance(sts, bool) and not isinstance(sts, int) and sts is not None:
+                        stv = type( sts ).__name__
+                    if nvar == "":
+                        nvar = str(stv)
+                    else:
+                        nvar = nvar + "," + str(stv)
+                var = nvar
+            except Exception as e:
+                print(e)
+                var = type( var ).__name__
+        if sc[i] == "keys":
+            j = ","
+            var = j.join(var)
+        if ss[0] == "split":
+            var = var.split(",")
+        if sc[i].isdigit() :
+            pos = int( sc[i] )
+            if len(var) > pos:
+                var = var[pos]
+            else:
+                var = ""
+        if sc[i] == "-" :
+            if len(var) > lcnt:
+                var = var[lcnt]
+            else:
+                var = ""
+    return( str(var), False)
+
+def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, bool):
     try:
         if len( ss[0] ) != 0:
             dat = glob.wins[winp].dat
             if isinstance(dat, dict):
                 for ji in range(0, len(ss)):
                     dat = dat[ ss[ji] ]
-                return( dat, False )
-            return glob.wins[winp].dat.get_var(glob.dats, ss, lno)
-        if len(ss) == 1:
-            return( glob.wins[winp].dat.line_no + ", " + lno, False )
-        if ss[1] == "" and len(ss) == 2:
+            else:
+                dat,er = glob.wins[winp].dat.get_var(glob.dats, ss, lno)
+                if er:
+                    return( dat, True )
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, dat, glob.wins[winp].lcnt) )
+            return( dat, False )
+        if len(ss) == 1 or (ss[1] == "" and len(ss) == 2):
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, glob.wins[winp].dat, glob.wins[winp].lcnt) )
+            if isinstance(glob.wins[winp].dat, structs.Kp):
+                return( type( glob.wins[winp].dat ).__name__, False )
             return( str( glob.wins[winp].dat ), False )
+        if ss[1] == "_lno":
+            if isinstance(glob.wins[winp].dat, structs.Kp):
+                return( glob.wins[winp].dat.line_no + ", " + lno, False )
+            return( lno, False )
         if ss[1] == "_str":
             return( str( glob.wins[winp].dat ), False )
         if ss[1] == "_ins":
             return( glob.ins, False )
         if ss[1] == "_arg":
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, glob.wins[winp].arg, glob.wins[winp].lcnt) )
             return( glob.wins[winp].arg, False )
         if ss[1] == "_type":
             return( type( glob.wins[winp].dat ).__name__, False )
         if ss[1] == "_key":
             if len( ss ) > 2:
                 return( tocase( glob.wins[winp].item, ss[2], glob.wins[winp].lcnt ), False )
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, glob.wins[winp].item, glob.wins[winp].lcnt) )
             return( glob.wins[winp].item, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )
@@ -547,12 +686,25 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( str( glob.wins[winp].lcnt ), False )
         if ss[1] == '_depth':
             return( str( winp ), False )
-        if ss[1] == "_set":
-            col = glob.sets
-            return( get_data(col, ss[1:], lno) )
-        if ss[1] == "_var" and len(ss) == 2:
-            col = glob.vars
-            return( get_data(col, ss[1:], lno) )
+        if ss[1] == "_set" or ss[1] == "_list" or ss[1] == "_var":
+            if ss[1] == "_set": col = glob.sets
+            if ss[1] == "_list": col = glob.lists
+            if ss[1] == "_var": col = glob.vars
+            if len(ss) > 2:
+                col = col[ ss[2] ]
+            if len(ss) > 3 and ss[1] == "_var": 
+                if isinstance(col, dict):
+                    for ji in range(3, len(ss)):
+                        col = col[ ss[ji] ]
+                else:
+                    col,er = col.get_var(glob.dats, ss[3:], lno)
+                    if er:
+                        return( col, True )
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, col, glob.wins[winp].lcnt) )
+            if isinstance(col, structs.Kp):
+                return( type( col ).__name__, False )
+            return( str( col ), False )
         if ss[1] == "_tuple":
             dat = glob.wins[winp].dat
             cma = True
@@ -564,9 +716,9 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
                     continue
                 ret = ret + "," + sts
             return(ret, False)
-        if ss[1] == "_list":
-            col = glob.lists
-            return( get_data(col, ss[1:], lno) )
+#        if ss[1] == "_list":
+#            col = glob.lists
+#            return( get_data(col, ss[1:], lno) )
         if len(ss) < 3:
             return ("?len var?" + str(ss) + "?" + lno + "?", True)
         if ss[1] == "_dict":
@@ -594,7 +746,7 @@ def s_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( ss[2], False )
         for i in range(winp-1, -1, -1):
             if ss[1] == glob.wins[i].name:
-                return( s_get_var(glob, ss[2:], i, lno) )
+                return( s_get_var(glob, sc, ss[2:], i, lno) )
         return ("?var?" + str(ss) + "?" + lno + "?", True)
     except Exception as e:
         return ("?" + str(e) + " var?" + str(ss) + "?" + lno + "?", True)
@@ -647,9 +799,12 @@ def strs(glob, s: str, winp: int, lno: str, pr_err, is_err) -> (str, bool):
         if s[i] == '}':
             if bp > 0:
                 va = s[bp + 1:i]
-                ss = va.split(".")
-                va, er = s_get_var(glob, ss, winp, lno)
+                sc = va.split(":")
+                ss = sc[0].split(".")
+                va, er = s_get_var(glob, sc, ss, winp, lno)
                 if er:
+                    if len(s) > i + 1:
+                        i += 1
                     err = True
                     if is_err:
                         glob.run_errs = True

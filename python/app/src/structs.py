@@ -76,6 +76,7 @@ class KpArgs(Kp):
         self.me = 1
         self.me2 = 1
         self.names = {}
+        self.line_no = "cmd.arg:1"
 
     def get_me2(self) -> int:
         return self.me2
