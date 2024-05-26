@@ -34,6 +34,13 @@ python ../src/main.py daoimpl.act sample.def >user.java
 if [ $? != 0 ]; then echo daoimpl.act sample.def has errors; fi
 
 echo ::::::::::::::
+echo add_jsp.act
+echo ::::::::::::::
+
+python ../src/main.py add_jsp.act sample.def >user.jsp
+if [ $? != 0 ]; then echo add_jsp.act sample.def has errors; fi
+
+echo ::::::::::::::
 echo view.act
 echo ::::::::::::::
 

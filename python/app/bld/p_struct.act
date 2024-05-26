@@ -91,8 +91,9 @@ Actor struct Comp name = Actor
 ----------------------------------------------------------------
 
 C class Kp${name}c(Kp):
-C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
 C         self.err = False
+C         self.flag = flag
 C         self.line_no = lno
 C         self.me2 = len( act.kp_all )
 C         self.me = len( act.ap_${name}l )
@@ -121,8 +122,9 @@ Actor struct Comp parent = Actor
 ----------------------------------------------------------------
 
 C class Kp${name}c(Kp):
-C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
 C         self.err = False
+C         self.flag = flag
 C         self.line_no = lno
 C         self.me2 = len(act.kp_all)
 C         self.me = len(act.ap_${name}l)
@@ -149,7 +151,7 @@ Actor struct Comp
 ----------------------------------------------------------------
 
 C class Kp${name}c(Kp):
-C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str):
+C     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
 C         self.err = False
 C         self.line_no = lno
 C         self.me2 = len(act.kp_all)

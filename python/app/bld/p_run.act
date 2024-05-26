@@ -52,8 +52,12 @@ C
 Actor load .
 ----------------------------------------------------------------
 
-C         if tok == "${name}c":
-C             kp = structs.Kp${name}c(ff, ln, act, lno)
+C         ss = tok.split('.')
+C         flag = ""
+C         if len(ss) > 1:
+C             flag = ss[1]
+C         if ss[0] == "${name}c":
+C             kp = structs.Kp${name}c(ff, ln, act, lno,flag)
 C             err = err or kp.err
 C             act.ap_${name}l.append(kp)
 C             act.kp_all.append(kp)

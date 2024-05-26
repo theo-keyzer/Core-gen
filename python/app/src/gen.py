@@ -53,7 +53,10 @@ def go_act(dat, glob, act):
         if attr != "E_O_L":
             sc = attr.split(":")
             ss = sc[0].split(".")
-            val,err = strs(glob, val, glob.winp, lno, False, False)
+            if glob.acts.ap_actor[a].flag == "r":
+                val = val
+            else:
+                val,err = strs(glob, val, glob.winp, lno, False, False)
             aval,aerr = s_get_var(glob, sc, ss, glob.winp, lno)
             prev = chk(glob, eq, aval, val, prev, aerr, err, lno)
             if not prev:
@@ -96,7 +99,10 @@ def go_cmds(dat, glob, act: int) -> int:
                 continue
             trig(glob, glob.winp)
             cc = cmd
-            st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
+            if cmd.flag == "r":
+                st = cmd.k_desc
+            else:
+                st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
             if glob.is_in:
                 glob.ins += st + "\n"
             else:
@@ -106,7 +112,10 @@ def go_cmds(dat, glob, act: int) -> int:
                 continue
             trig(glob, glob.winp)
             cc = cmd
-            st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
+            if cmd.flag == "r":
+                st = cmd.k_desc
+            else:
+                st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
             if glob.is_in:
                 glob.ins += st
             else:
@@ -131,7 +140,10 @@ def go_cmds(dat, glob, act: int) -> int:
             its = cmd
             what,err = strs(glob, its.k_what, glob.winp, cmd.line_no, True, True)
             what = what.split(".")
-            val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
+            if cmd.flag == "r":
+                val = cmd.k_args
+            else:
+                val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
             filen,err = strs(glob, its.k_file, glob.winp, cmd.line_no, True, True)
             pad,err = strs(glob, its.k_pad, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
@@ -399,14 +411,14 @@ def its_cmd(glob, cmd, dat, what, pkey, act) -> int:
 def add_cmd(cmd,glob,dat):
     glob.wins[glob.winp].is_check = False
     k_item,err = strs(glob, cmd.k_item, glob.winp, cmd.line_no, True, True)
-    if cmd.k_data != "" and cmd.k_what != "var.r":
-        val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
+    if cmd.flag == "r":
+        val = cmd.k_data
     else:
+        val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
+    if cmd.flag != "r" and val == "":
         val = dat
     if cmd.k_what == "var":
         glob.vars[ k_item ] = val
-    if cmd.k_what == "var.r":
-        glob.vars[ k_item ] = cmd.k_data
     if cmd.k_what == "set":
         if k_item in glob.sets:
             if val in glob.sets[ k_item ]:
@@ -591,8 +603,8 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
         ss = sc[i].split('.')
         if ss[0] == "l":
             var = var.lower()
-#        if ss[0] == "u":
-#            var = var.upper()
+        if ss[0] == "u":
+            var = var.upper()
         if ss[0] == "c":
             var = var[0].upper() + var[1:].lower()
         if ss[0] == "sort" and not isinstance(var, str):
@@ -761,7 +773,7 @@ def strs(glob, s: str, winp: int, lno: str, pr_err, is_err) -> (str, bool):
             if i == dp + 1:
                 dp = -3
                 ret += s[pos:i - 1]
-                pos = i+1
+                pos = i
                 continue
             dp = i
         if s[i] == '{':

@@ -6,46 +6,56 @@ Actor main .
 * Does not match the '_'
 ----------------------------------------------------------------
 
-That file at re_sub.inp include
--That file at add_jsp.act include
 
-Add var.r replace ${\1}junk
+In on
 
-C ${._var.input}
+C.r <c:forEach var="${table.name}lItem" items="$${${table.name}lItems}">
+C.r   <form:option value="$${${table.name}lItem.${Where_attr.from_id}l}">$${${table.name}lItem.displayFld}</form:option>
+C.r </c:forEach> ${a}c  ${a.b.c}l $${xa}l
 
-That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\} 
+In off
 
-Add var.r replace ${\1}junk
+Add var input ${._ins}
 
--C ${._var.input}
+-That file at re_sub.inp include
 
-That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}n
-
-Add var.r replace ${\1:l}junk
+Add.r var replace ${\1}junk
 
 -C ${._var.input}
 
-That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}l
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\} 
 
-Add var.r replace ${\1:c}junk
-
--C ${._var.input}
-
-That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}c
-
-Add var.r replace ${\1:u}junk
+Add.r var replace ${\1}junk
 
 -C ${._var.input}
 
-That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}u
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}n
+
+Add.r var replace ${\1:l}junk
 
 -C ${._var.input}
 
-Add var.r replace 
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}l
 
-C ${._var.input}
+Add.r var replace ${\1:c}junk
 
-That re_sub ${._var.replace} ${._var.input} output junk
+-C ${._var.input}
+
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}c
+
+Add.r var replace ${\1:u}junk
+
+-C ${._var.input}
+
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}u
+
+-C ${._var.input}
+
+Add.r var replace 
+
+-C ${._var.input}
+
+That.r re_sub ${._var.replace} ${._var.input} output junk
 
 C ${._var.input}
 
