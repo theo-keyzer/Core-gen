@@ -1,0 +1,63 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+* Convert variable names to new format.
+* The space at the end should still be there for some cases.
+* Does not match the '_'
+----------------------------------------------------------------
+
+That file at re_sub.inp include
+-That file at add_jsp.act include
+
+Add var.r replace ${\1}junk
+
+C ${._var.input}
+
+That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\} 
+
+Add var.r replace ${\1}junk
+
+-C ${._var.input}
+
+That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}n
+
+Add var.r replace ${\1:l}junk
+
+-C ${._var.input}
+
+That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}l
+
+Add var.r replace ${\1:c}junk
+
+-C ${._var.input}
+
+That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}c
+
+Add var.r replace ${\1:u}junk
+
+-C ${._var.input}
+
+That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}u
+
+-C ${._var.input}
+
+Add var.r replace 
+
+C ${._var.input}
+
+That re_sub ${._var.replace} ${._var.input} output junk
+
+C ${._var.input}
+
+----------------------------------------------------------------
+Actor include
+----------------------------------------------------------------
+
+Add var input ${.}
+
+----------------------------------
+Actor output .
+----------------------------------
+
+Add var input ${.}
+

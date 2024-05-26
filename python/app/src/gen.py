@@ -133,6 +133,7 @@ def go_cmds(dat, glob, act: int) -> int:
             what = what.split(".")
             val,err = strs(glob, its.k_args, glob.winp, cmd.line_no, True, True)
             filen,err = strs(glob, its.k_file, glob.winp, cmd.line_no, True, True)
+            pad,err = strs(glob, its.k_pad, glob.winp, cmd.line_no, True, True)
             new_act(glob, val)
             col = ""
             if len(what) > 1 and what[0] == "url" and what[1] == "get":
@@ -202,6 +203,12 @@ def go_cmds(dat, glob, act: int) -> int:
                     ret = go_act(grps, glob, its.k_actorp)
                     if ret > 1 or ret < 0:
                         return ret
+                continue
+            if what[0] == "re_sub":
+                out_string = re.sub(val, pad, filen)
+                ret = go_act(out_string, glob, its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
                 continue
             if what[0] == "json":
                 if its.k_pad == "string":
@@ -392,12 +399,14 @@ def its_cmd(glob, cmd, dat, what, pkey, act) -> int:
 def add_cmd(cmd,glob,dat):
     glob.wins[glob.winp].is_check = False
     k_item,err = strs(glob, cmd.k_item, glob.winp, cmd.line_no, True, True)
-    if cmd.k_data != "":
+    if cmd.k_data != "" and cmd.k_what != "var.r":
         val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
     else:
         val = dat
     if cmd.k_what == "var":
         glob.vars[ k_item ] = val
+    if cmd.k_what == "var.r":
+        glob.vars[ k_item ] = cmd.k_data
     if cmd.k_what == "set":
         if k_item in glob.sets:
             if val in glob.sets[ k_item ]:
@@ -749,6 +758,11 @@ def strs(glob, s: str, winp: int, lno: str, pr_err, is_err) -> (str, bool):
     bp = -3
     for i in range(len(s)):
         if s[i] == '$':
+            if i == dp + 1:
+                dp = -3
+                ret += s[pos:i - 1]
+                pos = i+1
+                continue
             dp = i
         if s[i] == '{':
             if i == dp + 1:

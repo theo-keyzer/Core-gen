@@ -1,0 +1,4 @@
+<c:forEach var="${table.name}lItem" items="$${${table.name}lItems}">
+  <form:option value="$${${table.name}lItem.${Where_attr.from_id}l}">$${${table.name}lItem.displayFld}</form:option>
+</c:forEach> ${a}c  ${a.b.c}l $${xa}l
+

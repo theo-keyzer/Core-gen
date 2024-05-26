@@ -138,6 +138,13 @@ echo ::::::::::::::
 python ../src/main.py json5.act note.def 
 if [ $? != 0 ]; then echo json5.act note.def has errors; fi
 
+echo ::::::::::::::
+echo re_sub.act
+echo ::::::::::::::
+
+python ../src/main.py re_sub.act note.def 
+if [ $? != 0 ]; then echo re_sub.act note.def has errors; fi
+
 
 
 
