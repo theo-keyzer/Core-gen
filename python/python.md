@@ -280,7 +280,10 @@ To use it is `${._var.N.name}` or `${._var.Z}`.
 A flag gets set in the window stack if a duplicate was added.
 `Break cmds for . True` will end this actor is the flag is set.
 `Check set B abc` does not add, only checks.
-Previous versions, the `Unique,Check` commands had the `Break` builtin.
+The `Add.break, Check.break`, will break the actor out of the loop.
+The `Add var` also does a check to see if the value added is the same.
+The `Add me` is to add to the value to the current node if it is a list,set or dict.
+The `Add.me` is a way to differentiate between using the current node or the string value.
 
 `Clear set S` to empty it.
 `This set.S actor` to call an actor with the set items, for strings in the calling actor, use `${._str}` for the item's value. Nodes work as normal.
@@ -382,10 +385,8 @@ The `cmd_var` function, the part after the `(:)`, can convert that value to a st
 
 Added to the actor commands optional values. This avoids having option fields.
 This is done like `C.r` that does not do the `strs` function conversion of the value.
-This is better than `C .` or `C r` or `Cr`. A good place to do this is with `Actor.Table disp` instead of `Actor disp Table` or `Actor disp .`
-The `Table` is an optional value and is not needed. Just there to show what it is dealing with.
-The optional values can also lead to errors by missing the `(.)` like `Actor disp name = fred` instead of `Actor disp . name = fred`
-For now it is mainly used for regular expression values to not be messed up with the `strs` function.
+For now it is mainly used for regular expression values to unlikely be messed up with the `strs` function.
+This can be a list of options like `Add.break.r` to be used with the `in` expression.
 
 Added `That re_sub ${._var.replace} ${._var.input} output_act ${._var.expr}`
 This replaces the input values matched by the expr to the replace values.
@@ -395,11 +396,15 @@ The `re_sub.act` is an example of this.
 It converts `${a} , ${a}n, ${a}l, ${a}c, ${a}u` to `${a}, ${a}, ${a:l}, ${a:c}, ${a:u}`
 
 The `strs` function now replaces `$$` to `$` so that `$${}` is not seen as a variable.
+So if the output needs to be `$$, ${`, use `$$$, $${`. A single `($)` is ok.
+Or you can use the `C.r` that does not call the `strs` function.
+
 
 The main funtions that need to be customized is `cmd_var` and `chk`.
 The `cmd_var` deals with the formatting the value of a variable and `chk` is for the actor match logic.
 
 The easiest part is building your own unit files. They are in the `bld` dir.
+The ones there are for samples and tests. No need to be limited by these.
 
 The files `run.py, structs.py` are made with the `gen.sh` in `bld, app/bld` dirs.
 They go to the `bld/src, app/bld/src` and can be copied to `src, app/src` if they look ok.
