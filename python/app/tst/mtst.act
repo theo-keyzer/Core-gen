@@ -20,9 +20,11 @@ All Domain domain
 C Found item ${._var.find.model.info}  ${._var.val} 
 
 This var.find.model its
-
+C q
 This set.finds tst_finds
+C z
 This list.finds tst_finds
+C r
 This set.uniq tst_finds_str
 
 Add set.split., A 2,3,4
@@ -114,12 +116,11 @@ C ${name}  ${domain.name}  ${model.name}  - ${model.info}
 Actor a . name = model
 ----------------------------------------------------------------
 
--Store in Find
-Add var find
+Add.a.w.me.z var find fr
 Add var val abc
 
-Add set uniq ${name}
-Break cmds for . True
+Add.break set uniq ${name}
+-Break cmds for . True
 Add set finds
 Add list finds
 

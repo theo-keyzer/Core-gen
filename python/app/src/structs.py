@@ -91,7 +91,7 @@ class KpArgs(Kp):
         return 0
 
 class KpNode(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -174,7 +174,7 @@ class KpNode(Kp):
         return(0)
 
 class KpLink(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -223,7 +223,7 @@ class KpLink(Kp):
         return(0)
 
 class KpGraph(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -254,7 +254,7 @@ class KpGraph(Kp):
         return(0)
 
 class KpMatrix(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -285,7 +285,7 @@ class KpMatrix(Kp):
         return(0)
 
 class KpTable(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -409,7 +409,7 @@ class KpTable(Kp):
         return(0)
 
 class KpField(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -552,7 +552,7 @@ class KpField(Kp):
         return(0)
 
 class KpAttrs(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -612,7 +612,7 @@ class KpAttrs(Kp):
         return(0)
 
 class KpOf(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -686,7 +686,7 @@ class KpOf(Kp):
         return(0)
 
 class KpJoin(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -753,7 +753,7 @@ class KpJoin(Kp):
         return(0)
 
 class KpJoin2(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -826,7 +826,7 @@ class KpJoin2(Kp):
         return(0)
 
 class KpType(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -949,7 +949,7 @@ class KpType(Kp):
         return(0)
 
 class KpData(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -994,7 +994,7 @@ class KpData(Kp):
         return(0)
 
 class KpAttr(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1143,7 +1143,7 @@ class KpAttr(Kp):
         return(0)
 
 class KpWhere(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1218,7 +1218,7 @@ class KpWhere(Kp):
         return(0)
 
 class KpLogic(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1269,7 +1269,7 @@ class KpLogic(Kp):
         return(0)
 
 class KpDomain(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1342,7 +1342,7 @@ class KpDomain(Kp):
         return(0)
 
 class KpModel(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1431,7 +1431,7 @@ class KpModel(Kp):
         return(0)
 
 class KpFrame(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1541,7 +1541,7 @@ class KpFrame(Kp):
         return(0)
 
 class KpA(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1630,7 +1630,7 @@ class KpA(Kp):
         return(0)
 
 class KpUse(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1696,7 +1696,7 @@ class KpUse(Kp):
         return(0)
 
 class KpGrid(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1769,7 +1769,7 @@ class KpGrid(Kp):
         return(0)
 
 class KpCol(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1891,7 +1891,7 @@ class KpCol(Kp):
         return(0)
 
 class KpR(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
@@ -1945,7 +1945,7 @@ class KpR(Kp):
         return(0)
 
 class KpActor(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -1971,7 +1971,7 @@ class KpActor(Kp):
         return(0)
 
 class KpAll(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2000,7 +2000,7 @@ class KpAll(Kp):
         return(0)
 
 class KpDu(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2028,7 +2028,7 @@ class KpDu(Kp):
         return(0)
 
 class KpIts(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2057,7 +2057,7 @@ class KpIts(Kp):
         return(0)
 
 class KpThis(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2086,7 +2086,7 @@ class KpThis(Kp):
         return(0)
 
 class KpThat(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2117,7 +2117,7 @@ class KpThat(Kp):
         return(0)
 
 class KpIn(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2143,7 +2143,7 @@ class KpIn(Kp):
         return(0)
 
 class KpC(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2169,7 +2169,7 @@ class KpC(Kp):
         return(0)
 
 class KpCs(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2195,7 +2195,7 @@ class KpCs(Kp):
         return(0)
 
 class KpCf(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2221,7 +2221,7 @@ class KpCf(Kp):
         return(0)
 
 class KpOut(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2249,7 +2249,7 @@ class KpOut(Kp):
         return(0)
 
 class KpBreak(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2278,7 +2278,7 @@ class KpBreak(Kp):
         return(0)
 
 class KpAdd(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2306,7 +2306,7 @@ class KpAdd(Kp):
         return(0)
 
 class KpClear(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno
@@ -2334,7 +2334,7 @@ class KpClear(Kp):
         return(0)
 
 class KpCheck(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag: str):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.flag = flag
         self.line_no = lno

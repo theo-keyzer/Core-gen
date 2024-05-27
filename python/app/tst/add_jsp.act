@@ -32,9 +32,9 @@ C 		<div><form:errors cssClass="portlet-msg-error" path="*" /></div>
 C 		
 C 		<table border="0" cellpadding="4">
 
--Its Attr fld_flag
+Its Attr fld_flag
 
-Its Attr fld flags regex ..Y.
+-Its Attr fld flags regex ..Y.
 
 C 		</table>
 C	
@@ -75,13 +75,13 @@ Actor fld . relation in none,name,.
 
 Du fld_var    mytype = CHAR
 Du fld_text   mytype = TEXT
-Du fld_var    mytype = VARCHAR2
-Du fld_number mytype = NUMBER
+-Du fld_var    mytype = VARCHAR2
+-Du fld_number mytype = NUMBER
 Du fld_number mytype = FLOAT
 Du fld_date   mytype = DATE
 
 ----------------------------------------------------------------
-Actor fld_var .
+Actor fld_var . mytype in CHAR,VARCHAR2
 ----------------------------------------------------------------
 C 			<tr>
 C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
@@ -89,7 +89,7 @@ C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="${pa
 C 			</tr>
 
 ----------------------------------------------------------------
-Actor fld_number .
+Actor fld_number . mytype in NUMBER,FLOAT
 ----------------------------------------------------------------
 C 			<tr>
 C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
@@ -97,7 +97,7 @@ C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="${pa
 C 			</tr>
 
 ----------------------------------------------------------------
-Actor fld_date .
+Actor fld_date . mytype = DATE
 ----------------------------------------------------------------
 C 			<tr>
 C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
@@ -128,7 +128,7 @@ C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="${pa
 C 			</tr>
 
 ----------------------------------------------------------------
-Actor fld_text .
+Actor fld_text . mytype = TEXT
 ----------------------------------------------------------------
 
 C 			<tr>

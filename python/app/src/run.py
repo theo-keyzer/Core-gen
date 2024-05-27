@@ -23,343 +23,381 @@ def refs_multi_pass(act) -> bool:
 
 def load(act, ff: Input, tok: str, ln: int, lno: str) -> bool:
         err = False
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Node":
             kp = structs.KpNode(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_node.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Link":
             kp = structs.KpLink(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_link.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Graph":
             kp = structs.KpGraph(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_graph.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Matrix":
             kp = structs.KpMatrix(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_matrix.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Table":
             kp = structs.KpTable(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_table.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Field":
             kp = structs.KpField(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_field.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Attrs":
             kp = structs.KpAttrs(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_attrs.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Of":
             kp = structs.KpOf(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_of.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Join":
             kp = structs.KpJoin(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_join.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Join2":
             kp = structs.KpJoin2(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_join2.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Type":
             kp = structs.KpType(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_type.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Data":
             kp = structs.KpData(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_data.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Attr":
             kp = structs.KpAttr(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_attr.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Where":
             kp = structs.KpWhere(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_where.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Logic":
             kp = structs.KpLogic(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_logic.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Domain":
             kp = structs.KpDomain(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_domain.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Model":
             kp = structs.KpModel(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_model.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Frame":
             kp = structs.KpFrame(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_frame.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "A":
             kp = structs.KpA(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_a.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Use":
             kp = structs.KpUse(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_use.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Grid":
             kp = structs.KpGrid(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_grid.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Col":
             kp = structs.KpCol(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_col.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "R":
             kp = structs.KpR(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_r.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Actor":
             kp = structs.KpActor(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_actor.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "All":
             kp = structs.KpAll(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_all.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Du":
             kp = structs.KpDu(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_du.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Its":
             kp = structs.KpIts(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_its.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "This":
             kp = structs.KpThis(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_this.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "That":
             kp = structs.KpThat(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_that.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "In":
             kp = structs.KpIn(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_in.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "C":
             kp = structs.KpC(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_c.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Cs":
             kp = structs.KpCs(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_cs.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Cf":
             kp = structs.KpCf(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_cf.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Out":
             kp = structs.KpOut(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_out.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Break":
             kp = structs.KpBreak(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_break.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Add":
             kp = structs.KpAdd(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_add.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Clear":
             kp = structs.KpClear(ff, ln, act, lno,flag)
             err = err or kp.err
             act.ap_clear.append(kp)
             act.kp_all.append(kp)
-        ss = tok.split('.')
+        ss = tok.split('.',1)
         flag = ""
+        flag = []
         if len(ss) > 1:
-            flag = ss[1]
+            flag = ss[1].split('.')
         if ss[0] == "Check":
             kp = structs.KpCheck(ff, ln, act, lno,flag)
             err = err or kp.err
