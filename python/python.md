@@ -399,12 +399,21 @@ The `strs` function now replaces `$$` to `$` so that `$${}` is not seen as a var
 So if the output needs to be `$$, ${`, use `$$$, $${`. A single `($)` is ok.
 Or you can use the `C.r` that does not call the `strs` function.
 
+The `app/bld2` has the actor files in the new variable format.
+
+The `Out on,off` switches the ouput on or off.
+A sample of this is in `toggle.act` that uses it to output code or documentation.
+Can also be used to switch off debugging.
+Or the output can be switched off, run the whole gen part with the actors collecting information.
+Base on that, pre processing can be done and then run the gen part again with the output switched on.
 
 The main funtions that need to be customized is `cmd_var` and `chk`.
 The `cmd_var` deals with the formatting the value of a variable and `chk` is for the actor match logic.
 
 The easiest part is building your own unit files. They are in the `bld` dir.
-The ones there are for samples and tests. No need to be limited by these.
+The ones there are for samples and tests. No need to be limited to them.
+Need to re-generate the python files in the `src` dir after changes.
+The data in the def files, will only load what is defined in the units files.
 
 The files `run.py, structs.py` are made with the `gen.sh` in `bld, app/bld` dirs.
 They go to the `bld/src, app/bld/src` and can be copied to `src, app/src` if they look ok.

@@ -15,9 +15,9 @@ C.r </c:forEach> ${a}c  ${a.b.c}l $${xa}l
 
 In off
 
--Add var input ${._ins}
+Add var input ${._ins}
 
-That file at ../bld/p_parser_tree.act include
+-That file at ../bld/p_parser_tree.act include
 
 Add.r var replace ${\1}junk
 

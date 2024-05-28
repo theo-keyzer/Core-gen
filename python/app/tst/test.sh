@@ -152,6 +152,26 @@ echo ::::::::::::::
 python ../src/main.py re_sub.act note.def 
 if [ $? != 0 ]; then echo re_sub.act note.def has errors; fi
 
+echo ::::::::::::::
+echo toggle.act doc
+echo ::::::::::::::
+
+python ../src/main.py toggle.act sample.def on off
+if [ $? != 0 ]; then echo toggle.act sample.def has errors; fi
+
+echo ::::::::::::::
+echo toggle.act code
+echo ::::::::::::::
+
+python ../src/main.py toggle.act sample.def off on
+if [ $? != 0 ]; then echo toggle.act sample.def has errors; fi
+
+echo ::::::::::::::
+echo toggle.act both
+echo ::::::::::::::
+
+python ../src/main.py toggle.act sample.def on on
+if [ $? != 0 ]; then echo toggle.act sample.def has errors; fi
 
 
 

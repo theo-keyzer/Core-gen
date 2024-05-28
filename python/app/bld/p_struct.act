@@ -28,6 +28,7 @@ C         self.arg = ""
 C         self.wins = []
 C         self.winp = -1
 C         self.is_in = False
+C         self.is_out = True
 C         self.ins = ""
 C
 C class Kp:

@@ -99,35 +99,38 @@ def go_cmds(dat, glob, act: int) -> int:
                 continue
             trig(glob, glob.winp)
             cc = cmd
-            if 'r' in cmd.flag:
-                st = cmd.k_desc
-            else:
-                st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
-            if glob.is_in:
-                glob.ins += st + "\n"
-            else:
-                print( st )
+            if glob.is_out:
+                if 'r' in cmd.flag:
+                    st = cmd.k_desc
+                else:
+                    st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
+                if glob.is_in:
+                    glob.ins += st + "\n"
+                else:
+                    print( st )
         if isinstance(cmd,structs.KpCs):
             if glob.wins[glob.winp].is_on and not glob.wins[glob.winp].is_trig:
                 continue
             trig(glob, glob.winp)
             cc = cmd
-            if 'r' in cmd.flag:
-                st = cmd.k_desc
-            else:
-                st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
-            if glob.is_in:
-                glob.ins += st
-            else:
-                print( st, end="" )
+            if glob.is_out:
+                if 'r' in cmd.flag:
+                    st = cmd.k_desc
+                else:
+                    st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
+                if glob.is_in:
+                    glob.ins += st
+                else:
+                    print( st, end="" )
         elif isinstance(cmd,structs.KpCf):
             if glob.wins[glob.winp].lcnt == 0:
                 cf = cmd
-                st,err = strs(glob, cf.k_desc, glob.winp, cf.line_no, False, True)
-                if glob.is_in:
-                    glob.ins += st + "\n"
-                else:
-                    print(st)
+                if glob.is_out:
+                    st,err = strs(glob, cf.k_desc, glob.winp, cf.line_no, False, True)
+                    if glob.is_in:
+                        glob.ins += st + "\n"
+                    else:
+                        print(st)
         elif isinstance(cmd,structs.KpAll):
             all = cmd
             val,err = strs(glob, all.k_args, glob.winp, cmd.line_no, True, True)
@@ -326,10 +329,16 @@ def go_cmds(dat, glob, act: int) -> int:
             clear_cmd(cmd,glob,dat)
         elif isinstance(cmd,structs.KpOut):
             out = cmd
-            if out.k_what == "delay":
+            what,err = strs(glob, cmd.k_what, glob.winp, cmd.line_no, True, True)
+            if what == "on":
+                glob.is_out = True
+            if what == "off":
+                glob.is_out = False
+                
+            if what == "delay":
                 glob.wins[glob.winp].is_on = True
                 glob.wins[glob.winp].on_pos = c
-            elif out.k_what == "normal":
+            elif what == "normal":
                 glob.wins[glob.winp].is_on = False
                 glob.wins[glob.winp].is_trig = False
         elif isinstance(cmd,structs.KpBreak):
@@ -522,18 +531,20 @@ def re_go_cmds(glob, winp):
         cmd = glob.acts.kp_all[c]
         if isinstance(cmd,structs.KpC):
             cc = cmd
-            st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
-            if glob.is_in:
-                glob.ins += st + "\n"
-            else:
-                print(st)
+            if glob.is_out:
+                st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
+                if glob.is_in:
+                    glob.ins += st + "\n"
+                else:
+                    print(st)
         if isinstance(cmd,structs.KpCs):
             cc = cmd
-            st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
-            if glob.is_in:
-                glob.ins += st
-            else:
-                print(st, end="")
+            if glob.is_out:
+                st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
+                if glob.is_in:
+                    glob.ins += st
+                else:
+                    print(st, end="")
 
 
 def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err: bool, lno: str) -> bool:

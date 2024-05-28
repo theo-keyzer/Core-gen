@@ -59,6 +59,7 @@ class GlobT:
         self.wins = []
         self.winp = -1
         self.is_in = False
+        self.is_out = True
         self.ins = ""
 
 class Kp:
