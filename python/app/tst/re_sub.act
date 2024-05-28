@@ -15,39 +15,39 @@ C.r </c:forEach> ${a}c  ${a.b.c}l $${xa}l
 
 In off
 
-Add var input ${._ins}
+-Add var input ${._ins}
 
--That file at re_sub.inp include
-
-Add.r var replace ${\1}junk
-
--C ${._var.input}
-
-That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\} 
+That file at ../bld/p_parser_tree.act include
 
 Add.r var replace ${\1}junk
 
 -C ${._var.input}
 
-That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}n
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\} 
+
+Add.r var replace ${\1}junk
+
+-C ${._var.input}
+
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\}n
 
 Add.r var replace ${\1:l}junk
 
 -C ${._var.input}
 
-That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}l
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\}l
 
 Add.r var replace ${\1:c}junk
 
 -C ${._var.input}
 
-That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}c
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\}c
 
 Add.r var replace ${\1:u}junk
 
 -C ${._var.input}
 
-That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\w+)(\.\w+)*)\}u
+That.r re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\}u
 
 -C ${._var.input}
 

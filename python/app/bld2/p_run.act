@@ -1,0 +1,283 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C import structs
+C 
+C from inputs import Input
+C
+C def refs(act) -> bool:
+C     err = False
+C     err = ref(act)
+C     er, cnt = ref_other(act, True)
+C     err = err or er
+C     return err
+C
+C def refs_multi_pass(act) -> bool:
+C     err = ref(act)
+C     prev = 1000
+C     for i in range(0,6):
+C         er, cnt = ref_other(act, False)
+C         if cnt == 0 or cnt == prev:
+C             break
+C         prev = cnt
+C     er, cnt = ref_other(act, True)
+C     err = err or er
+C     return err
+C
+C def load(act, ff: Input, tok: str, ln: int, lno: str) -> bool:
+C         err = False
+
+All Comp load
+
+C         return(err)
+
+C def ref(act) -> bool:
+C     err = False
+
+All Comp refs
+
+C     return(err)
+C
+C def ref_other(act, check: bool) -> (bool, int):
+C     err = False
+C     cnt = 0
+
+All Comp refs_other
+
+C     return(err,cnt)
+C
+
+----------------------------------------------------------------
+Actor load .
+----------------------------------------------------------------
+
+C         ss = tok.split('.',1)
+C         flag = ""
+C         flag = []
+C         if len(ss) > 1:
+C             flag = ss[1].split('.')
+C         if ss[0] == "${name:c}":
+C             kp = structs.Kp${name:c}(ff, ln, act, lno,flag)
+C             err = err or kp.err
+C             act.ap_${name:l}.append(kp)
+C             act.kp_all.append(kp)
+
+----------------------------------------------------------------
+Actor refs . parent = Actor
+----------------------------------------------------------------
+
+Out delay
+
+C     for i in range( len(act.ap_${name:l}) ):
+		
+Its Element refs_ele_act
+
+C
+
+Break
+
+----------------------------------------------------------------
+Actor refs .
+----------------------------------------------------------------
+
+Out delay
+
+C     for i in range( len(act.ap_${name:l}) ):
+C         p = ""
+
+Its Element refs_ele
+
+C
+
+----------------------------------------------------------------
+Actor refs_other Comp
+----------------------------------------------------------------
+
+Out delay
+
+C     for i in range( len(act.ap_${name:l}) ):
+C         t = -2
+C         p = ""
+		
+Its Element refs_ele_other
+
+C
+
+----------------------------------------------------------------
+Actor refs_ele_act . mw = R1
+----------------------------------------------------------------
+
+C         try:
+C             act.ap_${parent.name:l}[i].k_${name:l}p = -2
+C             p = act.ap_${parent.name:l}[i].k_${name:l}
+C             act.ap_${parent.name:l}[i].k_${name:l}p = act.index["${Ref_element.comp.name:c}_" + p]
+C         except:
+-C             if "${Ref_element.opt}" != p:
+-C                 err = True
+-C                 print("${Ref_element.comp.name:c}_" + p + " not found " + act.ap_${parent.name:l}[i].line_no)
+
+Du checkr
+
+----------------------------------------------------------------
+Actor refs_ele . mw in R1,RS
+----------------------------------------------------------------
+
+C         try:
+C             act.ap_${.refs.name:l}[i].k_${name:l}p = -2
+C             p = act.ap_${.refs.name:l}[i].names[ "${name:l}" ]
+C             act.ap_${.refs.name:l}[i].k_${name:l}p = act.index["${Ref_element.comp.name:c}_" + p]
+C         except:
+-C             if "${Ref_element.opt}" != p:
+-C                 err = True
+-C                 print("${Ref_element.comp.name:c}_" + p + " not found " + act.ap_${parent.name:l}[i].line_no)
+
+Du checkr
+
+----------------------------------------------------------------
+Actor checkr . Ref_element.opt = check
+----------------------------------------------------------------
+
+C             print("${Ref_element.comp.name:c}_" + p + " not found " + act.ap_${parent.name:l}[i].line_no)
+C             err = True
+
+Break
+
+----------------------------------------------------------------
+Actor checkr . Ref_element.opt = ?
+----------------------------------------------------------------
+
+C             pass
+
+Break
+
+----------------------------------------------------------------
+Actor checkr .
+----------------------------------------------------------------
+
+C             if p != "${Ref_element.opt}":
+C                 print("${Ref_element.comp.name:c}_" + p + " not found " + act.ap_${parent.name:l}[i].line_no)
+C                 err = True
+
+----------------------------------------------------------------
+Actor refs_ele . mw in F1,FS
+----------------------------------------------------------------
+
+C         try:
+C             act.ap_${.refs.name:l}[i].k_${name:l}p = -2
+C             p = act.ap_${.refs.name:l}[i].names[ "${name:l}" ]
+C             act.ap_${.refs.name:l}[i].k_${name:l}p = act.index[ str(act.ap_${.refs.name:l}[i].k_parentp) + "_${Ref_element.comp.name:c}_" + p]
+C         except:
+-C             if "${Ref_element.opt}" != p:
+-C                 err = True
+-C                 print( str(act.ap_${.refs.name:l}[i].k_parentp) + "_${Ref_element.comp.name:c}_" + p + " not found " + act.ap_${parent.name:l}[i].line_no)
+
+Du checkf
+
+----------------------------------------------------------------
+Actor checkf . Ref_element.opt = check
+----------------------------------------------------------------
+
+C             err = True
+C             print( str(act.ap_${.refs.name:l}[i].k_parentp) + "_${Ref_element.comp.name:c}_" + p + " not found " + act.ap_${parent.name:l}[i].line_no)
+
+Break
+
+----------------------------------------------------------------
+Actor checkf . Ref_element.opt = ?
+----------------------------------------------------------------
+
+C             pass
+
+Break
+
+----------------------------------------------------------------
+Actor checkf .
+----------------------------------------------------------------
+
+C             if "${Ref_element.opt}" != p:
+C                 err = True
+C                 print( str(act.ap_${.refs.name:l}[i].k_parentp) + "_${Ref_element.comp.name:c}_" + p + " not found " + act.ap_${parent.name:l}[i].line_no)
+
+----------------------------------------------------------------
+Actor refs_ele_other . mw in L1,LS
+----------------------------------------------------------------
+
+C         try:
+C             t = act.ap_${.refs_other.name:l}[i].k_${Ref2_element.element2.name:l}p
+C             if t == -1:
+C                 cnt = cnt + 1
+C                 if check:
+C                     err = True
+C                     print( "${Ref2_element.element2.name:l} not resolved " + act.ap_${parent.name:l}[i].line_no)
+C             else:
+C                 act.ap_${.refs_other.name:l}[i].k_${name:l}p = -2
+C             p = act.ap_${.refs_other.name:l}[i].names[ "${name:l}" ]
+C             act.ap_${.refs_other.name:l}[i].k_${name:l}p = act.index[ str(t) + "_${Ref2_element.comp.name:c}_" + p]
+C         except:
+
+Du checkl
+
+----------------------------------------------------------------
+Actor checkl . Ref2_element.opt = check
+----------------------------------------------------------------
+
+C             if check:
+C                 err = True
+C                 print( str(t) + "_${Ref2_element.comp.name:c}_" + p + " not found " + act.ap_${parent.name:l}[i].line_no)
+
+Break
+
+----------------------------------------------------------------
+Actor checkl . Ref2_element.opt = ?
+----------------------------------------------------------------
+
+C             pass
+
+Break
+
+----------------------------------------------------------------
+Actor checkl .
+----------------------------------------------------------------
+
+C             if p != "${Ref2_element.opt}":
+C                 if check:
+C                     err = True
+C                     print( str(t) + "_${Ref2_element.comp.name:c}_" + p + " not found " + act.ap_${parent.name:l}[i].line_no)
+
+----------------------------------------------------------------
+Actor refs_ele_other . mw in U0
+----------------------------------------------------------------
+
+C         try:
+C             t = act.ap_${.refs_other.name:l}[i].k_${Refu_element.element2:l}p
+C             if t == -1:
+C                 cnt = cnt + 1
+C                 if check:
+C                     err = True
+C                     print( "${Refu_element.element2:l} not resolved " + act.ap_${parent.name:l}[i].line_no)
+C             else:
+C                 act.ap_${.refs_other.name:l}[i].k_${name:l}p = -2
+C             act.ap_${.refs_other.name:l}[i].k_${name:l}p = act.ap_${Refu_element.comp_ref.name:l}[t].k_${Refu_element.element3:l}p
+C         except:
+
+Du checku
+
+----------------------------------------------------------------
+Actor checku . Refu_element.opt = check
+----------------------------------------------------------------
+
+C             if check:
+C                 err = True
+C                 print( "${Refu_element.element2:l} = " + str(t) + " " + act.ap_${parent.name:l}[i].line_no)
+
+Break
+
+----------------------------------------------------------------
+Actor checku .
+----------------------------------------------------------------
+
+C             pass
+
+
+
