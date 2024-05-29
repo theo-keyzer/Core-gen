@@ -3,6 +3,7 @@ Actor main
 ----------------------------------------------------------------
 
 Add set.split., items ${3}
+-Add set items ${3:split}
 
 C ----------------------------------------------------------------
 C Domain gen1 - domain from ${2}  with ${3}
@@ -23,8 +24,8 @@ Its Model disp_col
 Actor disp_col Model ._depth != 6
 ----------------------------------------------------------------
 
-Add set M ${._depth} ${name}
-Break cmds of . True
+Add.break set M ${._depth} ${name}
+-Break cmds of . True
 
 Out delay
 
@@ -45,8 +46,8 @@ This set.items disp_item
 Actor disp_item . . = ${.disp_items.model}
 ----------------------------------------------------------------
 
-Add set DI ${._depth} ${.disp_items.k_me}
-Break cmds of . True
+Add.break set DI ${._depth} ${.disp_items.k_me}
+-Break cmds of . True
 
 C   A ${.disp_items.model} :${.disp_items.name}  ${.disp_items.pad}  ${.disp_items.info}
 

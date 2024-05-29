@@ -272,11 +272,10 @@ When the `Break` command specifies the actor the break applies to, it makes the 
 and puts a flag on the actor one up in the calling stack. The actor with the flag on in the `go_act` function will return this value as positive.
 Then all the calling code will react in the same way as before. The break is then for the actor one down.
 
-The following are some changes. This is to get the older test cases to work.
 
-`Add var N` to add the current node and `Add var Z this is ${name}` to add a string value.
+`Add.me var N` is to add the current node and `Add var Z this is ${name}` to add a string value.
 To use it is `${._var.N.name}` or `${._var.Z}`.
-`Add set S` and `Add set B abc` is to is to add to a set. Sets do not have duplicates.
+`Add.me set S` and `Add set B abc` is to is to add to a set. Sets do not have duplicates.
 A flag gets set in the window stack if a duplicate was added.
 `Break cmds for . True` will end this actor is the flag is set.
 `Check set B abc` does not add, only checks.
@@ -284,6 +283,8 @@ The `Add.break, Check.break`, will break the actor out of the loop.
 The `Add var` also does a check to see if the value added is the same.
 The `Add me` is to add to the value to the current node if it is a list,set or dict.
 The `Add.me` is a way to differentiate between using the current node or the string value.
+A empty string now no longer defaults to the current node.
+The order of the command options does not matter. `Add.me.break` is the same as `Add.break.me`
 
 `Clear set S` to empty it.
 `This set.S actor` to call an actor with the set items, for strings in the calling actor, use `${._str}` for the item's value. Nodes work as normal.
@@ -399,7 +400,7 @@ The `strs` function now replaces `$$` to `$` so that `$${}` is not seen as a var
 So if the output needs to be `$$, ${`, use `$$$, $${`. A single `($)` is ok.
 Or you can use the `C.r` that does not call the `strs` function.
 
-The `app/bld2` has the actor files in the new variable format.
+The `app/bld2` has the generator actor files in the new variable format.
 
 The `Out on,off` switches the ouput on or off.
 A sample of this is in `toggle.act` that uses it to output code or documentation.

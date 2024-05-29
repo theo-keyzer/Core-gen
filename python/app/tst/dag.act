@@ -12,18 +12,18 @@ C
 Actor sort Node
 ----------------------------------------------------------------
 
-Add set D
-Break cmds for . True
+Add.me.break set D
+-Break cmds for . True
 All Node sort_item 
 
 ----------------------------------------------------------------
 Actor sort_item Node
 ----------------------------------------------------------------
 
-Add set D
-Break cmds for . True
+Add.me.break set D
+-Break cmds for . True
 Its Link_to.parent sort_item
-Add list S
+Add.me list S
 
 ----------------------------------------------------------------
 Actor disp_col
@@ -31,8 +31,8 @@ Actor disp_col
 
 C  - ${._key}
 
-Add set A
-Break cmds for . True
+Add.me.break set A
+-Break cmds for . True
 
 C ${._arg}  ${name}  - ${var}  ${eq}  ${value}
 

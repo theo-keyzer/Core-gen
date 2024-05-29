@@ -200,16 +200,18 @@ def go_cmds(dat, glob, act: int) -> int:
                     return ret
                 continue
             if what[0] == "file":
+                ff = ""
                 try:
                     with open(filen, "r") as f:
                         ff = f.read()
-                        ret = go_act(ff, glob, its.k_actorp)
-                        if ret > 1 or ret < 0:
-                            return ret
                 except:
                     if its.k_pad != "if":
                         print("File (" + filen + ") error")
                         glob.run_errs = True
+                    continue
+                ret = go_act(ff, glob, its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
                 continue
             if what[0] == "regx":
                 match = re.match(val,filen)
@@ -425,14 +427,13 @@ def add_cmd(cmd,glob,dat) -> bool:
     brk = False
     glob.wins[glob.winp].is_check = False
     k_item,err = strs(glob, cmd.k_item, glob.winp, cmd.line_no, True, True)
-    if "r" in cmd.flag:
-        val = cmd.k_data
-    else:
-        val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
     if 'me' in cmd.flag:
         val = dat
-    if "r" not in cmd.flag and val == "":
-        val = dat
+    else:
+        if "r" in cmd.flag:
+            val = cmd.k_data
+        else:
+            val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
     if cmd.k_what == "var":
         if k_item in glob.vars:
             if val == glob.vars[ k_item ]:
@@ -489,10 +490,13 @@ def clear_cmd(cmd,glob,dat):
 def check_cmd(cmd,glob,dat):
     brk = False
     k_item,err = strs(glob, cmd.k_item, glob.winp, cmd.line_no, True, True)
-    if cmd.k_data != "":
-        val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
-    else:
+    if 'me' in cmd.flag:
         val = dat
+    else:
+        if "r" in cmd.flag:
+            val = cmd.k_data
+        else:
+            val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
     if cmd.k_what == "set":
         if k_item in glob.sets:
             if val in glob.sets[ k_item ]:
@@ -731,6 +735,8 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
             return( str( glob.wins[winp].lcnt ), False )
         if ss[1] == '_depth':
             return( str( winp ), False )
+        if ss[1] == '_lcnt':
+            return( str( glob.wins[winp].lcnt ), False )
         if ss[1] == "_set" or ss[1] == "_list" or ss[1] == "_var":
             if ss[1] == "_set": col = glob.sets
             if ss[1] == "_list": col = glob.lists

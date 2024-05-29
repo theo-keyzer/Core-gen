@@ -81,12 +81,12 @@ Actor a . name = model
 ----------------------------------------------------------------
 
 -Store in Find
-Add var find
+Add.me var find
 Add var val abc
 
-Add set uniq ${name}
-Break cmds for . True
-Add set finds
-Add list finds
+Add.break set uniq ${name}
+-Break cmds for . True
+Add.me set finds
+Add.me list finds
 
 

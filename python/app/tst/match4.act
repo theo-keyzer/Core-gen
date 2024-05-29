@@ -1,0 +1,63 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+Add set.split., Iaa ${3}
+Add set.split., Ibb ${4}
+
+All A aa
+
+----------------------------------------------------------------
+Actor aa A model in ${._set.Iaa}
+----------------------------------------------------------------
+
+C ${name}  ${model}
+
+Its model.Frame.A bb
+Its A_model.parent.parent.Frame.A bb
+Its Frame.A.model.Frame.A bb
+
+Its model.Frame.A cc
+Its A_model.parent.parent.Frame.A cc
+Its Frame.A.model.Frame.A cc
+
+----------------------------------------------------------------
+Actor bb A model in ${._set.Ibb}
+----------------------------------------------------------------
+
+Add.break set DI ${k_me}n-${.aa.k_me}
+-Break actor for . True
+
+C  ${name}  ${model}
+
+
+----------------------------------------------------------------
+Actor cc A
+----------------------------------------------------------------
+
+Its model.Frame.A dd
+Its A_model.parent.parent.Frame.A dd
+Its Frame.A.model.Frame.A dd
+
+----------------------------------------------------------------
+Actor dd A model in ${._set.Ibb}
+----------------------------------------------------------------
+
+Add.break set DI ${k_me}n-${.aa.k_me}
+-Break actor for . True
+
+C      ${name}  ${model}
+
+Its model.Frame.A ee
+Its A_model.parent.parent.Frame.A ee
+Its Frame.A.model.Frame.A ee
+
+----------------------------------------------------------------
+Actor ee A model in ${._set.Ibb}
+----------------------------------------------------------------
+
+Add.break set DI ${k_me}n-${.aa.k_me}
+-Break actor for . True
+
+C      ${name}  ${model}
+
