@@ -55,6 +55,13 @@ python ../src/main.py  dag.act tst.def
 if [ $? != 0 ]; then echo dag.act tst.def has errors; fi
 
 echo ::::::::::::::
+echo dag2.act
+echo ::::::::::::::
+
+python ../src/main.py  dag2.act tst.def
+if [ $? != 0 ]; then echo dag2.act tst.def has errors; fi
+
+echo ::::::::::::::
 echo tst2.act
 echo ::::::::::::::
 

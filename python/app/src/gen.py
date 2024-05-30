@@ -274,6 +274,8 @@ def go_cmds(dat, glob, act: int) -> int:
                         if ret > 1 or ret < 0:
                             return ret
                         continue
+                    if 'rev' in cmd.flag and isinstance(poc, list):
+                        poc = poc[::-1]
                     for sts in poc:
                         if len(what) > 2:
                             ret = its_cmd(glob, cmd, sts, what[2:], what[1], its.k_actorp)

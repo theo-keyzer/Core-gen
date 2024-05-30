@@ -279,20 +279,24 @@ To use it is `${._var.N.name}` or `${._var.Z}`.
 A flag gets set in the window stack if a duplicate was added.
 `Break cmds for . True` will end this actor is the flag is set.
 `Check set B abc` does not add, only checks.
-The `Add.break, Check.break`, will break the actor out of the loop.
-The `Add var` also does a check to see if the value added is the same.
+The `Add.break, Check.break`, will break the actor loop like the single `Break` command.
+To get more break options, use a separate `Break` command.
+The `Add var` also does a check to see if the value added is the same. Like `Add.break var done`
 The `Add me` is to add to the value to the current node if it is a list,set or dict.
 The `Add.me` is a way to differentiate between using the current node or the string value.
 A empty string now no longer defaults to the current node.
 The order of the command options does not matter. `Add.me.break` is the same as `Add.break.me`
+Add list always adds, but it could break before adding a duplicate.
+For now, use the `Check list` for duplicates.
 
 `Clear set S` to empty it.
 `This set.S actor` to call an actor with the set items, for strings in the calling actor, use `${._str}` for the item's value. Nodes work as normal.
 The `(_)` is there to not be an actor name. `${._arg}` is the value of the argument passes to this actor.
 The `${._key}` variable is the value of the key used for when all key and values are used ( `This list. actor` ).
-The `This list actor` is for all the keys. The values are combined for strings with `(,)`.
-The `${._set.A}`, the values are combined for strings with `(,)`.
-The `${._set}`, the keys are combined for strings with `(,)`. Needs more testing.
+The `This list actor` is for all the keys. The value is the list item of the key
+The `This.rev list.S actor`, the items are reversed.
+The `${._set.A}`, the value is the set item.
+The `${._set}`, the value is the set dict.
 
 The actor match `(is)`, is to compare set strings, but orders them before comparing them.
 
