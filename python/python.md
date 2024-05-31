@@ -289,6 +289,9 @@ The order of the command options does not matter. `Add.me.break` is the same as 
 Add list always adds, but it could break before adding a duplicate.
 For now, use the `Check list` for duplicates.
 
+The `Add.eval var S 2+3`, gets the value `(5)`.
+Remove this option or not use it for unsafe input.
+
 `Clear set S` to empty it.
 `This set.S actor` to call an actor with the set items, for strings in the calling actor, use `${._str}` for the item's value. Nodes work as normal.
 The `(_)` is there to not be an actor name. `${._arg}` is the value of the argument passes to this actor.
@@ -297,6 +300,7 @@ The `This list actor` is for all the keys. The value is the list item of the key
 The `This.rev list.S actor`, the items are reversed.
 The `${._set.A}`, the value is the set item.
 The `${._set}`, the value is the set dict.
+The `${_.D}` is sort of the same as `${._var.D}`
 
 The actor match `(is)`, is to compare set strings, but orders them before comparing them.
 

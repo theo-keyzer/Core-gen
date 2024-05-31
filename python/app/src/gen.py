@@ -429,6 +429,7 @@ def add_cmd(cmd,glob,dat) -> bool:
     brk = False
     glob.wins[glob.winp].is_check = False
     k_item,err = strs(glob, cmd.k_item, glob.winp, cmd.line_no, True, True)
+    si = k_item.split('.')
     if 'me' in cmd.flag:
         val = dat
     else:
@@ -436,8 +437,20 @@ def add_cmd(cmd,glob,dat) -> bool:
             val = cmd.k_data
         else:
             val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
+    if 'eval' in cmd.flag:
+        val = eval( val , {'__builtins__':None}, {})
     if cmd.k_what == "var":
-        if k_item in glob.vars:
+        if si[0] in glob.vars:
+            if len(si) > 1 and si[1] == "":
+                poc = glob.vars[ si[0] ]
+                if isinstance(poc, list) or isinstance(poc, set):
+                    poc.append(val)
+                return(brk)
+            if len(si) > 1 and si[1] != "":
+                poc = glob.vars[ si[0] ]
+                if isinstance(poc, dict):
+                    poc[ si[1] ] = val
+                return(brk)
             if val == glob.vars[ k_item ]:
                 glob.wins[glob.winp].is_check = True
                 brk = True
@@ -463,7 +476,7 @@ def add_cmd(cmd,glob,dat) -> bool:
     if cmd.k_what == "me" and ( isinstance(dat, list) or isinstance(dat, set) ):
         dat.append(val)
     if cmd.k_what == "me" and isinstance(dat, dict):
-        dat[ k_item ].add(val)
+        dat[ k_item ] = val
     sw = cmd.k_what.split('.')
     if len(sw) > 1 and sw[0] == "set" and sw[1] == "split":
         sc = '.'
@@ -696,12 +709,23 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
 def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, bool):
     try:
         if len( ss[0] ) != 0:
+            rf = 0
             dat = glob.wins[winp].dat
+            if ss[0] == "_":
+                rf = 1
+                dat = glob.vars
             if isinstance(dat, dict):
-                for ji in range(0, len(ss)):
-                    dat = dat[ ss[ji] ]
+                for ji in range(rf, len(ss)):
+                    if isinstance(dat, dict):
+                        dat = dat[ ss[ji] ]
+                    elif isinstance(dat, structs.Kp):
+                        dat,er = dat.get_var(glob.dats, ss[ji:], lno)
+                        if er:
+                            return( dat, True )
+                    else:
+                        break
             else:
-                dat,er = glob.wins[winp].dat.get_var(glob.dats, ss, lno)
+                dat,er = dat.get_var(glob.dats, ss, lno)
                 if er:
                     return( dat, True )
             if len(sc) > 1:
