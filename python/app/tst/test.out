@@ -1,0 +1,639 @@
+::::::::::::::
+mtst.act
+::::::::::::::
+cmd.arg:1, mtst.act:5
+x
+,abc
+
+build  info  model  - new model  
+describe  info  model  - new model  
+Found item notes app  abc 
+KpModel
+KpModel  note.def:148, mtst.act:59
+q
+Found items model
+z
+Found items model
+r
+Found items  a str model
+Found items  a str 4
+Found items  a str 3
+Found items  a str 2
+Found items  a str 5
+Found items  a str 6
+Found items  a str 7
+find,val,X
+uniq,finds,A
+finds
+q KpA
+r model
+s KpA
+set  Key: uniq  value: {'model'}  model  model  
+set  Key: finds  value: {<structs.KpA object at 0x7f1aa001e4f0>}  KpA  KpA  
+set  Key: A  value: {'5', '6', '7'}  5,6,7  5,6,7  6
+a
+KpA  Key: find  value: KpA  KpA  KpA  KpA
+str  Key: val  value: abc  abc  abc  
+str  Key: X  value: abc  abc  abc  
+b
+list  Key: finds  value: [<structs.KpA object at 0x7f1aa001e4f0>]  KpA  KpA  
+c
+KpA  Key: find  value: KpA
+KpA  KpA  note.def:143, mtst.act:66
+str  Key: val  value: abc
+abc  abc  mtst.act:66
+str  Key: X  value: abc
+abc  abc  mtst.act:66
+::::::::::::::
+match1.act
+::::::::::::::
+----------------------------------------------------------------
+Domain gen1 - domain from note.def  with thinking,frame,group,join,layout
+----------------------------------------------------------------
+Model gen2 - model
+----------------------------------------------------------------
+
+Frame 2  try  -  try this model
+Frame 3  notes  -  map of note taking app
+  A thinking :moving  *  moving between the frame grids
+  A join :files  *  process can join these files
+Frame 4  try  -  try this model
+Frame 5  notes  -  map of note taking app
+  A thinking :moving  *  moving between the frame grids
+  A join :files  *  process can join these files
+Frame 4  design  -  notes app
+Frame 5  match  -  map how to match
+  A join :ref  *  join with the ref to other models
+  A join :model  *  join that grid a's to other models
+Frame 5  schema  -  notes app
+  A group :how  *  how groups work
+Frame 4  model  -  new model
+  A layout :choose  *  options to choose
+Frame 4  match  -  map how to match
+  A join :ref  *  join with the ref to other models
+  A join :model  *  join that grid a's to other models
+Frame 5  join  -  map how to join
+  A frame :frame  *  move up to its frame and explore its ref and its a's ref
+  A group :relate  *  items a related in some way within a group
+Frame 4  join  -  map how to join
+  A frame :frame  *  move up to its frame and explore its ref and its a's ref
+  A group :relate  *  items a related in some way within a group
+Frame 2  notes  -  map of note taking app
+  A thinking :moving  *  moving between the frame grids
+  A join :files  *  process can join these files
+Frame 3  try  -  try this model
+Frame 4  notes  -  map of note taking app
+  A thinking :moving  *  moving between the frame grids
+  A join :files  *  process can join these files
+Frame 5  model  -  new model
+  A layout :choose  *  options to choose
+Frame 3  design  -  notes app
+Frame 4  schema  -  notes app
+  A group :how  *  how groups work
+Frame 3  model  -  new model
+  A layout :choose  *  options to choose
+Frame 3  match  -  map how to match
+  A join :ref  *  join with the ref to other models
+  A join :model  *  join that grid a's to other models
+Frame 3  join  -  map how to join
+  A frame :frame  *  move up to its frame and explore its ref and its a's ref
+  A group :relate  *  items a related in some way within a group
+Frame 2  model  -  new model
+  A layout :choose  *  options to choose
+Frame 2  match  -  map how to match
+  A join :ref  *  join with the ref to other models
+  A join :model  *  join that grid a's to other models
+Frame 2  join  -  map how to join
+  A frame :frame  *  move up to its frame and explore its ref and its a's ref
+  A group :relate  *  items a related in some way within a group
+Frame 2  design  -  notes app
+Frame 3  schema  -  notes app
+  A group :how  *  how groups work
+Frame 2  schema  -  notes app
+  A group :how  *  how groups work
+::::::::::::::
+match2.act
+::::::::::::::
+Iaa,Ibb
+group,join,layout
+Abc
+
+Iaa,Ibb,zz,yy,bb
+ test thinking,frame  Iaa
+ test group,join,layout  Ibb
+ test2 abc  zz,yy,bb
+
+files  join
+ frame  frame
+choose  layout
+ref  join
+ frame  frame
+model  join
+ frame  frame
+relate  group
+how  group
+::::::::::::::
+match3.act
+::::::::::::::
+thinking,frame - 3
+group,join - 4
+layout - 5
+Arg3,Args,Arg4,Arg5,Iaa,Ibb
+Arg3,Args,Arg4,Arg5,Iaa,Ibb
+join,group
+Abc
+Arg5,Arg4,Arg3
+
+Arg3,Args,Arg4,Arg5,Iaa,Ibb,zz,yy,bb
+ test thinking,frame Iaa
+ test join,group Ibb
+ test2 abc zz,yy,bb
+ test3 thinking,frame Arg3
+ test3 join,group Arg4
+ test3 layout Arg5
+
+1 Arg5 Arg4
+1 Arg5 Arg3
+1 Arg4 Arg3
+::::::::::::::
+daoimpl.act
+::::::::::::::
+::::::::::::::
+add_jsp.act
+::::::::::::::
+::::::::::::::
+view.act
+::::::::::::::
+view.act sample.def has errors
+::::::::::::::
+dag.act
+::::::::::::::
+  n21  - v  =  3
+  {
+   n11  - v  =  9
+   {
+    n22  - v  =  9
+   }
+  }
+  n12  - v  =  7
+  n2  - v  =  9
+  n221  - v  =  9
+  {
+   n1  - v  =  9
+  }
+::::::::::::::
+dag2.act
+::::::::::::::
+  n221  - v  =  9
+  {
+   n1  - v  =  9
+  }
+  n21  - v  =  3
+  {
+   n11  - v  =  9
+   {
+    n22  - v  =  9
+   }
+  }
+  n2  - v  =  9
+  n12  - v  =  7
+::::::::::::::
+tst2.act
+::::::::::::::
+Select (a.t1f2) from tb1 a
+Select (b.t2f1, a1.t1f2, a2.t1f2) from tb2 b, tb1 a1, tb1 a2 where a1.t1f1 = b.t2f1 and a2.t1f1 = b.t2f1
+::::::::::::::
+md.act
+::::::::::::::
+::::::::::::::
+latex.act
+::::::::::::::
+::::::::::::::
+grid.act
+::::::::::::::
+section
+subsection
+subsubsection
+item 
+item 
+item 
+subsubsection
+item 
+subsection
+subsubsection
+item 
+section
+subsection
+col1 a
+ col2 b
+  col3 c
+  col3 d
+ col2 e
+  col3 f
+col1 g
+ col2 h
+::::::::::::::
+tst5b.act
+::::::::::::::
+1  A-B
+   s 3  A-B
+   s 4  A-B
+   s 1  B-C
+   s 4  B-C
+   s 3  B-C
+   s 5  B-C
+2  C-C
+3  A-A
+   s 2  A-C
+1  C-B
+   s 2  C-B
+   s 1  B-A
+2  A-B
+   s 3  A-B
+   s 4  A-B
+   s 1  B-C
+   s 4  B-C
+   s 3  B-C
+   s 5  B-C
+3  A-C
+   s 2  A-C
+4  A-C
+   s 2  A-C
+   s 2  C-B
+5  C-A
+   s 2  C-A
+   s 1  C-A
+   s 2  A-C
+4  C-C
+   s 2  C-A
+   s 1  C-A
+ all 3 B-C,A-B 
+ all 4 B-C,A-B 
+ all 1 B-A,C-A,B-C 
+ no 5 B-C 
+ all 2 A-C,C-A,C-B 
+::::::::::::::
+tst5c.act
+::::::::::::::
+abc
+tyd
+ b
+G
+
+1  A-B
+2  C-C
+3  A-A
+1  C-B
+2  A-B
+3  A-C
+4  A-C
+5  C-A
+4  C-C
+ a B-C
+   s 1  B-C
+   s 4  B-C
+   s 3  B-C
+   s 5  B-C
+ a C-B
+   s 2  C-B
+ a B-A
+   s 1  B-A
+ a A-B
+   s 3  A-B
+   s 4  A-B
+ a B-C
+   s 1  B-C
+   s 4  B-C
+   s 3  B-C
+   s 5  B-C
+ a C-C
+ a A-B
+   s 3  A-B
+   s 4  A-B
+ a A-C
+   s 2  A-C
+ a C-C
+ a A-A
+ a A-C
+   s 2  A-C
+ a C-C
+ a C-A
+   s 2  C-A
+   s 1  C-A
+ a C-B
+   s 2  C-B
+ a A-C
+   s 2  A-C
+ a C-A
+   s 2  C-A
+   s 1  C-A
+
+     M,1 B-C  
+     M,1 C-B  
+     M,1 B-A  
+     M,1 A-B  
+     M,2 B-C  
+     M,2 C-C  
+     M,2 A-B  
+     M,3 A-C  
+     M,3 C-C  
+     M,3 A-A  
+     M,4 A-C  
+     M,4 C-C  
+     M,4 C-A  
+     M,4 C-B  
+     M,5 A-C  
+     M,5 C-A  
+     G,1 B-C  
+     G,1 C-A  
+     G,1 B-A  
+     G,4 B-C  
+     G,4 A-B  
+     G,3 B-C  
+     G,3 A-B  
+     G,5 B-C  
+     G,2 A-C  
+     G,2 C-A  
+     G,2 C-B  
+
+     M,1 A-B,B-A,B-C,C-B  
+     M,2 A-B,B-C,C-C  
+     M,3 A-A,A-C,C-C  
+     M,4 A-C,C-A,C-B,C-C  
+     M,5 A-C,C-A  
+ all G,1 B-A,B-C,C-A  
+     G,1 B-A,B-C,C-A  
+     G,4 A-B,B-C  
+     G,3 A-B,B-C  
+     G,5 B-C  
+     G,2 A-C,C-A,C-B  
+
+x {'A-C', 'C-A', 'C-B'}
+y A-C,C-A,C-B
+x {'M,1': {'B-C', 'C-B', 'B-A', 'A-B'}, 'M,2': {'B-C', 'C-C', 'A-B'}, 'M,3': {'A-C', 'C-C', 'A-A'}, 'M,4': {'A-C', 'C-C', 'C-A', 'C-B'}, 'M,5': {'A-C', 'C-A'}, 'G,1': {'B-C', 'C-A', 'B-A'}, 'G,4': {'B-C', 'A-B'}, 'G,3': {'B-C', 'A-B'}, 'G,5': {'B-C'}, 'G,2': {'A-C', 'C-A', 'C-B'}}
+y M,1,M,2,M,3,M,4,M,5,G,1,G,4,G,3,G,5,G,2
+::::::::::::::
+json.act
+::::::::::::::
+here dict  per.json  file
+here2 menu  file
+here3 str  id  file
+here3 str  value  File
+here3 dict  popup
+here4 list  menuitem
+here5 dict    New
+here6 value  New
+here6 onclick  CreateNewDoc()
+here5 dict    Open
+here6 value  Open
+here6 onclick  OpenDoc()
+here5 dict    Close
+here6 value  Close
+here6 onclick  CloseDoc()
+here6 parent  None
+c
+here2b menu  file
+d
+here3b str  menu,id  file
+here3b str  menu,value  File
+here3b dict  menu,popup
+e
+here5 dict  menu,popup,menuitem  New
+here6 value  New
+here6 onclick  CreateNewDoc()
+here5 dict  menu,popup,menuitem  Open
+here6 value  Open
+here6 onclick  OpenDoc()
+here5 dict  menu,popup,menuitem  Close
+here6 value  Close
+here6 onclick  CloseDoc()
+here6 parent  None
+a
+here5 dict  menu,popup,menuitem  New
+here6 value  New
+here6 onclick  CreateNewDoc()
+here5 dict  menu,popup,menuitem  Open
+here6 value  Open
+here6 onclick  OpenDoc()
+here5 dict  menu,popup,menuitem  Close
+here6 value  Close
+here6 onclick  CloseDoc()
+here6 parent  None
+b
+here0 dict  per.json  file
+here5 dict  jsonVar,menu,popup,menuitem  New
+here6 value  New
+here6 onclick  CreateNewDoc()
+here5 dict  jsonVar,menu,popup,menuitem  Open
+here6 value  Open
+here6 onclick  OpenDoc()
+here5 dict  jsonVar,menu,popup,menuitem  Close
+here6 value  Close
+here6 onclick  CloseDoc()
+here6 parent  None
+::::::::::::::
+json2.act
+::::::::::::::
+here dict  state
+here2c _id  str  USA
+here2c type  str  state
+here2a children  list 
+here2b parent  NoneType 
+here dict  state
+here2c _id  str  TN
+here2c type  str  state
+here2a children  list 
+here2c parent  str  USA
+here dict  state
+here2c _id  str  FL
+here2c type  str  state
+here2a children  list 
+here2c parent  str  USA
+here dict  city
+here2c _id  str  Nashville
+here2c type  str  city
+here2a children  list 
+here2c parent  str  TN
+
+here0 list  id.json
+
+here02 list  Json
+here dict  state
+here2c _id  str  USA
+here2c type  str  state
+here2a children  list 
+here2b parent  NoneType 
+here dict  state
+here2c _id  str  TN
+here2c type  str  state
+here2a children  list 
+here2c parent  str  USA
+here dict  state
+here2c _id  str  FL
+here2c type  str  state
+here2a children  list 
+here2c parent  str  USA
+here dict  city
+here2c _id  str  Nashville
+here2c type  str  city
+here2a children  list 
+here2c parent  str  TN
+::::::::::::::
+db.act
+::::::::::::::
+key: ship_id,ship_name,ship_destination
+
+1 tuple (1, 'tata-hitachi', 'noida') 1,tata-hitachi,noida
+
+int ship_id 1
+str ship_name tata-hitachi
+str ship_destination noida
+
+2 tuple (2, 'tata-mumbai', 'mumbai') 2,tata-mumbai,mumbai
+
+int ship_id 2
+str ship_name tata-mumbai
+str ship_destination mumbai
+
+3 tuple (3, 'tata-express', 'hyderabad') 3,tata-express,hyderabad
+
+int ship_id 3
+str ship_name tata-express
+str ship_destination hyderabad
+[
+ {
+ "ship_id": 1, 
+ "ship_name": "tata-hitachi", 
+ "ship_destination": "noida"
+ }, 
+ {
+ "ship_id": 2, 
+ "ship_name": "tata-mumbai", 
+ "ship_destination": "mumbai"
+ }, 
+ {
+ "ship_id": 3, 
+ "ship_name": "tata-express", 
+ "ship_destination": "hyderabad"
+ }
+]
+
+dict {'ship_id': 1, 'ship_name': 'tata-hitachi', 'ship_destination': 'noida'}
+dict {'ship_id': 2, 'ship_name': 'tata-mumbai', 'ship_destination': 'mumbai'}
+dict {'ship_id': 3, 'ship_name': 'tata-express', 'ship_destination': 'hyderabad'}
+
+list [{'ship_id': 1, 'ship_name': 'tata-hitachi', 'ship_destination': 'noida'}, {'ship_id': 2, 'ship_name': 'tata-mumbai', 'ship_destination': 'mumbai'}, {'ship_id': 3, 'ship_name': 'tata-express', 'ship_destination': 'hyderabad'}]
+::::::::::::::
+web.act
+::::::::::::::
+here1 list  200  [{'userId': 1, 'id': 1, 'title': 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit', 'body': 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'}]
+here2 dict  {'userId': 1, 'id': 1, 'title': 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit', 'body': 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'}
+a
+here1 list  200  [{'userId': 1, 'id': 1, 'title': 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit', 'body': 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'}, {'userId': 1, 'id': 2, 'title': 'qui est esse', 'body': 'est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla'}, {'userId': 1, 'id': 3, 'title': 'ea molestias quasi exercitationem repellat qui ipsa sit aut', 'body': 'et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut'}]
+here2 dict  {'userId': 1, 'id': 1, 'title': 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit', 'body': 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'}
+here2 dict  {'userId': 1, 'id': 2, 'title': 'qui est esse', 'body': 'est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla'}
+here2 dict  {'userId': 1, 'id': 3, 'title': 'ea molestias quasi exercitationem repellat qui ipsa sit aut', 'body': 'et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut'}
+b
+here1 list  201  [{'userID': 1, 'id': 101, 'title': 'Making a POST request', 'body': 'This is the data we created.'}]
+here2 dict  {'userID': 1, 'id': 101, 'title': 'Making a POST request', 'body': 'This is the data we created.'}
+::::::::::::::
+json3.act
+::::::::::::::
+id  list  [1, 2, 3]
+userId  int  1
+::::::::::::::
+regx.act
+::::::::::::::
+A(i,j) = B(i,j,k) * c(k);
+
+here1 tuple    ('A', 'i,j', 'B', 'i,j,k', 'c', 'k')
+here1 i,j,k  - j
+A(i,j) = B(i,j,k) * c(k)
+here2 str T1 is A
+here2 str e1 is i,j
+here2 str T2 is B
+here2 str e2 is i,j,k
+here2 str T3 is c
+here2 str e3 is k
+{
+ "T1":"A", 
+ "e1":"i,j", 
+ "T2":"B", 
+ "e2":"i,j,k", 
+ "T3":"c", 
+ "e3":"k"
+}
+
+A(i,j) = B(i,j,k) * c(k)
+is A
+is any
+is B
+is any
+::::::::::::::
+json5.act
+::::::::::::::
+Question: Which one is correct team name in NBA?  Huston Rocket
+question,options,answer
+Question: 5 + 7 = ?  12
+question,options,answer
+Question: 12 - 8 = ?  4
+question,options,answer
+{'question': '12 - 8 = ?', 'options': ['1', '2', '3', '4'], 'answer': '4'}
+question,options,answer
+['1', '2', '3', '4']
+3
+::::::::::::::
+re_sub.act
+::::::::::::::
+<c:forEach var="${table.name:l}Item" items="$${${table.name:l}Items}">
+  <form:option value="$${${table.name:l}Item.${Where_attr.from_id:l}}">$${${table.name:l}Item.displayFld}</form:option>
+</c:forEach> ${a:c}  ${a.b.c:l} $${xa}l
+
+::::::::::::::
+toggle.act doc
+::::::::::::::
+on off
+The documentaion for the table functions
+The documentaion for User function
+The documentaion for User_typ function
+The documentaion for Location function
+The documentaion for Activ function
+The documentaion for Employee function
+The documentaion for Contractor_employee function
+The documentaion for Contractor_company function
+The documentaion for Company_rating function
+::::::::::::::
+toggle.act code
+::::::::::::::
+off on
+The code for the table functions
+The code for User function
+The code for User_typ function
+The code for Location function
+The code for Activ function
+The code for Employee function
+The code for Contractor_employee function
+The code for Contractor_company function
+The code for Company_rating function
+::::::::::::::
+toggle.act both
+::::::::::::::
+on on
+The documentaion for the table functions
+The code for the table functions
+The documentaion for User function
+The code for User function
+The documentaion for User_typ function
+The code for User_typ function
+The documentaion for Location function
+The code for Location function
+The documentaion for Activ function
+The code for Activ function
+The documentaion for Employee function
+The code for Employee function
+The documentaion for Contractor_employee function
+The code for Contractor_employee function
+The documentaion for Contractor_company function
+The code for Contractor_company function
+The documentaion for Company_rating function
+The code for Company_rating function
