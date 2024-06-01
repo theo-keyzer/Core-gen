@@ -19,6 +19,7 @@ C class GlobT:
 C     def __init__(self):
 C         self.load_errs = False
 C         self.run_errs = False
+C         self.lno = "near line 1"
 C         self.acts = ActT()
 C         self.dats = ActT()
 C         self.vars = {}

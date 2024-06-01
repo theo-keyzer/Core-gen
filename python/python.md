@@ -326,7 +326,9 @@ The `${name}` is the value for the name. The `${menu.id}`, the dicts are chained
 The `strs` function in gen.py`, replaces the variable names of a string with their values.
 Some of the actor commands, calls this function for an item so that the item can be combined with variables.
 This is not done for every item, and can be added if needed. The item words can not have spaces in them,
-so combining variables like `${ab} ${bc}` need to be done with `${ab}n${bc}`
+so combining variables like `${ab} ${bc}` need to be done with `${ab}n${bc}` The new variable format
+is now `${a}${b}` so not needed anymore.
+
 
 The `Its, This, That` commands are chained but can only chain upto a list.
 
@@ -342,6 +344,14 @@ That json. string ${._var.J} str_act
 
 Builds up a json string, that gets converted to a dict to be used further on.
 The generator is primary string based - a way to preserve the data types.
+
+It is now possible now to add to this dict with `Add.me var J.${name}`
+The `me` is the current node item or it can be a string like `Add var J.${name} ${value}`
+The `Add.var var J.${name} F`, can add the var F to this dict.
+Or `Add.var me ${name} F` to add the F var node to the current node. The `var` option is not done yet.
+The `${_.F}` is a string whereas `F` is the value in it. This to navigate the a node tree,
+save it in F with `Add.me var F`, then navigate in another node tree and save it there.
+Its not adding to F, its adding F to var or replacing its value.
 
 The `That db from test.db user_act SELECT * from users` does a select from the database.
 

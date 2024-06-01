@@ -46,6 +46,7 @@ def go_act(dat, glob, act):
     for a in range(len(glob.acts.ap_actor)):
         if name != glob.acts.ap_actor[a].k_name:
             continue
+        glob.lno = glob.acts.ap_actor[a].line_no
         attr = glob.acts.ap_actor[a].k_attr
         val = glob.acts.ap_actor[a].k_value
         cc = glob.acts.ap_actor[a].k_cc
@@ -88,6 +89,7 @@ def go_cmds(dat, glob, act: int) -> int:
     for c in range(glob.acts.ap_actor[act].all_from, glob.acts.ap_actor[act].all_to):
         glob.wins[glob.winp].cur_pos = c
         cmd = glob.acts.kp_all[c]
+        glob.lno = cmd.line_no
         if isinstance(cmd,structs.KpIn):
             if cmd.k_flag == "on":
                 glob.is_in = True

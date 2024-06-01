@@ -6,12 +6,12 @@ import traceback
 
 from inputs import Input
 
-def main():
+def main(glob):
     err = False
     if len(sys.argv) < 2:
         print('Missing args')
         return
-    glob = structs.GlobT()
+#    glob = structs.GlobT()
     
     fa = sys.argv[1].split(",")
     for i in range(0, len(fa) ):
@@ -66,9 +66,11 @@ def main():
         print('Errors')
         sys.exit(1)
 try:
-    main()
+    glob = structs.GlobT()
+    main(glob)
 except Exception as e:
     print(traceback.format_exc())
+    print(glob.lno)
     sys.exit(1)
 
 
