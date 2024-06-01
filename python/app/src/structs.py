@@ -50,6 +50,7 @@ class GlobT:
     def __init__(self):
         self.load_errs = False
         self.run_errs = False
+        self.lno = "near line 1"
         self.acts = ActT()
         self.dats = ActT()
         self.vars = {}
