@@ -51,6 +51,9 @@ Actor col .
 ----------------------------------
 
 C ${._type} ${._var.key:split:-} ${.}
+
+* bug: uses loop counter of rows instead of col
+
 C ${._type} ${.rows.._keys:-} ${.}
 
 ----------------------------------
