@@ -10,6 +10,7 @@ Actor rows .
 ----------------------------------
 
 C key: ${._key}
+C keys: ${._keys:} - ${._keys:0}
 
 Add var key ${._key}
 
@@ -50,6 +51,7 @@ Actor col .
 ----------------------------------
 
 C ${._type} ${._var.key:split:-} ${.}
+C ${._type} ${.rows.._keys:-} ${.}
 
 ----------------------------------
 Actor collect .

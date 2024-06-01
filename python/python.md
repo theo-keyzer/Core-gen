@@ -300,14 +300,18 @@ The `This list actor` is for all the keys. The value is the list item of the key
 The `This.rev list.S actor`, the items are reversed.
 The `${._set.A}`, the value is the set item.
 The `${._set}`, the value is the set dict.
-The `${_.D}` is sort of the same as `${._var.D}`
+The `${_.D}` is better than `${._var.D}` for some cases.
 
 The actor match `(is)`, is to compare set strings, but orders them before comparing them.
 
 The previous versions use the `All` instead of the `This` command and had dual keys.
 
-Keys can be combined like a list `a,b,c`. To get the `(b)`, use `${._key}1`
-For the actor match, use `._key.0 = a`, to to match where the first one is `('a)`
+Keys can be combined like a list `a,b,c`. To get the `(b)`, use `${._key:split:1}`
+For the actor match, use `._key:split:0 = a`, to to match where the first one is `('a)`
+
+Keys are also combined on chains and `._key` is going to be the last item and `._keys` the list.
+The `${._keys}` is done for `That db`.
+The `${.rows.._keys:-}` is the key item with a loop counter index. A `(+)`, the loop counter starts at 1.
 
 `That json at filename actor_name` calls the actor with the json nodes. They can be a `dict` or a `list`.
 The variable `${._type)` is the type of the node for the actor.

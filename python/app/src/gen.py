@@ -10,6 +10,7 @@ class WinT:
         self.dat = structs.Kp()
         self.name = ""
         self.item = ""
+        self.items = []
         self.arg = ""
         self.lcnt = 0
         self.brk_act = False
@@ -185,12 +186,15 @@ def go_cmds(dat, glob, act: int) -> int:
                 cur = conn.cursor() 
                 cur.execute(val)
                 key = ""
+                keys = []
                 for keyb in cur.description:
+                    keys.append( keyb[0] )
                     if key == "":
                         key = keyb[0]
                     else:
                         key = key + "," + keyb[0]
                 glob.wins[glob.winp+1].item = key
+                glob.wins[glob.winp+1].items = keys
                 result = cur.fetchall() 
                 if isinstance(result, list):
                     ret = go_act(result, glob, its.k_actorp)
@@ -392,7 +396,15 @@ def its_cmd(glob, cmd, dat, what, pkey, act) -> int:
             if len( what[ji] ) == 0:
                 dot = True
                 break
-            poc = poc[ what[ji] ]
+            if isinstance(poc, dict):
+                poc = poc[ what[ji] ]
+            elif isinstance(poc, structs.Kp):
+                ret = poc.do_its(glob, what[ji:], act)
+                if ret > 1 or ret < 0:
+                    return ret
+                return(0)
+            else:
+                break
             if key == "":
                 key = what[ji]
             else:
@@ -755,6 +767,10 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
             if len(sc) > 1:
                 return( cmd_var(glob, sc, glob.wins[winp].item, glob.wins[winp].lcnt) )
             return( glob.wins[winp].item, False )
+        if ss[1] == "_keys":
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, glob.wins[winp].items, glob.wins[winp].lcnt) )
+            return( glob.wins[winp].items, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )
         if ss[1] == '-':
