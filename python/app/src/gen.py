@@ -444,8 +444,12 @@ def add_cmd(cmd,glob,dat) -> bool:
     glob.wins[glob.winp].is_check = False
     k_item,err = strs(glob, cmd.k_item, glob.winp, cmd.line_no, True, True)
     si = k_item.split('.')
+    whats = cmd.k_what.split(':')
     if 'me' in cmd.flag:
         val = dat
+    elif 'node' in cmd.flag:
+        ss = cmd.k_data.split('.')
+        val,err = o_get_var(glob, ss, glob.winp, cmd.line_no)
     else:
         if "r" in cmd.flag:
             val = cmd.k_data
@@ -453,6 +457,14 @@ def add_cmd(cmd,glob,dat) -> bool:
             val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
     if 'eval' in cmd.flag:
         val = eval( val , {'__builtins__':None}, {})
+    if whats[0] == "node" and len(whats) > 1:
+        ss = whats[1].split('.')
+        poc,err = o_get_var(glob, ss, glob.winp, cmd.line_no)
+        if isinstance(poc, list) or isinstance(poc, set):
+            poc.append(val)
+        if isinstance(poc, dict):
+            poc[ k_item ] = val
+        return(brk)
     if cmd.k_what == "var":
         if si[0] in glob.vars:
             if len(si) > 1 and si[1] == "":
@@ -719,6 +731,28 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
             else:
                 var = ""
     return( str(var), False)
+
+def o_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
+    try:
+        if len( ss[0] ) != 0:
+            rf = 0
+            dat = glob.wins[winp].dat
+            if ss[0] == "_":
+                rf = 1
+                dat = glob.vars
+            for ji in range(rf, len(ss)):
+                if isinstance(dat, dict):
+                    dat = dat[ ss[ji] ]
+                else:
+                    return( "", True )
+            return( dat, False )
+        if len(ss) < 2:
+            return( "", True )
+        if ss[1] == "_keys":
+            return( glob.wins[winp].items, False )
+        return( "", True )
+    except Exception as e:
+        return ("?" + str(e) + " var?" + str(ss) + "?" + lno + "?", True)
 
 def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, bool):
     try:

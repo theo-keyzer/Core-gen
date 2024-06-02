@@ -16,6 +16,8 @@ C
 
 All A a
 
+Add.node var X _.D.describe
+
 C
 C ${_.D:}
 C ${_.D.build.domain.name}
@@ -23,6 +25,15 @@ C ${._var.D.build}
 C
 
 This var.D.build tst
+
+C
+
+Add.node var X _.D.describe
+
+C ${_:}
+
+This var.X tst
+
 
 ----------------------------------------------------------------
 Actor str_act
@@ -45,10 +56,12 @@ Actor a . model.name ?= model
 
 C ${name}  ${domain.name}  ${model.name}  - ${model.info}  
 
-Add.me var D.${name}
+-Add.me var D.${name}
+Add.me node:_.D    ${name}
+Add    node:_.D.id . ${name}
 
 ----------------------------------------------------------------
-Actor tst .
+Actor tst . 
 ----------------------------------------------------------------
 
 C ${._type} ${name}  ${domain.name}  ${model.name}  - ${model.info}  

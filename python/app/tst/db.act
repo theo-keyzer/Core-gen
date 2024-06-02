@@ -13,6 +13,9 @@ C key: ${._key}
 C keys: ${._keys:} - ${._keys:0}
 
 Add var key ${._key}
+Add.node var keys ._keys
+
+C ${_.keys:}
 
 Its . row
 
@@ -26,6 +29,8 @@ C
 C ]
 
 In off
+
+C json string
 
 C ${._ins}
 
@@ -52,9 +57,7 @@ Actor col .
 
 C ${._type} ${._var.key:split:-} ${.}
 
-* bug: uses loop counter of rows instead of col
-
-C ${._type} ${.rows.._keys:-} ${.}
+C ${._type} ${_.keys:-} ${.}
 
 ----------------------------------
 Actor collect .

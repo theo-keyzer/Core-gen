@@ -347,11 +347,12 @@ The generator is primary string based - a way to preserve the data types.
 
 It is now possible now to add to this dict with `Add.me var J.${name}`
 The `me` is the current node item or it can be a string like `Add var J.${name} ${value}`
-The `Add.var var J.${name} F`, can add the var F to this dict.
-Or `Add.var me ${name} F` to add the F var node to the current node. The `var` option is not done yet.
-The `${_.F}` is a string whereas `F` is the value in it. This to navigate the a node tree,
+The `Add.node var J.${name} _.F`, can add the var F to this dict.
+Or `Add.node me ${name} _.F` to add the F var node to the current node. 
+The `${_.F}` is a string whereas `_.F` is the value in it. This to navigate the a node tree,
 save it in F with `Add.me var F`, then navigate in another node tree and save it there.
-Its not adding to F, its adding F to var or replacing its value.
+
+The `Add node:_.F ${name} ${value}` is the same as `Add var J.${name} ${value}`
 
 The `That db from test.db user_act SELECT * from users` does a select from the database.
 
@@ -389,7 +390,7 @@ The following are changed.
 `${._tuple}` to `${.:join}`
 `${._dict.name}` to `${name}`
 `${._str} to ${.}`
-`${._key.0}` to `${._key:split:0}` for string and `${._key:0}` when a list.
+`${._key.0}` to `${._key:split:0}` for string and `${._keys:0}` when a list.
 `${._set.G}` to `${._set.G:join}` or `${._set.G:sort:join}`
 `${._set}` to `${._set:join}`
 `${}` to `${._lno}`
