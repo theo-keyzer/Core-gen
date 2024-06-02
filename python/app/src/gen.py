@@ -447,6 +447,12 @@ def add_cmd(cmd,glob,dat) -> bool:
     whats = cmd.k_what.split(':')
     if 'me' in cmd.flag:
         val = dat
+    elif 'json' in cmd.flag:
+        if "r" in cmd.flag:
+            val = cmd.k_data
+        else:
+            val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
+        val = json.loads(val)
     elif 'node' in cmd.flag:
         ss = cmd.k_data.split('.')
         val,err = o_get_var(glob, ss, glob.winp, cmd.line_no)
