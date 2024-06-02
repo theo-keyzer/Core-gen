@@ -1,88 +1,106 @@
-The \texttt{R1} is a ref to another node, \texttt{F1}, ref to local
-node, \texttt{L1}, ref to local node of the \texttt{R1}, M1, ref to
-local node of an element of \texttt{R1} of a node that has a \texttt{L1}
-ref.
+Knowledge graphs captures information, but may not capture enough detail
+how to navigate the graph. The result end up hard codeing the graph's
+navigation.
 
-Sample of of a units file.
+The \texttt{Ref}'s captures the navigation paths while also ensuring the
+input is valid.
+
+One input file is used by many actor files to generate even more output
+files. So the input needs to be simple for the actors to use and also
+have enough detail for the actors to be not hard coded.
+
+The actors also need to be robust enough to deal with input changes. The
+input needs to be captued without too much detail.
+
+The core-gen is a boot strap to generate the application generator. For
+this it needs the graph diagram of the input. The app generator is then
+hard coded to navigate this graph.
+
+For now see the other docs for more detail.
+
+A \texttt{Ref} links a nodes's field to some other node. It can only
+link to nodes that do not have a parent (top level nodes). These are
+done in the first pass.
+
+The \texttt{Ref2} link to a node by using some other link for the parent
+to find the node in it.
+
+The \texttt{Refu} uses a link to a node and copies some other link of
+it.
+
+These run in the second pass in the order of the the \texttt{Element}s
+of the \texttt{unit} files. Can get a \texttt{not\ resolved} error if
+some thing uses a later item. There is a multi pass option
+\texttt{refs\_multi\_pass} to solve this.
+
+The \texttt{Refu,Ref2} combination replaces the \texttt{Ref3,Refq} of
+other implementations.
 
 \begin{verbatim}
 ----------------------------------------------------------------
-Comp Attr parent Type FindIn
+Comp Table parent . Find
 ----------------------------------------------------------------
 
-    Element table    R1 Type             * Pointer to (Type).
-    Element relation C1 WORD             * Relation type
+    Element name C1 NAME             * Its name.
+
+----------------------------------------------------------------
+Comp Attr parent Table FindIn
+----------------------------------------------------------------
+
+    Element table    R1 TABLE            * Pointer to (Table).
     Element name     C1 NAME             * Colomn name.
 
-Ref table Type check
+Ref table Table .
+\end{verbatim}
 
+On the \texttt{Attr} node, \texttt{Its\ table} is the same as
+\texttt{All\ Table} with an actor match of
+\texttt{name\ =\ \$\{.prev\_act.table\}} The \texttt{.prev\_act} is any
+actor name that is in the calling stack. That actor has the reference to
+\texttt{Attr} node that it was working on to get the value of the
+\texttt{table} variable.
+
+\begin{verbatim}
 ----------------------------------------------------------------
-Comp Where parent Type
+Comp Where parent Table
 ----------------------------------------------------------------
 
     Element attr     F1 Attr      * Field name
-    Element from_id  M1 Attr      * From id
+    Element table    U0 Table     * the table of the attr
+    Element from_id  L1 Attr      * From id
+    Element table2   U0 Table     * the table of the from attr
 
-Ref     attr Attr check
-Ref3 from_id Attr attr Attr table check
+Ref      attr Attr                           check
+Refu    table Table  attr    Attr table
+Ref2  from_id Attr   table
+Refu   table2 Table  from_id Attr table
 \end{verbatim}
 
-The \texttt{Ref3} uses the \texttt{M1} field \texttt{from\_id}. The link
-goes to node of type \texttt{Attr}. It uses the \texttt{attr} field (the
-one with the \texttt{F1}) to get to \texttt{Attr} node. In that node it
-uses the \texttt{table} field (the one with the \texttt{R1}) to be used
-as the parent \texttt{(Type)} to find the \texttt{Attr} in. The
-\texttt{from\_id,\ attr} can be different node types. The refs run in a
-sequence at \texttt{Element} level. First it does the \texttt{F1,\ R1}
-ones, then the the \texttt{M1,\ L1} ones.
+On the \texttt{Where} node, \texttt{Its\ attr} is the same as
+\texttt{Its\ parent.Attr} with an actor match of
+\texttt{name\ =\ \$\{.prev\_act.attr\}}. The \texttt{Its\ table} is the
+same as \texttt{Its\ attr.table}. The \texttt{Its\ from\_id} is the same
+as \texttt{Its\ table.Attr} with an actor match of
+\texttt{name\ =\ \$\{.prev\_act.from\_id\}} The \texttt{Refu} is the
+\texttt{attr.table} part and the Ref2, the \texttt{.attr} with the
+match. The second \texttt{Refu} chains to another \texttt{table2}. So
+\texttt{Its\ table2} is the same as \texttt{Its\ from\_id.table}. So now
+another \texttt{Ref2} can go from there.
 
-Sample of def file.
+To go from the \texttt{Attr} node to the \texttt{Where} node,
+\texttt{Its\ Where\_attr} is the same as \texttt{Its\ parent.Where} with
+actor match \texttt{attr\ =\ \$\{.prev\_act.name\}} and
+\texttt{Its\ Where\_from\_id}, the same as \texttt{Its\ parent.Where}
+with actor match \texttt{from\_id\ =\ \$\{.prev\_act.name\}}
 
-\begin{verbatim}
---------------------------------------------------------
-Type User User
---------------------------------------------------------
+For refs fields, the variable names work the same as as the \texttt{Its}
+command. On the \texttt{Attr} node, it can use
+\texttt{\$\{Where\_attr.from\_id.name\}} and
+\texttt{\$\{Where\_from\_id.attr.name\}}
 
-Attr Contractor_employee     view contractor_name
-
-Where contractor_name  id_number = contractor_id
-
----------------------------------------------
-Type Contractor_employee Contractor Employee
----------------------------------------------
-
-Attr . . id_number
-\end{verbatim}
-
-If this data had to be loaded into a database, the foreign links need to
-be populated. Need select statements to get to the id's for this. The
-loader's refs does this.
-
-\begin{verbatim}
-Attr.tablep = Select id from type where name = 'Contractor_employee'
-Where.attrp = Select id from attr where name = 'contractor_name' and attr.parentp = parentp
-Where.from_idp = Select id from attr where name = 'id_number' and attr.parentp = Atrr[ Where.attrp ].tablep
-\end{verbatim}
-
-To use the links from the \texttt{Where} node, use
-\texttt{attr,from\_id,id}. To use it from the \texttt{Attr} node, use
-\texttt{Where\_attr,\ Where\_from\_id,\ Where\_id}. These are the
-reverse links that loops to match. The \texttt{Its} cmd will get them
-all, The variables will get the first one.
-
-The \texttt{L1} is a simpler model of this, it uses the \texttt{R1}
-instead of the \texttt{F1} to get to the parent. The \texttt{F1} share
-the same parent. The \texttt{R1} finds the parent - top level nodes.
-
-The \texttt{check} on the refs, means it is an error if it does find the
-link. A \texttt{(.)} here, means it is optional link. The value then
-also need to be a \texttt{(.)} if it is optional. If the value if
-different, then it is an error if not found. A \texttt{(?)} here means
-link if can, but no error if not.
-
-In the \texttt{db/note.unit}, the \texttt{Q1} links to a node where the
-node's parent is referenced by a field that is in the link's parent
-node.
+The \texttt{Its} command can hadle none to many relations. The variables
+will give an error if none, or just use the first one. It asumes you
+know wat jou are doing. The variables can't go into child nodes.
 
 \begin{verbatim}
 ----------------------------------------------------------------
@@ -90,7 +108,7 @@ Comp Domain parent . Find
 ----------------------------------------------------------------
 
     Element name       C1 WORD       * node name
-    
+
 ----------------------------------------------------------------
 Comp Model parent Domain FindIn
 ----------------------------------------------------------------
@@ -101,51 +119,101 @@ Comp Model parent Domain FindIn
 Comp Frame parent Model FindIn
 ----------------------------------------------------------------
 
-    Element domain     RS WORD       * ref to domain
-    Element name       C1 WORD       * frame name
-    
-Ref domain Domain ?
+    Element group      N1 WORD       * search navigation group index tree
+    Element domain     R1 Domain     * ref to domain
+
+Ref domain Domain .
 
 ----------------------------------------------------------------
 Comp A parent Frame FindIn
 ----------------------------------------------------------------
+* Use domain from parent
+* The U0 is a hidden field - only has the pointer
+----------------------------------------------------------------
 
-    Element model      QS WORD       * ref to model
-    Element name       C1 WORD       * a name
+    Element domain     U0 Domain     * the domain of frame
+    Element model      L1 Model      * ref to model
 
-Refq model Model domain Frame ?
+Refu domain Domain parent Frame domain .
+Ref2 model Model domain .
 \end{verbatim}
 
-The \texttt{Refq} uses the \texttt{Q1} field \texttt{model}. The link
-goes to node of type \texttt{Model}. It uses the \texttt{domain} field
-(the one with the \texttt{R1}) to be used as the parent
-\texttt{(Domain)} to find the \texttt{Model} in. This is the same as
-\texttt{L1} except the \texttt{domain} field is not in \texttt{A}, but
-in \texttt{A\textquotesingle{}s} parent, \texttt{Frame}.
+Here \texttt{Its\ domain} is the same as \texttt{Its\ parent.domain}.
+The \texttt{Ref2} will then use the \texttt{domain} to find a
+\texttt{model} for it.
+
+The \texttt{group} element with the \texttt{N1} is a nested field. With
+the \texttt{Its\ group}, it can get to its sub nodes with a value one
+higher than the current one, up to the one with the same level. The
+values of zero are skipped. Previous versions had more directions to
+navigate.
+
+From the \texttt{gen.unit} file of the base generator
 
 \begin{verbatim}
 ----------------------------------------------------------------
-Comp Use parent A
+Comp Comp parent . Find
 ----------------------------------------------------------------
 
-    Element frame      QS Frame      * ref to frame
-    Element a          L1 A          * ref to a in frame
+    Element name   C1 NAME          * of component.
+    Element parent R1 COMP          * its parent.
 
-Refq frame Frame model A ?
-Ref2 a A frame ?
+Ref parent Comp .
+
+----------------------------------------------------------------
+Comp Element parent Comp FindIn
+----------------------------------------------------------------
+
+    Element name C1 NAME  * of element
+    Element mw   C1 WORD  * storage type
+    Element mw2  C1 WORD  * parser type - not used
+    
+----------------------------------------------------------------
+Comp Ref parent Comp
+----------------------------------------------------------------
+
+    Element element F1 ELEMENT       * link to local element
+    Element comp    R1 COMP          * link to comp
+    Element opt     C1 WORD          * optional or check - error if not found
+    
+Ref element Element check
+Ref    comp Comp    check
+    
 \end{verbatim}
 
-The \texttt{Ref2} uses the \texttt{L1} field \texttt{a}. The link goes
-to node of type \texttt{A}. It uses the \texttt{frame} field (the one
-with the \texttt{Q1}) to be used as the parent (\texttt{Frame}) to find
-the \texttt{A} in.
+This works the same way as the app unit files do. On a \texttt{Element}
+node it can get a value in a \texttt{Ref} node with
+\texttt{\$\{Ref\_element.opt\}} This is because the \texttt{Ref} has a
+link to the \texttt{Element} on the \texttt{element} field and this is
+just a reverse of it. The \texttt{Element} node could have included
+\texttt{comp,opt} and not need the reverse link and just use
+\texttt{\$\{opt\}}. But then some of then use \texttt{Ref2,Refu} that
+has many more fields that also have to be included. Most of the elements
+do not use refs and would make it look messy. A usefull technique to
+master.
 
-The \texttt{CS,RS,FS,LS,MS,NS,QS} data types is the same as
-\texttt{C1,R1,F1,L1,M1,N1,Q1} except the whitespace between the words
-can be a \texttt{:}.
+Added the \texttt{p\_check.act} in \texttt{app/bld} to see if the units
+files are correct to some degree. You can build simular ones to see if
+the input \texttt{def} files are valid for the actor files that use them
+as they just assume it is all correct. It can help with debuging.
 
-\begin{verbatim}
-Frame 2 info:docs - making documentation
+The \texttt{Refu,Ref2} are dependent on other relations that may be not
+resolved yet. For this it does a multiple passes, but can get stuck on
+cirular ones. All references start off as -1. As they get resolved they
+change, or go to -2 for no match. A count of all the -1 ones are
+returned and when 0, the multiple pass stop. If the count remains the
+same between passes, it mean it is stuck and not more passes are needed.
+It then does another pass to display the errors. This is only needed for
+when a single pass does not work. It is also possible to have some error
+in the unit files for an unresolved reference. An unresolved reference
+is an error even if no match is not.
 
-A   find:info   * find relavant information in a document
-\end{verbatim}
+To use this option, the \texttt{err\ =\ run.refs(glob.acts)} in main.py
+need to be changed to \texttt{err\ =\ run.refs\_multi\_pass(glob.acts)}
+
+The refs have an option flag to specify how to deal with
+\texttt{not\ found} errors. If it is \texttt{check}, then it will be an
+error. If it is \texttt{?}, then there is no error. Otherwise it is the
+optional value to use when none. It is an error if not found and the
+value looking for is different to this. It can be \texttt{(.)} or
+anything else like \texttt{None}.

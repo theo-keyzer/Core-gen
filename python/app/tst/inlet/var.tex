@@ -1,8 +1,13 @@
-The \texttt{\$\{name\}} gets replaced by the value of the variable
-\texttt{name}. To escape the \texttt{\$\{}, use \texttt{\$\$\{} The case
-conversion letter \texttt{c} like \texttt{\$\{name\}c}, captilize the
-variable's value. The \texttt{\$\{.arg\}} is the value of the argument
-passed from the previous actor. The \texttt{\$\{eval\}\$}, it replaces
-the eval with the \texttt{strs} function of the value of \texttt{eval}.
-That is to get a code block from a separate file and print it
-\texttt{C\ \$\{code\_block\}\$}.
+The \texttt{\$\{.\_key\}} variable is the value of the key used for when
+all key and values are used ( \texttt{This\ list.\ actor} ). The
+\texttt{This\ list\ actor} is for all the keys. The value is the list
+item of the key The \texttt{This.rev\ list.S\ actor}, the items are
+reversed. The \texttt{\$\{.\_set.A\}}, the value is the set item. The
+\texttt{\$\{.\_set\}}, the value is the set dict. The
+\texttt{\$\{\_.D\}} is better than \texttt{\$\{.\_var.D\}} for some
+cases.
+
+The \texttt{strs} function in gen.py`, replaces the variable names of a
+string with their values. Some of the actor commands, calls this
+function for an item so that the item can be combined with variables.
+This is not done for every item, and can be added if needed.

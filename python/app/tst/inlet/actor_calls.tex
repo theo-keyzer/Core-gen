@@ -1,10 +1,8 @@
 The \texttt{All,\ Its\ and\ Du} commands, calls the \texttt{new\_act}
-function to set up a new actor window on the stack. It passes the match
-data \texttt{(variable,\ eq,\ value)} and \texttt{arg} string. The value
-is evaluated from the current node instance. The \texttt{Du} command
-calls \texttt{go\_act} with the current node instance, the others, the
-generated code that call \texttt{go\_act}. The \texttt{go\_act} function
-uses the new node instance. The match uses this instance and return if
-the match failed. Then it loops through all actors with its given name.
-Each of these actors, have there own match data and skips the ones that
-do not match.
+function to set up a new actor window on the stack. It passes the
+\texttt{arg} string. The \texttt{Du} command calls \texttt{go\_act} with
+the current node instance, the others, the generated code that call
+\texttt{go\_act}. The \texttt{go\_act} function uses the new node
+instance. The match uses this instance and return if the match failed.
+Then it loops through all actors with its given name. Each of these
+actors, have there own match data and skips the ones that do not match.

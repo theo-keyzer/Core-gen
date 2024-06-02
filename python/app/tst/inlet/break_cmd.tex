@@ -1,18 +1,31 @@
-The actor loop \texttt{go\_act} works like a \texttt{case} switch.
-Actors of the same name, are the \texttt{when} cases. The command loop
-\texttt{go\_cmds}, loops through the commands in that actor. The
-\texttt{All,\ Its} loop, calls the \texttt{go\_act} function in a loop.
-The \texttt{Du} command call another actor with \texttt{go\_act}. To
-break out of the \texttt{go\_cmds}'s loop, it uses a break to end the
-loop. The \texttt{Break\ cmd} command and \texttt{Unique} does that. To
-break out of the actor loop, it returns 2. The \texttt{Break\ actor}
-does that. That ends up in the \texttt{go\_act}, that end it. To break
-out of the \texttt{Its,\ All} loop, it returns 1. The
-\texttt{Break\ loop} command does that. The actor loop \texttt{go\_act}
-would return 1 if its return is 1. The return 1 will end up in the
-calling \texttt{Its,\ All} command that will continue with the
-\texttt{go\_cmds}. The generated code loop functions would return the
-result if \texttt{!=\ 0}. The other implementations make use of a depth
-value that gets inc/dec. It can go back further. The problem is the
-\texttt{Du} command \texttt{Do/Jump} that may or may not be between the
-loops.
+The \texttt{Break} command is the same as \texttt{Break\ actor} as it is
+the default.
+
+The codes returned by the break is 1 for loops, 2 for actor and 3 for
+commands. The \texttt{go\_act} function in \texttt{gen.py}, will
+continue if the break was for the comands. It will return 0 if its is
+for the actor. Else return the value.
+
+The generated code for the \texttt{Its} will continue as long is the
+return is 0, else returns the returned value. The commands in the
+\texttt{go\_cmd} function that deal with loops, will continue if the
+return is for the loops or 0. Else it returns the returned value. There
+is no need for a loop continue as a break for the actor will continue
+the loop if there was one or continue with the calling actor.
+
+When the \texttt{Break} command specifies the actor the break applies
+to, it makes the return value negative and puts a flag on the actor one
+up in the calling stack. The actor with the flag on in the
+\texttt{go\_act} function will return this value as positive. Then all
+the calling code will react in the same way as before. The break is then
+for the actor one down.
+
+\texttt{Add.me\ set\ S} and \texttt{Add\ set\ B\ abc} is to is to add to
+a set. Sets do not have duplicates. A flag gets set in the window stack
+if a duplicate was added. \texttt{Break\ cmds\ for\ .\ True} will end
+this actor is the flag is set. \texttt{Check\ set\ B\ abc} does not add,
+only checks. The \texttt{Add.break,\ Check.break}, will break the actor
+loop like the single \texttt{Break} command. To get more break options,
+use a separate \texttt{Break} command. The \texttt{Add\ var} also does a
+check to see if the value added is the same. Like
+\texttt{Add.break\ var\ done}

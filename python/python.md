@@ -354,6 +354,8 @@ save it in F with `Add.me var F`, then navigate in another node tree and save it
 
 The `Add node:_.F ${name} ${value}` is the same as `Add var J.${name} ${value}`
 
+The `Add.json var E {"ids": [4,5,6], "userId": 7}` puts a json node in E.
+
 The `That db from test.db user_act SELECT * from users` does a select from the database.
 
 ```

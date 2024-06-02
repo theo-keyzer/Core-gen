@@ -1,6 +1,36 @@
-These are to collect data for later use. They denormalizes the input to
-be more elegant for the generator. The \texttt{Collect} and
-\texttt{Hash}, store the current node's instance. The \texttt{Unique}
-and \texttt{Group} store strings - does not duplicate. The \texttt{Hash}
-can be accessed as a var \texttt{\$\{.Hash.A.Open.foo\}}, the others by
-the \texttt{All} command.
+\texttt{Add.me\ var\ N} is to add the current node and
+\texttt{Add\ var\ Z\ this\ is\ \$\{name\}} to add a string value. To use
+it is \texttt{\$\{.\_var.N.name\}} or \texttt{\$\{.\_var.Z\}}.
+\texttt{Add.me\ set\ S} and \texttt{Add\ set\ B\ abc} is to is to add to
+a set. Sets do not have duplicates. A flag gets set in the window stack
+if a duplicate was added. \texttt{Break\ cmds\ for\ .\ True} will end
+this actor is the flag is set. \texttt{Check\ set\ B\ abc} does not add,
+only checks. The \texttt{Add.break,\ Check.break}, will break the actor
+loop like the single \texttt{Break} command. To get more break options,
+use a separate \texttt{Break} command. The \texttt{Add\ var} also does a
+check to see if the value added is the same. Like
+\texttt{Add.break\ var\ done} The \texttt{Add\ me} is to add to the
+value to the current node if it is a list,set or dict. The
+\texttt{Add.me} is a way to differentiate between using the current node
+or the string value. A empty string now no longer defaults to the
+current node. The order of the command options does not matter.
+\texttt{Add.me.break} is the same as \texttt{Add.break.me} Add list
+always adds, but it could break before adding a duplicate. For now, use
+the \texttt{Check\ list} for duplicates.
+
+It is now possible now to add to this dict with
+\texttt{Add.me\ var\ J.\$\{name\}} The \texttt{me} is the current node
+item or it can be a string like
+\texttt{Add\ var\ J.\$\{name\}\ \$\{value\}} The
+\texttt{Add.node\ var\ J.\$\{name\}\ \_.F}, can add the var F to this
+dict. Or \texttt{Add.node\ me\ \$\{name\}\ \_.F} to add the F var node
+to the current node. The \texttt{\$\{\_.F\}} is a string whereas
+\texttt{\_.F} is the value in it. This to navigate the a node tree, save
+it in F with \texttt{Add.me\ var\ F}, then navigate in another node tree
+and save it there.
+
+The \texttt{Add\ node:\_.F\ \$\{name\}\ \$\{value\}} is the same as
+\texttt{Add\ var\ J.\$\{name\}\ \$\{value\}}
+
+The \texttt{Add.json\ var\ E\ \{"ids":\ {[}4,5,6{]},\ "userId":\ 7\}}
+puts a json node in E.

@@ -3,3 +3,39 @@ statement that matches. The match is (var exp string), the string can
 have variables in it. Actors of the same name, are the case items. They
 are given an input node to operate on. The actor has a list of commands
 it runs through.
+
+The actor match also has a \texttt{?} to match the variable no error.
+The \texttt{??}, matches the not found error. There is no error reported
+when using it. The error can be on both sides of the equation.
+\texttt{name\ =\ \$\{name\}}
+
+\begin{verbatim}
+----------------------------------------------------------------
+Actor a . model.name ?= test
+----------------------------------------------------------------
+\end{verbatim}
+
+Here the \texttt{?=} match for if no error.
+
+\begin{verbatim}
+----------------------------------------------------------------
+Actor a . model.name ??
+Break
+Actor a . model.name = test
+----------------------------------------------------------------
+\end{verbatim}
+
+Here the \texttt{Break} will break out of the actor match on error and
+not get to next one.
+
+\begin{verbatim}
+----------------------------------------------------------------
+Actor a . model = test
+----------------------------------------------------------------
+\end{verbatim}
+
+Or in some cases, this would also work as the values are the same for
+both.
+
+The \texttt{?model?} error is no \texttt{model} field where as
+\texttt{?model.?}, is no reference to the \texttt{model}.

@@ -1,6 +1,10 @@
-The `${name} ` gets replaced by the value of the variable `name`. To escape the `${`, use `$${`
-The case conversion letter `c` like `${name}c`, captilize the variable's value.
-The `${.arg}` is the value of the argument passed from the previous actor.
-The `${eval}$`, it replaces the eval with the `strs` function of the value of `eval`.
-That is to get a code block from a separate file and print it `C ${code_block}$`.
+The `${._key}` variable is the value of the key used for when all key and values are used ( `This list. actor` ).
+The `This list actor` is for all the keys. The value is the list item of the key
+The `This.rev list.S actor`, the items are reversed.
+The `${._set.A}`, the value is the set item.
+The `${._set}`, the value is the set dict.
+The `${_.D}` is better than `${._var.D}` for some cases.
 
+The `strs` function in gen.py`, replaces the variable names of a string with their values.
+Some of the actor commands, calls this function for an item so that the item can be combined with variables.
+This is not done for every item, and can be added if needed. 
