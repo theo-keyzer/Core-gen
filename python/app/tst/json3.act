@@ -11,7 +11,13 @@ C
 That json string ${._var.J} add
 
 C
-C ${_.D:}
+C ${_.D:} - ${_.D.id:}
+C
+
+Add.json var E {"ids": [4,5,6], "userId": 7}
+
+C
+C ${_.E:} - ${_.E.ids:}
 C
 
 All A a
