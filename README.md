@@ -1,341 +1,504 @@
-# Generates code for code generators.
+# Intro
 
-They each have a diferent schema for storing the domain knowledge.
+Processes data with actor files (templates).
+The data can be in files, json, database, web or its `def` files.
+The `def` file format is defined in `unit` files.
+The `unit` files are like a database schema and the `def` files
+are like database data. Extra setup steps need to be done if needed.
 
-Uses a memory database for loading the domain data
-and has generated classes to load, retreive and navigate the data.
+Other template generators has the output as text with code embedded.
+Here it has special commands to format and output text.
 
-The files are ini like - line based.
-The nodes has a configured parent and are tied
-to the above parent.
+The document is for the python version.
 
-# This is an query language.
 
+# Startup
+Start.
+The generator takes a `,` separated list of actor files followed
+by a `,` separated list of input def files. They each are all lumped together.
+
+The first actor's name, is the starting actor. The `go_act` function
+loop through all actors with this name.
+
+All comand line arguments are store in the starting node instance as named entries.
+They are `${0}, ${1}` variables. To access these variables else where, prefix it with
+the starting actor's name like `${.main.1}`.
+
+From here, other actors are called with the `All, That, This` commands.
+
+The calling actor would then have a node instance it can use to output text
+or to navigate further.
+
+
+# Variable
+Variable names.
+Variable names. The ${name} gets replaced by the value of the variable name.
+
+The `${._key}` variable is the value of the key used for when all key and values are used ( `This list. actor` ).
+The `This list actor` is for all the keys. The value is the list item of the key
+The `This.rev list.S actor`, the items are reversed.
+The `${._set.A}`, the value is the set item.
+The `${._set}`, the value is the set dict.
+The `${_.D}` is better than `${._var.D}` for some cases.
+
+The `strs` function in gen.py`, replaces the variable names of a string with their values.
+Some of the actor commands, calls this function for an item so that the item can be combined with variables.
+This is not done for every item, and can be added if needed. 
+
+### Purpose
+The use cases.
+- Output -  print variable value.
+- Match -  compare value.
+### Special
+Special variable names are prefixed by (.).
+- Window -  .actor, the def of the actor.
+- Collections -  .\_set, .\_var, .\_list
+- Counters -  .+, loop counter.
+- Depth -  .\_depth, the actor stack depth.
+- Arg -  .\_arg, argument passed from previous actor.
+- Conditional -  .0, first or rest of loop counter.
+- Eval -  \$, the content is re evaluated.
+- Optional -  ?, no error on var.
+### Errors
+Variable name errors.
+The errors land up in the generated code to track down the error.
+Some commands make use of the `s_get_var, strs` functions that would return
+the error, but the commands ignore them. The errors are printed though.
+
+
+# Actor
+The actors
 The actor are like functions that can be called
 and a case like statement that matches.
 The match is (var exp string), the string can have variables in it.
-
 Actors of the same name, are the case items.
-
 They are given an input node to operate on.
-
 The actor has a list of commands it runs through.
 
-The `C` command prints the output. The `${var}` are the variables of the node.
-The variables are generated.
+The actor match also has a `?` to match the variable no error. The `??`, matches the not found error.
+There is no error reported when using it. The error can be on both sides of the equation. `name = ${name}`
 
-The `Its` command calls another actor with some relation node of it.
-This way it can navigate the input tree. The relations are generated.
+```
+----------------------------------------------------------------
+Actor a . model.name ?= test
+----------------------------------------------------------------
+```
 
-The `All` command calls another actor that has no relation to it.
+Here the `?=` match for if no error.
 
-It loads the actor and input files and starts at the first actor it has.
-The loader is generated.
 
-The actor engine is not generated. It can be customized and extended without
-changing the generated code. At some point the generated code needs to
-be adjusted as its calls back to the actor engine or the engine wants it to be different.
+```
+----------------------------------------------------------------
+Actor a . model.name ??
+Break
+Actor a . model.name = test
+----------------------------------------------------------------
+```
 
-# Input files
+Here the `Break` will break out of the actor match on error and not get to next one.
 
-The code generator has a input schema file `gen.unit` to define these nodes
-and the relation between them.
+```
+----------------------------------------------------------------
+Actor a . model = test
+----------------------------------------------------------------
+```
+
+Or in some cases, this would also work as the values are the same for both.
+
+The `?model?` error is no `model` field where as `?model.?`, is no reference to the `model`.
+
+
+
+### Purpose
+Use cases.
+- Navigate -  call actor with a def.
+- Collect -  collect defs or strings.
+- Limit -  break out of loops.
+- Print -  print output text.
+### Name
+Command names.
+- All -  actor call with all nodes of type.
+- Its -  actor call with defs related to current node.
+- Du -  actor call with the current node.
+- This -  actor call with data from collections
+- That -  actor call with nodes from external data like url,db,json,file.
+- C -  print output line.
+- Cs -  print output with no new line.
+- Break -  break out of the actor.
+- Out -  delay or omitting output based on further output.
+- Add -  Add to collections
+- Clear -  Clear collections
+- Check -  Check unique in collection
+#### Var
+Var command.
+This creates a named entry in the the current node's instance.
+The `Var foo = bar`, sets the variable. To access it, `${foo}`
+The `Var .list_act.foo = abar`, set the variable in the node instance that is current
+in the `list_act`. The current actors are on the stack. To access it, `${.list_act.foo}`,
+or when on that node instance (back to the list_act), `${foo}`.
+
+Also has a `regex` that can break down the string as named entries.
+
+
+#### Collect
+Collection commands.
+`Add.me var N` is to add the current node and `Add var Z this is ${name}` to add a string value.
+To use it is `${._var.N.name}` or `${._var.Z}`.
+`Add.me set S` and `Add set B abc` is to is to add to a set. Sets do not have duplicates.
+A flag gets set in the window stack if a duplicate was added.
+`Break cmds for . True` will end this actor is the flag is set.
+`Check set B abc` does not add, only checks.
+The `Add.break, Check.break`, will break the actor loop like the single `Break` command.
+To get more break options, use a separate `Break` command.
+The `Add var` also does a check to see if the value added is the same. Like `Add.break var done`
+The `Add me` is to add to the value to the current node if it is a list,set or dict.
+The `Add.me` is a way to differentiate between using the current node or the string value.
+A empty string now no longer defaults to the current node.
+The order of the command options does not matter. `Add.me.break` is the same as `Add.break.me`
+Add list always adds, but it could break before adding a duplicate.
+For now, use the `Check list` for duplicates.
+
+It is now possible now to add to this dict with `Add.me var J.${name}`
+The `me` is the current node item or it can be a string like `Add var J.${name} ${value}`
+The `Add.node var J.${name} _.F`, can add the var F to this dict.
+Or `Add.node me ${name} _.F` to add the F var node to the current node. 
+The `${_.F}` is a string whereas `_.F` is the value in it. This to navigate the a node tree,
+save it in F with `Add.me var F`, then navigate in another node tree and save it there.
+
+The `Add node:_.F ${name} ${value}` is the same as `Add var J.${name} ${value}`
+
+The `Add.json var E {"ids": [4,5,6], "userId": 7}` puts a json node in E.
+
+
+#### Break
+Break command.
+The `Break` command is the same as `Break actor` as it is the default.
+
+The codes returned by the break is 1 for loops, 2 for actor and 3 for commands.
+The `go_act` function in `gen.py`, will continue if the break was for the comands.
+It will return 0 if its is for the actor. Else return the value.
+
+The generated code for the `Its` will continue as long is the return is 0, else returns the returned value.
+The commands in the `go_cmd` function that deal with loops, will continue if the return is for the loops or 0.
+Else it returns the returned value. There is no need for a loop continue as a break for the actor will continue the loop if there was one
+or continue with the calling actor.
+
+When the `Break` command specifies the actor the break applies to, it makes the return value negative
+and puts a flag on the actor one up in the calling stack. The actor with the flag on in the `go_act` function will return this value as positive.
+Then all the calling code will react in the same way as before. The break is then for the actor one down.
+
+`Add.me set S` and `Add set B abc` is to is to add to a set. Sets do not have duplicates.
+A flag gets set in the window stack if a duplicate was added.
+`Break cmds for . True` will end this actor is the flag is set.
+`Check set B abc` does not add, only checks.
+The `Add.break, Check.break`, will break the actor loop like the single `Break` command.
+To get more break options, use a separate `Break` command.
+The `Add var` also does a check to see if the value added is the same. Like `Add.break var done`
+
+
+
+#### Condition
+Break condition.
+`Break cmds for . True` will end this actor is the flag is set.
+
+The flag is set by the add and check commands.
+
+
+### Call
+Actor calls.
+The `All, Its and Du` commands, calls the `new_act` function to set up
+a new actor window on the stack. It passes the `arg` string.
+The `Du` command calls `go_act` with the current node instance, the others, the generated code that call `go_act`.
+The `go_act` function uses the new node instance. The match uses this instance
+and return if the match failed. Then it loops through all actors with its given name.
+Each of these actors, have there own match data and skips the ones that do not match.
+
+
+#### Loop
+Loop counter.
+The `All, Its` command calls `new_act` first that sets the next actor's counter to -1.
+The loop calls the `go_act` function, that increments the counter on match.
+The `${.-}` is the counter value and `${.+}`, the counter +1.
+Also `${.0.string}` for first (if counter is 0) and `${.1.string}` for rest. The value is `string`
+The `Du` inherits this value.
+
+
+### Match
+Actor matching.
+Actor have a case like match on all the actors of the same name.
+`Actor list_act Node name = tb1`, here it matches the varable `name` to `tb1`
+The `&=` would be false if the previous one failed. The `|=` would be true if the previous one was true.
+The variable has a `?` option like `name ?= tb1`. This would fail if `name` does not exist.
+In this case no error is printed and the global errors flag is not updated - not seen as an error.
+
+
+#### Matching
+Match cases.
+- Equal -  (=), var equal to value.
+- In -  (in), var is in the value list 
+- Has -  (has), var list is in the value
+- Is -  (is), sorted var list is the same as the sorted value list 
+# Input
+Input files.
+### File
+Input files.
+The input files are word based separated by tabs or spaces. The last column
+can be a variable string `(V1)`, that is the string to the end of the line.
+There is one whitespace between the previous word and it. Use a padding word
+before it to get all the columns alligned if needed.
+
+
+### Other
+Other input.
+The Json, Yaml and Xml are addons that operate the same way that the rest does.
+May need some more work here.
+
+
+### Errors
+Load errors.
+The input file loader, prints errors as it goes along, mainly the parent and refs.
+The run time only checks these, but does not generate errors.
+
+
+### Types
+Data type
+- Word - C1, word.
+- String - V1, string to end of line.
+- Local - F1, link to local comp - same parent - needs a Ref.
+- Ref - R1, link to top level comp - Find - needs a Ref.
+- Indirect - L1, link to child of previous link - R1 for first, L1 for chain - needs a Ref2.
+- Copy - U0, use a ref field in a node that is refed by a field in the current node - needs a Refu.
+- Nest - N1, control field of a nested node.
+### Nest
+Node nesting.
+A control field of a nested node. The value 1 is for the top level, 2, next level down and so on.
+This is to create a tree from one node type. To navigate to the nodes one level down, use `Its group.right`.
+To navigate one level up, use `Its group.left`. The `Its group.up` goes to the node above it of the same level.
+The `Its group.down`, to the node below. The value 0 is for nodes that do not form part of this set.
+There can be more than one control field for different tree layouts.
+
+```
+----------------------------------------------------------------
+Comp Frame parent Model FindIn
+----------------------------------------------------------------
+
+	Element group      N1 WORD       * search navigation group index tree
+```
+
+# Window
+Actor stack windows
+### Purpose
+Use cases.
+- Store -  stores values needed.
+- Stack -  window are stored on the calling stack.
+- Access -  access to stack items.
+### Name
+Window variables.
+- name - actor name
+- cnt - loop counter
+- dat - node instance
+- attr - node variable
+- eq - equation
+- value - compare value
+- arg - argument passed from previos actor
+- flno - line number of the calling actor
+- is\_on - out delay is on
+- is\_trig - out delay is triggered
+- is\_prev - previous actor has trigger
+- on\_pos - cmd index for trigger
+- cur\_pos - current cmd index
+- cur\_act - current actor index
+# Refs
+refs
+Knowledge graphs captures information, but may not capture enough detail how to navigate the graph.
+The result end up hard codeing the graph's navigation.
+
+The `Ref`'s captures the navigation paths while also ensuring the input is valid.
+
+One input file is used by many actor files to generate even more output files.
+So the input needs to be simple for the actors to use and also have enough detail
+for the actors to be not hard coded.
+
+The actors also need to be robust enough to deal with input changes.
+The input needs to be captued without too much detail.
+
+The core-gen is a boot strap to generate the application generator.
+For this it needs the graph diagram of the input. The app generator
+is then hard coded to navigate this graph.
+
+For now see the other docs for more detail.
+
+A `Ref` links a nodes's field to some other node. It can only link to nodes
+that do not have a parent (top level nodes). These are done in the first pass.
+
+The `Ref2` link to a node by using some other link for the parent to find the node in it.
+
+The `Refu` uses a link to a node and copies some other link of it.
+
+These run in the second pass in the order of the the `Element`s of the `unit` files.
+Can get a `not resolved` error if some thing uses a later item.
+There is a multi pass option `refs_multi_pass` to solve this.
+
+The `Refu,Ref2` combination replaces the `Ref3,Refq` of other implementations.
+```
+----------------------------------------------------------------
+Comp Table parent . Find
+----------------------------------------------------------------
+
+	Element name C1 NAME             * Its name.
+
+----------------------------------------------------------------
+Comp Attr parent Table FindIn
+----------------------------------------------------------------
+
+	Element table    R1 TABLE            * Pointer to (Table).
+	Element name     C1 NAME             * Colomn name.
+
+Ref table Table .
+```
+
+On the `Attr` node, `Its table` is the same as `All Table` with an actor match of `name = ${.prev_act.table}`
+The `.prev_act` is any actor name that is in the calling stack. That actor has the reference to `Attr` node
+that it was working on to get the value of the `table` variable.
+```
+----------------------------------------------------------------
+Comp Where parent Table
+----------------------------------------------------------------
+
+	Element attr     F1 Attr      * Field name
+	Element table    U0 Table     * the table of the attr
+	Element from_id  L1 Attr      * From id
+	Element table2   U0 Table     * the table of the from attr
+
+Ref      attr Attr                           check
+Refu    table Table  attr    Attr table
+Ref2  from_id Attr   table
+Refu   table2 Table  from_id Attr table
+```
+
+On the `Where` node, `Its attr` is the same as `Its parent.Attr` with an actor match of `name = ${.prev_act.attr}`.
+The `Its table` is the same as `Its attr.table`.
+The `Its from_id` is the same as `Its table.Attr` with an actor match of `name = ${.prev_act.from_id}`
+The `Refu` is the `attr.table` part and the Ref2, the `.attr` with the match.
+The second `Refu` chains to another `table2`. So `Its table2` is the same as `Its from_id.table`.
+So now another `Ref2` can go from there.
+
+To go from the `Attr` node to the `Where` node, `Its Where_attr` is the same as
+`Its parent.Where` with actor match `attr = ${.prev_act.name}` and
+`Its Where_from_id`, the same as `Its parent.Where` with actor match `from_id = ${.prev_act.name}`
+
+
+For refs fields, the variable names work the same as as the `Its` command.
+On the `Attr` node, it can use `${Where_attr.from_id.name}` and `${Where_from_id.attr.name}`
+
+The `Its` command can hadle none to many relations. The variables will give an error if none,
+or just use the first one. It asumes you know wat jou are doing. The variables can't go into child nodes.
+
+```
+----------------------------------------------------------------
+Comp Domain parent . Find
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+
+----------------------------------------------------------------
+Comp Model parent Domain FindIn
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+
+----------------------------------------------------------------
+Comp Frame parent Model FindIn
+----------------------------------------------------------------
+
+	Element group      N1 WORD       * search navigation group index tree
+	Element domain     R1 Domain     * ref to domain
+
+Ref domain Domain .
+
+----------------------------------------------------------------
+Comp A parent Frame FindIn
+----------------------------------------------------------------
+* Use domain from parent
+* The U0 is a hidden field - only has the pointer
+----------------------------------------------------------------
+
+	Element domain     U0 Domain     * the domain of frame
+	Element model      L1 Model      * ref to model
+
+Refu domain Domain parent Frame domain .
+Ref2 model Model domain .
+
+```
+
+Here `Its domain` is the same as `Its parent.domain`. The `Ref2` will then use the `domain`
+to find a `model` for it.
+
+
+The `group` element with the `N1` is a nested field. With the `Its group`, it can get to its 
+sub nodes with a value one higher than the current one, up to the one with the same level. The values of zero are skipped.
+Previous versions had more directions to navigate.
+
+From the `gen.unit` file of the base generator
+
 ```
 ----------------------------------------------------------------
 Comp Comp parent . Find
 ----------------------------------------------------------------
-* Loader definition for defining components - nodes
-----------------------------------------------------------------
 
-	Element name       C1 NAME      * of component.
-	Element nop        C1 WORD      * readable padding.
-	Element parent     R1 COMP      * its parent.
-	Element find        C1 WORD      * if need to be found.
-	    Opt Find                    * for top level comps
-	    Opt FindIn                  * for nested comps
-	    Opt .                       * has no name field or not needed.
-	Element doc        V1 WORD      * documentation string
+	Element name   C1 NAME          * of component.
+	Element parent R1 COMP          * its parent.
 
 Ref parent Comp .
 
 ----------------------------------------------------------------
 Comp Element parent Comp FindIn
 ----------------------------------------------------------------
-* Loader definition for defining component's elements.
+
+	Element name C1 NAME  * of element
+	Element mw   C1 WORD  * storage type
+	Element mw2  C1 WORD  * parser type - not used
+	
+----------------------------------------------------------------
+Comp Ref parent Comp
 ----------------------------------------------------------------
 
-	Element name     C1 NAME  * of element
-	Element mw       C1 WORD  * storage type
-	    Opt C1                * one word
-	    Opt V1                * string to end of line.
-	    Opt F1                * link to local comp - same parent - needs a Ref.
-	    Opt R1                * link to top level comp - Find - needs a Ref.
-	    Opt L1                * link to child of previous link - R1 for first, L1 for chain - needs a Ref2.
-	Element mw2      C1 WORD  * data type - not used
-	Element pad      C1 WORD  * separator
-	Element doc      V1 WORD  * documentation string
-
-```
-Here the generator defines itself.
-
-
-The sample application schema `app.unit` is defined is a similar way.
-```
-----------------------------------------------------------------
-Comp Table parent . Find
-----------------------------------------------------------------
-
-	Element name  C1 WORD * a table
-	Element pad   C1 WORD * padding, as
-	Element value C1 WORD * value
-
-----------------------------------------------------------------
-Comp Field parent Table FindIn
-----------------------------------------------------------------
-
-	Element name       C1 WORD     * a field name
-	Element dt         C1 WORD     * data type
-	Element pad        C1 WORD     * padding - to make it more readable.
-	Element use        C1 WORD     * grid,search
-	  Opt   grid                   * display field in grid on search screen
-	  Opt   dropdown               * small select options on capture screen
-	  Opt   popup                  * popup search window for value on capture screen
-	  Opt   search                 * input for search
-
-----------------------------------------------------------------
-Comp Join parent Table
-----------------------------------------------------------------
-
-	Element field1  F1 .Field       * link to its field
-	Element pad    C1 WORD         * padding - to make it more readable.
-	Element table2 R1 Table        * link to other table
-	Element field2  L1 Table.Field  * link to other table's field
-
-Ref  field1 Field check
-Ref  table2 Table check
-Ref2 field2 Field table2 check
-```
-Here `F1` is a internal reference meaning it links to a field inside a table. 
-Both the join and field share the same parent `Table`. Only works if the parents are the same.
-
-The `R1` means that its a reference field. The `Ref` defines the relation
-The `L1` is a double link that needs both a table and a field to link to.
-The `Ref2` defines the relation for this. It uses the `table2` to get to the `field2`. 
-The `table2` needs to be a R1 and be before `field2`.
-
-You need a `Ref` for each `R1,F1` and a `Ref2` for each `L1`. This is what the loader uses for the linking
-and what the classes need for navigation and variable lookups.
-The `Find` and `FindIn` is for the lookup dict - relies on `name`.
-The `R1` needs to go to a `Find` and `L1,F1` need to go to `FindIn`.
-
-The check means it is a error if not found. A dot `.` can be used as optional.
-
-This definition `app.unit` is used by the code generator to build the sample application generator.
-```
-gen s_check.act   app.unit,act.unit 
-```
-This would print out errors if somethink is wrong. 
-Errors would end up in the generated source files if ignored.
-```
-gen s_load.act   app.unit,act.unit > sample/load.swift 
-gen s_struct.act app.unit,act.unit > sample/structs.swift 
-```
-The actor template files `s_load.act,s_struct.act` generate the output based on the defintions.
-The actor definition file `act.unit` has a schema to define the actor language. This
-gets included into the sample app, as it too need to generate.
-
-The `util.swift` has the string utils and the `main.swift` is the runtime engine. 
-Both can be copied from the gen application and customized.
-
-Once complied, it works the same as above.
-```
-sample tst.act tst.def
-```
-The input definition file `tst.def` is shown here.
-```
-----------------------------------------------------------------
-Table tb1 as a
-----------------------------------------------------------------
-
-Field t1f1 NUM   display dropdown
-Field t1f2 FLOAT dispaly normal,grid
-
-----------------------------------------------------------------
-Table tb2 as b
-----------------------------------------------------------------
-
-Field t2f1 VAR display normal,grid
-
-Join t2f1 to tb1 t1f1
-```
-Here the `Join` links the `t2f1` field to the `t1f1` field of table `tb1`.
-
-The actor/template like language is to navigate the input data nodes.
-The actor ends up in an instance of a class. From there
-it can print the fields of the instance and go to another actor.
-
-# Actor input files
-
-The actor template file `tst2.act` is shown here.
-```
-----------------------------------------------------------------
-Actor arg
-----------------------------------------------------------------
-
-All Table table_sel
-
-----------------------------------------------------------------
-Actor table_sel Table
-----------------------------------------------------------------
-
-Out delay
-
-Cs Select (
-
-Its Field field_sel
-Its Join join_sel
-
-Cs ) from ${name}  ${value} 
-
-Its Join join_from
-Its Join join_where
-
-C
-
-----------------------------------------------------------------
-Actor field_sel Field use has grid
-----------------------------------------------------------------
-
-Cs ${.1., } ${parent.value} .${name} 
-
-----------------------------------------------------------------
-Actor join_sel Join
-----------------------------------------------------------------
-
-Its table2.Field join_field_sel
-
-----------------------------------------------------------------
-Actor join_field_sel Field use has grid
-----------------------------------------------------------------
-
-Cs , ${parent.value} .${name} 
-
-----------------------------------------------------------------
-Actor join_from Join
-----------------------------------------------------------------
-
-Cs , ${table2.name}  ${table2.value} 
-
-----------------------------------------------------------------
-Actor join_where Join
-----------------------------------------------------------------
-
-Cs  ${.0.where } ${.1.and } ${parent.value} .${field1.name}  = ${table2.value} .${field2.name}
+	Element element F1 ELEMENT       * link to local element
+	Element comp    R1 COMP          * link to comp
+	Element opt     C1 WORD          * optional or check - error if not found
+	
+Ref element Element check
+Ref    comp Comp    check
+	
 ```
 
-The output would be:
-```
-Select (a.t1f2) from tb1 a
-Select (b.t2f1, a.t1f2) from tb2 b, tb1 a where b.t2f1 = a.t1f1
-```
-The `Join` class has the `parent,field1,table2,field2` variables that point to `Field,Table` instances.
-The `parent` variable goes to the `Table` it belonged to that has the `value` variable. 
-The `${.0.}` outputs `where ` if it is the first row and `${.1.}` outputs `and ` if it is not the first row.
-The actor has a case like matcher to limit and separate the rows, so it is the first row that matches.
-The `${.+}` is the row number. The `${.arg}` is the arument passed.
+This works the same way as the app unit files do.
+On a `Element` node it can get a value in a `Ref` node with `${Ref_element.opt}`
+This is because the `Ref` has a link to the `Element` on the `element` field
+and this is just a reverse of it. The `Element` node could have included `comp,opt`
+and not need the reverse link and just use `${opt}`. But then some of then use `Ref2,Refu`
+that has many more fields that also have to be included. Most of the elements do not use refs
+and would make it look messy. A usefull technique to master.
 
-The `Its` loops on its child nodes `Field,Join`.
+Added the `p_check.act` in `app/bld` to see if the units files are correct to some degree.
+You can build simular ones to see if the input `def` files are valid for the actor files that use them
+as they just assume it is all correct. It can help with debuging.
 
-It uses the first actor's name `arg` as the starting actor. 
-```
-All Table table_sel
-```
-Call the actor `table_sel` for all the instances of the `Table` class.
-```
-Actor table_sel Table
-```
-The `table_sel` is the name of the actor, `Table` a reminder that the operations are from the Table class.
-It gets a handle on the `Table` class instance. The actor would ignore this actor if the node type passed is not `Table`.
-Not checked if it is a `.` or nothing.
+The `Refu,Ref2` are dependent on other relations that may be not resolved yet.
+For this it does a multiple passes, but can get stuck on cirular ones.
+All references start off as -1. As they get resolved they change, or go to -2 for no match.
+A count of all the -1 ones are returned and when 0, the multiple pass stop.
+If the count remains the same between passes, it mean it is stuck and not more passes are needed.
+It then does another pass to display the errors. This is only needed for when a single pass does not work.
+It is also possible to have some error in the unit files for an unresolved reference.
+An unresolved reference is an error even if no match is not.
 
-The `Cs` prints the output code with no newline. 
-```
-Its Field field_sel
-```
-Calls the actor `field_sel` for all its child fields. The `Table` class has the code for `Field,Join`.
+To use this option, the `err = run.refs(glob.acts)` in main.py need to be changed to `err = run.refs_multi_pass(glob.acts)`
 
-The `${name}` is the value of the variable `name` in the `Table` class. 
-```
-----------------------------------------------------------------
-Actor field_sel Field use has grid
-----------------------------------------------------------------
-
-Cs ${.1., } ${parent.value} .${name} 
-```
-The `use` is a variable of the `Field` class.
-The `has` match a list of values `normal,grid` from the `use` variable to an item `grid`, `in` works the other way round.
-
-The `${parent.value}`, the parent would go to `Table` and then the value of it.
-
-Variable names are lower case, other has special meaning to get to the value. The same aplies to Its.
-
-The `${.1.}` has the value of `, ` if it is not the first entry.
-```
-Out delay
-```
-Delays the output and is triggered by the next actor's output. If the next actor has no
-output, it gets disgarded. This is to avoid having empty selects.
-```
-
-Its table2.Field join_field_sel
-```
-The `Join` node has a pointer variable `table2` going to `Table` that has a lsit of fields
-that gets passed to the `join_field_sel` actor.
-
-# More
-
-The `${name}l` is to convert it to lower case. The `${name} ` has no conversion.
-Variable `${.Table.tb1.name}` global access to input data. Matches the tables's name to `tb1`.
-The `${.actor_name.}` access to the node that the actor has.
-`Break` - breaks the actor loop - if non matches it can get to the default one.
-`Break loop` - break the calling loop - if only needing one.
-`Unique` - for not duplication code.
-The `&=` on the actor's match is true is the previous one was true. 
-The `Its .actor_name` - use that actor's node instead.
-
-
-# JSON input files
-
-See examples how to navigate json files.
-
-# Building: Swift version 5.6.2
-```
-mkdir app
-cd app
-swift package init --type=executable
-```
-copy source files to Sources/app
-```
-swift build
-```
-
-# Usage
-
-The sample generator is joined with the code generator in src.
-You can run the examples from it.
-
-# Version
-
-Small core version that can to be changed as needed.
-Can be ported to other languages - mostly generated.
-The json and group are examples on how to add plugins.
-The `V-lang` version is very simular to this one. The
-`golang` version is older and not as well automated.
-The `Crytal-lang` one is newer.
-
-# Contribution
-
-You can clone repository to contribute.
+The refs have an option flag to specify how to deal with `not found` errors. If it is `check`,
+then it will be an error. If it is `?`, then there is no error.
+Otherwise it is the optional value to use when none. It is an error if not found and the value looking for is different to this.
+It can be `(.)` or anything else like `None`.
 
 
 
