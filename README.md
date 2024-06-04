@@ -32,14 +32,24 @@ or to navigate further.
 
 # Variable
 Variable names.
-Variable names. The ${name} gets replaced by the value of the variable name.
+Variable names are from the current node with options to get other values.
+The ${name} gets replaced by the value of the name item.
+The `${_.D}` is from the var D and`${_.D.build.domain.name}`, a route to name.
+The routes are via a dict or def relations.
 
-The `${._key}` variable is the value of the key used for when all key and values are used ( `This list. actor` ).
-The `This list actor` is for all the keys. The value is the list item of the key
-The `This.rev list.S actor`, the items are reversed.
-The `${._set.A}`, the value is the set item.
+The `${._list.A}`, the value is the list item.
 The `${._set}`, the value is the set dict.
-The `${_.D}` is better than `${._var.D}` for some cases.
+The `${_.D}` is like `${._var.D}`.
+The `${._key}` variable is the value of the key used for when all key and values are used ( `This list. actor` ).
+The `${._lcnt} or ${.-}` if the loop counter.
+The `${.+}` is the loop counter plus 1.
+The `${._arg}` is the argument passes to the actor.
+The `${.0.first} {.1.rest}` is the text first if the loop counter is 0 and rest if > 0.
+The `${._ins}` is output captured between the `In on, In off` commands.
+The `${.main.1}`, uses the `main` actor in the window calling stack for its current node to get the varaible.
+The format options, reformats the value. `${name:u}` converts it to upper case.
+If the item is a list, `${:-}` is the value at the loop index.
+The `${:sort:join}`, sorts the list and the output is `a,b,c` string.
 
 The `strs` function in gen.py`, replaces the variable names of a string with their values.
 Some of the actor commands, calls this function for an item so that the item can be combined with variables.
@@ -142,8 +152,13 @@ Also has a `regex` that can break down the string as named entries.
 
 #### Collect
 Collection commands.
+The `Add` command is to add data to the `var,set,list` collections.
+It can also add to `me`, the current node, or `node`, some other node.
+It has command options `(Add.)` as what to add. It defaults to adding a string.
+The options are `node,me,json` The node has a path to a node.
+
 `Add.me var N` is to add the current node and `Add var Z this is ${name}` to add a string value.
-To use it is `${._var.N.name}` or `${._var.Z}`.
+To use it is `${_.N.name}` or `${_.Z}`.
 `Add.me set S` and `Add set B abc` is to is to add to a set. Sets do not have duplicates.
 A flag gets set in the window stack if a duplicate was added.
 `Break cmds for . True` will end this actor is the flag is set.
@@ -158,6 +173,9 @@ The order of the command options does not matter. `Add.me.break` is the same as 
 Add list always adds, but it could break before adding a duplicate.
 For now, use the `Check list` for duplicates.
 
+The `Add.json var E {"ids": [4,5,6], "userId": 7}` puts a json node in E.
+`C ${_.E:} - ${_.E.userId:} ${_.E.ids:}  ${_.E.ids:0}` outputs `{'ids': [4, 5, 6], 'userId': 7} - 7 [4, 5, 6]  4`.
+The `(:)` has the variable formating options. Here it converts the object to a string.
 It is now possible now to add to this dict with `Add.me var J.${name}`
 The `me` is the current node item or it can be a string like `Add var J.${name} ${value}`
 The `Add.node var J.${name} _.F`, can add the var F to this dict.
@@ -165,9 +183,8 @@ Or `Add.node me ${name} _.F` to add the F var node to the current node.
 The `${_.F}` is a string whereas `_.F` is the value in it. This to navigate the a node tree,
 save it in F with `Add.me var F`, then navigate in another node tree and save it there.
 
-The `Add node:_.F ${name} ${value}` is the same as `Add var J.${name} ${value}`
+The `Add node:_.J ${name} ${value}` is the same as `Add var J.${name} ${value}`
 
-The `Add.json var E {"ids": [4,5,6], "userId": 7}` puts a json node in E.
 
 
 #### Break
