@@ -37,16 +37,26 @@ The ${name} gets replaced by the value of the name item.
 The `${_.D}` is from the var D and`${_.D.build.domain.name}`, a route to name.
 The routes are via a dict or def relations.
 
-The `${._list.A}`, the value is the list item.
-The `${._set}`, the value is the set dict.
-The `${_.D}` is like `${._var.D}`.
+The following are variables from the actor window.
+
+The `${}` is the current node.
 The `${._key}` variable is the value of the key used for when all key and values are used ( `This list. actor` ).
-The `${._lcnt} or ${.-}` if the loop counter.
+The `${._lcnt} or ${.-}` is the loop counter.
 The `${.+}` is the loop counter plus 1.
 The `${._arg}` is the argument passes to the actor.
 The `${.0.first} {.1.rest}` is the text first if the loop counter is 0 and rest if > 0.
-The `${._ins}` is output captured between the `In on, In off` commands.
+
 The `${.main.1}`, uses the `main` actor in the window calling stack for its current node to get the varaible.
+The other window variables are also available like `${.main..arg}`
+The `Du` command, calls another actor, but should have the same variable values.
+
+The following are global.
+
+The `${._list.A}`, the value is the list item.
+The `${._set}`, the value is the set dict.
+The `${_.D}` is like `${._var.D}`.
+The `${._ins}` is output captured between the `In on, In off` commands.
+
 The format options, reformats the value. `${name:u}` converts it to upper case.
 If the item is a list, `${:-}` is the value at the loop index.
 The `${:sort:join}`, sorts the list and the output is `a,b,c` string.
@@ -139,17 +149,6 @@ Command names.
 - Add -  Add to collections
 - Clear -  Clear collections
 - Check -  Check unique in collection
-#### Var
-Var command.
-This creates a named entry in the the current node's instance.
-The `Var foo = bar`, sets the variable. To access it, `${foo}`
-The `Var .list_act.foo = abar`, set the variable in the node instance that is current
-in the `list_act`. The current actors are on the stack. To access it, `${.list_act.foo}`,
-or when on that node instance (back to the list_act), `${foo}`.
-
-Also has a `regex` that can break down the string as named entries.
-
-
 #### Collect
 Collection commands.
 The `Add` command is to add data to the `var,set,list` collections.
@@ -192,7 +191,7 @@ Break command.
 The `Break` command is the same as `Break actor` as it is the default.
 
 The codes returned by the break is 1 for loops, 2 for actor and 3 for commands.
-The `go_act` function in `gen.py`, will continue if the break was for the comands.
+The `go_act` function in `gen.py`, will continue the actor loop if the break was for the comands.
 It will return 0 if its is for the actor. Else return the value.
 
 The generated code for the `Its` will continue as long is the return is 0, else returns the returned value.
@@ -214,21 +213,31 @@ The `Add var` also does a check to see if the value added is the same. Like `Add
 
 
 
-#### Condition
-Break condition.
-`Break cmds for . True` will end this actor is the flag is set.
-
-The flag is set by the add and check commands.
-
-
 ### Call
 Actor calls.
-The `All, Its and Du` commands, calls the `new_act` function to set up
+The `All, Its, This, That and Du` commands, calls the `new_act` function to set up
 a new actor window on the stack. It passes the `arg` string.
 The `Du` command calls `go_act` with the current node instance, the others, the generated code that call `go_act`.
 The `go_act` function uses the new node instance. The match uses this instance
 and return if the match failed. Then it loops through all actors with its given name.
 Each of these actors, have there own match data and skips the ones that do not match.
+
+The `Its`, uses the current node, whereas `This`, uses a node from the collection.
+They join up to complete a path route.
+
+The `That` uses data from external sources.
+
+
+#### That
+Actor calls.
+```
+That db from test.db rows SELECT * from ship
+That file at inlet/startup.md include
+That json of id.json list_act0
+That url.get at https://jsonplaceholder.typicode.com/posts/1 response_list
+That re_sub ${._var.replace} ${._var.input} output (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\}n
+That regx string ${._var.str} response_list (\w+)\(([\w,\s]+)\)\s+=\s+(\w+)\(([\w,\s]+)\)\s*\*\s*(\w+)\(([\w,\s]+)\)
+```
 
 
 #### Loop
@@ -244,6 +253,7 @@ The `Du` inherits this value.
 Actor matching.
 Actor have a case like match on all the actors of the same name.
 `Actor list_act Node name = tb1`, here it matches the varable `name` to `tb1`
+`Actor list_act Node name = ${._arg}`, here it matches the varable `name` to the argument passed.
 The `&=` would be false if the previous one failed. The `|=` would be true if the previous one was true.
 The variable has a `?` option like `name ?= tb1`. This would fail if `name` does not exist.
 In this case no error is printed and the global errors flag is not updated - not seen as an error.
@@ -267,8 +277,8 @@ before it to get all the columns alligned if needed.
 
 ### Other
 Other input.
-The Json, Yaml and Xml are addons that operate the same way that the rest does.
-May need some more work here.
+Json files can be loaded at runtime that operate the same way that the rest does.
+Other file types are not done here.
 
 
 ### Errors
@@ -289,9 +299,8 @@ Data type
 ### Nest
 Node nesting.
 A control field of a nested node. The value 1 is for the top level, 2, next level down and so on.
-This is to create a tree from one node type. To navigate to the nodes one level down, use `Its group.right`.
-To navigate one level up, use `Its group.left`. The `Its group.up` goes to the node above it of the same level.
-The `Its group.down`, to the node below. The value 0 is for nodes that do not form part of this set.
+This is to create a tree from one node type. To navigate to the nodes one level down, use `Its group`.
+The value 0 is for nodes that do not form part of this set.
 There can be more than one control field for different tree layouts.
 
 ```
