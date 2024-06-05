@@ -40,6 +40,7 @@ def go_act(dat, glob, act):
         return(0)
     name = glob.acts.ap_actor[act].k_name
     glob.winp += 1
+    inc_cnt = True
     glob.wins[glob.winp].dat = dat;
     glob.wins[glob.winp].name = name
     prev = False
@@ -67,7 +68,9 @@ def go_act(dat, glob, act):
             ps,err = strs(glob, cc, glob.winp, lno, True, True)
             print(ps)
         glob.wins[glob.winp].cur_act = a
-        glob.wins[glob.winp].lcnt += 1
+        if inc_cnt:
+            glob.wins[glob.winp].lcnt += 1
+            inc_cnt = False
         ret = go_cmds(dat, glob, a)
         if ret == 0 or ret == 3:
             continue

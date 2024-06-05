@@ -1,7 +1,7 @@
 The `Break` command is the same as `Break actor` as it is the default.
 
 The codes returned by the break is 1 for loops, 2 for actor and 3 for commands.
-The `go_act` function in `gen.py`, will continue if the break was for the comands.
+The `go_act` function in `gen.py`, will continue the actor loop if the break was for the comands.
 It will return 0 if its is for the actor. Else return the value.
 
 The generated code for the `Its` will continue as long is the return is 0, else returns the returned value.

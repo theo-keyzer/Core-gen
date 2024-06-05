@@ -1,3 +1,3 @@
-The Json, Yaml and Xml are addons that operate the same way that the rest does.
-May need some more work here.
+Json files can be loaded at runtime that operate the same way that the rest does.
+Other file types are not done here.
 

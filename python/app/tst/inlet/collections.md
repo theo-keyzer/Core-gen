@@ -1,5 +1,10 @@
+The `Add` command is to add data to the `var,set,list` collections.
+It can also add to `me`, the current node, or `node`, some other node.
+It has command options `(Add.)` as what to add. It defaults to adding a string.
+The options are `node,me,json` The node has a path to a node.
+
 `Add.me var N` is to add the current node and `Add var Z this is ${name}` to add a string value.
-To use it is `${._var.N.name}` or `${._var.Z}`.
+To use it is `${_.N.name}` or `${_.Z}`.
 `Add.me set S` and `Add set B abc` is to is to add to a set. Sets do not have duplicates.
 A flag gets set in the window stack if a duplicate was added.
 `Break cmds for . True` will end this actor is the flag is set.
@@ -14,6 +19,9 @@ The order of the command options does not matter. `Add.me.break` is the same as 
 Add list always adds, but it could break before adding a duplicate.
 For now, use the `Check list` for duplicates.
 
+The `Add.json var E {"ids": [4,5,6], "userId": 7}` puts a json node in E.
+`C ${_.E:} - ${_.E.userId:} ${_.E.ids:}  ${_.E.ids:0}` outputs `{'ids': [4, 5, 6], 'userId': 7} - 7 [4, 5, 6]  4`.
+The `(:)` has the variable formating options. Here it converts the object to a string.
 It is now possible now to add to this dict with `Add.me var J.${name}`
 The `me` is the current node item or it can be a string like `Add var J.${name} ${value}`
 The `Add.node var J.${name} _.F`, can add the var F to this dict.
@@ -21,7 +29,6 @@ Or `Add.node me ${name} _.F` to add the F var node to the current node.
 The `${_.F}` is a string whereas `_.F` is the value in it. This to navigate the a node tree,
 save it in F with `Add.me var F`, then navigate in another node tree and save it there.
 
-The `Add node:_.F ${name} ${value}` is the same as `Add var J.${name} ${value}`
+The `Add node:_.J ${name} ${value}` is the same as `Add var J.${name} ${value}`
 
-The `Add.json var E {"ids": [4,5,6], "userId": 7}` puts a json node in E.
 

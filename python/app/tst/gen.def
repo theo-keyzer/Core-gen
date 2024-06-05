@@ -1,4 +1,8 @@
 ----------------------------------------------------------------
+Grid Intro inlet/intro
+----------------------------------------------------------------
+
+----------------------------------------------------------------
 Grid Startup inlet/startup Start.
 ----------------------------------------------------------------
 
@@ -50,12 +54,13 @@ R Add      .  Add to collections
 R Clear    .  Clear collections
 R Check    .  Check unique in collection
 
-Col Var 2 2 inlet/var_cmd Var command.
+-Col Var 2 2 inlet/var_cmd Var command.
 Col Collect 2 2 inlet/collections Collection commands.
 Col Break 2 2 inlet/break_cmd Break command.
-Col Condition 2 2 inlet/break_condition Break condition.
+-Col Condition 2 2 inlet/break_condition Break condition.
 
 Col Call 1 1 inlet/actor_calls Actor calls.
+Col That 2 2 inlet/that Actor calls.
 Col Loop 2 2 inlet/loop_counter Loop counter.
 
 Col Match 1 1 inlet/actor_match Actor matching.
