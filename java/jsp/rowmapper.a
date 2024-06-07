@@ -1,0 +1,126 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+
+C package com.bp.hr.service.data.rowmappers.$CPNl;
+C
+C import java.sql.ResultSet;
+C import java.sql.SQLException;
+C import java.text.SimpleDateFormat;
+C import java.util.Date;
+C
+C import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
+Its attr import_lob
+
+C
+C import com.bp.hr.service.data.entity.$CPNl.$CTNc;
+C
+C public class $CTNcRowMapper implements ParameterizedRowMapper<$CTNc> {
+C
+C 	public $CTNc mapRow(ResultSet res, int arg1) throws SQLException 
+C 	{
+C 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+Its attr create_lob
+
+C 		$CTNc $CTNl = new $CTNc();
+
+Its attr setter
+
+C 		$CTNl.setUpdateCnt(res.getLong("UPDATE_CNT"));
+C 		$CTNl.setCreatedBy(res.getLong("CREATED_BY"));
+C 		$CTNl.setModifiedBy(res.getLong("MODIFIED_BY"));
+C 		$CTNl.setActiveInd(res.getString("ACTIVE_IND"));
+C 		$CTNl.setDateCreated(res.getDate("DATE_CREATED"));
+C 		$CTNl.setDateModified(res.getDate("DATE_MODIFIED"));
+C
+
+Its attr setter2
+
+Its rel_attr fix
+
+C 		return $CTNl;
+C 	}
+C
+C }
+
+
+----------------------------------------------------------------
+Actor import_lob . Mytype = BLOB
+----------------------------------------------------------------
+
+C import org.springframework.jdbc.support.lob.LobHandler;
+C import org.springframework.jdbc.support.lob.DefaultLobHandler;
+
+----------------------------------------------------------------
+Actor create_lob . Mytype = BLOB
+----------------------------------------------------------------
+
+C 		LobHandler lobHandler = new DefaultLobHandler();  // reusable object
+
+----------------------------------------------------------------
+Actor setter . Mytype = BLOB
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc( lobHandler.getBlobAsBytes(res, "$CANu") );
+
+----------------------------------------------------------------
+Actor setter . Mytype = FLOAT
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(res.getDouble("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = NUMBER
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(res.getLong("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = LONG
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(res.getLong("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = VARCHAR2
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(res.getString("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = CHAR
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(res.getString("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = TEXT
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(res.getString("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = DATE
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(res.getDate("$CANu"));
+
+----------------------------------------------------------------
+Actor setter2 . Mytype = DATE
+----------------------------------------------------------------
+
+C 		if( $CTNl.get$CANc() != null ) $CTNl.set$CANcFld( sdf.format( $CTNl.get$CANc() ) );
+
+----------------------------------------------------------------
+Actor fix . relation in dropdown
+----------------------------------------------------------------
+
+C 		if( $CTNl.get$CANc() == 0L ) $CTNl.set$CANc(null);

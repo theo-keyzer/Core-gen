@@ -1,0 +1,185 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+All arg_type_tables proxy
+
+--------------------------------------------------------
+Actor proxy .
+--------------------------------------------------------
+
+C package com.bp.portlet.webservice.client.$CPNl.proxy;
+C
+
+C import java.util.ArrayList;
+C import java.util.List;
+C
+C import org.dom4j.Document;
+C import org.dom4j.DocumentHelper;
+C import org.dom4j.Element;
+C import org.dom4j.io.DocumentResult;
+C import org.dom4j.io.DocumentSource;
+C import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+C import com.bp.portlet.webservice.client.marshaller.WebServiceClientBeanMarshaller;
+C
+C import com.bp.portlet.webservice.client.response.bean.ResponseBean;
+C import com.bp.portlet.webservice.client.$CPNl.service.$CCNcService;
+
+Its use_tbl import
+
+C 
+C /**
+C  * $CCNc proxy class where the web request implementations are defined for $CCNl. 
+C  * 
+C  * @author Theo.Keyzer
+C  * 
+C  */
+C
+C public class $CCNcServiceProxy extends WebServiceGatewaySupport implements $CCNcService
+C {
+
+
+Its use_tbl string
+
+C 
+
+Its use_tbl marshall
+Its use_tbl func
+
+C }
+
+----------------------------------------------------------------
+Actor import . Use in search,view,chkRole
+----------------------------------------------------------------
+
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcViewBean;
+
+
+----------------------------------------------------------------
+Actor string . Use in view
+----------------------------------------------------------------
+
+C 	private static final String WEBSERVICE_METHOD_VIEW_$CTNu = "view$CTNc";
+
+----------------------------------------------------------------
+Actor string . Use in search
+----------------------------------------------------------------
+
+C 	private static final String WEBSERVICE_METHOD_SEARCH_$CTNu = "search$CTNc";
+
+----------------------------------------------------------------
+Actor string . Use in chkRole
+----------------------------------------------------------------
+
+C 	private static final String WEBSERVICE_METHOD_CHK_$CTNu = "chk$CTNc";
+
+----------------------------------------------------------------
+Actor marshall . Use in search,view,chkRole
+----------------------------------------------------------------
+
+C 	private WebServiceClientBeanMarshaller<$CTNcViewBean> $CTNlViewBeanMarshaller;
+C	
+C 	public void set$CTNcViewBeanMarshaller(
+C 			WebServiceClientBeanMarshaller<$CTNcViewBean> $CTNlViewBeanMarshaller) {
+C 		this.$CTNlViewBeanMarshaller = $CTNlViewBeanMarshaller;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func . Use in view
+----------------------------------------------------------------
+
+C 	@Override
+C 	public List<$CTNcViewBean> view$CTNc(String filter, Long id, String flags) {
+C 	
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_VIEW_$CTNu);
+C 		requestElement.addElement("arg0").setText(filter);
+C 		requestElement.addElement("arg1").setText(id + "");
+C 		requestElement.addElement("arg2").setText(flags);
+C 			
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);
+C 		
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C 		
+C 		List<$CTNcViewBean> $CTNls = new ArrayList<$CTNcViewBean>();
+C 		
+C 		for (Object node : responseElement.elements("return")) {
+C 			$CTNcViewBean $CTNl = new $CTNcViewBean();
+C 			Element element = (Element)node;
+C 			$CTNl = $CTNlViewBeanMarshaller.interpretEntityBean(element);
+C 			$CTNls.add($CTNl);
+C 		}
+C 		return $CTNls;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func . Use in search
+----------------------------------------------------------------
+
+C 	@Override
+C 	public List<$CTNcViewBean> search$CTNc($CTNcViewBean $CTNl, Long rowFrom, Long rowTo) {
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_SEARCH_$CTNu);
+C 		
+C 		Element $CTNlRecord = requestElement.addElement($CTNlViewBeanMarshaller.getEntityBeanNamespace());
+C 		$CTNlRecord = $CTNlViewBeanMarshaller.createEntityBean($CTNlRecord, $CTNl);
+C 		requestElement.addElement("arg1").setText(rowFrom + "");
+C 		requestElement.addElement("arg2").setText(rowTo + "");
+C 		
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);		
+C 
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C
+C 		List<$CTNcViewBean> $CTNls = new ArrayList<$CTNcViewBean>();
+C 		
+C 		for (Object node : responseElement.elements("return")) {
+C 			$CTNcViewBean $CTNlItem = new $CTNcViewBean();
+C 			Element element = (Element)node;
+C 			$CTNlItem = $CTNlViewBeanMarshaller.interpretEntityBean(element);
+C 			$CTNls.add($CTNlItem);
+C 		}
+C 		return $CTNls;
+C 	}
+C 
+
+----------------------------------------------------------------
+Actor func . Use in chkRole
+----------------------------------------------------------------
+
+C 	@Override
+C 	public $CTNcViewBean chk$CTNc($CTNcViewBean $CTNl) {
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_CHK_$CTNu);
+C 		
+C 		Element $CTNlRecord = requestElement.addElement($CTNlViewBeanMarshaller.getEntityBeanNamespace());
+C 		$CTNlRecord = $CTNlViewBeanMarshaller.createEntityBean($CTNlRecord, $CTNl);
+C 		
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);		
+C 
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C
+C 		for (Object node : responseElement.elements("return")) {
+C 			$CTNcViewBean $CTNlItem = new $CTNcViewBean();
+C 			Element element = (Element)node;
+C 			$CTNlItem = $CTNlViewBeanMarshaller.interpretEntityBean(element);
+C 			return($CTNlItem);
+C 		}
+C 		return null;
+C 	}
+C 
+
+

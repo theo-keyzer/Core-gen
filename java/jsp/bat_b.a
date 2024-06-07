@@ -1,0 +1,50 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+C echo >$AR2/$AR3/view/$AR3View_b.sql
+C echo >$AR2/$AR3/view/$AR3View2_b.sql
+C java -cp java main jsp\service_client.a        prm.d B_prm   hr    prm >$AR2/$AR3/$AR3cServiceClient2.java
+C java -cp java main jsp\app_xml_b.a             prm.d B_prm   hr    prm >$AR2/applicationContext_b.xml
+
+All arg_type_tables P
+
+--------------------------------------------------------
+Actor P .
+--------------------------------------------------------
+
+C java -cp java main jsp\service_b.a        prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/$CPD/impl/$CCNcWebServiceImpl.java
+C java -cp java main jsp\serviceIf_b.a      prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/$CPD/$CCNcWebService.java
+C java -cp java main jsp\client_service_b.a prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/service/$CCNcService.java
+C java -cp java main jsp\client_proxy_b.a   prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/proxy/$CCNcServiceProxy.java
+C java -cp java main jsp\dao_b.a            prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/$CPD/$CCNcDAO.java
+C java -cp java main jsp\daoimpl_b.a        prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/$CPD/impl/$CCNcDAOImpl.java
+
+Its use_tbl S
+
+----------------------------------------------------------------
+Actor S .
+----------------------------------------------------------------
+
+C java -cp java main jsp\bp_service_xml.a prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/bp-$CCNl-service.xml
+C java -cp java main jsp\composite_xml.a  prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$CCNc.composite
+
+Its use_tbl T
+
+----------------------------------------------------------------
+Actor T . Use in search,view,chkRole
+----------------------------------------------------------------
+
+C java -cp java main jsp\rowmapper_view_b.a prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/rowmappers/$CPD/$CTNcViewRowMapper.java
+C java -cp java main jsp\entity_view_b.a    prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/entity/$CPD/$CTNcView.java
+C java -cp java main jsp\bean_view_b.a      prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/bean/$CTNcViewBean.java
+C java -cp java main jsp\marshall_view_b.a  prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/marshaller/$CTNcViewBeanMarshaller.java
+
+----------------------------------------------------------------
+Actor T . Use in search,view,jview
+----------------------------------------------------------------
+
+C java -cp java main jsp\view_b.a           prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/view/$CTNcView.sql
+C java -cp java main jsp\view_b.a           prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >>$AR2/$AR3/view/$AR3View_b.sql
+C java -cp java main jsp\view2_b.a          prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >>$AR2/$AR3/view/$AR3View2_b.sql
+

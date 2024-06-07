@@ -1,0 +1,47 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+All arg_type_tables ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+C package com.bp.hr.service.data.$CPNl;
+C
+C import java.util.List;
+C
+
+Its use_tbl import
+
+C
+C public interface $CCNcDAO 
+C {
+
+Its use_tbl func
+
+C }
+
+----------------------------------------------------------------
+Actor import . Use in search,view,chkRole
+----------------------------------------------------------------
+
+C import com.bp.hr.service.data.entity.$CPNl.$CTNcView;
+
+----------------------------------------------------------------
+Actor func . Use in search
+----------------------------------------------------------------
+
+C 	public List<$CTNcView> search$CTNc($CTNcView $CTNl, Long rowFrom, Long rowTo);
+
+----------------------------------------------------------------
+Actor func . Use in view
+----------------------------------------------------------------
+
+C 	public List<$CTNcView> view$CTNc(String filter, Long id, String flags);
+
+----------------------------------------------------------------
+Actor func . Use in chkRole
+----------------------------------------------------------------
+
+C 	public $CTNcView chk$CTNc($CTNcView $CTNl);

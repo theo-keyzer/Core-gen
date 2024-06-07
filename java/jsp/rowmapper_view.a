@@ -1,0 +1,97 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+
+C package com.bp.hr.service.data.rowmappers.$CPNl;
+C
+C import java.sql.ResultSet;
+C import java.sql.SQLException;
+C
+C import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+C
+C import com.bp.hr.service.data.entity.$CPNl.$CTNcView;
+C
+C public class $CTNcViewRowMapper implements ParameterizedRowMapper<$CTNcView> {
+C
+C 	public $CTNcView mapRow(ResultSet res, int arg1) throws SQLException {
+C 		$CTNcView $CTNlView = new $CTNcView();
+C 		$CTNlView.setUpdateCnt(res.getLong("UPDATE_CNT"));
+C 		$CTNlView.setActiveInd(res.getString("ACTIVE_IND"));
+C 		$CTNlView.setActiveStatus(res.getString("ACTIVE_STATUS"));
+C 		$CTNlView.setDateModified(res.getDate("DATE_MODIFIED"));
+
+Its attr setter
+Its rel_attr setter2
+
+C 		return $CTNlView;
+C 	}
+C
+C }
+
+
+----------------------------------------------------------------
+Actor setter2 . relation in dropdown,select,lookup
+----------------------------------------------------------------
+
+C 		$CTNlView.set$FTNc(res.getString("$FTNu"));
+
+----------------------------------------------------------------
+Actor setter2 . relation = viewed
+----------------------------------------------------------------
+
+C 		$CTNlView.set$RTNc(res.getString("$RTNu"));
+
+----------------------------------------------------------------
+Actor setter2 . relation in view,viewed
+----------------------------------------------------------------
+
+Du setter
+
+----------------------------------------------------------------
+Actor setter . Mytype = FLOAT
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(res.getDouble("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = NUMBER
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(res.getLong("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = LONG
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(res.getLong("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = VARCHAR2
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(res.getString("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = CHAR
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(res.getString("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = TEXT
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(res.getString("$CANu"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = DATE
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(res.getDate("$CANu"));
+C 		$CTNlView.set$CANcFld(res.getString("$CANu_FLD"));

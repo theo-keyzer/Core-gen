@@ -1,0 +1,324 @@
+- Look at search flags to what also need to match
+
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+All arg_type_tables ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+C package com.bp.hr.service.data.$CPNl.impl;
+C
+C import java.sql.Types;
+C import java.util.List;
+C import java.util.Date;
+C import java.util.Calendar;
+C import java.text.SimpleDateFormat;
+C import com.bp.hr.service.data.$CPNl.$CCNcDAO;
+C import com.bp.hr.service.data.util.DAOUtils;
+
+Its use_tbl import
+
+C
+C
+C /**
+C  * Database access layer
+C  * 
+C  * @author Theo.Keyzer
+C  * 
+C  */
+C public class $CCNcDAOImpl extends DAOUtils implements $CCNcDAO
+C {
+C 	private static final long serialVersionUID = 1L;
+
+Its use_tbl func
+
+C
+C }
+
+----------------------------------------------------------------
+Actor func . Use in search
+----------------------------------------------------------------
+
+C 	private static final String SEARCH_$CTNu = "Select * from BP_$CTNu_VIEW where ACTIVE_IND = 'Y' ";
+C
+C 	public List<$CTNcView> search$CTNc($CTNcView $CTNl, Long rowFrom, Long rowTo)
+C 	{
+C 		Long n;
+C 		String s;
+C 		String sql = SEARCH_$CTNu;
+
+Its rel_attr where
+
+C 		return getJdbcTemplate().query(sql, new $CTNcViewRowMapper());
+C 	}
+C
+----------------------------------------------------------------
+Actor func . Use in view
+----------------------------------------------------------------
+
+C
+C 	private static final String VIEW_$CTNu = "Select * from BP_$CTNu_VIEW  ";
+C
+C 	public List<$CTNcView> view$CTNc(String filter, Long id, String flags)
+C 	{
+C 		String s = "ACTIVE_IND = 'Y'";
+C 		if(filter != null && filter.length() != 0) s = s + " and " + filter;
+C 		if(id != null && id != 0) s = " $LINl = '" + id + "' or ( " + s + " )";
+C 		return getJdbcTemplate().query(VIEW_$CTNu + " where " + s + " " + flags, new $CTNcViewRowMapper());
+C 	}
+
+-C 		if(id != null && id != 0) s = " pk_id = '" + id + "' or ( " + s + " )";
+
+----------------------------------------------------------------
+Actor import . Use in search,view,chkRole
+----------------------------------------------------------------
+
+C import com.bp.hr.service.data.entity.$CPNl.$CTNcView;
+C import com.bp.hr.service.data.rowmappers.$CPNl.$CTNcViewRowMapper;
+
+----------------------------------------------------------------
+Actor where . relation = dropdown
+----------------------------------------------------------------
+
+C 		n = $CTNl.get$CANc();
+C 		if(n != null && (n != 0) ) sql = sql + "and $CANu = '" + n + "' ";
+
+----------------------------------------------------------------
+Actor where . relation = select
+----------------------------------------------------------------
+
+C 		s = $CTNl.get$CANc();
+C 		if(s != null && (!s.equals(""))  ) sql = sql + "and $CANu = '" + s + "' ";
+
+----------------------------------------------------------------
+Actor where . relation = lookup
+----------------------------------------------------------------
+
+C 		s = $CTNl.get$FTNc();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and $FTNu $FWO '" + s + "' ";
+
+----------------------------------------------------------------
+Actor where . relation = view
+----------------------------------------------------------------
+
+Its select BL
+
+C 		s = $CTNl.get$CANc();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and $CANu $FWO '" + s + "' ";
+
+----------------------------------------------------------------
+Actor BL .
+----------------------------------------------------------------
+
+End where
+
+----------------------------------------------------------------
+Actor where . relation in none,pk
+----------------------------------------------------------------
+
+Du where_none     Mytype = VARCHAR2
+Du where_none_num Mytype = NUMBER
+
+Actor where_none
+
+C 		s = $CTNl.get$CANc();
+C 		if(s != null && (!s.equals("")) ) sql = sql + "and $CANu = '" + s + "' ";
+
+Actor where_none_num
+
+C 		n = $CTNl.get$CANc();
+C 		if(n != null && (n != 0) ) sql = sql + "and $CANu = '" + n + "' ";
+
+----------------------------------------------------------------
+Actor where . relation = where
+----------------------------------------------------------------
+
+C //		s = $CTNl.get$CANc();
+C //		if(s != null && (!s.equals("")) ) sql = sql + "and $FWVu $FWO '" + s + "' ";
+
+
+----------------------------------------------------------------
+Actor func . Use in chkRole
+----------------------------------------------------------------
+
+C 	public $CTNcView chk$CTNc($CTNcView $CTNl)
+C 	{
+C 		String sql;
+C 		if( $CTNl.getDepartmentId().equals("11") ) // Driver
+C 		{
+C 			sql = "select count(e.id) from bp_employee e where e.id = '" + $CTNl.getEmployeeId() + "'";
+C 			$CTNl.setEmpCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.id) from bp_employee e, bp_location_role lr where e.id = '" + $CTNl.getEmployeeId();
+C 			sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 			sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 			$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			return( $CTNl );
+C 		}
+C 		if( $CTNl.getDepartmentId().equals("12") ) // Driver cert
+C 		{
+C 			sql = "select count(e.id) from bp_employee e where e.id = '" + $CTNl.getEmployeeId() + "'";
+C 			$CTNl.setEmpCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.employee_id) from bp_driver e where e.employee_id = '" + $CTNl.getEmployeeId() + "' and e.ACTIVE_IND = 'Y'";
+C 			$CTNl.setDriver( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.employee_id) from bp_driver e where e.employee_id = '" + $CTNl.getEmployeeId() + "' and e.DRIVER_ACCESS = 'Y' and e.ACTIVE_IND = 'Y'";
+C 			$CTNl.setDriverAccess( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.employee_id) from bp_driver e where e.employee_id = '" + $CTNl.getEmployeeId() + "' and e.SUSPENDED = 'Y' and e.ACTIVE_IND = 'Y'";
+C 			$CTNl.setSuspended( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.id) from bp_employee e, bp_location_role lr where e.id = '" + $CTNl.getEmployeeId();
+C 			sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 			sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 			$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			return( $CTNl );
+C 		}
+C 		if( $CTNl.getDepartmentId().equals("1") ) // Driver document
+C 		{
+C 			sql = "select count(e.id) from bp_employee e where e.id = '" + $CTNl.getEmployeeId() + "'";
+C 			$CTNl.setEmpCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.id) from bp_employee e, bp_location_role lr where e.id = '" + $CTNl.getEmployeeId();
+C 			sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 			sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 			$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.id) from bp_employee e, bp_location_role lr where e.id = '" + $CTNl.getEmployeeId();
+C 			sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getApproveRoleId() + "'";
+C 			sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 			$CTNl.setApproveCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.id) from bp_employee e where e.id = '" + $CTNl.getEmployeeId() + "' and e.MANAGER_ID = '" + $CTNl.getEmpId() + "'";
+C 			$CTNl.setManagerCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.employee_id) from bp_driver e where e.employee_id = '" + $CTNl.getEmployeeId() + "' and e.ACTIVE_IND = 'Y'";
+C 			$CTNl.setDriver( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.employee_id) from bp_driver e where e.employee_id = '" + $CTNl.getEmployeeId() + "' and e.DRIVER_ACCESS = 'Y' and e.ACTIVE_IND = 'Y'";
+C 			$CTNl.setDriverAccess( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.employee_id) from bp_driver e where e.employee_id = '" + $CTNl.getEmployeeId() + "' and e.SUSPENDED = 'Y' and e.ACTIVE_IND = 'Y'";
+C 			$CTNl.setSuspended( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			return( $CTNl );
+C 		}
+C
+C 		if( $CTNl.getDepartmentId().equals("22") ) // Contractor
+C 		{
+C 			sql = "select count(e.pk_id) from bp_location_role lr where ";
+C 			sql += " lr.location_id = '" + $CTNl.getLocationId() + "' and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 			sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 			$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			return( $CTNl );
+C 		}
+C
+C 		if( $CTNl.getDepartmentId().equals("23") ) // Company
+C 		{
+C 			sql = "select count(e.pk_id) from bp_location_role lr where ";
+C 			sql += " lr.location_id = '" + $CTNl.getLocationId() + "' and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 			sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 			$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			return( $CTNl );
+C 		}
+C
+C 		if( $CTNl.getDepartmentId().equals("2") ) // Engineering document
+C 		{
+C 			if( $CTNl.getUserType().equals("1") ) // Employee
+C 			{
+C 				sql = "select count(e.id) from bp_employee e where e.id = '" + $CTNl.getEmployeeId() + "'";
+C 				$CTNl.setEmpCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 				sql = "select count(e.id) from bp_employee e, bp_location_role lr where e.id = '" + $CTNl.getEmployeeId();
+C 				sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 				sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 				$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 				sql = "select count(e.id) from bp_employee e, bp_location_role lr where e.id = '" + $CTNl.getEmployeeId();
+C 				sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getApproveRoleId() + "'";
+C 				sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 				$CTNl.setApproveCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C 			}
+C 			if( $CTNl.getUserType().equals("2") ) // Contractor
+C 			{
+C 				sql = "select count(e.pk_id) from bp_contractor_employee e where e.id_number = '" + $CTNl.getContractorId() + "'";
+C 				$CTNl.setEmpCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 				sql = "select count(e.pk_id) from bp_contractor_employee e, bp_location_role lr where e.id_number = '" + $CTNl.getContractorId();
+C 				sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 				sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 				$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 				sql = "select count(e.pk_id) from bp_contractor_employee e, bp_location_role lr where e.id_number = '" + $CTNl.getContractorId();
+C 				sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getApproveRoleId() + "'";
+C 				sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 				$CTNl.setApproveCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C 			}
+C 			if( $CTNl.getUserType().equals("3") ) // Company
+C 			{
+C 				sql = "select count(e.pk_id) from bp_contractor_company e where e.pk_id = '" + $CTNl.getCompanyId() + "'";
+C 				$CTNl.setEmpCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 				sql = "select count(e.pk_id) from bp_contractor_company e, bp_location_role lr where e.pk_id = '" + $CTNl.getCompanyId();
+C 				sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 				sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 				$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 				sql = "select count(e.pk_id) from bp_contractor_company e, bp_location_role lr where e.pk_id = '" + $CTNl.getCompanyId();
+C 				sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getApproveRoleId() + "'";
+C 				sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 				$CTNl.setApproveCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C 			}
+C 			return( $CTNl );
+C 		}
+C 		if( $CTNl.getDepartmentId().equals("4") ) // Wellness
+C 		{
+C 			sql = "select count(e.id) from bp_employee e where e.id = '" + $CTNl.getEmployeeId() + "'";
+C 			$CTNl.setEmpCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.id) from bp_employee e, bp_location_role lr where e.id = '" + $CTNl.getEmployeeId();
+C 			sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 			sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 			$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.id) from bp_employee e, bp_location_role lr where e.id = '" + $CTNl.getEmployeeId();
+C 			sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getApproveRoleId() + "'";
+C 			sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 			$CTNl.setApproveCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			return( $CTNl );
+C 		}
+C 		if( $CTNl.getDepartmentId().equals("3") ) // Training
+C 		{
+C 			sql = "select count(e.id) from bp_employee e where e.id = '" + $CTNl.getEmployeeId() + "'";
+C 			$CTNl.setEmpCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.id) from bp_employee e where e.id = '" + $CTNl.getEmployeeId() + "' and e.MANAGER_ID = '" + $CTNl.getEmpId() + "'";
+C 			$CTNl.setManagerCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			sql = "select count(e.id) from bp_employee e, bp_location_role lr where e.id = '" + $CTNl.getEmployeeId();
+C 			sql += "' and lr.location_id = e.location_id and lr.role_id = '" + $CTNl.getRoleId() + "'";
+C 			sql += " and lr.user_id = '" + $CTNl.getUserId() + "'";
+C 			$CTNl.setRoleCnt( (long) getJdbcTemplate().queryForInt(sql) );
+C
+C 			return( $CTNl );
+C 		}
+C 		return(null);
+C 	}
+C
+
+
+
+
+
+
+
+

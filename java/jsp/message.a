@@ -1,0 +1,42 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+All arg_type_tables msg
+
+--------------------------------------------------------
+Actor msg .
+--------------------------------------------------------
+
+Its use_tbl msg2
+
+--------------------------------------------------------
+Actor msg2 .
+--------------------------------------------------------
+
+Its use_tbl msg3
+
+----------------------------------------------------------------
+Actor msg3 .
+----------------------------------------------------------------
+
+C button.add.$CPNl.$CTNl=Add new $CYD
+C button.search.$CPNl.$CTNl=Search
+C button.delete.$CPNl.$CTNl=Delete $CYD
+C button.save.$CPNl.$CTNl=Save
+C button.cancel.$CPNl.$CTNl=Cancel
+C $CPNl.$CTNl.success.added=$CYD successfully added
+C $CPNl.$CTNl.success.updated=$CYD successfully updated
+C $CPNl.$CTNl.success.deleted=$CYD successfully deleted
+
+
+Its rel_attr spring
+
+----------------------------------------------------------------
+Actor spring .
+----------------------------------------------------------------
+
+Unique add $CPNl.$CTNl.$CANl.label=$CAD
+
+C $CPNl.$CTNl.$CANl.label=$CAD
+

@@ -1,0 +1,43 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+All arg_use_tbl service
+
+----------------------------------------------------------------
+Actor service .
+----------------------------------------------------------------
+
+C <?xml version="1.0" encoding="UTF-8"?>
+C <beans xmlns="http://www.springframework.org/schema/beans"
+C 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+C 	xmlns:aop="http://www.springframework.org/schema/aop"
+C 	xmlns:context="http://www.springframework.org/schema/context"
+C 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+C 	xmlns:lang="http://www.springframework.org/schema/lang"
+C 	xmlns:util="http://www.springframework.org/schema/util"
+C     xmlns:sca="http://www.springframework.org/schema/sca"
+C     xmlns:batch="http://www.springframework.org/schema/batch"
+C 	xsi:schemaLocation="http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+C 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+C 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+C 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+C 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+C 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+C         http://www.springframework.org/schema/sca http://www.osoa.org/xmlns/sca/1.0/spring-sca.xsd
+C         http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+C
+C 	<import resource="bp-data-service.xml"/> 
+C 	<import resource="global-context.xml" />
+C	 
+C 	<sca:service name="$CCNcService"
+C         type="com.bp.hr.service.prm.$CCNcWebService" target="$CCNlServiceBean"/>
+C     
+C 	<bean id="$CCNlServiceBean" class="com.bp.hr.service.prm.impl.$CCNcWebServiceImpl">
+C 		<property name="$CCNlDAO" ref="$CCNlDAO"/>
+C 	</bean>
+C 
+C     <bean id="applicationContextProvider" class="com.bp.hr.service.server.SCAApplicationContextProvider">
+C     </bean>	
+C </beans>
+

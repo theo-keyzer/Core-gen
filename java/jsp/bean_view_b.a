@@ -1,0 +1,204 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+C package com.bp.portlet.webservice.client.$CPNl.bean;
+C
+C import java.io.Serializable;
+C import java.util.Date;
+C
+C public class $CTNcViewBean implements Serializable
+C {
+
+C 	private static final long serialVersionUID = 1L;
+C
+
+Its attr decl
+Its rel_attr decl2
+
+C
+C 	public String toString() 
+C 	{
+C 		return "$CTNc = [" +
+
+Its attr print
+Its rel_attr print2
+
+C 		"]";
+C 	}
+C
+
+Its attr setter
+Its rel_attr setter2
+
+C
+C }
+C
+
+----------------------------------------------------------------
+Actor decl .
+----------------------------------------------------------------
+
+Du decl_var    Mytype = CHAR
+Du decl_var    Mytype = TEXT
+Du decl_var    Mytype = VARCHAR2
+Du decl_number Mytype = NUMBER
+Du decl_float  Mytype = FLOAT
+Du decl_date   Mytype = DATE
+
+Actor decl_float
+C 	private Double $CANl;
+
+Actor decl_number
+C 	private Long $CANl;
+
+Actor decl_var
+C 	private String $CANl = "";
+
+Actor decl_date
+C 	private Date $CANl;
+C 	private String $CANlFld;
+
+----------------------------------------------------------------
+Actor decl2 . relation in view,where
+----------------------------------------------------------------
+
+Du decl_var    Mytype = CHAR
+Du decl_var    Mytype = TEXT
+Du decl_var    Mytype = VARCHAR2
+Du decl_number Mytype = NUMBER
+Du decl_float  Mytype = FLOAT
+Du decl_date   Mytype = DATE
+
+----------------------------------
+Actor decl2 . relation in dropdown,select,lookup
+----------------------------------
+
+
+C 	private String $FTNl;
+
+----------------------------------------------------------------
+Actor print . Mytype != BLOB
+----------------------------------------------------------------
+
+C 		"$CANl = " + $CANl + " : " +
+
+----------------------------------------------------------------
+Actor print2 . relation in dropdown,select,lookup
+----------------------------------------------------------------
+
+C 		"$FTNl = " + $FTNl + " : " +
+
+----------------------------------------------------------------
+Actor setter .
+----------------------------------------------------------------
+
+Du setter_var    Mytype = VARCHAR2
+Du setter_var    Mytype = TEXT
+Du setter_var    Mytype = CHAR
+Du setter_number Mytype = NUMBER
+Du setter_float  Mytype = FLOAT
+Du setter_date   Mytype = DATE
+
+----------------------------------------------------------------
+Actor setter_float
+----------------------------------------------------------------
+
+C 	public Double get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(Double $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+----------------------------------------------------------------
+Actor setter_number
+----------------------------------------------------------------
+
+C 	public Long get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(Long $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor setter_var
+----------------------------------------------------------------
+
+C 	public String get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(String $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+
+
+----------------------------------------------------------------
+Actor setter_date
+----------------------------------------------------------------
+
+C 	public Date get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(Date $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+C 	public String get$CANcFld() 
+C 	{
+C 		return $CANlFld;
+C 	}
+C
+C 	public void set$CANcFld(String $CANl) 
+C 	{
+C 		this.$CANlFld = $CANl;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor setter2 . relation in view,where
+----------------------------------------------------------------
+
+Du setter_var    Mytype = VARCHAR2
+Du setter_var    Mytype = TEXT
+Du setter_var    Mytype = CHAR
+Du setter_number Mytype = NUMBER
+Du setter_float  Mytype = FLOAT
+Du setter_date   Mytype = DATE
+
+----------------------------------------------------------------
+Actor setter2 . relation in dropdown,select,lookup
+----------------------------------------------------------------
+
+
+C 	public String get$FTNc() 
+C 	{
+C 		return $FTNl;
+C 	}
+C
+C 	public void set$FTNc(String $FTNl) 
+C 	{
+C 		this.$FTNl = $FTNl;
+C 	}
+C
+

@@ -1,0 +1,86 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+All arg_type_tables service
+
+--------------------------------------------------------
+Actor service .
+--------------------------------------------------------
+
+C package com.bp.hr.service.$CPNl;
+C
+C import java.util.List;
+C
+C import org.osoa.sca.annotations.Remotable;
+C
+
+Its use_tbl import
+
+C import com.bp.hr.service.response.Response;
+C
+
+C /**
+C  * Service interface class for the $CCNc entity.
+C  * This interface is exposed through Tuscany.
+C  * 
+C  * @author Theo.Keyzer
+C  *
+C  */
+C
+C @Remotable
+C public interface $CCNcWebService
+C {
+C
+
+Its use_tbl func
+
+C }
+
+----------------------------------------------------------------
+Actor import . Use in primary
+----------------------------------------------------------------
+
+C import com.bp.hr.service.data.entity.$CPNl.$CTNc;
+C import com.bp.hr.service.data.entity.$CPNl.$CTNcView;
+
+----------------------------------------------------------------
+Actor func . Use in crud
+----------------------------------------------------------------
+
+C 	public Response create$CTNc($CTNc $CTNl);
+
+----------------------------------------------------------------
+Actor func . Use in crud
+----------------------------------------------------------------
+
+C 	public $CTNc read$CTNc(Long id);
+
+----------------------------------------------------------------
+Actor func . Use in crud
+----------------------------------------------------------------
+
+C 	public Response update$CTNc($CTNc $CTNl);
+
+----------------------------------------------------------------
+Actor func . Use in crud
+----------------------------------------------------------------
+
+C 	public Response delete$CTNc($CTNc $CTNl);
+
+----------------------------------------------------------------
+Actor func . Use in list
+----------------------------------------------------------------
+
+C 	public List<$CTNc> list$CTNc();
+C 	public List<$CTNcView> dupCheck$CTNc($CTNcView $CTNl, Long rowFrom, Long rowTo);
+C 	public List<$CTNcView> search$CTNc($CTNcView $CTNl, Long rowFrom, Long rowTo);
+C 	public List<$CTNcView> view$CTNc(String filter, Long id, String flags);
+
+----------------------------------------------------------------
+Actor name . relation = name
+----------------------------------------------------------------
+
+C , String $CANl\
+
+

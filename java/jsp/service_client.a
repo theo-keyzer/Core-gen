@@ -1,0 +1,63 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+C package com.bp.portlet.$AR3.webservice.client;
+C
+
+All arg_type_tables import
+
+C
+C public class $AR3cServiceClient 
+C {
+
+All arg_type_tables var
+
+C
+
+All arg_type_tables set
+
+C }
+
+--------------------------------------------------------
+Actor import .
+--------------------------------------------------------
+
+Its use_tbl import2
+
+----------------------------------------------------------------
+Actor import2 .
+----------------------------------------------------------------
+
+C import com.bp.portlet.webservice.client.$CPNl.service.$CCNcService;
+
+--------------------------------------------------------
+Actor var .
+--------------------------------------------------------
+
+Its use_tbl var2
+
+----------------------------------------------------------------
+Actor var2 .
+----------------------------------------------------------------
+
+C 	private $CCNcService $CCNlService;
+
+--------------------------------------------------------
+Actor set .
+--------------------------------------------------------
+
+Its use_tbl set2
+
+----------------------------------------------------------------
+Actor set2 .
+----------------------------------------------------------------
+
+C 	public $CCNcService get$CCNcService() {
+C 		return $CCNlService;
+C 	}
+C 
+C 	public void set$CCNcService($CCNcService $CCNlService) {
+C 		this.$CCNlService = $CCNlService;
+C 	}
+C

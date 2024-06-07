@@ -1,0 +1,86 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+C <?xml version="1.0" encoding="UTF-8"?>
+C <beans xmlns="http://www.springframework.org/schema/beans"
+C 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+C 	xmlns:context="http://www.springframework.org/schema/context"
+C 	xmlns:util="http://www.springframework.org/schema/util"
+C 	xsi:schemaLocation="
+C         http://www.springframework.org/schema/beans
+C         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+C         http://www.springframework.org/schema/context
+C         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+C         http://www.springframework.org/schema/util
+C         http://www.springframework.org/schema/util/spring-util-3.0.xsd
+C         ">
+C         
+C 	<bean id="propertyConfigurer"
+C 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+C 		<property name="location" value="classpath:record-management-portlets.properties" />
+C 	</bean>
+C 
+C 	<bean id="messageSource"
+C 		class="org.springframework.context.support.ResourceBundleMessageSource">
+C 		<property name="basenames">
+C 			<list>
+C 				<value>messages/messages</value>
+C 				<value>messages/record-management-configuration-documentType</value>
+C 				<value>messages/prm</value>
+C 			</list>
+C 		</property>
+C 	</bean>
+C 	
+C 	<!-- ======================================================================================== -->
+C 	<!-- Web Service Client Configuration -->
+C 	<!-- ======================================================================================== -->	
+C
+C 	<bean id="prmServiceClient" class="com.bp.portlet.prm.webservice.client.PrmServiceClient">
+
+All arg_type_tables service
+
+C 	</bean>
+C	
+
+All arg_type_tables bean
+
+C </beans>
+
+--------------------------------------------------------
+Actor service .
+--------------------------------------------------------
+
+Its use_tbl service2
+
+----------------------------------------------------------------
+Actor service2 .
+----------------------------------------------------------------
+
+C 		<property name="$CCNlService" ref="$CCNlServiceProxy" />
+
+--------------------------------------------------------
+Actor bean .
+--------------------------------------------------------
+
+Its use_tbl bean2
+Its use_tbl bean3
+
+----------------------------------------------------------------
+Actor bean2 .
+----------------------------------------------------------------
+
+C 	<bean id="$CCNlServiceProxy" class="com.bp.portlet.webservice.client.$CPNl.proxy.$CCNcServiceProxy">
+C 		<property name="$CCNlBeanMarshaller" ref="$CCNlBeanMarshaller"/>
+C 		<property name="$CCNlViewBeanMarshaller" ref="$CCNlViewBeanMarshaller"/>
+C 		<property name="defaultUri" value="$${$CCNl.default.uri}"/>
+C 	</bean>
+C
+
+----------------------------------------------------------------
+Actor bean3 .
+----------------------------------------------------------------
+
+C 	<bean id="$CCNlBeanMarshaller" class="com.bp.portlet.webservice.client.$CPNl.marshaller.$CCNcBeanMarshaller"/>
+C 	<bean id="$CCNlViewBeanMarshaller" class="com.bp.portlet.webservice.client.$CPNl.marshaller.$CCNcViewBeanMarshaller"/>
+C

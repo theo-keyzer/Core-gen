@@ -1,0 +1,39 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+All arg_type_tables P
+
+--------------------------------------------------------
+Actor P .
+--------------------------------------------------------
+
+C java -cp java main gwt\serviceAsync.a prm.d $CTN                  $AR2.$AR3   $CPN >$AR2/$AR3/$CPD/$CPCcServiceAsync.java
+C java -cp java main gwt\serviceIf.a    prm.d $CTN                  $AR2.$AR3   $CPN >$AR2/$AR3/$CPD/$CPCcService.java
+C java -cp java main gwt\serviceImpl.a  prm.d $CTN                  $AR2.$AR3   $CPN >$AR2/$AR3/$CPCcServiceImpl.java
+C java -cp java main gwt\service.a      prm.d $CTN                  $AR2.$AR3   $CPN >$AR2/$AR3/$CPCcServices.java
+
+
+Its use_tbl S
+
+----------------------------------------------------------------
+Actor S .
+----------------------------------------------------------------
+
+C java -cp java main gwt\search_con.a   prm.d $CTN                      $AR2.$AR3   $CPN >$AR2/$AR3/$CPD/SearchCon.java
+C java -cp java main gwt\edit_con.a     prm.d $CTN                      $AR2.$AR3   $CPN >$AR2/$AR3/$CPD/EditCon.java
+
+Its use_tbl T
+
+----------------------------------------------------------------
+Actor T . Use in primary
+----------------------------------------------------------------
+
+C java -cp java main gwt\gui_a.a        prm.d $CTN        $AR2.$AR3   $CPN >$AR2/$AR3/$CPD/$CTNcForm.java
+C java -cp java main gwt\gui_search.a   prm.d $CTN        $AR2.$AR3   $CPN >$AR2/$AR3/$CPD/$CTNcSearch.java
+C java -cp java main gwt\gui_param.a    prm.d $CTN        $AR2.$AR3   $CPN >$AR2/$AR3/$CPD/$CTNcParam.java
+C java -cp java main gwt\bean.a         prm.d $CTN        $AR2.$AR3 entity >$AR2/$AR3/entity/$CTNc.java
+C java -cp java main gwt\bean_view.a    prm.d $CTN        $AR2.$AR3 entity >$AR2/$AR3/entity/$CTNcView.java
+C java -cp java main gwt\view.a         prm.d $CTN        a     a    >$AR2/$AR3/view/$CTN_VIEW.sql
+
+

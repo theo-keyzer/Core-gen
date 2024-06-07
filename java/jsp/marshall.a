@@ -1,0 +1,189 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+C package com.bp.portlet.webservice.client.$CPNl.marshaller;
+C
+C import org.dom4j.Element;
+C
+C import com.bp.portlet.webservice.client.util.Base64;
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcBean;
+C import com.bp.portlet.webservice.client.marshaller.WebServiceClientBeanMarshaller;
+C import com.bp.portlet.webservice.client.util.DateUtils;
+C import java.util.Date;
+C import java.text.SimpleDateFormat;
+C
+C public class $CTNcBeanMarshaller implements WebServiceClientBeanMarshaller<$CTNcBean>
+C {
+
+
+C 	@Override
+C 	public String getEntityBeanNamespace() {
+C 		return "$CPNl";
+C 	}
+C
+C 	@Override
+C 	public Element createEntityBean(Element target,
+C 			$CTNcBean webServiceClientBean) {
+C
+C 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+C
+
+Its attr getter
+
+C 		if( webServiceClientBean.getUpdateCnt() != null ) target.addElement("updateCnt").setText(webServiceClientBean.getUpdateCnt() + "");
+C 		if( webServiceClientBean.getCreatedBy() != null ) target.addElement("createdBy").setText(webServiceClientBean.getCreatedBy() + "");
+C 		if( webServiceClientBean.getModifiedBy() != null ) target.addElement("modifiedBy").setText(webServiceClientBean.getModifiedBy() + "");
+C //		target.addElement("activeInd").setText(webServiceClientBean.getActiveInd());
+C //		target.addElement("dateCreated").setText(webServiceClientBean.getDateCreated().toString());
+C //		target.addElement("dateModified").setText(webServiceClientBean.getDateModified().toString());
+C 		return target;
+C 	}
+C
+C 	@Override
+C 	public $CTNcBean interpretEntityBean(Element entityBean) {
+C 		$CTNcBean $CTNl = new $CTNcBean();
+C 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+C
+
+Its attr setter
+
+		
+C 		$CTNl.setUpdateCnt(getLong(entityBean.elementText("updateCnt")));
+C 		$CTNl.setCreatedBy(getLong(entityBean.elementText("createdBy")));
+C 		$CTNl.setModifiedBy(getLong(entityBean.elementText("modifiedBy")));
+C 		$CTNl.setActiveInd(entityBean.elementText("activeInd"));
+C //		$CTNl.setDateCreated(entityBean.elementText("dateCreated"));
+C //		$CTNl.setDateModified(entityBean.elementText("dateModified"));
+C 		return $CTNl;
+C 	}
+C
+C 	public static Date parseDate(String dateValue, SimpleDateFormat sdf) 
+C 	{
+C 		Date newDate = null;
+C 		
+C 		if (dateValue != null) 
+C 		{
+C 			try 
+C 			{
+C 				newDate = sdf.parse(dateValue);
+C 			} 
+C 			catch (Exception pe) 
+C 			{
+C 			}
+C 		}
+C 		return newDate;
+C 	}
+C
+C 	public Long getLong(String s)
+C 	{
+C 		if(s == null) return(null);
+C 		return( Long.parseLong(s) );
+C 	}
+C }
+C
+
+
+----------------------------------------------------------------
+Actor getter . Mytype = BLOB
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) 
+C 		{
+C 			Base64 base = new Base64();
+C 			String s = base.encodeToString( webServiceClientBean.get$CANc() );
+C 			target.addElement("$CANl").setText(s);
+C 		}
+C
+
+----------------------------------------------------------------
+Actor getter . Mytype = FLOAT
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc() + "");
+
+----------------------------------------------------------------
+Actor getter . Mytype = NUMBER
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc() + "");
+
+----------------------------------------------------------------
+Actor getter . Mytype = VARCHAR2
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc());
+
+----------------------------------------------------------------
+Actor getter . Mytype = CHAR
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc());
+
+----------------------------------------------------------------
+Actor getter . Mytype = TEXT
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc());
+
+----------------------------------------------------------------
+Actor getter . Mytype = DATE
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANlFld").setText( sdf.format(webServiceClientBean.get$CANc() ));
+
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+Actor setter . Mytype = BLOB
+----------------------------------------------------------------
+
+C 		if( entityBean.elementText("$CANl") != null ) 
+C 		{
+C 			Base64 base = new Base64();
+C 			byte[] b = base.decodeFromString( entityBean.elementText("$CANl") );
+C 			$CTNl.set$CANc( b );
+C 		}
+
+----------------------------------------------------------------
+Actor setter . Mytype = FLOAT
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(Double.parseDouble(entityBean.elementText("$CANl")));
+
+----------------------------------------------------------------
+Actor setter . Mytype = NUMBER
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(getLong(entityBean.elementText("$CANl")));
+
+----------------------------------------------------------------
+Actor setter . Mytype = VARCHAR2
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(entityBean.elementText("$CANl"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = CHAR
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(entityBean.elementText("$CANl"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = TEXT
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc(entityBean.elementText("$CANl"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = DATE
+----------------------------------------------------------------
+
+C 		$CTNl.set$CANc( parseDate(entityBean.elementText("$CANlFld"), sdf ) );
+

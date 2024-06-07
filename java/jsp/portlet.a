@@ -1,0 +1,48 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+C <?xml version="1.0" encoding="UTF-8"?>
+C 
+C <portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+C 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+C 	xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
+C
+
+All arg_type_tables service
+	
+C 	
+C </portlet-app>
+
+--------------------------------------------------------
+Actor service .
+--------------------------------------------------------
+
+Its use_tbl service2
+
+--------------------------------------------------------
+Actor service2 .
+--------------------------------------------------------
+
+Its use_tbl service3
+
+----------------------------------------------------------------
+Actor service3 .
+----------------------------------------------------------------
+
+C 	<portlet>
+C 		<portlet-name>$CCNl</portlet-name>
+C 		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+C 		<init-param>
+C 			<name>contextConfigLocation</name>
+C 			<value>/WEB-INF/classes/context/$CCNl-portlet.xml</value>
+C 		</init-param>
+C 		<supports>
+C 			<mime-type>text/html</mime-type>
+C 			<portlet-mode>view</portlet-mode>
+C 		</supports>
+C 		<portlet-info>
+C 			<title>$CYD</title>
+C 		</portlet-info>
+C 	</portlet>
+C 

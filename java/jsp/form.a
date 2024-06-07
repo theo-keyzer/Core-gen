@@ -1,0 +1,256 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+All arg_use_tbl form
+
+----------------------------------------------------------------
+Actor form .
+----------------------------------------------------------------
+
+C package com.bp.portlet.$AR3l.$CCNl.form;
+C
+C import java.io.Serializable;
+C import java.util.ArrayList;
+C import java.util.List;
+C import org.springframework.web.multipart.MultipartFile;
+C
+C import com.bp.portlet.$AR3l.$CCNl.controller.$CCNcController;
+C import com.bp.portlet.webservice.client.prm.bean.SysUserViewBean;
+
+Its use_tbl import
+
+C
+C /**
+C  * The command object to be used in conjunction with the
+C  * {@link $CCNcController} class.
+C  * 
+C  * @author Theo.Keyzer
+C  * 
+C  */
+C public class $CCNcForm implements Serializable 
+C {
+C 	public static String SEARCH_ACTION    = "SEARCH_ACTION";
+C 	public static String NEW_ACTION       = "NEW_ACTION";
+C 	public static String EDIT_ACTION      = "EDIT_ACTION";
+C 	public static String DELETE_ACTION    = "DELETE_ACTION";
+C 	public static String CANCEL_ACTION    = "CANCEL_ACTION";
+C 	public static String SAVE_NEW_ACTION  = "SAVE_NEW_ACTION";
+C 	public static String SAVE_EDIT_ACTION = "SAVE_EDIT_ACTION";
+C 	public static String APPROVE_ACTION   = "APPROVE_ACTION";
+C 	public static String DISPLAY_ACTION   = "DISPLAY_ACTION";
+C
+C 	private String submitAction;
+
+Its use_tbl var
+
+C 	private Long selectedId;
+C 	private SysUserViewBean sysUserViewBean;
+C
+C 	public $CCNcForm() {
+
+Its use_tbl lists
+
+C 	}
+C
+C 	public Long getSelectedId() {
+C 		return selectedId;
+C 	}
+C 
+C 	public void setSelectedId(Long selectedId) {
+C 		this.selectedId = selectedId;
+C 	}
+C
+C 	public SysUserViewBean getSysUserViewBean() {
+C 		return sysUserViewBean;
+C 	}
+C 	
+C 	public void setSysUserViewBean(SysUserViewBean sysUserViewBean) {
+C 		this.sysUserViewBean = sysUserViewBean;
+C 	}
+C 	
+C 	public String getSubmitAction() {
+C 		return submitAction;
+C 	}
+C 
+C 	public void setSubmitAction(String submitAction) {
+C 		this.submitAction = submitAction;
+C 	}
+C
+
+Its use_tbl func
+
+C }
+
+----------------------------------------------
+Actor import . Use in primary
+----------------------------------------------
+
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcBean;
+
+Its rel_attr import2
+
+----------------------------------------------
+Actor import . Use in list
+----------------------------------------------
+
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcViewBean;
+
+----------------------------------------------
+Actor import2 . relation = dropdown
+----------------------------------------------
+
+C import com.bp.portlet.webservice.client.$FPNl.bean.$FTNcViewBean;
+
+----------------------------------------------
+Actor lists . Use in list
+----------------------------------------------
+
+C 		this.$CTNlView = new $CTNcViewBean();
+C 		this.$CTNlItems = new ArrayList<$CTNcViewBean>();
+
+----------------------------------------------
+Actor var . Use in list
+----------------------------------------------
+
+C 	private List<$CTNcViewBean> $CTNlItems;
+
+----------------------------------------------
+Actor var . Use in primary
+----------------------------------------------
+
+C 	private $CTNcBean $CTNl;
+C 	private $CTNcBean old$CTNc;
+C 	private $CTNcViewBean $CTNlView;
+
+Its rel_attr var2
+
+----------------------------------------------
+Actor var2 . relation = dropdown
+----------------------------------------------
+
+C 	private List<$FTNcViewBean> $FTNlItems;
+-C 	private Long $CANl;
+
+----------------------------------------------
+Actor var2 . relation = name
+----------------------------------------------
+
+-C 	private String $CANl;
+
+----------------------------------------------------------------
+Actor func2 . relation = select
+----------------------------------------------------------------
+
+Its select BL_var2
+
+----------------------------------------------------------------
+Actor BL_var2 . code = APPR
+----------------------------------------------------------------
+
+-C 	private String $CANl;
+
+----------------------------------------------
+Actor var2 . relation = file
+----------------------------------------------
+
+C 	private MultipartFile $CANl;
+
+----------------------------------------------
+Actor func . Use in list
+----------------------------------------------
+
+C 	public List<$CTNcViewBean> get$CTNcItems() {
+C 		return $CTNlItems;
+C 	}
+C 
+C 	public void set$CTNcItems(List<$CTNcViewBean> $CTNlItems) {
+C 		this.$CTNlItems = $CTNlItems;
+C 	}
+C
+
+----------------------------------------------
+Actor func . Use in primary
+----------------------------------------------
+
+C 	public $CTNcBean get$CTNc() {
+C 		return $CTNl;
+C 	}
+C 
+C 	public void set$CTNc($CTNcBean $CTNl) {
+C 		this.$CTNl = $CTNl;
+C 	}
+C
+C 	public $CTNcBean getOld$CTNc() {
+C 		return old$CTNc;
+C 	}
+C 
+C 	public void setOld$CTNc($CTNcBean old$CTNc) {
+C 		this.old$CTNc = old$CTNc;
+C 	}
+C
+C 	public $CTNcViewBean get$CTNcView() {
+C 		return $CTNlView;
+C 	}
+C 
+C 	public void set$CTNcView($CTNcViewBean $CTNl) {
+C 		this.$CTNlView = $CTNl;
+C 	}
+C
+
+Its rel_attr func2
+
+----------------------------------------------
+Actor func2 . relation = dropdown
+----------------------------------------------
+
+C 	public List<$FTNcViewBean> get$FTNcItems() {
+C 		return $FTNlItems;
+C 	}
+C 
+C 	public void set$FTNcItems(List<$FTNcViewBean> $FTNlItems) {
+C 		this.$FTNlItems = $FTNlItems;
+C 	}
+C
+-C 	public Long get$CANc() 
+-C 	{
+-C 		return $CANl;
+-C 	}
+-C
+-C 	public void set$CANc(Long $CANl) 
+-C 	{
+-C 		this.$CANl = $CANl;
+-C 	}
+-C
+
+----------------------------------------------
+Actor func2 . relation = file
+----------------------------------------------
+
+C 	public MultipartFile get$CANc() {
+C 		return $CANl;
+C 	}
+C 
+C 	public void set$CANc(MultipartFile $CANl) {
+C 		this.$CANl = $CANl;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func2 . relation = select
+----------------------------------------------------------------
+
+-Its select BL_func
+
+----------------------------------------------------------------
+Actor BL_func . code = APPR
+----------------------------------------------------------------
+
+C 	public String get$CANc() {
+C 		return $CANl;
+C 	}
+C 
+C 	public void set$CANc(String $CANl) {
+C 		this.$CANl = $CANl;
+C 	}
+C

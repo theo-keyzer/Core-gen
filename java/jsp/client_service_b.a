@@ -1,0 +1,49 @@
+- add in lookup
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+All arg_type_tables service
+
+--------------------------------------------------------
+Actor service .
+--------------------------------------------------------
+
+C package com.bp.portlet.webservice.client.$CPNl.service;
+C
+C import com.bp.portlet.webservice.client.response.bean.ResponseBean;
+
+Its use_tbl import
+
+C import java.util.List;
+C
+C public interface $CCNcService
+C {
+
+Its use_tbl func
+
+C }
+
+----------------------------------------------------------------
+Actor import . Use in search,view,chkRole
+----------------------------------------------------------------
+
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcViewBean;
+
+----------------------------------------------------------------
+Actor func . Use in search
+----------------------------------------------------------------
+
+C 	public List<$CTNcViewBean> search$CTNc($CTNcViewBean $CTNl, Long rowFrom, Long rowTo);
+
+----------------------------------------------------------------
+Actor func . Use in view
+----------------------------------------------------------------
+
+C 	public List<$CTNcViewBean> view$CTNc(String filter, Long id, String flags);
+
+----------------------------------------------------------------
+Actor func . Use in chkRole
+----------------------------------------------------------------
+
+C 	public $CTNcViewBean chk$CTNc($CTNcViewBean $CTNl);

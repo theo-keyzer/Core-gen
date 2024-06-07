@@ -1,0 +1,67 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+C echo >$AR2/$AR3/view/$AR3View.sql
+C echo >$AR2/$AR3/view/$AR3Create.sql
+C echo >$AR2/$AR3/view/$AR3View2.sql
+C echo >$AR2/$AR3/view/$AR3Create2.sql
+C java -cp java main jsp\service_client.a        prm.d A_prm   hr    prm >$AR2/$AR3/$AR3cServiceClient.java
+C java -cp java main jsp\message.a               prm.d A_prm   hr    prm >$AR2/$AR3.properties
+C java -cp java main jsp\app_xml.a               prm.d A_prm   hr    prm >$AR2/applicationContext.xml
+C java -cp java main jsp\portlet.a               prm.d A_prm   hr    prm >$AR2/portlet.xml
+
+All arg_type_tables P
+
+--------------------------------------------------------
+Actor P .
+--------------------------------------------------------
+
+C java -cp java main jsp\service.a        prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/$CPD/impl/$CCNcWebServiceImpl.java
+C java -cp java main jsp\serviceIf.a      prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/$CPD/$CCNcWebService.java
+C java -cp java main jsp\client_service.a prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/service/$CCNcService.java
+C java -cp java main jsp\client_proxy.a   prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/proxy/$CCNcServiceProxy.java
+
+Its use_tbl S
+
+----------------------------------------------------------------
+Actor S .
+----------------------------------------------------------------
+
+C java -cp java main jsp\edit_con.a       prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/portlet/$CPD/$CCNl/controller/$CCNcController.java
+C java -cp java main jsp\form.a           prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/portlet/$CPD/$CCNl/form/$CCNcForm.java
+C java -cp java main jsp\form_validate.a  prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/portlet/$CPD/$CCNl/validator/$CCNcFormValidator.java
+C java -cp java main jsp\portlet_xml.a    prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$CCNl-portlet.xml
+C java -cp java main jsp\bp_service_xml.a prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/bp-$CCNl-service.xml
+C java -cp java main jsp\composite_xml.a  prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$CCNc.composite
+
+Its use_tbl T
+
+----------------------------------------------------------------
+Actor T . Use in primary
+----------------------------------------------------------------
+
+C java -cp java main jsp\validate.a      prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/portlet/$CPD/common/validator/$CTNcValidator.java
+
+C java -cp java main jsp\rowmapper.a      prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/rowmappers/$CPD/$CTNcRowMapper.java
+C java -cp java main jsp\rowmapper_view.a prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/rowmappers/$CPD/$CTNcViewRowMapper.java
+C java -cp java main jsp\entity.a         prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/entity/$CPD/$CTNc.java
+C java -cp java main jsp\entity_view.a    prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/entity/$CPD/$CTNcView.java
+C java -cp java main jsp\dao.a            prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/$CPD/$CTNcDAO.java
+C java -cp java main jsp\daoimpl.a        prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/service/data/$CPD/impl/$CTNcDAOImpl.java
+C java -cp java main jsp\client_bean.a    prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/bean/$CTNcBean.java
+C java -cp java main jsp\bean_view.a      prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/bean/$CTNcViewBean.java
+C java -cp java main jsp\marshall.a       prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/marshaller/$CTNcBeanMarshaller.java
+C java -cp java main jsp\marshall_view.a  prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/webservice/client/$CPD/marshaller/$CTNcViewBeanMarshaller.java
+C java -cp java main jsp\add_jsp.a        prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/jsp/$CPD/$CCNl/add$CTNc.jsp
+C java -cp java main jsp\mod_jsp.a        prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/jsp/$CPD/$CCNl/modify$CTNc.jsp
+C java -cp java main jsp\man_jsp.a        prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/jsp/$CPD/$CCNl/manage$CTNc.jsp
+C java -cp java main jsp\js.a             prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/js/$CPD/$CCNl/$CTNl.js
+C java -cp java main jsp\view.a           prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/view/$CTNcView.sql
+C java -cp java main jsp\creat.a          prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >$AR2/$AR3/view/$CTNc.sql
+
+C java -cp java main jsp\view.a           prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >>$AR2/$AR3/view/$AR3View.sql
+C java -cp java main jsp\creat.a          prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >>$AR2/$AR3/view/$AR3Create.sql
+C java -cp java main jsp\view2.a           prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >>$AR2/$AR3/view/$AR3View2.sql
+C java -cp java main jsp\creat2.a          prm.d $CTN $S70 $AR2.$AR3 $CPN $S90 >>$AR2/$AR3/view/$AR3Create2.sql
+

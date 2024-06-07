@@ -1,0 +1,154 @@
+---------------------------------
+Actor main .
+---------------------------------
+
+All arg view
+
+---------------------------------
+Actor view
+---------------------------------
+
+C -----------------------------------------------------
+C    CREATE OR REPLACE VIEW BP_$CTN_VIEW
+C    (
+
+Its attr var
+Its rel_attr var2
+
+C      , CREATED_BY
+C      , DATE_MODIFIED
+C      , UPDATE_CNT
+C      , ACTIVE_IND
+C      , ACTIVE_STATUS
+C    )
+C    AS
+C    SELECT 
+
+Its attr sel
+Its rel_attr sel2
+
+C      , CREATED_BY
+C      , DATE_MODIFIED
+C      , UPDATE_CNT
+C      , ACTIVE_IND
+C      , DECODE(ACTIVE_IND, 'Y', 'Active', 'Inactive') AS ACTIVE_STATUS
+C    FROM BP_$CTNu a 
+C /
+C 
+
+----------------------------------
+Actor var . Mytype != BLOB
+----------------------------------
+
+C      $, $CANu 
+
+Du var_date   Mytype = DATE
+
+Actor var_date 
+C      $, $CANu_FLD 
+
+----------------------------------
+Actor var2 . relation in dropdown,select,lookup
+----------------------------------
+
+C      , $FTNu
+
+----------------------------------
+Actor var2 . relation = view
+----------------------------------
+
+C      , $CANu
+
+----------------------------------
+Actor var2 . relation = viewed
+----------------------------------
+
+C      , $CANu
+C      , $RTNu
+
+----------------------------------
+Actor sel . Mytype != BLOB
+----------------------------------
+
+C      $, $CANu
+
+Du sel_date   Mytype = DATE
+
+Actor sel_date 
+C      $, TO_CHAR($CANu, 'YYYY/MM/DD') AS $CANu_FLD 
+
+----------------------------------
+Actor sel2 . relation in dropdown,lookup
+----------------------------------
+
+C      , (Select $FWV from $FRNu where $FINu = a.$CANu) $FTNu
+
+-C      , ($FVV where pk_id = a.$CANu) $FTNu
+
+----------------------------------
+Actor sel2 . relation = view
+----------------------------------
+
+Du sel_foreign ref = foreign
+Du sel_local   ref = local
+
+----------------------------------
+Actor sel_local .
+----------------------------------
+
+C      , $FWV as $CANu
+
+----------------------------------
+Actor sel_foreign .
+----------------------------------
+
+Its select BL
+
+C      , (Select $FWV from $FRNu where $FINu = a.$CINu) $CANu
+
+----------------------------------
+Actor sel2 . relation = viewed
+----------------------------------
+
+Its select BL_sel2
+
+C      , (Select $FWV from $FRNu where $FINu = a.$CINu) $CANu
+C      , (Select $RTN from $FRNu_VIEW where $FINu = a.$CINu) $RTNu
+
+-C      , (Select $FWV from $FRNu where $FJNu = a.$CJNu) $CANu
+-C      , (Select $RTN from $FRNu_VIEW where $FJNu = a.$CJNu) $RTNu
+
+----------------------------------
+Actor BL_sel2 . code = JOIN
+----------------------------------
+
+C      , (Select $FWV from $FRNu where EMPLOYEE_ID = a.EMPLOYEE_ID) $CANu
+C      , (Select $RTN from $FRNu_VIEW where EMPLOYEE_ID = a.EMPLOYEE_ID) $RTNu
+
+End sel2
+
+----------------------------------------------------------------
+Actor BL . code = REV_SEL
+----------------------------------------------------------------
+
+-C      , (Select ID from BP_EMPLOYEE where USER_ID = a.PK_ID and active = 1) $CANu
+C      , (Select $FWV from $FRNu where USER_ID = a.PK_ID) $CANu
+
+End sel_foreign
+
+----------------------------------
+Actor sel2 . relation = select
+----------------------------------
+
+C      , DECODE(a.$CANu\
+
+Its select_data decode
+
+C ) $FTNu
+
+----------------------------------
+Actor decode
+----------------------------------
+
+C , '$CDN', '$CDV'\
+

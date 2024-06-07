@@ -1,0 +1,62 @@
+---------------------------------
+Actor main .
+---------------------------------
+
+All arg validate
+
+---------------------------------
+Actor validate
+---------------------------------
+
+C package com.bp.portlet.$CPNl.$CCNl.validator;
+
+C import org.springframework.stereotype.Component;
+C import org.springframework.validation.Errors;
+C import org.springframework.validation.Validator;
+C
+C import com.bp.portlet.$CPNl.$CCNl.form.$CCNcForm;
+C 
+C @Component("$CTNlValidator")
+C public class $CTNcValidator implements Validator 
+C {
+C
+C 	@Override
+C 	public boolean supports(Class<?> clazz) 
+C 	{
+C 		return $CCNcForm.class.isAssignableFrom(clazz);
+C 	}
+C 
+C 	@Override
+C 	public void validate(Object target, Errors errors) 
+C 	{
+C 		$CCNcForm $CCNlForm = ($CCNcForm)target;
+C 
+C 		// get the submit action
+C 		String submitAction = $CCNlForm.getSubmitAction();
+C 		
+C 		if (submitAction != null) 
+C 		{
+C 			if (submitAction.equals($CCNcForm.CREATE_ACTION)) 
+C 			{
+C 				validateId(overtimeCaptureConfirmForm, errors);
+C 			} 
+C 			else if (submitAction.equals($CCNcForm.UPDATE_ACTION)) 
+C 			{
+C 				validateId(overtimeCaptureConfirmForm, errors);
+C 			}
+C 		}
+C 	}
+C 
+C 	/**
+C 	 * Method to  validate that the selected  is valid.
+C 	 * @param $CCNlForm
+C 	 * @param errors
+C 	 */
+C 	private void validateId($CCNcForm $CCNlForm, Errors errors) 
+C 	{
+C 		if ($CCNcForm.getId() == -1) 
+C 		{
+C 			errors.reject("$CPNl.$CCNl.id.invalid");
+C 		}
+C 	}	
+C }

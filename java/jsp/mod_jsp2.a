@@ -1,0 +1,85 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg body
+
+----------------------------------------------------------------
+Actor body .
+----------------------------------------------------------------
+
+C <%@ include file="/WEB-INF/jsp/include.jsp" %>
+C 
+C <div class="portlet-section-header"></div>
+C 
+C <div class="portlet-section-body">
+C		
+C 	<portlet:actionURL var="submitActionUrl">
+C 		<portlet:param name="action" value="submit$CTNcForm"/>
+C 	</portlet:actionURL>
+C	
+C 	<!--  ========================================================================================================== -->
+C 	<!-- SUCCESS MESSAGES -->
+C 	<!--  ========================================================================================================== -->
+C 	<div>
+C 		<c:if test="$${$CTNlUpdatedSuccessfully != null}">
+C 			<center><font color="green"><spring:message code="$CPNl.$CTNl.success.updated"/></font></center>
+C 		</c:if>
+C 	</div>
+C 		
+C 	<br><br>
+C 
+C 	<form:form id="$CTNlForm" name="$CTNlForm" commandName="$CTNlForm" method="post" action="$${submitActionUrl}">
+C 		
+C 		<form:hidden path="submitAction"/>
+C 		<form:hidden path="modified$CTNc.$CANl" />
+C 		
+C 		<div><form:errors cssClass="portlet-msg-error" path="*" /></div>		
+C 		
+C 		<table border="0" cellpadding="4">
+
+Its rel_attr fld
+
+C 		</table>
+C 	
+C 		<br><br>
+C		
+C 		<input type="submit" name="Delete" value="<spring:message code="button.delete"/>" onclick="javascript: manage$CTNcs_delete();"/>&nbsp;&nbsp;
+C 		<input type="submit" name="Update" value="<spring:message code="button.update"/>" onclick="javascript: manage$CTNcs_update();"/>&nbsp;&nbsp;
+C 		<input type="submit" name="Cancel" value="<spring:message code="button.cancel"/>" onclick="javascript: manage$CTNcs_cancel();"/>
+C				
+C 	</form:form>	
+C </div>
+C
+C <div class="portlet-section-footer">
+C </div>
+C
+
+----------------------------------------------------------------
+Actor fld . relation = none
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="modified$CTNc.$CANl" size="$CAL" maxlength="10" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = pk
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input disabled="true" cssClass="portlet-form-input-field" path="modified$CTNc.$CANl" size="$CAL" maxlength="10" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = text
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:textarea cssClass="portlet-form-input-field" path="modified$CTNc.$CANl" rows="5" cols="30" /></td>
+C 			</tr>
+
+

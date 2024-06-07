@@ -1,0 +1,56 @@
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+
+<div class="portlet-section-header"></div>
+
+<div class="portlet-section-body">
+
+	<portlet:actionURL var="actionUrl">
+		<portlet:param name="action" value="saveTerminationCaptureForm"/>
+	</portlet:actionURL>
+
+	<form:form commandName="termination" method="post" action="${actionUrl}" >
+
+		<div><form:errors cssClass="portlet-msg-error" path="*" /></div>
+		<div><c:if test="${saveSuccessful}"><spring:message code="termination.capture.successful"/></c:if></div>
+
+		<table border="0" cellpadding="4">
+			<tr>
+				<th class="portlet-form-field-label"><spring:message code="termination.label.employee"/></th>
+				<td>
+					<form:select path="employeeId" multiple="false" size="1">
+						<form:options items="${employeeList}" itemValue="employeeId" itemLabel="fullName"/>
+					</form:select>
+				</td>
+			</tr>
+			<tr>
+				<th class="portlet-form-field-label"><spring:message code="termination.label.notification.date"/></th>
+				<td><form:input cssClass="portlet-form-input-field" path="notificationDate" size="30" maxlength="80" /></td>
+			</tr>
+			<tr>
+				<th class="portlet-form-field-label"><spring:message code="termination.label.exit.date"/></th>
+				<td><form:input cssClass="portlet-form-input-field" path="exitDate" size="30" maxlength="80" /></td>
+			</tr>
+		   	<tr>
+				<th class="portlet-form-field-label"><spring:message code="termination.label.resignation.type"/></th>
+				<td>
+					<form:select path="resignationTypeId" multiple="false" size="1">
+						<form:options items="${resignationTypeList}" itemValue="resignationTypeId" itemLabel="name"/>
+					</form:select>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="submit" name="Submit" value="<spring:message code="button.submit"/>"/>
+				</td>
+			</tr>
+		</table>
+
+	</form:form>
+
+</div>
+
+<div class="portlet-section-footer">
+</div>

@@ -1,0 +1,168 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+C package com.bp.portlet.webservice.client.$CPNl.marshaller;
+C
+C import org.dom4j.Element;
+C
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcViewBean;
+C import com.bp.portlet.webservice.client.marshaller.WebServiceClientBeanMarshaller;
+C import java.util.Date;
+C
+C public class $CTNcViewBeanMarshaller implements WebServiceClientBeanMarshaller<$CTNcViewBean>
+C {
+
+
+C 	@Override
+C 	public String getEntityBeanNamespace() {
+C 		return "$CPNl";
+C 	}
+C
+C 	@Override
+C 	public Element createEntityBean(Element target,
+C 			$CTNcViewBean webServiceClientBean) {
+C
+-C 		target.addElement("activeInd").setText(webServiceClientBean.getActiveInd());
+-C 		target.addElement("dateModified").setText(webServiceClientBean.getDateModified().toString());
+
+Its     attr getter
+Its rel_attr getter2
+
+C 		return target;
+C 	}
+C
+C 	@Override
+C 	public $CTNcViewBean interpretEntityBean(Element entityBean) {
+C 		$CTNcViewBean $CTNlView = new $CTNcViewBean();
+C
+C 		$CTNlView.setUpdateCnt( getLong( entityBean.elementText("updateCnt")) );
+C 		$CTNlView.setActiveInd(entityBean.elementText("activeInd"));
+C 		$CTNlView.setActiveStatus(entityBean.elementText("activeStatus"));
+C //		$CTNlView.setDateModified(entityBean.elementText("dateModified"));
+
+Its attr setter
+Its rel_attr setter2
+
+		
+C 		return $CTNlView;
+C 	}
+C
+C 	public Long getLong(String s)
+C 	{
+C 		if(s == null) return(null);
+C 		return( Long.parseLong(s) );
+C 	}
+C
+C }
+C
+
+----------------------------------------------------------------
+Actor getter2 . relation = lookup
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$FTNc() != null ) target.addElement("$FTNl").setText(webServiceClientBean.get$FTNc());
+
+----------------------------------------------------------------
+Actor getter2 . relation in view,where,viewed
+----------------------------------------------------------------
+
+Du getter
+
+----------------------------------------------------------------
+Actor getter . Mytype = FLOAT
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc() + "");
+
+----------------------------------------------------------------
+Actor getter . Mytype = NUMBER
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc() + "");
+
+----------------------------------------------------------------
+Actor getter . Mytype = VARCHAR2
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc());
+
+----------------------------------------------------------------
+Actor getter . Mytype = CHAR
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc());
+
+----------------------------------------------------------------
+Actor getter . Mytype = TEXT
+----------------------------------------------------------------
+
+C 		if( webServiceClientBean.get$CANc() != null ) target.addElement("$CANl").setText(webServiceClientBean.get$CANc());
+
+----------------------------------------------------------------
+Actor getter . Mytype = DATE
+----------------------------------------------------------------
+
+C //		target.addElement("$CANl").setText(webServiceClientBean.get$CANc().toString());
+-C 		target.addElement("$CANlFld").setText(webServiceClientBean.get$CANcFld());
+
+----------------------------------------------------------------
+Actor setter2 . relation in dropdown,select,lookup
+----------------------------------------------------------------
+
+C 		$CTNlView.set$FTNc(entityBean.elementText("$FTNl"));
+
+----------------------------------------------------------------
+Actor setter2 . relation = viewed
+----------------------------------------------------------------
+
+C 		$CTNlView.set$RTNc(entityBean.elementText("$RTNl"));
+
+----------------------------------------------------------------
+Actor setter2 . relation in view,viewed
+----------------------------------------------------------------
+
+Du setter
+
+----------------------------------------------------------------
+Actor setter . Mytype = FLOAT
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(Double.parseDouble(entityBean.elementText("$CANl")));
+
+----------------------------------------------------------------
+Actor setter . Mytype = NUMBER
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(getLong(entityBean.elementText("$CANl")));
+
+----------------------------------------------------------------
+Actor setter . Mytype = VARCHAR2
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(entityBean.elementText("$CANl"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = CHAR
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(entityBean.elementText("$CANl"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = TEXT
+----------------------------------------------------------------
+
+C 		$CTNlView.set$CANc(entityBean.elementText("$CANl"));
+
+----------------------------------------------------------------
+Actor setter . Mytype = DATE
+----------------------------------------------------------------
+
+C //		$CTNlView.set$CANc(entityBean.elementText("$CANl"));
+C 		$CTNlView.set$CANcFld(entityBean.elementText("$CANlFld"));
+

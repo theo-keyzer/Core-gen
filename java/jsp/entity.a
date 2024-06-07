@@ -1,0 +1,229 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+C package com.bp.hr.service.data.entity.$CPNl;
+C
+C import java.io.Serializable;
+C import java.util.Date;
+C
+C public class $CTNc implements Serializable
+C {
+
+C 	private static final long serialVersionUID = 1L;
+C
+
+Its attr decl
+
+C 	private Long updateCnt;
+C 	private Long createdBy;
+C 	private Long modifiedBy;
+C 	private Date dateCreated;
+C 	private Date dateModified;
+C 	private String activeInd;
+C
+C 	public String toString() 
+C 	{
+C 		return "$CTNc = [" +
+
+Its attr print
+
+C 		"]";
+C 	}
+C
+
+Its attr setter
+
+C 	public Long getUpdateCnt() 
+C 	{
+C 		return updateCnt;
+C 	}
+C
+C 	public void setUpdateCnt(Long updateCnt) 
+C 	{
+C 		this.updateCnt = updateCnt;
+C 	}
+C
+C 	public Long getCreatedBy() 
+C 	{
+C 		return createdBy;
+C 	}
+C
+C 	public void setCreatedBy(Long createdBy) 
+C 	{
+C 		this.createdBy = createdBy;
+C 	}
+C
+C 	public Long getModifiedBy() 
+C 	{
+C 		return modifiedBy;
+C 	}
+C
+C 	public void setModifiedBy(Long modifiedBy) 
+C 	{
+C 		this.modifiedBy = modifiedBy;
+C 	}
+C
+C 	public String getActiveInd()
+C 	{
+C 		return activeInd;
+C 	}
+C
+C 	public void setActiveInd(String activeInd)
+C 	{
+C 		this.activeInd = activeInd;
+C 	}
+C
+C 	public Date getDateCreated()
+C 	{
+C 		return dateCreated;
+C 	}
+C
+C 	public void setDateCreated(Date dateCreated)
+C 	{
+C 		this.dateCreated = dateCreated;
+C 	}
+C
+C 	public Date getDateModified()
+C 	{
+C 		return dateModified;
+C 	}
+C
+C 	public void setDateModified(Date dateModified)
+C 	{
+C 		this.dateModified = dateModified;
+C 	}
+C
+C }
+C
+
+
+----------------------------------------------------------------
+Actor decl . Mytype =    FLOAT 	private Double $CANl;
+Actor decl . Mytype =   NUMBER 	private Long $CANl;
+Actor decl . Mytype = VARCHAR2 	private String $CANl;
+Actor decl . Mytype =     TEXT 	private String $CANl;
+Actor decl . Mytype =     CHAR 	private String $CANl;
+Actor decl . Mytype =     DATE 	private Date $CANl;
+Actor decl . Mytype =     DATE 	private String $CANlFld;
+Actor decl . Mytype =     BLOB 	private byte[] $CANl;
+----------------------------------------------------------------
+Actor print
+
+C 		"$CANl = " + $CANl + " : " +
+
+----------------------------------------------------------------
+Actor setter . Mytype = BLOB
+----------------------------------------------------------------
+
+C 	public byte[] get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(byte[] $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+----------------------------------------------------------------
+Actor setter . Mytype = FLOAT
+----------------------------------------------------------------
+
+C 	public Double get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(Double $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+----------------------------------------------------------------
+Actor setter . Mytype = NUMBER
+----------------------------------------------------------------
+
+C 	public Long get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(Long $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor setter . Mytype = VARCHAR2
+----------------------------------------------------------------
+
+C 	public String get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(String $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+----------------------------------------------------------------
+Actor setter . Mytype = CHAR
+----------------------------------------------------------------
+
+C 	public String get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(String $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+----------------------------------------------------------------
+Actor setter . Mytype = TEXT
+----------------------------------------------------------------
+
+C 	public String get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(String $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+----------------------------------------------------------------
+Actor setter . Mytype = DATE
+----------------------------------------------------------------
+
+C 	public Date get$CANc() 
+C 	{
+C 		return $CANl;
+C 	}
+C
+C 	public void set$CANc(Date $CANl) 
+C 	{
+C 		this.$CANl = $CANl;
+C 	}
+C
+C 	public String get$CANcFld() 
+C 	{
+C 		return $CANlFld;
+C 	}
+C
+C 	public void set$CANcFld(String $CANlFld) 
+C 	{
+C 		this.$CANlFld = $CANlFld;
+C 	}
+C
+

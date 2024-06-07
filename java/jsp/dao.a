@@ -1,0 +1,55 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg ins
+
+----------------------------------------------------------------
+Actor ins .
+----------------------------------------------------------------
+C package com.bp.hr.service.data.$CPNl;
+C
+C import java.util.List;
+C
+C import com.bp.hr.service.data.entity.$CPNl.$CTNc;
+C import com.bp.hr.service.data.entity.$CPNl.$CTNcView;
+C
+C public interface $CTNcDAO 
+C {
+
+C 	public int create$CTNc($CTNc $CTNl);
+C 	public List<$CTNc> list$CTNc();
+C 	public List<$CTNcView> dupCheck$CTNc($CTNcView $CTNl, Long rowFrom, Long rowTo);
+C 	public List<$CTNcView> search$CTNc($CTNcView $CTNl, Long rowFrom, Long rowTo);
+C 	public List<$CTNcView> view$CTNc(String filter, Long id, String flags);
+C 	public int update$CTNc($CTNc $CTNl);
+C 	public int delete$CTNc($CTNc $CTNl);
+
+
+Its rel_attr func
+
+C }
+
+----------------------------------------------------------------
+Actor name . relation = name
+----------------------------------------------------------------
+
+C , String $CANl\
+
+----------------------------------------------------------------
+Actor func . relation = pk
+----------------------------------------------------------------
+
+C 	public $CTNc read$CTNc(\
+
+Du var    Mytype = VARCHAR2
+Du number Mytype = NUMBER
+
+C $CANl);
+
+
+Actor var
+C String \
+Actor number
+C Long \
+

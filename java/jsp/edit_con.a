@@ -1,0 +1,586 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+All arg_use_tbl controller
+
+----------------------------------------------------------------
+Actor controller .
+----------------------------------------------------------------
+
+C package com.bp.portlet.$AR3l.$CCNl.controller;
+C
+C import java.util.List;
+C import java.text.SimpleDateFormat;
+C import java.util.Locale;
+C import java.util.Date;
+C
+C import javax.portlet.ActionRequest;
+C import javax.portlet.ActionResponse;
+C import javax.portlet.RenderRequest;
+C
+C import org.springframework.beans.factory.annotation.Autowired;
+C import org.springframework.beans.factory.annotation.Qualifier;
+C import org.springframework.beans.propertyeditors.CustomDateEditor;
+C import org.springframework.stereotype.Controller;
+C import org.springframework.ui.Model;
+C import org.springframework.validation.BindingResult;
+C import org.springframework.validation.Validator;
+C import org.springframework.web.bind.WebDataBinder;
+C import org.springframework.web.bind.annotation.InitBinder;
+C import org.springframework.web.bind.annotation.ModelAttribute;
+C import org.springframework.web.bind.annotation.RequestMapping;
+C import org.springframework.web.bind.annotation.RequestParam;
+C import org.springframework.web.portlet.bind.PortletRequestDataBinder;
+C import org.springframework.web.portlet.bind.annotation.ActionMapping;
+C import org.springframework.web.portlet.bind.annotation.RenderMapping;
+C import org.springframework.web.multipart.MultipartFile;
+C import org.springframework.validation.ObjectError;
+C
+C import com.bp.portlet.webservice.client.response.bean.ResponseBean;
+C import com.bp.portlet.$AR3l.controller.Abstract$AR3cController;
+C import com.bp.portlet.$AR3l.$CCNl.form.$CCNcForm;
+C import com.liferay.portal.kernel.log.Log;
+C import com.liferay.portal.kernel.log.LogFactoryUtil;
+C import com.bp.portlet.webservice.client.prm.bean.SysUserViewBean;
+
+Its use_tbl import
+
+
+C 
+C 
+C /**
+C  * This spring controller will handle all render and action requests for the
+C  * viewing of the $CCNl.
+C  * 
+C  * @author Theo.Keyzer
+C  * 
+C  */
+C
+C @Controller("$CCNlController")
+C @RequestMapping(value = "VIEW")
+C public class $CCNcController extends Abstract$AR3cController {
+C
+C 	private static Log LOGGER = LogFactoryUtil
+C 			.getLog($CCNcController.class);
+C
+C 	@Autowired
+C 	@Qualifier("$CCNlFormValidator")
+C 	private Validator $CCNlFormValidator;
+C	
+C 	@ModelAttribute("$CCNlForm")
+C 	public $CCNcForm getCommandObject() {
+C 		return new $CCNcForm();
+C 	}
+C
+C 	@InitBinder("$CCNlForm")
+C 	public void initBinder(WebDataBinder binder) {
+C 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd",
+C 				Locale.US);
+C 		dateFormat.setLenient(false);
+C 		binder.registerCustomEditor(Date.class, new CustomDateEditor(
+C 				dateFormat, true));
+C //		binder.registerCustomEditor(Integer.class, new IntegerNumberEditor());
+C 	}
+C 
+C 	/**
+C 	 * The default render mapping to display the $CCNl search screen
+C 	 * 
+C 	 * @param $CCNlForm
+C 	 * @param model
+C 	 * @return
+C 	 */
+C 	@RenderMapping
+C 	public String show$CCNcScreen(@ModelAttribute("$CCNlForm") $CCNcForm $CCNlForm, Model model, RenderRequest request) {
+C 		// Load the $CCNl
+C 		loadRef(model);
+
+Its rel_attr show
+
+C 		return "manage$CCNc";
+C 
+C 	}
+C
+C 	/**
+C 	 * Render mapping to refresh the $CCNl search screen. Used to display search result.
+C 	 * @return
+C 	 */
+C 	@RenderMapping(params="action=refresh$CCNcSearchScreen")
+C 	public String refresh$CCNcScreen(Model model) {
+C 		return "manage$CCNc";
+C 	}
+C
+C 	/**
+C 	 * Render mapping to refresh the $CCNl new screen. Used to display validation errors.
+C 	 * @return
+C 	 */
+C 	@RenderMapping(params="action=refresh$CCNcNewScreen")
+C 	public String refresh$CCNcNewScreen(Model model) {
+C 		loadRef(model);
+C 		return "add$CCNc";
+C 	}
+C
+C 	/**
+C 	 * Render mapping to refresh the $CCNl edit screen. Used to display validation errors.
+C 	 * @return
+C 	 */
+C 	@RenderMapping(params="action=refresh$CCNcEditScreen")
+C 	public String refresh$CCNcEditScreen(Model model) 
+C 	{
+-C 		loadRef(model, $CCNlForm.getOld$CCNc() );
+-C 		loadRef(model);
+C 		return "modify$CCNc";
+C 	}
+C
+C 	/**
+C 	 * Render mapping to go to the $CCNl edit screen. 
+C 	 * @return
+C 	 */
+C 	@RenderMapping(params="action=showEdit$CCNcScreen")
+C 	public String show$CCNcEditScreen(@RequestParam Long pkId, @ModelAttribute("$CCNlForm") $CCNcForm $CCNlForm, Model model) 
+C 	{
+C 		$CCNcBean $CCNl = getPrmServiceClient().get$CCNcService().read$CCNc( pkId ) ;
+C 		$CCNlForm.set$CCNc($CCNl);
+C 		$CCNlForm.setOld$CCNc($CCNl);
+C 		loadRef(model, $CCNl);
+C 		return "modify$CCNc";
+C 	}
+C 
+C 	/**
+C 	 * Action mapping which is invoked when the user submits the search form.
+C 	 */
+C 	@ActionMapping(params = "action=submitSearchForm")
+C 	public void submitSearchForm(@ModelAttribute("$CCNlForm") $CCNcForm $CCNlForm,
+C 			BindingResult result, Model model, ActionResponse response, ActionRequest request) 
+C 	{
+
+Its rel_attr show
+
+C 		// Check which submit action was performed
+C 		String submitAction = $CCNlForm.getSubmitAction();
+C 
+C 		if (submitAction != null && !submitAction.equals("")) 
+C 		{
+C 			if (submitAction.equals($CCNcForm.SEARCH_ACTION)) 
+C 			{
+C 				doSearch$CTNc(model, $CCNlForm);
+C 			} 
+C 			else if (submitAction.equals($CCNcForm.NEW_ACTION)) 
+C 			{
+C 				response.setRenderParameter("action", "refresh$CCNcNewScreen");
+C 			}
+C 			else if (submitAction.equals($CCNcForm.CANCEL_ACTION)) 
+C 			{
+C 				response.setRenderParameter("action", ""); // Go back to the search screen
+C 			}
+C 		}
+C 	}
+C
+C 	/**
+C 	 * Action mapping which is invoked when the user submits the new form.
+C 	 */
+C 	@ActionMapping(params = "action=submitNewForm")
+C 	public void submitEditForm(
+C 			@ModelAttribute("$CCNlForm") $CCNcForm $CCNlForm,
+C 			BindingResult result, Model model, ActionResponse response, ActionRequest request) 
+C 	{
+C 		$CTNlForm.setSysUserViewBean( getSysUser( request.getRemoteUser() ) );
+C
+C 		String submitAction = $CCNlForm.getSubmitAction();
+C 
+C 		if (submitAction != null && !submitAction.equals("")) 
+C 		{
+C 			if (submitAction.equals($CCNcForm.SAVE_NEW_ACTION)) 
+C 			{
+C 				doCreate$CTNc($CTNlForm, result, model, response);
+C 			}
+C 			if (submitAction.equals($CCNcForm.DELETE_ACTION)) 
+C 			{
+C 				doDelete$CTNc($CCNlForm, result, model, response);
+C 			} 
+C 			else if (submitAction.equals($CCNcForm.CANCEL_ACTION)) 
+C 			{
+C 				response.setRenderParameter("action", ""); // Go back to the search screen
+C 			}
+C 		}
+C 	}
+C
+C 	/**
+C 	 * Action mapping which is invoked when the user submits the edit form.
+C 	 */
+C 	@ActionMapping(params = "action=submitEditForm")
+C 	public void submitUpdateForm(@ModelAttribute("$CCNlForm") $CCNcForm $CCNlForm,
+C 			BindingResult result, Model model, ActionResponse response, ActionRequest request) 
+C 	{
+C 		$CTNlForm.setSysUserViewBean( getSysUser( request.getRemoteUser() ) );
+C
+C 		String submitAction = $CCNlForm.getSubmitAction();
+C 
+C 		if (submitAction != null && !submitAction.equals("")) 
+C 		{
+C 			if (submitAction.equals($CCNcForm.SAVE_EDIT_ACTION)) 
+C 			{
+C 				doUpdate$CTNc($CTNlForm, result, model, response);
+C 			} 
+C 			else if (submitAction.equals($CCNcForm.DELETE_ACTION)) 
+C 			{
+C 				doDelete$CTNc($CTNlForm, result, model, response);
+C 			} 
+C 			else if (submitAction.equals($CCNcForm.CANCEL_ACTION)) 
+C 			{
+C 				response.setRenderParameter("action", ""); // Go back to the search screen
+C 			}
+
+Its rel_attr pdf
+
+C 		}
+C 	}
+C
+
+Its use_tbl list
+Its use_tbl save
+Its use_tbl update
+Its use_tbl delete
+Its use_tbl load
+
+C }
+
+----------------------------------------------------------------
+Actor show . relation = where
+----------------------------------------------------------------
+
+Its select BL_show
+
+----------------------------------------------------------------
+Actor BL_show . code = DRV_DOC
+----------------------------------------------------------------
+
+C 		SysUserViewBean emp = getSysUser( request.getRemoteUser() );
+C 		if(emp != null)
+C 		{
+C 			$CTNlForm.get$CTNcView().setSysUserId( emp.getPkId());
+C 			$CTNlForm.get$CTNcView().setSysEmplId( emp.getEmployeeId());
+C 		}
+
+----------------------------------------------------------------
+Actor BL_show . code = TRAINING_DOC
+----------------------------------------------------------------
+
+C 		SysUserViewBean emp = getSysUser( request.getRemoteUser() );
+C 		if(emp != null)
+C 		{
+C 			$CTNlForm.get$CTNcView().setSysUserId( emp.getPkId());
+C 			$CTNlForm.get$CTNcView().setSysEmplId( emp.getEmployeeId());
+C 		}
+
+----------------------------------------------------------------
+Actor BL_show . code = WELLNESS_DOC
+----------------------------------------------------------------
+
+C 		SysUserViewBean emp = getSysUser( request.getRemoteUser() );
+C 		if(emp != null)
+C 		{
+C 			$CTNlForm.get$CTNcView().setSysUserId( emp.getPkId());
+C 			$CTNlForm.get$CTNcView().setSysEmplId( emp.getEmployeeId());
+C 		}
+
+----------------------------------------------
+Actor pdf . relation = file
+----------------------------------------------
+
+C 			else if (submitAction.equals($CCNcForm.DISPLAY_ACTION)) 
+C 			{
+C 				String docDisplayUrl = "reports/generateDocument?id=" + $CTNlForm.get$CTNc().getPkId() + "&doc=$CTNc";
+C 				model.addAttribute("documentDisplayUrl", docDisplayUrl);
+C 				loadRef(model, $CCNlForm.getOld$CCNc() );
+C 				response.setRenderParameter("action", "refresh$CTNcEditScreen");
+C 			} 
+
+----------------------------------------------
+Actor import
+----------------------------------------------
+
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcBean;
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcViewBean;
+
+Its rel_attr import2
+
+----------------------------------------------
+Actor import2 . relation = dropdown
+----------------------------------------------
+
+C import com.bp.portlet.webservice.client.$FPNl.bean.$FTNcViewBean;
+
+----------------------------------------------
+Actor import2 . relation = viewed
+----------------------------------------------
+
+C import com.bp.portlet.webservice.client.$FPNl.bean.$RTNcViewBean;
+
+----------------------------------------------
+Actor list . Use has primary,list
+----------------------------------------------
+
+C 	/**
+C 	 * Load the $CTNl list into the form.
+C 	 * 
+C 	 * @param model
+C 	 */
+C 	private void doSearch$CTNc(Model model, $CTNcForm form) {
+C 		// Get the list of $CTNl
+C 		List<$CTNcViewBean> $CTNls = get$CPNcServiceClient().get$CTNcService().search$CTNc(form.get$CTNcView(), 0L, 30L );
+C 		// Add the list of $CTNl to the model
+C 		model.addAttribute("$CTNlItems", $CTNls);
+C 	}
+C
+
+----------------------------------------------
+Actor name . relation = name
+----------------------------------------------
+
+C , form.get$CANc()\
+
+----------------------------------------------
+Actor save . Use has primary,crud
+----------------------------------------------
+
+C 	/**
+C 	 * Method that is invoked when the user saves the $CTNl.
+C 	 * @param $CTNlForm
+C 	 * @param result
+C 	 * @param model
+C 	 * @param response
+C 	 */
+C 	private void doCreate$CTNc($CTNcForm $CTNlForm,
+C 			BindingResult result, Model model, ActionResponse response) 
+C 	{
+
+Its rel_attr upload
+
+C 		$CTNlFormValidator.validate($CTNlForm, result);
+C 		
+C 		if (result.hasErrors()) 
+C 		{
+C 			response.setRenderParameter("action", "refresh$CTNcNewScreen");
+C 			return;
+C 		}
+C 		if( $CTNlForm.get$CTNc().getPkId() != null )
+C 		{
+C 			result.addError(new ObjectError("error.global", "Re-activate deleted record?" ));
+C 			response.setRenderParameter("action", "refresh$CTNcEditScreen");
+C 			return;
+C 		}
+C 		ResponseBean res = get$CPNcServiceClient().get$CCNcService().create$CTNc( $CTNlForm.get$CTNc() );
+C 		if( res.isStatusCode() == true ) 
+C 		{
+C 			model.addAttribute("$CTNlAddedSuccessfully", true);
+C 			response.setRenderParameter("action", "");
+C 			return;
+C 		}
+C 		String s = res.getMessage();
+C 		int p = s.lastIndexOf(':');
+C 		if(p > 0) s = s.substring(p+1);
+C 		result.addError(new ObjectError("error.global", s ));
+C 		response.setRenderParameter("action", "refresh$CTNcNewScreen");
+C 	}
+C	
+
+----------------------------------------------
+Actor upload . relation = file
+----------------------------------------------
+
+C 		try
+C 		{
+C 			MultipartFile file = $CTNlForm.get$CANc();
+C 			$CTNlForm.get$CTNc().set$CANc( file.getBytes() );
+
+Its join_attr file_name
+
+C 		}
+C 		catch(Exception e)
+C 		{
+C 			response.setRenderParameter("action", "refresh$CTNcNewScreen");
+C 			return;
+C 		}
+
+----------------------------------------------
+Actor file_name
+----------------------------------------------
+
+C 			$CTNlForm.get$CTNc().set$CANc( file.getOriginalFilename() ) ;
+
+----------------------------------------------
+Actor set
+----------------------------------------------
+
+C 			new$CTNc.set$CANc($CTNcForm.get$CANc());
+
+----------------------------------------------
+Actor update . Use has primary,crud
+----------------------------------------------
+
+C 	/**
+C 	 * Method that will be invoked when the user updates the $CTNl.
+C 	 * @param $CTNlForm
+C 	 * @param result
+C 	 * @param model
+C 	 * @param response
+C 	 */
+C 	private void doUpdate$CTNc($CTNcForm $CTNlForm,
+C 			BindingResult result, Model model, ActionResponse response) 
+C 	{
+C 		
+C 		$CTNlFormValidator.validate($CTNlForm, result);
+C 		
+C 		if (result.hasErrors()) 
+C 		{
+C 			loadRef(model, $CCNlForm.getOld$CCNc() );
+C 			response.setRenderParameter("action", "refresh$CTNcEditScreen");
+C 			return;
+C 		}
+C 		ResponseBean res = get$CPNcServiceClient().get$CCNcService().update$CTNc($CTNlForm.get$CTNc());
+C 		if( res.isStatusCode() == true ) 
+C 		{
+C 			model.addAttribute("$CTNlUpdatedSuccessfully", true);
+C 			response.setRenderParameter("action", "");
+C 		}
+C 		else 
+C 		{
+C 			String s = res.getMessage();
+C 			int p = s.lastIndexOf(':');
+C 			if(p > 0) s = s.substring(p+1);
+C 			result.addError(new ObjectError("error.global", s ));
+C 			loadRef(model, $CCNlForm.getOld$CCNc() );
+C 			response.setRenderParameter("action", "refresh$CTNcEditScreen");
+C 		}
+C 	}
+C
+C 	/**
+C 	 * Method that will be invoked when the user selects the $CTNl.
+C 	 * @param $CTNlForm
+C 	 * @param result
+C 	 * @param model
+C 	 * @param response
+C 	 */
+C 	private void doRead$CTNc($CTNcForm $CTNlForm, BindingResult result, Model model, ActionResponse response) 
+C 	{
+C 			$CTNcBean $CTNl = get$CPNcServiceClient().get$CCNcService().read$CTNc( $CTNlForm.getSelectedId() ) ;
+C 			$CTNlForm.set$CTNc( $CTNl );
+C 			// Go to the $CTNl edit page
+C 			response.setRenderParameter("action", "refresh$CCNcEditScreen");
+C 	}
+C
+
+----------------------------------------------
+Actor delete . Use has primary,crud
+----------------------------------------------
+
+C 	/**
+C 	 * Method that will be invoked when the user deletes an $CTNl.
+C 	 * @param $CTNlForm
+C 	 * @param result
+C 	 * @param model
+C 	 * @param response
+C 	 */
+C 	private void doDelete$CTNc($CTNcForm $CTNlForm,
+C 			BindingResult result, Model model, ActionResponse response) 
+C 	{
+C 
+C 		$CTNlFormValidator.validate($CTNlForm, result);
+C 		
+C 		if (result.hasErrors()) 
+C 		{
+C 			loadRef(model, $CCNlForm.getOld$CCNc() );
+C 			response.setRenderParameter("action", "refresh$CTNcEditScreen");
+C 			return;
+C 		}
+C 		ResponseBean res = get$CPNcServiceClient().get$CCNcService().delete$CTNc( $CTNlForm.get$CTNc() );
+C 		if( res.isStatusCode() == true ) 
+C 		{
+C 			model.addAttribute("$CTNlDeletedSuccessfully", true);
+C 			response.setRenderParameter("action", "");
+C 		} 
+C 		else 
+C 		{
+C 			loadRef(model, $CCNlForm.getOld$CCNc() );
+C 			response.setRenderParameter("action", "refresh$CTNcEditScreen");
+C 		}
+C 	}
+C 
+
+----------------------------------------------
+Actor load . Use in primary
+----------------------------------------------
+
+C 	/**
+C 	 * Load the reference data into the form.
+C 	 * @param $CTNlCaptureForm
+C 	 */
+C 	private void loadRef(Model model) 
+C 	{
+
+Its rel_attr load2
+
+C 	}
+C 
+C 	/**
+C 	 * Load the reference data with old id into the form.
+C 	 * @param $CTNlCaptureForm
+C 	 */
+C 	private void loadRef(Model model, $CTNcBean $CTNl) 
+C 	{
+
+Its rel_attr load2_id
+
+C 	}
+C 
+
+Its rel_attr load3
+
+----------------------------------------------
+Actor load2 . relation = dropdown
+----------------------------------------------
+
+C 		load$FTNc(model, 0L);
+
+----------------------------------------------
+Actor load2_id . relation = dropdown
+----------------------------------------------
+
+C 		load$FTNc(model, $CTNl.get$CANc() );
+
+----------------------------------------------
+Actor load2 . relation = viewed
+----------------------------------------------
+
+C 		load$RTNc(model, 0L);
+
+----------------------------------------------
+Actor load3 . relation = dropdown
+----------------------------------------------
+
+C 	/**
+C 	 * Load the $FTNls into the form.
+C 	 * @param $CTNlCaptureForm
+C 	 */
+C 	private void load$FTNc(Model model, Long id) 
+C 	{
+C 		List<$FTNcViewBean> $FTNls = get$FPNcServiceClient().get$FCNcService().view$FTNc("$DFN", id, " order by DISPLAY_FLD");
+C 		model.addAttribute("$FTNlItems", $FTNls);
+C 	}
+C
+
+----------------------------------------------
+Actor load3 . relation = viewed
+----------------------------------------------
+
+C 	/**
+C 	 * Load the $RTNls into the form.
+C 	 * @param $CTNlCaptureForm
+C 	 */
+C 	private void load$RTNc(Model model, Long id) 
+C 	{
+C 		List<$RTNcViewBean> $RTNls = get$FPNcServiceClient().get$FCNcService().view$RTNc("$DFN", id, " order by DISPLAY_FLD");
+C 		model.addAttribute("$RTNlItems", $RTNls);
+C 	}
+C

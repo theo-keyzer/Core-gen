@@ -1,0 +1,398 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+All arg_type_tables proxy
+
+--------------------------------------------------------
+Actor proxy .
+--------------------------------------------------------
+
+C package com.bp.portlet.webservice.client.$CPNl.proxy;
+C
+
+C import java.util.ArrayList;
+C import java.util.List;
+C
+C import org.dom4j.Document;
+C import org.dom4j.DocumentHelper;
+C import org.dom4j.Element;
+C import org.dom4j.io.DocumentResult;
+C import org.dom4j.io.DocumentSource;
+C import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+C import com.bp.portlet.webservice.client.marshaller.WebServiceClientBeanMarshaller;
+C
+C import com.bp.portlet.webservice.client.response.bean.ResponseBean;
+
+Its use_tbl import
+
+C 
+C /**
+C  * $CCNc proxy class where the web request implementations are defined for $CCNl. 
+C  * 
+C  * @author Theo.Keyzer
+C  * 
+C  */
+C
+C public class $CCNcServiceProxy extends WebServiceGatewaySupport implements $CCNcService
+C {
+
+
+Its use_tbl string
+Its use_tbl marshall
+Its use_tbl func
+
+C }
+
+----------------------------------------------------------------
+Actor import . Use in primary
+----------------------------------------------------------------
+
+C import com.bp.portlet.webservice.client.$CPNl.service.$CCNcService;
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcBean;
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcViewBean;
+
+
+----------------------------------------------------------------
+Actor string . Use = primary
+----------------------------------------------------------------
+
+C 	private static final String WEBSERVICE_METHOD_LIST_$CTNu = "list$CTNc";
+C 	private static final String WEBSERVICE_METHOD_VIEW_$CTNu = "view$CTNc";
+C 	private static final String WEBSERVICE_METHOD_CREATE_$CTNu = "create$CTNc";
+C 	private static final String WEBSERVICE_METHOD_UPDATE_$CTNu = "update$CTNc";
+C 	private static final String WEBSERVICE_METHOD_DELETE_$CTNu = "delete$CTNc";
+C 	private static final String WEBSERVICE_METHOD_READ_$CTNu = "read$CTNc";
+C 	private static final String WEBSERVICE_METHOD_SEARCH_$CTNu = "search$CTNc";
+C 	private static final String WEBSERVICE_METHOD_DUP_CHECK_$CTNu = "dupCheck$CTNc";
+C
+
+----------------------------------------------------------------
+Actor marshall . Use = primary
+----------------------------------------------------------------
+
+C 	private WebServiceClientBeanMarshaller<$CTNcBean> $CTNlBeanMarshaller;
+C	
+C 	public void set$CTNcBeanMarshaller(
+C 			WebServiceClientBeanMarshaller<$CTNcBean> $CTNlBeanMarshaller) {
+C 		this.$CTNlBeanMarshaller = $CTNlBeanMarshaller;
+C 	}
+C
+----------------------------------------------------------------
+Actor marshall . Use = list
+----------------------------------------------------------------
+
+C 	private WebServiceClientBeanMarshaller<$CTNcViewBean> $CTNlViewBeanMarshaller;
+C	
+C 	public void set$CTNcViewBeanMarshaller(
+C 			WebServiceClientBeanMarshaller<$CTNcViewBean> $CTNlViewBeanMarshaller) {
+C 		this.$CTNlViewBeanMarshaller = $CTNlViewBeanMarshaller;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func . Use = primary
+----------------------------------------------------------------
+
+C 	@Override
+C 	public List<$CTNcBean> list$CTNc() {
+C 	
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		requestDocument.addElement(WEBSERVICE_METHOD_LIST_$CTNu);
+C 			
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);
+C 		
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C 		
+C 		List<$CTNcBean> $CTNls = new ArrayList<$CTNcBean>();
+C 		
+C 		for (Object node : responseElement.elements("return")) {
+C 			$CTNcBean $CTNl = new $CTNcBean();
+C 			Element element = (Element)node;
+C 			$CTNl = $CTNlBeanMarshaller.interpretEntityBean(element);
+C 			$CTNls.add($CTNl);
+C 		}
+C 		return $CTNls;
+C 	}
+C
+C 	@Override
+C 	public List<$CTNcViewBean> view$CTNc(String filter, Long id, String flags) {
+C 	
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_VIEW_$CTNu);
+C 		requestElement.addElement("arg0").setText(filter);
+C 		requestElement.addElement("arg1").setText(id + "");
+C 		requestElement.addElement("arg2").setText(flags);
+C 			
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);
+C 		
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C 		
+C 		List<$CTNcViewBean> $CTNls = new ArrayList<$CTNcViewBean>();
+C 		
+C 		for (Object node : responseElement.elements("return")) {
+C 			$CTNcViewBean $CTNl = new $CTNcViewBean();
+C 			Element element = (Element)node;
+C 			$CTNl = $CTNlViewBeanMarshaller.interpretEntityBean(element);
+C 			$CTNls.add($CTNl);
+C 		}
+C 		return $CTNls;
+C 	}
+C
+C 	@Override
+C 	public List<$CTNcViewBean> dupCheck$CTNc($CTNcViewBean $CTNl, Long rowFrom, Long rowTo) {
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_DUP_CHECK_$CTNu);
+C 		
+C 		Element $CTNlRecord = requestElement.addElement($CTNlViewBeanMarshaller.getEntityBeanNamespace());
+C 		$CTNlRecord = $CTNlViewBeanMarshaller.createEntityBean($CTNlRecord, $CTNl);
+C 		requestElement.addElement("arg1").setText(rowFrom + "");
+C 		requestElement.addElement("arg2").setText(rowTo + "");
+C 		
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);		
+C 
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C
+C 		List<$CTNcViewBean> $CTNls = new ArrayList<$CTNcViewBean>();
+C 		
+C 		for (Object node : responseElement.elements("return")) {
+C 			$CTNcViewBean $CTNlItem = new $CTNcViewBean();
+C 			Element element = (Element)node;
+C 			$CTNlItem = $CTNlViewBeanMarshaller.interpretEntityBean(element);
+C 			$CTNls.add($CTNlItem);
+C 		}
+C 		return $CTNls;
+C 	}
+C 
+C 	@Override
+C 	public List<$CTNcViewBean> search$CTNc($CTNcViewBean $CTNl, Long rowFrom, Long rowTo) {
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_SEARCH_$CTNu);
+C 		
+C 		Element $CTNlRecord = requestElement.addElement($CTNlViewBeanMarshaller.getEntityBeanNamespace());
+C 		$CTNlRecord = $CTNlViewBeanMarshaller.createEntityBean($CTNlRecord, $CTNl);
+C 		requestElement.addElement("arg1").setText(rowFrom + "");
+C 		requestElement.addElement("arg2").setText(rowTo + "");
+C 		
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);		
+C 
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C
+C 		List<$CTNcViewBean> $CTNls = new ArrayList<$CTNcViewBean>();
+C 		
+C 		for (Object node : responseElement.elements("return")) {
+C 			$CTNcViewBean $CTNlItem = new $CTNcViewBean();
+C 			Element element = (Element)node;
+C 			$CTNlItem = $CTNlViewBeanMarshaller.interpretEntityBean(element);
+C 			$CTNls.add($CTNlItem);
+C 		}
+C 		return $CTNls;
+C 	}
+C 
+C 	@Override
+C 	public ResponseBean create$CTNc($CTNcBean $CTNl) {
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_CREATE_$CTNu);
+C 		
+C 		Element $CTNlRecord = requestElement.addElement($CTNlBeanMarshaller.getEntityBeanNamespace());
+C 		$CTNlRecord = $CTNlBeanMarshaller.createEntityBean($CTNlRecord, $CTNl);
+C 		
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);		
+C 
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C
+C 		for (Object node : responseElement.elements("return")) {
+C 			ResponseBean responseBean = new ResponseBean();
+C 			Element element = (Element)node;
+C 			responseBean.setStatusCode(Boolean.parseBoolean(element.elementText("statusCode")));
+C 			responseBean.setMessage(element.elementText("message"));
+C 			return responseBean;
+C 		}
+C 		return null;
+C 	}
+C 
+C 	@Override
+C 	public ResponseBean update$CTNc($CTNcBean $CTNl) {
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_UPDATE_$CTNu);
+C 		
+C 		Element $CTNlRecord = requestElement.addElement($CTNlBeanMarshaller.getEntityBeanNamespace());
+C 		$CTNlRecord = $CTNlBeanMarshaller.createEntityBean($CTNlRecord, $CTNl);
+C 		
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);		
+C 
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C
+C 		for (Object node : responseElement.elements("return")) {
+C 			ResponseBean responseBean = new ResponseBean();
+C 			Element element = (Element)node;
+C 			responseBean.setStatusCode(Boolean.parseBoolean(element.elementText("statusCode")));
+C 			responseBean.setMessage(element.elementText("message"));
+C 			return responseBean;
+C 		}
+C 		return null;
+C 	}
+C 
+C 	@Override
+C 	public ResponseBean delete$CTNc($CTNcBean $CTNl) {
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_DELETE_$CTNu);
+C
+C 		Element $CTNlRecord = requestElement.addElement($CTNlBeanMarshaller.getEntityBeanNamespace());
+C 		$CTNlRecord = $CTNlBeanMarshaller.createEntityBean($CTNlRecord, $CTNl);
+C 		
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);
+C 
+C 		// Extract the result from the response
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C
+C 		for (Object node : responseElement.elements("return")) {
+C 			ResponseBean responseBean = new ResponseBean();
+C 			Element element = (Element)node;
+C 			responseBean.setStatusCode(Boolean.parseBoolean(element.elementText("statusCode")));
+C 			responseBean.setMessage(element.elementText("message"));
+C 			return responseBean;
+C 		}
+C 		return null;
+C 	}
+C 
+C 	@Override
+C 	public $CTNcBean read$CTNc(Long id) {
+C 		Document requestDocument = DocumentHelper.createDocument();
+C 		Element requestElement = requestDocument.addElement(WEBSERVICE_METHOD_READ_$CTNu);
+C 		requestElement.addElement("arg0").setText(id + "");
+C 		
+C 		DocumentSource source = new DocumentSource(requestDocument);
+C 		DocumentResult result = new DocumentResult();
+C 		getWebServiceTemplate().sendSourceAndReceiveToResult(source, result);
+C 		
+C 		// Extract the response from the result
+C 		Document responseDocument = result.getDocument();
+C 		Element responseElement = responseDocument.getRootElement();
+C 
+C 		for (Object node : responseElement.elements("return")) {
+C 			$CTNcBean $CTNlBean = new $CTNcBean();
+C 			Element element = (Element)node;
+C 			$CTNlBean = $CTNlBeanMarshaller.interpretEntityBean(element);
+C 			return $CTNlBean;
+C 		}
+C 		return null;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor name . relation = name
+----------------------------------------------------------------
+
+C , String $CANl\
+
+----------------------------------------------------------------
+Actor add_name . relation = name
+----------------------------------------------------------------
+
+C 		requestElement.addElement("arg$CV2").setText($CANl);
+
+----------------------------------------------------------------
+Actor service .
+----------------------------------------------------------------
+
+C 	public String \
+
+Its type_table set
+	
+C ) throws ServiceException;
+C
+
+Its type_table get
+Its type_table get_view
+
+C 	public String \
+
+Its type_table del
+	
+C ) throws ServiceException;
+C
+
+----------------------------------------------------------------
+Actor set .
+----------------------------------------------------------------
+
+C $CTNlSet(Integer userId, $AR2c$CRNc $CTNl\
+
+Its child_tbl_in_arg_type set2
+
+----------------------------------------------------------------
+Actor set2 .
+----------------------------------------------------------------
+
+C , List<$AR2c$CRNc> $CTNlL\
+
+----------------------------------------------------------------
+Actor del .
+----------------------------------------------------------------
+
+C $CTNlDelete(Integer userId, $AR2c$CRNc $CTNl\
+
+Its child_tbl_in_arg_type del2
+
+----------------------------------------------------------------
+Actor del2 .
+----------------------------------------------------------------
+
+C , List<$AR2c$CRNc> $CTNlL\
+
+
+----------------------------------------------------------------
+Actor get .
+----------------------------------------------------------------
+
+C 	public $AR2c$CRNc $CTNlGet(Integer id) throws ServiceException;
+C
+
+Its child_tbl_in_arg_type get2
+
+----------------------------------------------------------------
+Actor get2 .
+----------------------------------------------------------------
+
+C 	public List<$AR2c$CRNc> $CTNlGet(Integer id) throws ServiceException;
+C
+
+----------------------------------------------------------------
+Actor get_view .
+----------------------------------------------------------------
+
+C 	public List<$AR2c$CRNcView> $CTNlViewGet(String param, Integer pageNo, Integer pageSize) throws ServiceException;
+C
+
+
+
+
+

@@ -1,0 +1,128 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+ All arg create
+
+----------------------------------------------------------------
+Actor create .
+----------------------------------------------------------------
+
+
+C --------------------------------------------
+C    CREATE TABLE "BP_$CTNu" 
+C    (	
+
+Its attr fields
+
+C 	"ACTIVE_IND"    CHAR(1 BYTE) DEFAULT 'Y', 
+C 	"DATE_CREATED"  DATE DEFAULT SYSDATE, 
+C 	"CREATED_BY"    NUMBER, 
+C 	"DATE_MODIFIED" DATE, 
+C 	"MODIFIED_BY"   NUMBER, 
+C 	"UPDATE_CNT"    NUMBER DEFAULT 1, 
+C 	 CONSTRAINT "$CTNu_C_FK" FOREIGN KEY ("CREATED_BY")
+C 	  REFERENCES "BP_USER" ("PK_ID") ENABLE, 
+C 	 CONSTRAINT "$CTNu_M_FK" FOREIGN KEY ("MODIFIED_BY")
+C 	  REFERENCES "BP_USER" ("PK_ID") ENABLE, 
+
+Its rel_attr ref
+
+C 	 CONSTRAINT "BP_$CTNu_PK" PRIMARY KEY ("PK_ID")
+
+C    ) 
+C /
+C
+C    create sequence SEQ_BP_$CTNu
+C       start with 1
+C       increment by 1
+C       minvalue 1
+C       nocache
+C /
+C
+C    create or replace trigger TRG_BP_$CTNu
+C       before insert on BP_$CTNu
+C       for each row
+C       begin
+C          select SEQ_BP_$CTNu.nextval into :new.pk_id from dual;
+C       end;
+C /
+C
+
+----------------------------------------------------------------
+Actor hist_decl . History = originating
+----------------------------------------------------------------
+
+C 	"ORIGINATING_ID" NUMBER, 
+
+----------------------------------------------------------------
+Actor ref . relation = dropdown
+----------------------------------------------------------------
+
+C 	 CONSTRAINT "$CTNu_G$CAP_FK" FOREIGN KEY ("$CANu")
+C 	  REFERENCES "BP_$FTNu" ("$FINu") ENABLE, 
+
+-C 	  REFERENCES "BP_$FTNu" ("PK_ID") ENABLE, 
+
+----------------------------------------------------------------
+Actor fields .
+----------------------------------------------------------------
+
+Du create_char   Mytype = CHAR
+Du create_var    Mytype = TEXT
+Du create_var    Mytype = VARCHAR2
+Du create_number Mytype = NUMBER
+Du create_number Mytype = FLOAT
+Du create_date   Mytype = DATE
+Du create_blob   Mytype = BLOB
+
+Actor create_char . Null = N
+C 	"$CANu" CHAR($CAL BYTE) \
+
+Its select BL_default
+
+C NOT NULL ENABLE, 
+
+Actor create_char . Null = Y
+C 	"$CANu" CHAR($CAL BYTE) \
+
+Its select BL_default
+
+C , 
+
+Actor create_var . Null = N
+C 	"$CANu" VARCHAR2($CAL BYTE) NOT NULL ENABLE, 
+
+Actor create_var . Null = Y
+C 	"$CANu" VARCHAR2($CAL BYTE), 
+
+Actor create_blob . Null = N
+C 	"$CANu" BLOB NOT NULL ENABLE, 
+
+Actor create_blob . Null = Y
+C 	"$CANu" BLOB, 
+
+Actor create_number . Null = N
+C 	"$CANu" NUMBER NOT NULL ENABLE, 
+
+Actor create_number . Null = Y
+C 	"$CANu" NUMBER, 
+
+Actor create_date . Null = N
+C 	"$CANu" DATE NOT NULL ENABLE, 
+
+Actor create_date . Null = Y
+C 	"$CANu" DATE, 
+
+----------------------------------------------------------------
+Actor BL_default . code = Y
+----------------------------------------------------------------
+
+C  DEFAULT 'Y' \
+
+----------------------------------------------------------------
+Actor BL_default . code = N
+----------------------------------------------------------------
+
+C  DEFAULT 'N' \
+

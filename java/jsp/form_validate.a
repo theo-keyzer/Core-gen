@@ -1,0 +1,1999 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+All arg_use_tbl validate
+
+----------------------------------------------------------------
+Actor validate .
+----------------------------------------------------------------
+
+C package com.bp.portlet.$CPNl.$CCNl.validator;
+C
+C import java.util.List;
+C import org.springframework.beans.factory.annotation.Autowired;
+C import org.springframework.beans.factory.annotation.Qualifier;
+C import org.springframework.stereotype.Component;
+C import org.springframework.validation.Errors;
+C import org.springframework.validation.ValidationUtils;
+C import org.springframework.validation.Validator;
+C
+C import com.bp.portlet.$CPNl.webservice.client.PrmServiceClient;
+C import com.bp.portlet.$CPNl.$CCNl.form.$CCNcForm;
+C import com.bp.portlet.$AR3l.common.validator.$AR3cValidationException;
+C import com.bp.portlet.$AR3l.common.validator.$AR3cValidator;
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcBean;
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcViewBean;
+C import com.bp.portlet.webservice.client.$CPNl.bean.SysUserViewBean;
+C import com.bp.portlet.webservice.client.$CPNl.bean.EmplRoleViewBean;
+C import com.bp.portlet.webservice.client.$CPNl.bean.UserRoleViewBean;
+
+
+C
+C @Component("$CTNlFormValidator")
+C public class $CTNcFormValidator implements Validator 
+C {
+C
+C //	@Autowired
+C //	@Qualifier("$CTNlValidator")
+C //	private $CTNcValidator $CTNlValidator;
+C 	
+C 	@Autowired
+C 	@Qualifier("prmServiceClient")
+C 	private PrmServiceClient prmServiceClient;
+C 
+C 	public PrmServiceClient getPrmServiceClient() {
+C 		return prmServiceClient;
+C 	}
+C 
+C 	@Override
+C 	public boolean supports(Class<?> clazz) 
+C 	{
+C 		return $CCNcForm.class.isAssignableFrom(clazz);
+C 	}
+C 
+C 	@Override
+C 	public void validate(Object target, Errors errors) 
+C 	{
+C 		$CCNcForm form = ($CCNcForm) target;
+C 
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		if(user == null)
+C 		{
+C 			errors.reject(null, "Access denied");
+C 			return;
+C 		}
+C 		String submitAction = form.getSubmitAction();
+C 		
+C 		if (submitAction != null) 
+C 		{
+C 			if (submitAction.equals($CCNcForm.SAVE_NEW_ACTION)) 
+C 			{
+C 				form.get$CCNc().setCreatedBy( user.getPkId() );
+C 				if( validateNew(form, errors) ) return;
+
+Its select_type BL_call_new
+
+C 			} 
+C 			else if (submitAction.equals($CCNcForm.SAVE_EDIT_ACTION)) 
+C 			{
+C 				form.get$CCNc().setModifiedBy( user.getPkId() );
+C 				if( validateUpdate(form, errors) ) return;
+
+Its select_type BL_call_edit
+
+C 			}
+C 			else if (submitAction.equals($CCNcForm.DELETE_ACTION)) 
+C 			{
+
+Its select_type BL_call_delete
+
+C 				form.get$CCNc().setModifiedBy( user.getPkId() );
+C 			}
+C 		}
+C 	}
+C
+C 	public boolean validateNew($CCNcForm form, Errors errors)
+C 	{
+C 		boolean fail = false;
+C 		$CCNcBean doc = form.get$CCNc();
+
+Its rel_attr fld    Flag3 = Y
+
+Its select_type BL_dup
+
+C 		return(fail);
+C 	}
+C
+C 	public boolean validateUpdate($CCNcForm form, Errors errors)
+C 	{
+C 		boolean fail = false;
+C 		$CCNcBean doc = form.get$CCNc();
+
+Its rel_attr fld   Flag4 = Y
+
+Its select_type BL_dup_u
+
+C 		return(fail);
+C 	}
+C
+C 	public Long getRole(List<EmplRoleViewBean> empRoles, String roleName)
+C 	{
+C 		if(empRoles == null) return(0L);
+C 		for(int i = 0; i < empRoles.size(); i++)
+C 		{
+C 			EmplRoleViewBean r = (EmplRoleViewBean) empRoles.get(i);
+C 			if( ! roleName.equals( r.getRole() ) ) continue;
+C 			return( r.getRoleId() );
+C 		}
+C 		return( 0L );
+C 	}
+C
+
+Its select_type BL_func_new
+Its select_type BL_func_edit
+Its select_type BL_func_delete
+
+C }
+
+----------------------------------------------------------------
+Actor BL_call_new . code = DRV_DOC3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_new . code = DRV3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_new . code = DRV_CER3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_new . code = ENG_DOC3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_new . code = CON_DOC3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_new . code = COM_DOC3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_new . code = CONTRACTOR3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_new . code = COMPANY3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_new . code = WELLNESS3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_new . code = TRAINING3
+----------------------------------------------------------------
+
+C 				validateNewEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = DRV3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = DRV_CER3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = DRV_DOC3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = ENG_DOC3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = CON_DOC3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = COM_DOC3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = CONTRACTOR3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = COMPANY3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = WELLNESS3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_edit . code = TRAINING3
+----------------------------------------------------------------
+
+C 				validateEditEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = DRV3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = DRV_CER3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = DRV_DOC3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = ENG_DOC3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = CON_DOC3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = COM_DOC3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = CONTRACTOR3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = COMPANY3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = WELLNESS3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_call_delete . code = TRAINING3
+----------------------------------------------------------------
+
+C 				validateDeleteEmpl(form, errors);
+
+----------------------------------------------------------------
+Actor BL_func_new . code = DRV3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(DriverForm form, Errors errors)
+C 	{
+C 		DriverBean doc = form.getDriver();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setDepartmentId("11");
+C 		role.setUserType("1");
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "ROAD SAFETY ADVISOR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ROAD SAFETY ADVISOR role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = DRV3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(DriverForm form, Errors errors)
+C 	{
+C 		DriverBean doc = form.getDriver();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setDepartmentId("11");
+C 		role.setUserType("1");
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "ROAD SAFETY ADVISOR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ROAD SAFETY ADVISOR role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = DRV3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(DriverForm form, Errors errors)
+C 	{
+C 		DriverBean doc = form.getDriver();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setDepartmentId("11");
+C 		role.setUserType("1");
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "ROAD SAFETY ADVISOR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ROAD SAFETY ADVISOR role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_new . code = DRV_CER3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(DriverCertForm form, Errors errors)
+C 	{
+C 		DriverCertBean doc = form.getDriverCert();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setDepartmentId("12");
+C 		role.setUserType("1");
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "ROAD SAFETY ADVISOR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getDriver() == 0)
+C 		{
+C 			errors.reject(null, "Employee not a driver");
+C 			return;
+C 		}
+C 		if(role.getDriverAccess() == 0)
+C 		{
+C 			errors.reject(null, "Employee does not have driver access");
+C 			return;
+C 		}
+C 		if(role.getSuspended() > 0)
+C 		{
+C 			errors.reject(null, "Driver suspended");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ROAD SAFETY ADVISOR role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = DRV_CER3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(DriverCertForm form, Errors errors)
+C 	{
+C 		DriverCertBean doc = form.getDriverCert();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setDepartmentId("12");
+C 		role.setUserType("1");
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "ROAD SAFETY ADVISOR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getDriver() == 0)
+C 		{
+C 			errors.reject(null, "Employee not a driver");
+C 			return;
+C 		}
+C 		if(role.getDriverAccess() == 0)
+C 		{
+C 			errors.reject(null, "Employee does not have driver access");
+C 			return;
+C 		}
+C 		if(role.getSuspended() > 0)
+C 		{
+C 			errors.reject(null, "Driver suspended");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ROAD SAFETY ADVISOR role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = DRV_CER3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(DriverCertForm form, Errors errors)
+C 	{
+C 		DriverCertBean doc = form.getDriverCert();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setDepartmentId("12");
+C 		role.setUserType("1");
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "ROAD SAFETY ADVISOR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getDriver() == 0)
+C 		{
+C 			errors.reject(null, "Employee not a driver");
+C 			return;
+C 		}
+C 		if(role.getDriverAccess() == 0)
+C 		{
+C 			errors.reject(null, "Employee does not have driver access");
+C 			return;
+C 		}
+C 		if(role.getSuspended() > 0)
+C 		{
+C 			errors.reject(null, "Driver suspended");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ROAD SAFETY ADVISOR role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+
+----------------------------------------------------------------
+Actor BL_func_new . code = DRV_DOC3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(DriverDocumentForm form, Errors errors)
+C 	{
+C 		DriverDocumentBean doc = form.getDriverDocument();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setDepartmentId("1");
+C 		role.setUserType("1");
+C 		role.setEmployeeId(emp);
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setRoleId( getRole(empRoles, "SINGLE POINT OF AUTHORITY") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getDriver() == 0)
+C 		{
+C 			errors.reject(null, "This employee is not authorised as a BP business driver");
+C 			return;
+C 		}
+C 		if(role.getDriverAccess() == 0)
+C 		{
+C 			errors.reject(null, "Employee does not have driver access");
+C 			return;
+C 		}
+C 		if(role.getSuspended() > 0)
+C 		{
+C 			errors.reject(null, "Driver suspended");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() > 0)
+C 		{
+C 			doc.setApproved("Y");
+C 			doc.setApproverUserId( user.getPkId() );
+C 			return;
+C 		}
+C 		doc.setApproved("N");
+C 		if(role.getManagerCnt() > 0) return;
+C 		if(  user.getEmployeeId().equals( emp ) ) return;
+C 		errors.reject(null, "SINGLE POINT OF AUTHORITY role for location required");
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = DRV_DOC3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(DriverDocumentForm form, Errors errors)
+C 	{
+C 		DriverDocumentBean doc = form.getDriverDocument();
+C 		String appr = form.getOldDriverDocument().getApproved();
+C 		if(appr != null && appr.equals("Y") )
+C 		{
+C 			errors.reject(null, "Previously approved documents cannot be changed in status");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setDepartmentId("1");
+C 		role.setUserType("1");
+C 		role.setEmployeeId( doc.getEmployeeId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setRoleId( getRole(empRoles, "SINGLE POINT OF AUTHORITY") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() > 0)
+C 		{
+C 			if( doc.getApproved().equals("Y") ) doc.setApproverUserId( user.getPkId() );
+C 			return;
+C 		}
+C 		if( doc.getApproved().equals("Y") )
+C 		{
+C 			errors.reject(null, "SINGLE POINT OF AUTHORITY role for location required to approve");
+C 			return;
+C 		}
+C 		if(role.getManagerCnt() > 0) return;
+C 		if(  user.getEmployeeId().equals( doc.getEmployeeId() ) ) return;
+C 		errors.reject(null, "SINGLE POINT OF AUTHORITY role for location required");
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = DRV_DOC3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(DriverDocumentForm form, Errors errors)
+C 	{
+C 		DriverDocumentBean doc = form.getDriverDocument();
+C 		String appr = form.getOldDriverDocument().getApproved();
+C 		if(appr != null && appr.equals("Y") )
+C 		{
+C 			errors.reject(null, "Previously approved documents cannot be changed in status");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setDepartmentId("1");
+C 		role.setUserType("1");
+C 		role.setEmployeeId( doc.getEmployeeId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setRoleId( getRole(empRoles, "SINGLE POINT OF AUTHORITY") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() > 0)
+C 		{
+C 			if( doc.getApproved().equals("Y") ) doc.setApproverUserId( user.getPkId() );
+C 			return;
+C 		}
+C 		if( doc.getApproved().equals("Y") )
+C 		{
+C 			errors.reject(null, "SINGLE POINT OF AUTHORITY role for location required to approve");
+C 			return;
+C 		}
+C 		if(role.getManagerCnt() > 0) return;
+C 		if(  user.getEmployeeId().equals( doc.getEmployeeId() ) ) return;
+C 		errors.reject(null, "SINGLE POINT OF AUTHORITY role for location required");
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_new . code = ENG_DOC3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(EngineeringDocumentForm form, Errors errors)
+C 	{
+C 		EngineeringDocumentBean doc = form.getEngineeringDocument();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C
+C 		if(doc.getEmployeeId() == null || doc.getEmployeeId().equals(""))
+C 		{
+C 			errors.reject(null, "Employee required");
+C 			return;
+C 		}
+C 		if( getRole(empRoles, "ENGINEERING LIAISON COW") == 0L)
+C 		{
+C 			errors.reject(null, "ENGINEERING LIAISON COW role required");
+C 			return;
+C 		}
+C 		role.setEmployeeId( doc.getEmployeeId() );
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON COW") );
+C
+C 		role.setDepartmentId("2");
+C 		role.setUserType( "1" );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "Role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = ENG_DOC3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(EngineeringDocumentForm form, Errors errors)
+C 	{
+C 		EngineeringDocumentBean doc = form.getEngineeringDocument();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId( getRole(empRoles, "TECHNICAL AUTHORITY") );
+C 		role.setLocationId( 0L );
+C
+C 		if(doc.getEmployeeId() == null || doc.getEmployeeId().equals(""))
+C 		{
+C 			errors.reject(null, "Employee required");
+C 			return;
+C 		}
+C 		if( getRole(empRoles, "ENGINEERING LIAISON COW") == 0L)
+C 		{
+C 			if( getRole(empRoles, "TECHNICAL AUTHORITY") == 0L)
+C 			{
+C 				errors.reject(null, "ENGINEERING LIAISON COW or TECHNICAL AUTHORITY role required");
+C 				return;
+C 			}
+C 		}
+C 		role.setEmployeeId( doc.getEmployeeId() );
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON COW") );
+C
+C 		role.setDepartmentId("2");
+C 		role.setUserType( "1" );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "Role for location required");
+C 				return;
+C 			}
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = ENG_DOC3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(EngineeringDocumentForm form, Errors errors)
+C 	{
+C 		EngineeringDocumentBean doc = form.getEngineeringDocument();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId( getRole(empRoles, "TECHNICAL AUTHORITY") );
+C 		role.setLocationId( 0L );
+C
+C 		if(doc.getEmployeeId() == null || doc.getEmployeeId().equals(""))
+C 		{
+C 			errors.reject(null, "Employee required");
+C 			return;
+C 		}
+C 		if( getRole(empRoles, "ENGINEERING LIAISON COW") == 0L)
+C 		{
+C 			if( getRole(empRoles, "TECHNICAL AUTHORITY") == 0L)
+C 			{
+C 				errors.reject(null, "ENGINEERING LIAISON COW or TECHNICAL AUTHORITY role required");
+C 				return;
+C 			}
+C 		}
+C 		role.setEmployeeId( doc.getEmployeeId() );
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON COW") );
+C
+C 		role.setDepartmentId("2");
+C 		role.setUserType( "1" );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "Role for location required");
+C 				return;
+C 			}
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_new . code = CON_DOC3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(EngineeringDocumentForm form, Errors errors)
+C 	{
+C 		EngineeringDocumentBean doc = form.getEngineeringDocument();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C
+C 		if(doc.getContractorId() == null || doc.getContractorId().equals(""))
+C 		{
+C 			errors.reject(null, "Contractor employee required");
+C 			return;
+C 		}
+C 		if( getRole(empRoles, "ENGINEERING LIAISON COW") == 0L)
+C 		{
+C 			errors.reject(null, "ENGINEERING LIAISON COW role required");
+C 			return;
+C 		}
+C 		role.setContractorId( doc.getContractorId() );
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON COW") );
+C
+C 		role.setDepartmentId("2");
+C 		role.setUserType( "2" );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "Role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = CON_DOC3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(EngineeringDocumentForm form, Errors errors)
+C 	{
+C 		EngineeringDocumentBean doc = form.getEngineeringDocument();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId( getRole(empRoles, "TECHNICAL AUTHORITY") );
+C 		role.setLocationId( 0L );
+C
+C 		if(doc.getContractorId() == null || doc.getContractorId().equals(""))
+C 		{
+C 			errors.reject(null, "Contractor employee required");
+C 			return;
+C 		}
+C 		if( getRole(empRoles, "ENGINEERING LIAISON COW") == 0L)
+C 		{
+C 			if( getRole(empRoles, "TECHNICAL AUTHORITY") == 0L)
+C 			{
+C 				errors.reject(null, "ENGINEERING LIAISON COW or TECHNICAL AUTHORITY role required");
+C 				return;
+C 			}
+C 		}
+C 		role.setContractorId( doc.getContractorId() );
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON COW") );
+C
+C 		role.setDepartmentId("2");
+C 		role.setUserType( "2" );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "Role for location required");
+C 				return;
+C 			}
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = CON_DOC3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(EngineeringDocumentForm form, Errors errors)
+C 	{
+C 		EngineeringDocumentBean doc = form.getEngineeringDocument();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId( getRole(empRoles, "TECHNICAL AUTHORITY") );
+C 		role.setLocationId( 0L );
+C
+C 		if(doc.getContractorId() == null || doc.getContractorId().equals(""))
+C 		{
+C 			errors.reject(null, "Contractor employee required");
+C 			return;
+C 		}
+C 		if( getRole(empRoles, "ENGINEERING LIAISON COW") == 0L)
+C 		{
+C 			if( getRole(empRoles, "TECHNICAL AUTHORITY") == 0L)
+C 			{
+C 				errors.reject(null, "ENGINEERING LIAISON COW or TECHNICAL AUTHORITY role required");
+C 				return;
+C 			}
+C 		}
+C 		role.setContractorId( doc.getContractorId() );
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON COW") );
+C
+C 		role.setDepartmentId("2");
+C 		role.setUserType( doc.getUserType() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "Role for location required");
+C 				return;
+C 			}
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_new . code = COM_DOC3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(EngineeringDocumentForm form, Errors errors)
+C 	{
+C 		EngineeringDocumentBean doc = form.getEngineeringDocument();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C
+C 		if(doc.getCompanyId() == null || doc.getCompanyId() == 0L)
+C 		{
+C 			errors.reject(null, "Company required");
+C 			return;
+C 		}
+C 		if( getRole(empRoles, "ENGINEERING LIAISON ACCREDITATIONS") == 0L)
+C 		{
+C 			errors.reject(null, "ENGINEERING LIAISON ACCREDITATIONS role required");
+C 			return;
+C 		}
+C 		role.setCompanyId( doc.getCompanyId() );
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON ACCREDITATIONS") );
+C
+C 		role.setDepartmentId("2");
+C 		role.setUserType( "3" );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Company not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "Role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = COM_DOC3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(EngineeringDocumentForm form, Errors errors)
+C 	{
+C 		EngineeringDocumentBean doc = form.getEngineeringDocument();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId( getRole(empRoles, "TECHNICAL AUTHORITY") );
+C 		role.setLocationId( 0L );
+C
+C 		if(doc.getCompanyId() == null || doc.getCompanyId() == 0L)
+C 		{
+C 			errors.reject(null, "Company required");
+C 			return;
+C 		}
+C 		if( getRole(empRoles, "ENGINEERING LIAISON ACCREDITATIONS") == 0L)
+C 		{
+C 			if( getRole(empRoles, "TECHNICAL AUTHORITY") == 0L)
+C 			{
+C 				errors.reject(null, "ENGINEERING LIAISON ACCREDITATIONS or TECHNICAL AUTHORITY role required");
+C 				return;
+C 			}
+C 		}
+C 		role.setCompanyId( doc.getCompanyId() );
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON ACCREDITATIONS") );
+C
+C 		role.setDepartmentId("2");
+C 		role.setUserType( "3" );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Company not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "Role for location required");
+C 				return;
+C 			}
+C 		}
+C 		String approve = doc.getValidated();
+C 		String oldApprove = form.getOldEngineeringDocument().getValidated();
+C 		if(approve == null || approve.equals("") ) approve = "N";
+C 		if(oldApprove == null || oldApprove.equals("") ) oldApprove = "N";
+C 		if( ! approve.equals( oldApprove ) )
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "Only a TECHNICAL AUTHORITY can change the status");
+C 				return;
+C 			}
+C 			if( oldApprove.equals("Y") )
+C 			{
+C 				errors.reject(null, "Previously approved documents cannot be changed in status");
+C 				return;
+C 			}
+C 			if( approve.equals("Y") )
+C 			{
+C 				doc.setApproverUserId( user.getPkId() );
+C 			}
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = COM_DOC3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(EngineeringDocumentForm form, Errors errors)
+C 	{
+C 		EngineeringDocumentBean doc = form.getEngineeringDocument();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId( getRole(empRoles, "TECHNICAL AUTHORITY") );
+C 		role.setLocationId( 0L );
+C
+C 		if(doc.getCompanyId() == null || doc.getCompanyId() == 0L)
+C 		{
+C 			errors.reject(null, "Company required");
+C 			return;
+C 		}
+C 		if( getRole(empRoles, "ENGINEERING LIAISON ACCREDITATIONS") == 0L)
+C 		{
+C 			if( getRole(empRoles, "TECHNICAL AUTHORITY") == 0L)
+C 			{
+C 				errors.reject(null, "ENGINEERING LIAISON ACCREDITATIONS or TECHNICAL AUTHORITY role required");
+C 				return;
+C 			}
+C 		}
+C 		role.setCompanyId( doc.getCompanyId() );
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON ACCREDITATIONS") );
+C
+C 		role.setDepartmentId("2");
+C 		role.setUserType( "3" );
+C 		role.setUserId( user.getPkId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Company not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "Role for location required");
+C 				return;
+C 			}
+C 		}
+C 		String approve = doc.getValidated();
+C 		String oldApprove = form.getOldEngineeringDocument().getValidated();
+C 		if(approve == null || approve.equals("") ) approve = "N";
+C 		if(oldApprove == null || oldApprove.equals("") ) oldApprove = "N";
+C 		if( ! approve.equals( oldApprove ) )
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "Only a TECHNICAL AUTHORITY can change the status");
+C 				return;
+C 			}
+C 			if( oldApprove.equals("Y") )
+C 			{
+C 				errors.reject(null, "Previously approved documents cannot be changed in status");
+C 				return;
+C 			}
+C 			if( approve.equals("Y") )
+C 			{
+C //				doc.setApproverUserId( user.getPkId() );
+C 			}
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_new . code = CONTRACTOR3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(ContractorEmployeeForm form, Errors errors)
+C 	{
+C 		ContractorEmployeeBean doc = form.getContractorEmployee();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( doc.getLocationId() );
+C 		role.setDepartmentId("22");
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setUserType("2");
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON COW") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ENGINEERING LIAISON COW role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = CONTRACTOR3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(ContractorEmployeeForm form, Errors errors)
+C 	{
+C 		ContractorEmployeeBean doc = form.getContractorEmployee();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( doc.getLocationId() );
+C 		role.setDepartmentId("22");
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setUserType("2");
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON COW") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ENGINEERING LIAISON COW role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = CONTRACTOR3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(ContractorEmployeeForm form, Errors errors)
+C 	{
+C 		ContractorEmployeeBean doc = form.getContractorEmployee();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( doc.getLocationId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("22");
+C 		role.setUserType("2");
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON COW") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ENGINEERING LIAISON COW role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+
+----------------------------------------------------------------
+Actor BL_func_new . code = COMPANY3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(ContractorCompanyForm form, Errors errors)
+C 	{
+C 		ContractorCompanyBean doc = form.getContractorCompany();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( doc.getLocationId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("23");
+C 		role.setUserType("3");
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON ACCREDITATIONS") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ENGINEERING LIAISON ACCREDITATIONS role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = COMPANY3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(ContractorCompanyForm form, Errors errors)
+C 	{
+C 		ContractorCompanyBean doc = form.getContractorCompany();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( doc.getLocationId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("23");
+C 		role.setUserType("3");
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON ACCREDITATIONS") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ENGINEERING LIAISON ACCREDITATIONS role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = COMPANY3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(ContractorCompanyForm form, Errors errors)
+C 	{
+C 		ContractorCompanyBean doc = form.getContractorCompany();
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( doc.getLocationId() );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("23");
+C 		role.setUserType("3");
+C 		role.setRoleId( getRole(empRoles, "ENGINEERING LIAISON ACCREDITATIONS") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "ENGINEERING LIAISON ACCREDITATIONS role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_new . code = WELLNESS3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(WellnessDocumentForm form, Errors errors)
+C 	{
+C 		WellnessDocumentBean doc = form.getWellnessDocument();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("4");
+C 		role.setUserType("1");
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "WELLNESS ADVISOR") );
+C 		role.setApproveRoleId( getRole(empRoles, "COMPANY DR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "WELLNESS ADVISOR or COMPANY DR role for location required");
+C 				return;
+C 			}
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = WELLNESS3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(WellnessDocumentForm form, Errors errors)
+C 	{
+C 		WellnessDocumentBean doc = form.getWellnessDocument();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("4");
+C 		role.setUserType("1");
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "WELLNESS ADVISOR") );
+C 		role.setApproveRoleId( getRole(empRoles, "COMPANY DR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "WELLNESS ADVISOR or COMPANY DR role for location required");
+C 				return;
+C 			}
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = WELLNESS3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(WellnessDocumentForm form, Errors errors)
+C 	{
+C 		WellnessDocumentBean doc = form.getWellnessDocument();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("4");
+C 		role.setUserType("1");
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "WELLNESS ADVISOR") );
+C 		role.setApproveRoleId( getRole(empRoles, "COMPANY DR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			if(role.getApproveCnt() == 0)
+C 			{
+C 				errors.reject(null, "WELLNESS ADVISOR or COMPANY DR role for location required");
+C 				return;
+C 			}
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_new . code = TRAINING3
+----------------------------------------------------------------
+
+C 	public void validateNewEmpl(TrainingDocumentForm form, Errors errors)
+C 	{
+C 		TrainingDocumentBean doc = form.getTrainingDocument();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("3");
+C 		role.setUserType("1");
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "TRAINING COORDINATOR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "TRAINING COORDINATOR role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_edit . code = TRAINING3
+----------------------------------------------------------------
+
+C 	public void validateEditEmpl(TrainingDocumentForm form, Errors errors)
+C 	{
+C 		TrainingDocumentBean doc = form.getTrainingDocument();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("3");
+C 		role.setUserType("1");
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "TRAINING COORDINATOR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "TRAINING COORDINATOR role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor BL_func_delete . code = TRAINING3
+----------------------------------------------------------------
+
+C 	public void validateDeleteEmpl(TrainingDocumentForm form, Errors errors)
+C 	{
+C 		TrainingDocumentBean doc = form.getTrainingDocument();
+C 		String emp = doc.getEmployeeId();
+C 		if(emp == null || emp.equals(""))
+C 		{
+C 			errors.reject(null, "Enter employee");
+C 			return;
+C 		}
+C 		SysUserViewBean user = form.getSysUserViewBean();
+C 		EmplRoleViewBean empRole = new EmplRoleViewBean();
+C 		empRole.setUserId( user.getPkId() );
+C 		List<EmplRoleViewBean> empRoles;
+C 		empRoles = getPrmServiceClient().getPrmUtilService().searchEmplRole( empRole, 0L, 100L );
+C 		UserRoleViewBean role = new UserRoleViewBean();
+C 		role.setApproveRoleId(0L);
+C 		role.setLocationId( 0L );
+C 		role.setEmpId( user.getEmployeeId() );
+C 		role.setUserId( user.getPkId() );
+C 		role.setDepartmentId("3");
+C 		role.setUserType("1");
+C 		role.setEmployeeId(emp);
+C 		role.setRoleId( getRole(empRoles, "TRAINING COORDINATOR") );
+C 		role = getPrmServiceClient().getPrmUtilService().chkUserRole(role);
+C 		if(role == null)
+C 		{
+C 			errors.reject(null, "Service failed");
+C 			return;
+C 		}
+C 		if(role.getEmpCnt() == 0)
+C 		{
+C 			errors.reject(null, "Employee not found");
+C 			return;
+C 		}
+C 		if(role.getRoleCnt() == 0)
+C 		{
+C 			errors.reject(null, "TRAINING COORDINATOR role for location required");
+C 			return;
+C 		}
+C 	}
+C
+
+----------------------------------------------------------------
+Actor fld . relation in none,name,lookup,dropdown,select,file
+----------------------------------------------------------------
+
+Du fld_var    Mytype = CHAR
+Du fld_text   Mytype = TEXT
+Du fld_var    Mytype = VARCHAR2
+Du fld_number Mytype = NUMBER
+Du fld_number Mytype = FLOAT
+Du fld_date   Mytype = DATE
+Du fld_blob   Mytype = BLOB
+
+
+----------------------------------------------------------------
+Actor BL_dup . code = DUP
+----------------------------------------------------------------
+
+C 		if(fail) return(fail);
+C 		$CTNcViewBean view = new $CTNcViewBean();
+
+Its attr_select BL_dup2
+
+C 		List<$CTNcViewBean> $CTNls = get$CPNcServiceClient().get$CTNcService().dupCheck$CTNc(view, 0L, 30L );
+C 		if( $CTNls.size() > 0 )
+C 		{
+C 			$CTNcViewBean old_view = ($CTNcViewBean) $CTNls.get(0);
+C 			if( old_view.getActiveInd().equals("Y") )
+C 			{
+C 				errors.reject(null, "Duplicate record");
+C 				fail = true;
+C 			}
+C 			else
+C 			{
+C 				doc.setPkId( old_view.getPkId() );
+C 				doc.setUpdateCnt( old_view.getUpdateCnt() );
+C 				doc.setActiveInd( "Y" );
+C 			}
+C 		}
+
+Stop
+
+----------------------------------------------------------------
+Actor BL_dup_u . code = DUP
+----------------------------------------------------------------
+
+C 		if(fail) return(fail);
+C 		$CTNcViewBean view = new $CTNcViewBean();
+C 		view.setPkId( doc.getPkId() );
+
+Its attr_select BL_dup2
+
+C 		List<$CTNcViewBean> $CTNls = get$CPNcServiceClient().get$CTNcService().dupCheck$CTNc(view, 0L, 30L );
+C 		if( $CTNls.size() > 0 )
+C 		{
+C 			errors.reject(null, "Duplicate record");
+C 			fail = true;
+C 		}
+
+Stop
+
+----------------------------------------------------------------
+Actor BL_dup2 . code = DUP_CHK
+----------------------------------------------------------------
+
+Du trim Mytype = VARCHAR2
+
+C 		view.set$CANc( doc.get$CANc() );
+
+----------------------------------------------------------------
+Actor trim
+----------------------------------------------------------------
+
+C 		if( doc.get$CANc() != null ) doc.set$CANc( doc.get$CANc().trim() );
+
+----------------------------------------------------------------
+Actor fld_blob . Null = N
+----------------------------------------------------------------
+
+C 		if(doc.get$CANc() == null)
+C 		{
+C 			errors.reject(null, "$CAD required");
+C 			fail = true;
+C 		}
+
+----------------------------------------------------------------
+Actor fld_var . Null = N
+----------------------------------------------------------------
+
+C 		if(doc.get$CANc() == null || doc.get$CANc().equals(""))
+C 		{
+C 			errors.reject(null, "$CAD required");
+C 			fail = true;
+C 		}
+
+----------------------------------------------------------------
+Actor fld_number . Null = N
+----------------------------------------------------------------
+
+C 		if(doc.get$CANc() == null || doc.get$CANc() == 0L)
+C 		{
+C 			errors.reject(null, "$CAD required");
+C 			fail = true;
+C 		}
+----------------------------------------------------------------
+Actor fld_date . Null = N
+----------------------------------------------------------------
+
+C 		if(doc.get$CANc() == null )
+C 		{
+C 			errors.reject(null, "$CAD required");
+C 			fail = true;
+C 		}
+
+----------------------------------------------------------------
+Actor fld_text . Null = N
+----------------------------------------------------------------
+
+C 		if(doc.get$CANc() == null || doc.get$CANc().equals(""))
+C 		{
+C 			errors.reject(null, "$CAD required");
+C 			fail = true;
+C 		}
+
+
+
+

@@ -1,0 +1,33 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+All arg validate
+
+----------------------------------------------------------------
+Actor validate .
+----------------------------------------------------------------
+
+C package com.bp.portlet.$AR3l.common.validator;
+C
+C import java.text.SimpleDateFormat;
+C import java.util.Date;
+C import java.util.Locale;
+C
+C import com.bp.portlet.$AR3l.webservice.client.$CCNcServiceClient;
+C import com.bp.portlet.webservice.client.$AR3l.bean.$CTNcBean;
+C
+C /**
+C  * This Validator class will perform validation on an $CTNl record. The following validation is available:
+C  * 
+C  * <ul>
+C  * </ul>
+C  * 
+C  * @author Theo Keyzer
+C  *
+C  */
+C public class $CTNcValidator 
+C {
+C 	private $CCNcServiceClient $CCNlServiceClient;
+C }
+C

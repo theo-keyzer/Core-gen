@@ -1,0 +1,38 @@
+---------------------------------
+Actor main .
+---------------------------------
+
+All arg validate
+
+---------------------------------
+Actor validate
+---------------------------------
+
+C package com.bp.portlet.$AR3.common.validator;
+C
+C import java.text.SimpleDateFormat;
+C import java.util.Date;
+C import java.util.Locale;
+C
+C import com.bp.portlet.$AR3.webservice.client.$AR3cServiceClient;
+C import com.bp.portlet.webservice.client.$AR3.bean.$CTNcBean;
+C
+C public class $CTNcValidator 
+C {
+C 	private $AR3cServiceClient $AR3lServiceClient;
+C 	
+C 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd",Locale.US);
+C 	
+C 	public $AR3cServiceClient get$AR3cServiceClient() {
+C 		return $AR3lServiceClient;
+C 	}
+C 
+C 	public void set$$AR3cServiceClient($AR3cServiceClient $AR3lServiceClient) {
+C 		this.$AR3lServiceClient = $AR3lServiceClient;
+C 	}
+C
+C //	public void validate$CTNcId($CTNcBean $CTNlItem) throws $AR3cValidationException 
+C //	{
+C //		if (($CTNlItem.getId() == null)) throw new $AR3ValidationException("$CTNc id required.");
+C //	}
+C }

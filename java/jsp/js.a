@@ -1,0 +1,38 @@
+---------------------------------
+Actor main .
+---------------------------------
+
+All arg js
+
+---------------------------------
+Actor js
+---------------------------------
+
+C function $CTNlForm_search() {
+C 	document.$CTNlForm.submitAction.value="SEARCH_ACTION";	
+C }
+C function $CTNlForm_new() {
+C 	document.$CTNlForm.submitAction.value="NEW_ACTION";	
+C }
+C function $CTNlForm_edit() {
+C 	document.$CTNlForm.submitAction.value="EDIT_ACTION";	
+C }
+C function $CTNlForm_delete() {
+C 	document.$CTNlForm.submitAction.value="DELETE_ACTION";	
+C 	return confirm('Are you sure you want to delete?')	
+C }
+C function $CTNlForm_cancel() {
+C 	document.$CTNlForm.submitAction.value="CANCEL_ACTION";	
+C }
+C function $CTNlForm_save_new() {
+C 	document.$CTNlForm.submitAction.value="SAVE_NEW_ACTION";	
+C }
+C function $CTNlForm_save_edit() {
+C 	document.$CTNlForm.submitAction.value="SAVE_EDIT_ACTION";
+C }	
+C function $CTNlForm_approve() {
+C 	document.$CTNlForm.submitAction.value="APPROVE_ACTION";	
+C }
+C function $CTNlForm_display() {
+C 	document.$CTNlForm.submitAction.value="DISPLAY_ACTION";	
+C }

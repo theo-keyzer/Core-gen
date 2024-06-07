@@ -1,0 +1,130 @@
+- add in lookup
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+All arg_type_tables service
+
+--------------------------------------------------------
+Actor service .
+--------------------------------------------------------
+
+C package com.bp.portlet.webservice.client.$CPNl.service;
+C
+C import com.bp.portlet.webservice.client.response.bean.ResponseBean;
+
+Its use_tbl import
+
+C import java.util.List;
+C
+C public interface $CCNcService
+C {
+
+Its use_tbl func
+
+C }
+
+----------------------------------------------------------------
+Actor import . Use in primary
+----------------------------------------------------------------
+
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcBean;
+C import com.bp.portlet.webservice.client.$CPNl.bean.$CTNcViewBean;
+
+----------------------------------------------------------------
+Actor func . Use = primary
+----------------------------------------------------------------
+
+C 	public List<$CTNcBean> list$CTNc();
+C 	public List<$CTNcViewBean> dupCheck$CTNc($CTNcViewBean $CTNl, Long rowFrom, Long rowTo);
+C 	public List<$CTNcViewBean> search$CTNc($CTNcViewBean $CTNl, Long rowFrom, Long rowTo);
+C 	public List<$CTNcViewBean> view$CTNc(String filter, Long id, String flags);
+C 	public ResponseBean create$CTNc($CTNcBean $CTNl);
+C 	public ResponseBean update$CTNc($CTNcBean $CTNl);
+C 	public ResponseBean delete$CTNc($CTNcBean $CTNl);
+C 	public $CTNcBean read$CTNc(Long id);
+C
+
+----------------------------------------------------------------
+Actor name . relation = name
+----------------------------------------------------------------
+
+C , String $CANl\
+
+----------------------------------------------------------------
+Actor service .
+----------------------------------------------------------------
+
+C 	public String \
+
+Its type_table set
+	
+C ) throws ServiceException;
+C
+
+Its type_table get
+Its type_table get_view
+
+C 	public String \
+
+Its type_table del
+	
+C ) throws ServiceException;
+C
+
+----------------------------------------------------------------
+Actor set .
+----------------------------------------------------------------
+
+C $CTNlSet(Integer userId, $AR2c$CRNc $CTNl\
+
+Its child_tbl_in_arg_type set2
+
+----------------------------------------------------------------
+Actor set2 .
+----------------------------------------------------------------
+
+C , List<$AR2c$CRNc> $CTNlL\
+
+----------------------------------------------------------------
+Actor del .
+----------------------------------------------------------------
+
+C $CTNlDelete(Integer userId, $AR2c$CRNc $CTNl\
+
+Its child_tbl_in_arg_type del2
+
+----------------------------------------------------------------
+Actor del2 .
+----------------------------------------------------------------
+
+C , List<$AR2c$CRNc> $CTNlL\
+
+
+----------------------------------------------------------------
+Actor get .
+----------------------------------------------------------------
+
+C 	public $AR2c$CRNc $CTNlGet(Integer id) throws ServiceException;
+C
+
+Its child_tbl_in_arg_type get2
+
+----------------------------------------------------------------
+Actor get2 .
+----------------------------------------------------------------
+
+C 	public List<$AR2c$CRNc> $CTNlGet(Integer id) throws ServiceException;
+C
+
+----------------------------------------------------------------
+Actor get_view .
+----------------------------------------------------------------
+
+C 	public List<$AR2c$CRNcView> $CTNlViewGet(String param, Integer pageNo, Integer pageSize) throws ServiceException;
+C
+
+
+
+
+

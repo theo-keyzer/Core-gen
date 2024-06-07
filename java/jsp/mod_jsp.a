@@ -1,0 +1,268 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg body
+
+----------------------------------------------------------------
+Actor body .
+----------------------------------------------------------------
+
+C <%@ include file="/WEB-INF/jsp/include.jsp" %>
+C
+C <div class="portlet-section-header"></div>
+C
+C <div class="portlet-section-body">
+C		
+C 	<portlet:actionURL var="submitActionUrl">
+C 		<portlet:param name="action" value="submitEditForm"/>
+C 	</portlet:actionURL>
+C
+C 	<form:form id="$CTNlForm" name="$CTNlForm" commandName="$CTNlForm" method="post" action="$${submitActionUrl}">
+C 		
+
+Its rel_attr hidden
+Its attr     hidden2 Flag4 = N
+Its rel_attr hidden_d Flag4 = D
+-Its attr     hidden2 Flag4 = D
+
+C 		
+C 		<div><form:errors cssClass="portlet-msg-error" path="*" /></div>		
+C 		
+C 		<table border="0" cellpadding="4">
+
+Its rel_attr no_edit   Flag4 = D
+Its rel_attr fld       Flag4 = Y
+
+C 		</table>
+C	
+C 		<br><br>
+C		
+C 		<input type="submit" name="Save" value="<spring:message code="button.save.$CPNl.$CTNl"/>" onclick="javascript: $CTNlForm_save_edit();"/>&nbsp;&nbsp;
+C 		<input type="submit" name="Cancel" value="<spring:message code="button.cancel.$CPNl.$CTNl"/>" onclick="javascript: $CTNlForm_cancel();"/>
+C 		<input type="submit" name="Delete" value="<spring:message code="button.delete.$CPNl.$CTNl"/>" onclick="javascript: return $CTNlForm_delete();"/>
+
+Its rel_attr pdf_button
+
+C 				
+C 	</form:form>
+
+Its rel_attr pdf
+	
+C </div>
+C 
+C <div class="portlet-section-footer">
+C </div>
+C
+
+----------------------------------------------------------------
+Actor pdf_button . relation = file
+----------------------------------------------------------------
+
+C 		<input type="submit" name="View" value="View document" onclick="javascript: $CTNlForm_display();"/>
+
+----------------------------------------------------------------
+
+Actor pdf . relation = file
+----------------------------------------------------------------
+
+C 	<c:if test="$${documentDisplayUrl != null}">
+C 		<div>
+C 			<iframe src="<html:rootPath/>$${documentDisplayUrl}" width="900px" height="450px"></iframe>
+C 		</div>
+C 	</c:if>
+
+
+----------------------------------------------------------------
+Actor no_edit . relation in none,name,lookup,calculate
+----------------------------------------------------------------
+
+Du no_var    Mytype = CHAR
+Du no_var    Mytype = TEXT
+Du no_var    Mytype = VARCHAR2
+
+----------------------------------------------------------------
+Actor no_var .
+----------------------------------------------------------------
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td><form:input cssClass="portlet-form-input-field" path="$CTNl.$CANl" size="30" readonly="true" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = lookup
+----------------------------------------------------------------
+
+Du fld_var
+
+----------------------------------------------------------------
+Actor fld . relation in none,name,calculate
+----------------------------------------------------------------
+
+Du fld_var    Mytype = CHAR
+Du fld_text   Mytype = TEXT
+Du fld_var    Mytype = VARCHAR2
+Du fld_number Mytype = NUMBER
+Du fld_number Mytype = FLOAT
+Du fld_date   Mytype = DATE
+
+
+----------------------------------------------------------------
+Actor fld_var .
+----------------------------------------------------------------
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="$CTNl.$CANl" size="30" maxlength="$CAL" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld_number .
+----------------------------------------------------------------
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="$CTNl.$CANl" size="30" maxlength="$CAL" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld_date .
+----------------------------------------------------------------
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td>
+C 					<form:input cssClass="portlet-form-input-field" id="$CANl" path="$CTNl.$CANl" size="30" />
+C 					<img src="<html:imagesPath/>dtp.gif" title='Click Here' alt='Click Here' onclick=" scwShow(scwID('$CANl'),event);" />
+C 				</td>					
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = hidden
+----------------------------------------------------------------
+
+C 			<c:if test="$${isRol$HRN != null}">
+C 				<tr>
+C 					<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 					<td colspan="3"><form:input cssClass="portlet-form-input-field" path="$CTNl.$CANl" size="30" maxlength="$CAL" /></td>
+C 				</tr>
+C 			</c:if>
+
+----------------------------------------------------------------
+Actor fld . relation = pk-x
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="$CTNl.$CANl" size="30" maxlength="$CAL" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld_text .
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:textarea cssClass="portlet-form-input-field" path="$CTNl.$CANl" rows="5" cols="30" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = dropdown
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td>
+C 					<form:select cssClass="portlet-form-input-field" path="$CTNl.$CANl" multiple="false" style="width: 18em;" size="1">
+C 						<form:option value=""> </form:option>
+C 						<c:forEach var="$FTNlItem" items="$${$FTNlItems}">
+C 							<form:option value="$${$FTNlItem.$FINl}">$${$FTNlItem.displayFld}</form:option>
+C 						</c:forEach>
+C 					</form:select>
+C 				</td>
+C 			</tr>	
+
+----------------------------------------------------------------
+Actor fld . relation = select
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td>
+C 					<form:select cssClass="portlet-form-input-field" path="$CTNl.$CANl" multiple="false" style="width: 18em;" size="1">
+C 						<form:option value=""> </form:option>
+
+Its select_data decode
+
+C 					</form:select>
+C 				</td>
+C 			</tr>
+
+
+----------------------------------------------------------------
+Actor decode .
+----------------------------------------------------------------
+
+C 							<form:option value="$CDN">$CDV</form:option>
+
+----------------------------------------------------------------
+Actor hidden . relation = pk
+----------------------------------------------------------------
+
+C 		<form:hidden $CANl="submitAction" path="submitAction"/>
+-C 		<form:hidden path="$CTNl.$CANl" />
+C 		<form:hidden path="$CTNl.updateCnt" />
+
+----------------------------------------------------------------
+Actor hidden . relation in dropdown
+----------------------------------------------------------------
+
+- need old value
+
+C 		<form:hidden path="old$CTNc.$CANl" />
+
+----------------------------------------------------------------
+Actor hidden . relation in select
+----------------------------------------------------------------
+
+- need old value
+
+Its select BL_func
+
+----------------------------------------------------------------
+Actor BL_func . code = APPR
+----------------------------------------------------------------
+
+C 		<form:hidden path="old$CTNc.$CANl" />
+
+----------------------------------------------------------------
+Actor hidden_d . relation in dropdown
+----------------------------------------------------------------
+
+- does not display yet
+
+C 		<form:hidden path="$CTNl.$CANl" />
+
+----------------------------------------------------------------
+Actor hidden_d . relation in select
+----------------------------------------------------------------
+
+- does not display yet
+
+C 		<form:hidden path="$CTNl.$CANl" />
+
+
+----------------------------------------------------------------
+Actor hidden2 . Mytype != BLOB
+----------------------------------------------------------------
+
+C 		<form:hidden path="$CTNl.$CANl" />
+
+----------------------------------------------------------------
+Actor hidden . relation = none
+----------------------------------------------------------------
+
+-C 		<form:hidden path="target$CTNcRecord.$CPNl.$CANl" />
+
+----------------------------------------------------------------
+Actor hidden . relation = text
+----------------------------------------------------------------
+
+-C 		<form:hidden path="target$CTNcRecord.$CPNl.$CANl" />

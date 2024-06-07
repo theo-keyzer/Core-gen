@@ -1,0 +1,108 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+	All arg body
+
+----------------------------------------------------------------
+Actor body .
+----------------------------------------------------------------
+
+C <%@ include file="/WEB-INF/jsp/include.jsp" %>
+C
+C <div class="portlet-section-header"></div>
+C
+C <div class="portlet-section-body">
+C		
+C 	<portlet:actionURL var="submitActionUrl">
+C 		<portlet:param name="action" value="submitEditForm"/>
+C 	</portlet:actionURL>
+C
+C 	<form:form id="$CTNlForm" name="$CTNlForm" commandName="$CTNlForm" method="post" action="$${submitActionUrl}">
+C 		
+
+Its rel_attr hidden
+
+C 		
+C 		<div><form:errors cssClass="portlet-msg-error" path="*" /></div>		
+C 		
+C 		<table border="0" cellpadding="4">
+
+Its rel_attr fld
+
+C 		</table>
+C	
+C 		<br><br>
+C		
+C 		<input type="submit" name="Save" value="<spring:message code="button.save.$CPNl.$CTNl"/>" onclick="javascript: $CTNlForm_save();"/>&nbsp;&nbsp;
+C 		<input type="submit" name="Cancel" value="<spring:message code="button.cancel.$CPNl.$CTNl"/>" onclick="javascript: $CTNlForm_cancel();"/>
+C 		<input type="submit" name="Delete" value="<spring:message code="button.delete.prm.$CTNl"/>" onclick="javascript: $CTNlForm_delete();"/>
+C 				
+C 	</form:form>	
+C </div>
+C 
+C <div class="portlet-section-footer">
+C </div>
+C
+
+----------------------------------------------------------------
+Actor fld . relation in none,name
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="$CTNl.$CANl" size="$CAL" maxlength="10" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = pk-x
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="$CTNl.$CANl" size="$CAL" maxlength="10" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = text
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:textarea cssClass="portlet-form-input-field" path="$CTNl.$CANl" rows="5" cols="30" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = dropdown
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="$CPNl.$CTNl.$CANl.label"/>&nbsp;&nbsp;</td>
+C 				<td>
+C 					<form:select cssClass="portlet-form-input-field" path="$CTNl.$CANl" multiple="false" size="1">
+C 						<c:forEach var="$FTNlItem" items="$${$FTNlItems}">
+C 							<form:option value="$${$FTNlItem.pkId}">$${$FTNlItem.$FNNl}</form:option>
+C 						</c:forEach>
+C 					</form:select>
+C 				</td>
+C 			</tr>	
+
+----------------------------------------------------------------
+Actor hidden . relation = pk
+----------------------------------------------------------------
+
+C 		<form:hidden $CANl="submitAction" path="submitAction"/>
+C 		<form:hidden path="$CTNl.$CANl" />
+C 		<form:hidden path="$CTNl.updateCnt" />
+
+----------------------------------------------------------------
+Actor hidden . relation = none
+----------------------------------------------------------------
+
+-C 		<form:hidden path="target$CTNcRecord.$CPNl.$CANl" />
+
+----------------------------------------------------------------
+Actor hidden . relation = text
+----------------------------------------------------------------
+
+-C 		<form:hidden path="target$CTNcRecord.$CPNl.$CANl" />

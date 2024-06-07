@@ -1,0 +1,46 @@
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+C mkdir $AR2\$AR3\view
+
+All arg_type_tables P
+
+--------------------------------------------------------
+Actor P .
+--------------------------------------------------------
+
+C mkdir $AR2\$AR3\service\$CPD 
+C mkdir $AR2\$AR3\service\$CPD\impl
+C mkdir $AR2\$AR3\webservice\client\$CPD 
+C mkdir $AR2\$AR3\webservice\client\$CPD\proxy
+
+C mkdir $AR2\$AR3\portlet\$CPD\common\validator
+
+Its use_tbl S
+
+
+----------------------------------------------------------------
+Actor S .
+----------------------------------------------------------------
+
+C mkdir $AR2\$AR3\portlet\$CPD\$CCNl\controller
+C mkdir $AR2\$AR3\portlet\$CPD\$CCNl\form
+C mkdir $AR2\$AR3\portlet\$CPD\$CCNl\validator
+
+Its use_tbl T
+
+----------------------------------------------------------------
+Actor T . Use in primary
+----------------------------------------------------------------
+
+C mkdir $AR2\$AR3\service\data\rowmappers\$CPD
+C mkdir $AR2\$AR3\service\data\entity\$CPD 
+C mkdir $AR2\$AR3\service\data\$CPD 
+C mkdir $AR2\$AR3\service\data\$CPD\impl
+C mkdir $AR2\$AR3\webservice\client\$CPD 
+C mkdir $AR2\$AR3\webservice\client\$CPD\service
+C mkdir $AR2\$AR3\webservice\client\$CPD\bean
+C mkdir $AR2\$AR3\webservice\client\$CPD\marshaller
+C mkdir $AR2\$AR3\jsp\$CPD\$CCNl
+C mkdir $AR2\$AR3\js\$CPD\$CCNl

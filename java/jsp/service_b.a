@@ -1,0 +1,117 @@
+- fix by code,allowance
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+All arg_type_tables service
+
+--------------------------------------------------------
+Actor service .
+--------------------------------------------------------
+
+C package com.bp.hr.service.$CPNl.impl;
+C
+C import java.util.List;
+C
+C import org.osoa.sca.annotations.Service;
+C import org.springframework.dao.DataAccessException;
+C 
+C import com.bp.hr.service.$CPNl.$CCNcWebService;
+C import com.bp.hr.service.data.$CPNl.$CCNcDAO;
+
+Its use_tbl import
+
+C import com.bp.hr.service.response.Response;
+C import com.dimensiondata.common.logging.LogLevel;
+C import com.dimensiondata.common.logging.impl.LoggerFactory;
+C import com.dimensiondata.common.logging.impl.ServiceLogger;
+C
+C /**
+C  * Service implementation class for {@link $CCNcWebService} interface.
+C  * @author Theo.Keyzer
+C  *
+C  */
+C
+C @Service($CCNcWebService.class)
+C public class $CCNcWebServiceImpl implements $CCNcWebService
+C {
+C 	private ServiceLogger logger;
+C 	protected $CCNcDAO $CCNlDAO;
+C
+C 	public $CCNcWebServiceImpl(){
+C 		this.logger = LoggerFactory.getServiceLogger("$CCNcWebService");
+C 	}
+C
+C 	public $CCNcDAO get$CCNcDAO() {
+C 		return $CCNlDAO;
+C 	}
+C 
+C 	public void set$CCNcDAO($CCNcDAO $CCNlDAO) {
+C 		this.$CCNlDAO = $CCNlDAO;
+C 	}
+C
+
+Its use_tbl func
+
+C }
+
+
+----------------------------------------------------------------
+Actor import . Use in search,view,chkRole
+----------------------------------------------------------------
+
+C import com.bp.hr.service.data.entity.$CPNl.$CTNcView;
+
+----------------------------------------------------------------
+Actor func . Use in search
+----------------------------------------------------------------
+
+C 	public List<$CTNcView> search$CTNc($CTNcView $CTNl, Long rowFrom, Long rowTo) {
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Getting all $CTNl view records");	
+C 			List<$CTNcView> list = $CCNlDAO.search$CTNc($CTNl, rowFrom, rowTo);
+C 			logger.log(LogLevel.DEBUG,"Getting all $CTNl view records successfull");
+C 			return list;
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Getting all $CTNl view records failed!",e);
+C 		}	
+C 		return null;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func . Use in view
+----------------------------------------------------------------
+
+C 	public List<$CTNcView> view$CTNc(String filter, Long id, String flags) {
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Getting all $CTNlView records");	
+C 			List<$CTNcView> list = $CCNlDAO.view$CTNc(filter, id, flags);
+C 			logger.log(LogLevel.DEBUG,"Getting all $CTNlView records successfull");
+C 			return list;
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Getting all $CTNlView records failed!",e);
+C 		}	
+C 		return null;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func . Use in chkRole
+----------------------------------------------------------------
+
+C 	public $CTNcView chk$CTNc($CTNcView $CTNl) {
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Check $CTNl ");	
+C 			$CTNl = $CCNlDAO.chk$CTNc($CTNl);
+C 			logger.log(LogLevel.DEBUG,"Check $CTNl successfull");
+C 			return $CTNl;
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Check $CTNl failed!",e);
+C 		}	
+C 		return null;
+C 	}
+C
+
+
+

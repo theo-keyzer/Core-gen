@@ -1,0 +1,50 @@
+----------------------------------------------------------------
+
+Actor main .
+
+----------------------------------------------------------------
+
+
+
+All arg_use_tbl service
+
+
+
+----------------------------------------------------------------
+
+Actor service .
+
+----------------------------------------------------------------
+
+
+C <?xml version="1.0" encoding="UTF-8"?>
+
+C <composite xmlns="http://www.osoa.org/xmlns/sca/1.0"
+
+C 	targetNamespace="http://bp"
+
+C 	xmlns:bp="http://bp"
+
+C     name="$CCNc">
+
+C     
+
+C     <service name="$CCNcService" promote="$CCNcServiceComponent">
+
+C         <interface.java interface="com.bp.hr.service.prm.$CCNcWebService"/>
+
+C         <binding.ws uri="http://localhost:7004/bp-services/$CCNcWebService"/>
+
+C     </service>
+
+C 
+
+C     <component name="$CCNcServiceComponent">
+
+C         <implementation.spring location="META-INF/spring/bp-$CCNl-service.xml"/>
+
+C     </component>
+
+C  
+
+C </composite>

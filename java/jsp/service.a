@@ -1,0 +1,248 @@
+- fix by code,allowance
+--------------------------------------------------------
+Actor main .
+--------------------------------------------------------
+
+All arg_type_tables service
+
+--------------------------------------------------------
+Actor service .
+--------------------------------------------------------
+
+C package com.bp.hr.service.$CPNl.impl;
+C
+C import java.util.List;
+C
+C import org.osoa.sca.annotations.Service;
+C import org.springframework.dao.DataAccessException;
+C 
+C import com.bp.hr.service.$CPNl.$CCNcWebService;
+
+Its use_tbl import
+
+C import com.bp.hr.service.response.Response;
+C import com.dimensiondata.common.logging.LogLevel;
+C import com.dimensiondata.common.logging.impl.LoggerFactory;
+C import com.dimensiondata.common.logging.impl.ServiceLogger;
+C
+C /**
+C  * Service implementation class for {@link $CCNcWebService} interface.
+C  * @author Theo.Keyzer
+C  *
+C  */
+C
+C @Service($CCNcWebService.class)
+C public class $CCNcWebServiceImpl implements $CCNcWebService
+C {
+C 	private ServiceLogger logger;
+
+Its use_tbl var
+
+C 	public $CCNcWebServiceImpl(){
+C 		this.logger = LoggerFactory.getServiceLogger("$CCNcWebService");
+C 	}
+C
+
+Its use_tbl setter
+Its use_tbl func
+
+C }
+
+
+----------------------------------------------------------------
+Actor import . Use in primary
+----------------------------------------------------------------
+
+C import com.bp.hr.service.data.$CPNl.$CCNcDAO;
+C import com.bp.hr.service.data.entity.$CPNl.$CTNc;
+C import com.bp.hr.service.data.entity.$CPNl.$CTNcView;
+
+----------------------------------------------------------------
+Actor var . Use in primary
+----------------------------------------------------------------
+
+C 	protected $CCNcDAO $CCNlDAO;
+
+----------------------------------------------------------------
+Actor setter . Use in primary
+----------------------------------------------------------------
+
+C 	public $CCNcDAO get$CCNcDAO() {
+C 		return $CCNlDAO;
+C 	}
+C 
+C 	public void set$CCNcDAO($CCNcDAO $CCNlDAO) {
+C 		this.$CCNlDAO = $CCNlDAO;
+C 	}
+C
+
+
+----------------------------------------------------------------
+Actor func . Use in crud
+----------------------------------------------------------------
+
+C 	public Response create$CTNc($CTNc $CTNl) {
+C 		Response response = new Response();
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Creating a $CTNl record");	
+C 			int cnt = $CCNlDAO.create$CTNc($CTNl);	
+C 			if(cnt < 0)
+C 			{
+C 				logger.log(LogLevel.ERROR,"Create $CTNl failed!");
+C 				response.setStatusCode(false);
+C 				response.setMessage("Duplicate record "  );
+C 				return response;
+C 			}
+C 			logger.log(LogLevel.DEBUG,"$CTNc record created successfully");
+C 			response.setStatusCode(true);
+C 			response.setMessage("$CTNc record created successfull");
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"$CTNc record creation failed!",e);
+C 			response.setStatusCode(false);
+C 			response.setMessage("$CTNc record creation failed! " + e.getMessage() );
+C 		}	
+C 		return response;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func . Use in crud
+----------------------------------------------------------------
+
+C 	public $CTNc read$CTNc(Long id) {
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Getting $CTNl");	
+C 			$CTNc $CTNl = $CCNlDAO.read$CTNc(id);
+C 			logger.log(LogLevel.DEBUG,"Getting $CTNl successfull");
+C 			return $CTNl;
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Getting $CTNl failed!",e);
+C 		}	
+C 		return null;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func . Use in crud
+----------------------------------------------------------------
+
+C 	public Response update$CTNc($CTNc $CTNl) {
+C 		Response response = new Response();
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Updating $CTNl");	
+C 			int cnt = $CCNlDAO.update$CTNc($CTNl);
+C 			if(cnt == 0)
+C 			{
+C 				logger.log(LogLevel.ERROR,"Updating (0) $CTNl failed!");
+C 				response.setStatusCode(false);
+C 				response.setMessage("Record updated by another user! "  );
+C 				return response;
+C 			}
+C 			logger.log(LogLevel.DEBUG,"Updating $CTNl successfull");
+C 			response.setStatusCode(true);
+C 			response.setMessage("Updating $CTNl successfull");
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Updating $CTNl failed!",e);
+C 			response.setStatusCode(false);
+C 			response.setMessage("Updating $CTNl failed! " + e.getMessage() );
+C 		}	
+C 		return response;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func . Use in crud
+----------------------------------------------------------------
+
+C 	public Response delete$CTNc($CTNc $CTNl) 
+C 	{
+C 		Response response = new Response();
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Deleting an $CTNl record");	
+C 			int cnt = $CCNlDAO.delete$CTNc($CTNl);
+C 			if(cnt == 0)
+C 			{
+C 				logger.log(LogLevel.ERROR,"Delete (0) $CTNl failed!");
+C 				response.setStatusCode(false);
+C 				response.setMessage("Record updated by another user! "  );
+C 				return response;
+C 			}
+C 			logger.log(LogLevel.DEBUG,"Deleting an $CTNl record successfull");
+C 			response.setStatusCode(true);
+C 			response.setMessage("Deleting an $CTNl record successfull");
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Deleting an $CTNl record failed!",e);
+C 			response.setStatusCode(false);
+C 			response.setMessage("Deleting an $CTNl record failed! " + e.getMessage() );
+C 		}
+C 		return response;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor func . Use in list
+----------------------------------------------------------------
+
+C 	public List<$CTNc> list$CTNc() {
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Getting all $CTNl records");	
+C 			List<$CTNc> list = $CCNlDAO.list$CTNc();
+C 			logger.log(LogLevel.DEBUG,"Getting all $CTNl records successfull");
+C 			return list;
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Getting all $CTNl records failed!",e);
+C 		}	
+C 		return null;
+C 	}
+C
+C 	public List<$CTNcView> dupCheck$CTNc($CTNcView $CTNl, Long rowFrom, Long rowTo) {
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Getting all $CTNl view records");	
+C 			List<$CTNcView> list = $CCNlDAO.dupCheck$CTNc($CTNl, rowFrom, rowTo);
+C 			logger.log(LogLevel.DEBUG,"Getting all $CTNl view records successfull");
+C 			return list;
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Getting all $CTNl view records failed!",e);
+C 		}	
+C 		return null;
+C 	}
+C
+C 	public List<$CTNcView> search$CTNc($CTNcView $CTNl, Long rowFrom, Long rowTo) {
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Getting all $CTNl view records");	
+C 			List<$CTNcView> list = $CCNlDAO.search$CTNc($CTNl, rowFrom, rowTo);
+C 			logger.log(LogLevel.DEBUG,"Getting all $CTNl view records successfull");
+C 			return list;
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Getting all $CTNl view records failed!",e);
+C 		}	
+C 		return null;
+C 	}
+C
+C 	public List<$CTNcView> view$CTNc(String filter, Long id, String flags) {
+C 		try {
+C 			logger.log(LogLevel.DEBUG, "Getting all $CTNlView records");	
+C 			List<$CTNcView> list = $CCNlDAO.view$CTNc(filter, id, flags);
+C 			logger.log(LogLevel.DEBUG,"Getting all $CTNlView records successfull");
+C 			return list;
+C 		} catch (Exception e) {
+C 			logger.log(LogLevel.ERROR,"Getting all $CTNlView records failed!",e);
+C 		}	
+C 		return null;
+C 	}
+C
+
+----------------------------------------------------------------
+Actor name . relation = name
+----------------------------------------------------------------
+
+C , String $CANl\
+
+----------------------------------------------------------------
+Actor add_name . relation = name
+----------------------------------------------------------------
+
+C , $CANl\
+
+
+
