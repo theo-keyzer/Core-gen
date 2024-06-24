@@ -472,7 +472,8 @@ The core-gen is a boot strap to generate the application generator.
 For this it needs the graph diagram of the input. The app generator
 is then hard coded to navigate this graph.
 
-For now see the other docs for more detail.
+The `Its` command navigates from the current node to other nodes via its relations.
+The `All` command, navigates to all node of a type.
 
 A `Ref` links a nodes's field to some other node. It can only link to nodes
 that do not have a parent (top level nodes). These are done in the first pass.
@@ -645,6 +646,38 @@ The refs have an option flag to specify how to deal with `not found` errors. If 
 then it will be an error. If it is `?`, then there is no error.
 Otherwise it is the optional value to use when none. It is an error if not found and the value looking for is different to this.
 It can be `(.)` or anything else like `None`.
+
+The  core generator is the building blocks needed to define the input schema to generate the application generator.
+Each generator has its own schema, but the the run-time engine is common to all.
+
+The generated code of the generators is used to load input files, navigate between nodes and get values from a node. The run-time engine uses a script like file that interacts with the generated code.
+
+The unit files (schema) define what the input files look like. The loader loads the input into the generated classes and build up the the relations between them.
+The loader is generated based on the unit files.
+The core generator has the generated loader and classes for loading and navigating unit files.
+
+
+# Refs_conv
+
+Motivation for Conversion:
+
+The primary motivation for simplifying the join syntax should be to improve accessibility for novice users. By offering a more intuitive and self-documenting approach, you can lower the learning curve and encourage wider adoption of the system.
+
+Benefits of a Custom DSL for Input:
+
+Here's a breakdown of the value proposition of a custom Domain-Specific Language (DSL) for input:
+
+    Reduced Complexity: A custom DSL can provide a more concise and focused language specifically tailored to defining data models and their relationships. This reduces the need for users to learn a general-purpose programming language or a complex configuration format.
+    Improved Readability: Custom DSLs can leverage keywords and syntax conventions that are meaningful within the context of the data model. This makes the input files easier to understand and maintain, especially for non-technical users.
+    Error Prevention: By enforcing specific structures and validation rules within the DSL, you can help prevent syntax errors and invalid configurations during input definition. This leads to more robust and reliable data models.
+    Extensibility: A well-designed custom DSL can be extended to accommodate future requirements without significantly altering the existing syntax. This allows for future growth and adaptation of the system.
+    Separation of Concerns: Defining input using a dedicated DSL separates the data model from the processing logic of the application. This promotes code clarity and maintainability.
+
+Added the `Join` to the generator for the `app/tst/def_unit.act` to convert the refs usable for the `unit` files.
+
+The `Join attr to Attr` will find a path to the `Attr` and create the `Element` and the refs to link them.
+The `Join a to A using frame`, will use `frame` element to find the `A` comp.
+The `Join table from Type using attr Attr table` will copy the `table` field from the comp referenced by the `attr` element.
 
 
 
