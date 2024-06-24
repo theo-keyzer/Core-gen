@@ -1,0 +1,97 @@
+----------------------------------------------------------------
+Comp Domain parent . Find
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+	Element pad        C1 WORD       * padding
+	Element info       V1 WORD       * info
+
+----------------------------------------------------------------
+Comp Model parent Domain FindIn
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+	Element pad        C1 WORD       * padding
+	Element info       V1 WORD       * info
+
+----------------------------------------------------------------
+Comp Frame parent Model FindIn
+----------------------------------------------------------------
+
+	Element group      N1 WORD       * search navigation group index tree
+-	Element domain     RS Domain     * ref to domain
+	Element name       C1 WORD       * frame name
+	Element pad        C1 WORD       * padding
+	Element info       V1 WORD       * info
+
+-Ref domain Domain .
+
+Join domain to Domain
+
+----------------------------------------------------------------
+Comp A parent Frame FindIn
+----------------------------------------------------------------
+* Use domain from parent
+* The U0 is a hidden field - only has the pointer
+----------------------------------------------------------------
+
+-	Element domain     U0 Domain     * the domain of frame
+-	Element model      LS Model      * ref to model
+	Element name       C1 WORD       * a name
+	Element pad        C1 WORD       * padding
+	Element info       V1 WORD       * info
+
+-Refu domain Domain parent Frame domain .
+-Ref2 model Model domain ?
+
+Join domain from Domain parent Frame domain
+Join model to Model using domain
+
+----------------------------------------------------------------
+Comp Use parent A
+----------------------------------------------------------------
+
+-	Element model      U0 Model      * the model of a
+-	Element frame      LS Frame      * ref to frame
+-	Element a          L1 A          * ref to a in frame
+	Element pad        C1 WORD       * padding
+	Element info       V1 WORD       * info
+
+-Refu model Model parent A model .
+-Ref2 frame Frame model .
+-Ref2 a A frame .
+
+Join model from Model using parent A model
+Join frame to Frame using model
+Join a to A using frame
+
+----------------------------------------------------------------
+Comp Grid parent . Find
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * grid
+	Element file       C1 WORD       * optional file to include
+	Element info       V1 WORD       * info
+
+----------------------------------------------------------------
+Comp Col parent Grid FindIn
+----------------------------------------------------------------
+
+	Element name       R1 WORD       * column name, optional ref to another grid
+	Element index      N1 WORD       * document index tree
+	Element group      N1 WORD       * search navigation group index tree
+	Element file       C1 WORD       * optional file to include
+	Element info       V1 WORD       * info
+
+Ref name Grid ?
+
+----------------------------------------------------------------
+Comp R parent Col FindIn
+----------------------------------------------------------------
+
+	Element name       R1 WORD       * name, optional ref to another grid
+	Element file       C1 WORD       * optional file to include
+	Element info       V1 WORD       * info
+
+Ref name Grid ?
+

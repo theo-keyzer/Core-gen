@@ -13,6 +13,7 @@ class ActT:
         self.ap_ref = []
         self.ap_ref2 = []
         self.ap_refu = []
+        self.ap_join = []
         self.ap_actor = []
         self.ap_all = []
         self.ap_du = []
@@ -33,6 +34,7 @@ class GlobT:
     def __init__(self):
         self.load_errs = False
         self.run_errs = False
+        self.lno = "near line 1"
         self.acts = ActT()
         self.dats = ActT()
         self.vars = {}
@@ -42,6 +44,7 @@ class GlobT:
         self.wins = []
         self.winp = -1
         self.is_in = False
+        self.is_out = True
         self.ins = ""
 
 class Kp:
@@ -93,6 +96,8 @@ class KpComp(Kp):
         self.ref2_to = len( act.ap_ref2 )
         self.refu_from = len( act.ap_refu )
         self.refu_to = len( act.ap_refu )
+        self.join_from = len( act.ap_join )
+        self.join_to = len( act.ap_join )
         na = ff.getw( ff.lines[ln], 1 )
         self.names[ "name" ] = na
         act.index[ "Comp_" + na ] = self.me
@@ -173,6 +178,16 @@ class KpComp(Kp):
                         return(ret)
                     continue
                 ret = go_act(glob.dats.ap_refu[i], glob, act)
+                if ret != 0:
+                    return(ret)
+        if what[0] == "Join":
+            for i in range( self.join_from, self.join_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_join[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
+                ret = go_act(glob.dats.ap_join[i], glob, act)
                 if ret != 0:
                     return(ret)
         if what[0] == "parent" and self.k_parentp >= 0:
@@ -600,6 +615,54 @@ class KpRefu(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_comp[ self.k_comp_refp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_comp[ self.k_comp_refp ], glob, act) )
+        return(0)
+
+class KpJoin(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_join)
+        self.all_from = len( act.kp_all )
+        self.all_to = len( act.kp_all )
+        self.names = {}
+        self.names["k_comp"] = "Join"
+        self.names["k_me"] = str( self.me )
+        self.names[ "element" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "dir" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "comp" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "using" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "element2" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "comp2" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "element3" ] = ff.getw( ff.lines[ln], 1 )
+        self.k_parentp = -2
+        i = len( act.ap_comp )
+        if i > 0:
+            act.ap_comp[i-1].all_to = self.me2 + 1
+            act.ap_comp[i-1].join_to = self.me + 1
+            self.k_parentp = i-1
+        else:
+            print( "No Comp parent for Join" )
+            self.err = True
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+            return( act.ap_comp[ self.k_parentp ].get_var(act, na[1:], lno) )
+        try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Join?", True );
+            return( self.names[ na[0] ], False )
+        except:
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Join?", True );
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "parent" and self.k_parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_comp[ self.k_parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_comp[ self.k_parentp ], glob, act) )
         return(0)
 
 class KpActor(Kp):
@@ -1054,6 +1117,12 @@ def do_all(glob, what: List[str], act: int) -> int:
     if what[0] == "Refu":
         for i in range(len(glob.dats.ap_refu)):
             ret = go_act(glob.dats.ap_refu[i], glob, act)
+            if ret != 0:
+                return ret
+        return 0
+    if what[0] == "Join":
+        for i in range(len(glob.dats.ap_join)):
+            ret = go_act(glob.dats.ap_join[i], glob, act)
             if ret != 0:
                 return ret
         return 0

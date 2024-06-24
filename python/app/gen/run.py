@@ -88,6 +88,16 @@ def load(act, ff: Input, tok: str, ln: int, lno: str) -> bool:
         flag = []
         if len(ss) > 1:
             flag = ss[1].split('.')
+        if ss[0] == "Join":
+            kp = structs.KpJoin(ff, ln, act, lno,flag)
+            err = err or kp.err
+            act.ap_join.append(kp)
+            act.kp_all.append(kp)
+        ss = tok.split('.',1)
+        flag = ""
+        flag = []
+        if len(ss) > 1:
+            flag = ss[1].split('.')
         if ss[0] == "Actor":
             kp = structs.KpActor(ff, ln, act, lno,flag)
             err = err or kp.err

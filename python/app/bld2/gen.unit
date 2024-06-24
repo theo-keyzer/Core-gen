@@ -110,6 +110,20 @@ Comp Refu parent Comp
 Ref element  Element check
 Ref comp     Comp    check
 Ref comp_ref Comp    check
--Ref element2 Element .
 	
+----------------------------------------------------------------
+Comp Join parent Comp
+----------------------------------------------------------------
+* Add refs for this join
+----------------------------------------------------------------
+
+	Element element  C1 WORD
+	Element dir      C1 WORD
+	Element comp     C1 WORD
+	Element using    C1 WORD
+	Element element2 C1 WORD
+	Element comp2    C1 WORD
+	Element element3 C1 WORD
+
+Join model to Model
 

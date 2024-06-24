@@ -10,6 +10,7 @@ class WinT:
         self.dat = structs.Kp()
         self.name = ""
         self.item = ""
+        self.items = []
         self.arg = ""
         self.lcnt = 0
         self.brk_act = False
@@ -39,12 +40,14 @@ def go_act(dat, glob, act):
         return(0)
     name = glob.acts.ap_actor[act].k_name
     glob.winp += 1
+    inc_cnt = True
     glob.wins[glob.winp].dat = dat;
     glob.wins[glob.winp].name = name
     prev = False
     for a in range(len(glob.acts.ap_actor)):
         if name != glob.acts.ap_actor[a].k_name:
             continue
+        glob.lno = glob.acts.ap_actor[a].line_no
         attr = glob.acts.ap_actor[a].k_attr
         val = glob.acts.ap_actor[a].k_value
         cc = glob.acts.ap_actor[a].k_cc
@@ -65,7 +68,9 @@ def go_act(dat, glob, act):
             ps,err = strs(glob, cc, glob.winp, lno, True, True)
             print(ps)
         glob.wins[glob.winp].cur_act = a
-        glob.wins[glob.winp].lcnt += 1
+        if inc_cnt:
+            glob.wins[glob.winp].lcnt += 1
+            inc_cnt = False
         ret = go_cmds(dat, glob, a)
         if ret == 0 or ret == 3:
             continue
@@ -87,6 +92,7 @@ def go_cmds(dat, glob, act: int) -> int:
     for c in range(glob.acts.ap_actor[act].all_from, glob.acts.ap_actor[act].all_to):
         glob.wins[glob.winp].cur_pos = c
         cmd = glob.acts.kp_all[c]
+        glob.lno = cmd.line_no
         if isinstance(cmd,structs.KpIn):
             if cmd.k_flag == "on":
                 glob.is_in = True
@@ -99,35 +105,38 @@ def go_cmds(dat, glob, act: int) -> int:
                 continue
             trig(glob, glob.winp)
             cc = cmd
-            if 'r' in cmd.flag:
-                st = cmd.k_desc
-            else:
-                st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
-            if glob.is_in:
-                glob.ins += st + "\n"
-            else:
-                print( st )
+            if glob.is_out:
+                if 'r' in cmd.flag:
+                    st = cmd.k_desc
+                else:
+                    st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
+                if glob.is_in:
+                    glob.ins += st + "\n"
+                else:
+                    print( st )
         if isinstance(cmd,structs.KpCs):
             if glob.wins[glob.winp].is_on and not glob.wins[glob.winp].is_trig:
                 continue
             trig(glob, glob.winp)
             cc = cmd
-            if 'r' in cmd.flag:
-                st = cmd.k_desc
-            else:
-                st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
-            if glob.is_in:
-                glob.ins += st
-            else:
-                print( st, end="" )
+            if glob.is_out:
+                if 'r' in cmd.flag:
+                    st = cmd.k_desc
+                else:
+                    st,err = strs(glob, cc.k_desc, glob.winp, cc.line_no, False, True)
+                if glob.is_in:
+                    glob.ins += st
+                else:
+                    print( st, end="" )
         elif isinstance(cmd,structs.KpCf):
             if glob.wins[glob.winp].lcnt == 0:
                 cf = cmd
-                st,err = strs(glob, cf.k_desc, glob.winp, cf.line_no, False, True)
-                if glob.is_in:
-                    glob.ins += st + "\n"
-                else:
-                    print(st)
+                if glob.is_out:
+                    st,err = strs(glob, cf.k_desc, glob.winp, cf.line_no, False, True)
+                    if glob.is_in:
+                        glob.ins += st + "\n"
+                    else:
+                        print(st)
         elif isinstance(cmd,structs.KpAll):
             all = cmd
             val,err = strs(glob, all.k_args, glob.winp, cmd.line_no, True, True)
@@ -182,12 +191,15 @@ def go_cmds(dat, glob, act: int) -> int:
                 cur = conn.cursor() 
                 cur.execute(val)
                 key = ""
+                keys = []
                 for keyb in cur.description:
+                    keys.append( keyb[0] )
                     if key == "":
                         key = keyb[0]
                     else:
                         key = key + "," + keyb[0]
                 glob.wins[glob.winp+1].item = key
+                glob.wins[glob.winp+1].items = keys
                 result = cur.fetchall() 
                 if isinstance(result, list):
                     ret = go_act(result, glob, its.k_actorp)
@@ -197,16 +209,18 @@ def go_cmds(dat, glob, act: int) -> int:
                     return ret
                 continue
             if what[0] == "file":
+                ff = ""
                 try:
                     with open(filen, "r") as f:
                         ff = f.read()
-                        ret = go_act(ff, glob, its.k_actorp)
-                        if ret > 1 or ret < 0:
-                            return ret
                 except:
                     if its.k_pad != "if":
                         print("File (" + filen + ") error")
                         glob.run_errs = True
+                    continue
+                ret = go_act(ff, glob, its.k_actorp)
+                if ret > 1 or ret < 0:
+                    return ret
                 continue
             if what[0] == "regx":
                 match = re.match(val,filen)
@@ -269,6 +283,8 @@ def go_cmds(dat, glob, act: int) -> int:
                         if ret > 1 or ret < 0:
                             return ret
                         continue
+                    if 'rev' in cmd.flag and isinstance(poc, list):
+                        poc = poc[::-1]
                     for sts in poc:
                         if len(what) > 2:
                             ret = its_cmd(glob, cmd, sts, what[2:], what[1], its.k_actorp)
@@ -326,10 +342,16 @@ def go_cmds(dat, glob, act: int) -> int:
             clear_cmd(cmd,glob,dat)
         elif isinstance(cmd,structs.KpOut):
             out = cmd
-            if out.k_what == "delay":
+            what,err = strs(glob, cmd.k_what, glob.winp, cmd.line_no, True, True)
+            if what == "on":
+                glob.is_out = True
+            if what == "off":
+                glob.is_out = False
+                
+            if what == "delay":
                 glob.wins[glob.winp].is_on = True
                 glob.wins[glob.winp].on_pos = c
-            elif out.k_what == "normal":
+            elif what == "normal":
                 glob.wins[glob.winp].is_on = False
                 glob.wins[glob.winp].is_trig = False
         elif isinstance(cmd,structs.KpBreak):
@@ -379,7 +401,15 @@ def its_cmd(glob, cmd, dat, what, pkey, act) -> int:
             if len( what[ji] ) == 0:
                 dot = True
                 break
-            poc = poc[ what[ji] ]
+            if isinstance(poc, dict):
+                poc = poc[ what[ji] ]
+            elif isinstance(poc, structs.Kp):
+                ret = poc.do_its(glob, what[ji:], act)
+                if ret > 1 or ret < 0:
+                    return ret
+                return(0)
+            else:
+                break
             if key == "":
                 key = what[ji]
             else:
@@ -416,16 +446,46 @@ def add_cmd(cmd,glob,dat) -> bool:
     brk = False
     glob.wins[glob.winp].is_check = False
     k_item,err = strs(glob, cmd.k_item, glob.winp, cmd.line_no, True, True)
-    if "r" in cmd.flag:
-        val = cmd.k_data
-    else:
-        val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
+    si = k_item.split('.')
+    whats = cmd.k_what.split(':')
     if 'me' in cmd.flag:
         val = dat
-    if "r" not in cmd.flag and val == "":
-        val = dat
+    elif 'json' in cmd.flag:
+        if "r" in cmd.flag:
+            val = cmd.k_data
+        else:
+            val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
+        val = json.loads(val)
+    elif 'node' in cmd.flag:
+        ss = cmd.k_data.split('.')
+        val,err = o_get_var(glob, ss, glob.winp, cmd.line_no)
+    else:
+        if "r" in cmd.flag:
+            val = cmd.k_data
+        else:
+            val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
+    if 'eval' in cmd.flag:
+        val = eval( val , {'__builtins__':None}, {})
+    if whats[0] == "node" and len(whats) > 1:
+        ss = whats[1].split('.')
+        poc,err = o_get_var(glob, ss, glob.winp, cmd.line_no)
+        if isinstance(poc, list) or isinstance(poc, set):
+            poc.append(val)
+        if isinstance(poc, dict):
+            poc[ k_item ] = val
+        return(brk)
     if cmd.k_what == "var":
-        if k_item in glob.vars:
+        if si[0] in glob.vars:
+            if len(si) > 1 and si[1] == "":
+                poc = glob.vars[ si[0] ]
+                if isinstance(poc, list) or isinstance(poc, set):
+                    poc.append(val)
+                return(brk)
+            if len(si) > 1 and si[1] != "":
+                poc = glob.vars[ si[0] ]
+                if isinstance(poc, dict):
+                    poc[ si[1] ] = val
+                return(brk)
             if val == glob.vars[ k_item ]:
                 glob.wins[glob.winp].is_check = True
                 brk = True
@@ -451,7 +511,7 @@ def add_cmd(cmd,glob,dat) -> bool:
     if cmd.k_what == "me" and ( isinstance(dat, list) or isinstance(dat, set) ):
         dat.append(val)
     if cmd.k_what == "me" and isinstance(dat, dict):
-        dat[ k_item ].add(val)
+        dat[ k_item ] = val
     sw = cmd.k_what.split('.')
     if len(sw) > 1 and sw[0] == "set" and sw[1] == "split":
         sc = '.'
@@ -480,10 +540,13 @@ def clear_cmd(cmd,glob,dat):
 def check_cmd(cmd,glob,dat):
     brk = False
     k_item,err = strs(glob, cmd.k_item, glob.winp, cmd.line_no, True, True)
-    if cmd.k_data != "":
-        val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
-    else:
+    if 'me' in cmd.flag:
         val = dat
+    else:
+        if "r" in cmd.flag:
+            val = cmd.k_data
+        else:
+            val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
     if cmd.k_what == "set":
         if k_item in glob.sets:
             if val in glob.sets[ k_item ]:
@@ -522,18 +585,20 @@ def re_go_cmds(glob, winp):
         cmd = glob.acts.kp_all[c]
         if isinstance(cmd,structs.KpC):
             cc = cmd
-            st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
-            if glob.is_in:
-                glob.ins += st + "\n"
-            else:
-                print(st)
+            if glob.is_out:
+                st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
+                if glob.is_in:
+                    glob.ins += st + "\n"
+                else:
+                    print(st)
         if isinstance(cmd,structs.KpCs):
             cc = cmd
-            st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
-            if glob.is_in:
-                glob.ins += st
-            else:
-                print(st, end="")
+            if glob.is_out:
+                st,err = strs(glob, cc.k_desc, winp, cc.line_no, False, True)
+                if glob.is_in:
+                    glob.ins += st
+                else:
+                    print(st, end="")
 
 
 def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err: bool, lno: str) -> bool:
@@ -630,6 +695,8 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
         ss = sc[i].split('.')
         if ss[0] == "l":
             var = var.lower()
+        if ss[0] == "eol" and var == "E_O_L":
+            var = ""
         if ss[0] == "u":
             var = var.upper()
         if ss[0] == "c":
@@ -676,15 +743,48 @@ def cmd_var(glob, sc: list[str], varv, lcnt) -> (str, bool):
                 var = ""
     return( str(var), False)
 
+def o_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
+    try:
+        if len( ss[0] ) != 0:
+            rf = 0
+            dat = glob.wins[winp].dat
+            if ss[0] == "_":
+                rf = 1
+                dat = glob.vars
+            for ji in range(rf, len(ss)):
+                if isinstance(dat, dict):
+                    dat = dat[ ss[ji] ]
+                else:
+                    return( "", True )
+            return( dat, False )
+        if len(ss) < 2:
+            return( "", True )
+        if ss[1] == "_keys":
+            return( glob.wins[winp].items, False )
+        return( "", True )
+    except Exception as e:
+        return ("?" + str(e) + " var?" + str(ss) + "?" + lno + "?", True)
+
 def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, bool):
     try:
         if len( ss[0] ) != 0:
+            rf = 0
             dat = glob.wins[winp].dat
+            if ss[0] == "_":
+                rf = 1
+                dat = glob.vars
             if isinstance(dat, dict):
-                for ji in range(0, len(ss)):
-                    dat = dat[ ss[ji] ]
+                for ji in range(rf, len(ss)):
+                    if isinstance(dat, dict):
+                        dat = dat[ ss[ji] ]
+                    elif isinstance(dat, structs.Kp):
+                        dat,er = dat.get_var(glob.dats, ss[ji:], lno)
+                        if er:
+                            return( dat, True )
+                    else:
+                        break
             else:
-                dat,er = glob.wins[winp].dat.get_var(glob.dats, ss, lno)
+                dat,er = dat.get_var(glob.dats, ss, lno)
                 if er:
                     return( dat, True )
             if len(sc) > 1:
@@ -714,12 +814,18 @@ def s_get_var(glob, sc: list[str], ss: list[str], winp: int, lno: str) -> (str, 
             if len(sc) > 1:
                 return( cmd_var(glob, sc, glob.wins[winp].item, glob.wins[winp].lcnt) )
             return( glob.wins[winp].item, False )
+        if ss[1] == "_keys":
+            if len(sc) > 1:
+                return( cmd_var(glob, sc, glob.wins[winp].items, glob.wins[winp].lcnt) )
+            return( glob.wins[winp].items, False )
         if ss[1] == "+":
             return( str( glob.wins[winp].lcnt+1 ), False )
         if ss[1] == '-':
             return( str( glob.wins[winp].lcnt ), False )
         if ss[1] == '_depth':
             return( str( winp ), False )
+        if ss[1] == '_lcnt':
+            return( str( glob.wins[winp].lcnt ), False )
         if ss[1] == "_set" or ss[1] == "_list" or ss[1] == "_var":
             if ss[1] == "_set": col = glob.sets
             if ss[1] == "_list": col = glob.lists

@@ -180,5 +180,17 @@ echo ::::::::::::::
 python ../src/main.py toggle.act sample.def on on
 if [ $? != 0 ]; then echo toggle.act sample.def has errors; fi
 
+echo ::::::::::::::
+echo def_unit.act
+echo ::::::::::::::
 
+python ../gen/main.py def_unit.act sample.def_unit >sample.tst_unit
+if [ $? != 0 ]; then echo def_unit.act sample.def_unit has errors; fi
+
+echo ::::::::::::::
+echo def_unit.act
+echo ::::::::::::::
+
+python ../gen/main.py def_unit.act note.def_unit >note.tst_unit
+if [ $? != 0 ]; then echo def_unit.act note.def_unit has errors; fi
 
