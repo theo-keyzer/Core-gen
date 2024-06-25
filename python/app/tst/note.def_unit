@@ -44,7 +44,7 @@ Comp A parent Frame FindIn
 -Refu domain Domain parent Frame domain .
 -Ref2 model Model domain ?
 
-Join domain from Domain parent Frame domain
+Join domain from Domain using parent Frame domain
 Join model to Model using domain
 
 ----------------------------------------------------------------
@@ -64,6 +64,8 @@ Comp Use parent A
 Join model from Model using parent A model
 Join frame to Frame using model
 Join a to A using frame
+Join a2 to A
+Join a3 too A
 
 ----------------------------------------------------------------
 Comp Grid parent . Find

@@ -1,3 +1,123 @@
+Comp (Component) = Table
+Each Comp definition is essentially describing a table structure.
+Element = Field
+The Element entries within a Comp are describing the fields or columns of that table.
+Ref, Ref2, Refu = Relationships
+These seem to be defining different types of relationships or links between the tables (Comps) and their fields (Elements).
+
+This analogy helps to clarify the overall structure being described in the document. It suggests that the system is defining a data model with interconnected components, similar to a relational database schema but with some additional complexity in how the relationships are defined and navigated.
+The parent attribute in the Comp definitions could be seen as establishing a hierarchy or inheritance between tables, which is a concept that goes beyond simple relational database models.
+The Find and FindIn attributes might be related to how these components can be searched or queried within the system.
+With this understanding, the document appears to be describing a sophisticated data modeling and navigation system, with the ability to define complex relationships and navigation paths between different data components.
+
+The definition of `Comp,Element` from gen.unit.
+
+```
+----------------------------------------------------------------
+Comp Comp parent . Find
+----------------------------------------------------------------
+* Loader definition for defining components.
+----------------------------------------------------------------
+
+	Element name   C1 NAME          * of component.
+	Element nop    C1 WORD          * ignored.
+	Element parent R1 COMP          * its parent.
+	Element find   C1 WORD          * if need to be found.
+		Opt Find                    * for top level comps
+		Opt FindIn                  * for nested comps
+		Opt .                       * has no name field or not needed.
+	Element doc    V1 WORD          * documentation string
+
+Ref parent Comp .
+
+----------------------------------------------------------------
+Comp Element parent Comp FindIn
+----------------------------------------------------------------
+* Loader definition for defining component's elements.
+----------------------------------------------------------------
+
+	Element name C1 NAME  * of element
+	Element mw   C1 WORD  * storage type
+		Opt C1          * word
+		Opt V1          * string to end of line.
+		Opt F1          * link to local comp - same parent - needs a Ref.
+		Opt R1          * link to top level comp - Find - needs a Ref.
+		Opt L1          * link to child of previous link - uses R1,U0 for first, L1 for chain - needs a Ref2.
+		Opt N1          * nested comp
+		Opt U0          * copies a link from a previous link  - no input - needs a Refu
+	Element mw2  C1 WORD  * parser type - not used
+	Element pad  C1 WORD  * separator
+	Element doc  V1 WORD  * documentation string
+
+```
+
+The definition of `Ref,Ref2,Refu` from gen.unit.
+
+```
+----------------------------------------------------------------
+Comp Ref parent Comp
+----------------------------------------------------------------
+* Relation of element to comp
+----------------------------------------------------------------
+
+	Element element F1 ELEMENT       * link to local element
+	Element comp    R1 COMP          * link to comp
+	Element opt     C1 WORD          * optional or check - error if not found
+		Opt check                    * check - error if not found
+		Opt .                        * optional, if value is also a (.)
+		Opt ?                        * no error if not found
+	Element var     C1 WORD          * not used
+	Element doc     V1 WORD          * doc string
+	
+Ref element Element check
+Ref comp Comp       check
+	
+----------------------------------------------------------------
+Comp Ref2 parent Comp
+----------------------------------------------------------------
+* Relation of element to comp and child of comp
+----------------------------------------------------------------
+
+	Element element  F1 ELEMENT       * link to remote element
+	Element comp     R1 COMP          * linking Comp
+	Element element2 F1 ELEMENT       * use this link for remote parent
+	Element opt      C1 WORD          * optional or check - error if not found
+		Opt check                 * check
+		Opt .                     * optional value to use
+	Element var      C1 WORD          * not used
+	Element doc      V1 WORD          * doc string
+	
+Ref element  Element check
+Ref comp     Comp    check
+Ref element2 Element check
+	
+----------------------------------------------------------------
+Comp Refu parent Comp
+----------------------------------------------------------------
+* Copy of element to comp and child of comp
+----------------------------------------------------------------
+
+	Element element  F1 ELEMENT       * link to remote element
+	Element comp     R1 COMP          * linking and ref Comp
+	Element element2 C1 ELEMENT       * use this element 
+	Element comp_ref R1 COMP          * ref Comp if comps differ
+	Element element3 C1 ELEMENT       * use this link from element for remote parent
+	Element opt      C1 WORD          * optional or check - error if not found
+		Opt check                 * check
+		Opt .                     * optional value to use
+	Element var      C1 WORD          * not used
+	Element doc      V1 WORD          * doc string
+	
+Ref element  Element check
+Ref comp     Comp    check
+Ref comp_ref Comp    check
+```
+
+These make up the defintions for the core generator to generate the application generators.
+They live in bld and app/bld2 (newer version).
+
+May sound abstract, but it defines itself. May get yourself lost by modifing it.
+
 Knowledge graphs captures information, but may not capture enough detail how to navigate the graph.
 The result end up hard codeing the graph's navigation.
 
@@ -14,7 +134,8 @@ The core-gen is a boot strap to generate the application generator.
 For this it needs the graph diagram of the input. The app generator
 is then hard coded to navigate this graph.
 
-For now see the other docs for more detail.
+The `Its` command navigates from the current node to other nodes via its relations.
+The `All` command, navigates to all node of a type.
 
 A `Ref` links a nodes's field to some other node. It can only link to nodes
 that do not have a parent (top level nodes). These are done in the first pass.
@@ -188,4 +309,12 @@ then it will be an error. If it is `?`, then there is no error.
 Otherwise it is the optional value to use when none. It is an error if not found and the value looking for is different to this.
 It can be `(.)` or anything else like `None`.
 
+The  core generator is the building blocks needed to define the input schema to generate the application generator.
+Each generator has its own schema, but the the run-time engine is common to all.
+
+The generated code of the generators is used to load input files, navigate between nodes and get values from a node. The run-time engine uses a script like file that interacts with the generated code.
+
+The unit files (schema) define what the input files look like. The loader loads the input into the generated classes and build up the the relations between them.
+The loader is generated based on the unit files.
+The core generator has the generated loader and classes for loading and navigating unit files.
 

@@ -194,3 +194,17 @@ echo ::::::::::::::
 python ../gen/main.py def_unit.act note.def_unit >note.tst_unit
 if [ $? != 0 ]; then echo def_unit.act note.def_unit has errors; fi
 
+echo ::::::::::::::
+echo p_check.act sample.tst_unit
+echo ::::::::::::::
+
+python ../gen/main.py p_check.act sample.tst_unit
+if [ $? != 0 ]; then echo p_check.act sample.tst_unit has errors; fi
+
+echo ::::::::::::::
+echo p_check.act note.tst_unit
+echo ::::::::::::::
+
+python ../gen/main.py p_check.act note.tst_unit
+if [ $? != 0 ]; then echo p_check.act note.tst_unit has errors; fi
+

@@ -9,33 +9,50 @@ Actor comp Comp
 ----------------------------------------------------------------
 
 C
-C Comp ${name} ${nop} ${parent} ${find:eol} ${doc}
+C Comp ${name} ${nop:eol} ${parent:eol} ${find:eol} ${doc}
 
 Its Element element
-Its Join ele_join
-
-C
-
+Its Ref ref
+Its Ref2 ref2
+Its Refu refu
 Its Join ref_join
 
 ----------------------------------------------------------------
 Actor element Element
 ----------------------------------------------------------------
 
-C  Element ${name} ${mw} ${mw2} ${pad} ${doc}
+C  Element ${name} ${mw} ${mw2:eol} ${pad:eol} ${doc}
 
 ----------------------------------------------------------------
-Actor ele_join Join
+Actor ref Ref
 ----------------------------------------------------------------
 
--C  Element ${element} 
+C  Ref ${element} ${comp} ${opt:eol}
+
+----------------------------------------------------------------
+Actor ref2 Ref2
+----------------------------------------------------------------
+
+C  Ref2 ${element} ${comp} ${element2} ${opt:eol}
+
+----------------------------------------------------------------
+Actor refu Refu
+----------------------------------------------------------------
+
+C  Refu ${element} ${comp} ${element2} ${comp_ref} ${element3} ${opt:eol}
+
+----------------------------------------------------------------
+Actor ref_join Join
+----------------------------------------------------------------
+
+C 
 
 ----------------------------------------------------------------
 Actor ref_join Join dir = from
 ----------------------------------------------------------------
 
-C  Element ${element}    U0 ${comp} 
-C  Refu    ${element} ${comp}  ${element2:l} ${comp2:c} ${element3:l}
+C  Element ${element:l}    U0 ${comp} 
+C  Refu    ${element:l} ${comp:c}  ${element2:l} ${comp2:c} ${element3:l}
 
 Break
 
@@ -43,8 +60,8 @@ Break
 Actor ref_join Join using = using
 ----------------------------------------------------------------
 
-C  Element ${element} L1 ${comp}
-C  Ref2 ${element} ${comp} ${element2:l} ?
+C  Element ${element:l} L1 ${comp:c}
+C  Ref2 ${element:l} ${comp:c} ${element2:l} ?
 
 Break
 
@@ -56,23 +73,24 @@ All Comp ref_join_comp
 
 
 ----------------------------------------------------------------
-Actor ref_join_comp Comp name = ${.ref_join.comp}
+Actor ref_join_comp Comp name = ${.ref_join.comp:c}
 Actor ref_join_comp Comp parent &= .
 ----------------------------------------------------------------
 
-C  Element ${.ref_join.element} R1 ${.ref_join.comp}
-C  Ref ${.ref_join.element} ${.ref_join.comp} .
+C  Element ${.ref_join.element:l} R1 ${.ref_join.comp:c}
+C  Ref ${.ref_join.element:l} ${.ref_join.comp:c} .
 
 Break
 
 ----------------------------------------------------------------
-Actor ref_join_comp Comp name = ${.ref_join.comp}
+Actor ref_join_comp Comp name = ${.ref_join.comp:c}
 ----------------------------------------------------------------
 
 Its parent parent
 
 ----------------------------------------------------------------
 Actor parent Comp name = ${.ref_join_comp.parent}
+Actor parent Comp .ref_join.dir &= to
 ----------------------------------------------------------------
 
 C  Element ${.ref_join.element:l} F1 ${.ref_join_comp.name:c}
@@ -86,19 +104,52 @@ Actor parent Comp parent = .
 
 C  Element ${name:l} R1 ${name:c}
 C  Ref ${name:l} ${name:c} .
-C  Element ${.ref_join.element} L1 ${.ref_join.comp}
-C  Ref2 ${.ref_join.element} ${.ref_join.comp} ${name:l} ?
+C  Element ${.ref_join.element:l} L1 ${.ref_join.comp:c}
+C  Ref2 ${.ref_join.element:l} ${.ref_join.comp:c} ${name:l} ?
 
 Break
 
 ----------------------------------------------------------------
-Actor parent
+Actor parent Comp parent.parent = .
 ----------------------------------------------------------------
 
 C  Element ${parent.name:l} R1 ${parent.name:c}
 C  Ref ${parent.name:l} ${parent.name:c} .
 C  Element ${name:l} L1 ${name:c}
 C  Ref2 ${name:l} ${name:c} ${parent.name:l} .
-C  Element ${.ref_join.element} L1 ${.ref_join.comp}
-C  Ref2 ${.ref_join.element} ${.ref_join.comp} ${name:l} ?
+C  Element ${.ref_join.element:l} L1 ${.ref_join.comp:c}
+C  Ref2 ${.ref_join.element:l} ${.ref_join.comp:c} ${name:l} ?
+
+Break
+
+----------------------------------------------------------------
+Actor parent Comp
+----------------------------------------------------------------
+
+Its parent parent2
+
+----------------------------------------------------------------
+Actor parent2 Comp parent.parent = .
+----------------------------------------------------------------
+
+C  Element ${.ref_join.element:l}_${parent.name:l} R1 ${parent.name:c}
+C  Ref ${.ref_join.element:l}_${parent.name:l} ${parent.name:c} .
+
+C  Element ${.ref_join.element:l}_${name:l} L1 ${name:c}
+C  Ref2 ${.ref_join.element:l}_${name:l} ${name:c} ${.ref_join.element:l}_${parent.name:l} .
+
+C  Element ${.ref_join.element:l}_${.parent.name:l} L1 ${.parent.name:c}
+C  Ref2 ${.ref_join.element:l}_${.parent.name:l} ${.parent.name:c} ${.ref_join.element:l}_${name:l} .
+
+C  Element ${.ref_join.element:l} L1 ${.ref_join.comp:c}
+C  Ref2 ${.ref_join.element:l} ${.ref_join.comp:c} ${.ref_join.element:l}_${.parent.name:l} ?
+
+Break
+
+
+----------------------------------------------------------------
+Actor parent2 Comp
+----------------------------------------------------------------
+
+C Here ${parent} not done
 
