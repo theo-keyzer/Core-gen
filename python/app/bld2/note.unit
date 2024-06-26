@@ -78,7 +78,7 @@ Comp Col parent Grid FindIn
 Ref name Grid ?
 
 ----------------------------------------------------------------
-Comp R parent Col FindIn
+Comp Grid parent . Find
 ----------------------------------------------------------------
 
 	Element name       R1 WORD       * name, optional ref to another grid
@@ -86,4 +86,22 @@ Comp R parent Col FindIn
 	Element info       V1 WORD       * info
 
 Ref name Grid ?
+
+----------------------------------------------------------------
+Comp Doc parent . 
+----------------------------------------------------------------
+
+	Element tag            C1 WORD       * tag index
+	Element concept        N1 WORD       * concept index tree
+	Element var_topic      N1 WORD       * variable index tree
+	Element flow_topic     N1 WORD       * flow index tree
+	Element cmd_topic      N1 WORD       * command index tree
+	Element desc           V1 DESC       * doc to output.
+
+----------------------------------------------------------------
+Comp D parent Doc
+----------------------------------------------------------------
+
+	Element file   C1 WORD       * optional file to include
+	Element desc   V1 DESC       * doc to output.
 

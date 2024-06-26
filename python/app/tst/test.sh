@@ -208,3 +208,33 @@ echo ::::::::::::::
 python ../gen/main.py p_check.act note.tst_unit
 if [ $? != 0 ]; then echo p_check.act note.tst_unit has errors; fi
 
+echo ::::::::::::::
+echo doc.act concept
+echo ::::::::::::::
+
+python ../src/main.py doc.act doc.def concept
+if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
+
+echo ::::::::::::::
+echo doc.act var
+echo ::::::::::::::
+
+python ../src/main.py doc.act doc.def var
+if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
+
+echo ::::::::::::::
+echo doc.act flow
+echo ::::::::::::::
+
+python ../src/main.py doc.act doc.def flow
+if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
+
+echo ::::::::::::::
+echo doc.act cmd
+echo ::::::::::::::
+
+python ../src/main.py doc.act doc.def cmd
+if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
+
+
+
