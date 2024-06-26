@@ -14,5 +14,20 @@ D . The variable
 Doc actor 1 1 1 1 Actors
 
 D . The actors
+D . An actor is like a function call to a class, except the call is to the run time engine.
+D . The actor commands has access to the class functions and variables.
+D . The actor is like a function overload that instead of having different functions for the data types, it has a overload that matches variables in the class.
+D . It behaves like an advanced case statement with multiple matches.
 
+Doc actor_flow 0 0 2 0 Actor flow
+
+D . Multiple actors of the same name can match, and the Break command stops any further matches.
+
+Doc actor_cmd 0 0 0 2 Actor commands
+
+D . The Du, All, Its, This and That commands call other actors.
+
+Doc actor_var 0 2 0 0 Actor variables
+
+D . The actor match has access to the same variables as the commands in the actor has.
 
