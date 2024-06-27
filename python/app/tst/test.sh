@@ -237,4 +237,34 @@ python ../src/main.py doc.act doc.def cmd
 if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
 
 
+echo ::::::::::::::
+echo concept.act index
+echo ::::::::::::::
+
+python ../src/main.py concept.act concept.def index
+if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
+
+echo ::::::::::::::
+echo concept.act var
+echo ::::::::::::::
+
+python ../src/main.py concept.act concept.def var
+if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
+
+echo ::::::::::::::
+echo concept.act flow
+echo ::::::::::::::
+
+python ../src/main.py concept.act concept.def flow
+if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
+
+echo ::::::::::::::
+echo concept.act cmd
+echo ::::::::::::::
+
+python ../src/main.py concept.act concept.def cmd
+if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
+
+
+
 

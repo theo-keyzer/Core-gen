@@ -57,13 +57,6 @@ Refu model Model parent A model .
 Ref2 frame Frame model .
 Ref2 a A frame .
 
-----------------------------------------------------------------
-Comp Grid parent . Find
-----------------------------------------------------------------
-
-	Element name       C1 WORD       * grid
-	Element file       C1 WORD       * optional file to include
-	Element info       V1 WORD       * info
 
 ----------------------------------------------------------------
 Comp Col parent Grid FindIn
@@ -104,4 +97,26 @@ Comp D parent Doc
 
 	Element file   C1 WORD       * optional file to include
 	Element desc   V1 DESC       * doc to output.
+
+----------------------------------------------------------------
+Comp Concept parent . 
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * name of concept
+
+----------------------------------------------------------------
+Comp Topic parent Concept
+----------------------------------------------------------------
+
+	Element name           C1 WORD       * topic name
+	Element level          N1 WORD       * index tree level
+	Element desc           V1 DESC       * doc to output.
+
+----------------------------------------------------------------
+Comp T parent Topic
+----------------------------------------------------------------
+
+	Element file   C1 WORD       * optional file to include
+	Element desc   V1 DESC       * doc to output.
+
 

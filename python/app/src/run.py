@@ -228,16 +228,6 @@ def load(act, ff: Input, tok: str, ln: int, lno: str) -> bool:
         flag = []
         if len(ss) > 1:
             flag = ss[1].split('.')
-        if ss[0] == "Grid":
-            kp = structs.KpGrid(ff, ln, act, lno,flag)
-            err = err or kp.err
-            act.ap_grid.append(kp)
-            act.kp_all.append(kp)
-        ss = tok.split('.',1)
-        flag = ""
-        flag = []
-        if len(ss) > 1:
-            flag = ss[1].split('.')
         if ss[0] == "Col":
             kp = structs.KpCol(ff, ln, act, lno,flag)
             err = err or kp.err
@@ -248,10 +238,60 @@ def load(act, ff: Input, tok: str, ln: int, lno: str) -> bool:
         flag = []
         if len(ss) > 1:
             flag = ss[1].split('.')
-        if ss[0] == "R":
-            kp = structs.KpR(ff, ln, act, lno,flag)
+        if ss[0] == "Grid":
+            kp = structs.KpGrid(ff, ln, act, lno,flag)
             err = err or kp.err
-            act.ap_r.append(kp)
+            act.ap_grid.append(kp)
+            act.kp_all.append(kp)
+        ss = tok.split('.',1)
+        flag = ""
+        flag = []
+        if len(ss) > 1:
+            flag = ss[1].split('.')
+        if ss[0] == "Doc":
+            kp = structs.KpDoc(ff, ln, act, lno,flag)
+            err = err or kp.err
+            act.ap_doc.append(kp)
+            act.kp_all.append(kp)
+        ss = tok.split('.',1)
+        flag = ""
+        flag = []
+        if len(ss) > 1:
+            flag = ss[1].split('.')
+        if ss[0] == "D":
+            kp = structs.KpD(ff, ln, act, lno,flag)
+            err = err or kp.err
+            act.ap_d.append(kp)
+            act.kp_all.append(kp)
+        ss = tok.split('.',1)
+        flag = ""
+        flag = []
+        if len(ss) > 1:
+            flag = ss[1].split('.')
+        if ss[0] == "Concept":
+            kp = structs.KpConcept(ff, ln, act, lno,flag)
+            err = err or kp.err
+            act.ap_concept.append(kp)
+            act.kp_all.append(kp)
+        ss = tok.split('.',1)
+        flag = ""
+        flag = []
+        if len(ss) > 1:
+            flag = ss[1].split('.')
+        if ss[0] == "Topic":
+            kp = structs.KpTopic(ff, ln, act, lno,flag)
+            err = err or kp.err
+            act.ap_topic.append(kp)
+            act.kp_all.append(kp)
+        ss = tok.split('.',1)
+        flag = ""
+        flag = []
+        if len(ss) > 1:
+            flag = ss[1].split('.')
+        if ss[0] == "T":
+            kp = structs.KpT(ff, ln, act, lno,flag)
+            err = err or kp.err
+            act.ap_t.append(kp)
             act.kp_all.append(kp)
         ss = tok.split('.',1)
         flag = ""
@@ -541,12 +581,12 @@ def ref(act) -> bool:
         except:
             pass
 
-    for i in range( len(act.ap_r) ):
+    for i in range( len(act.ap_grid) ):
         p = ""
         try:
-            act.ap_r[i].k_namep = -2
-            p = act.ap_r[i].names[ "name" ]
-            act.ap_r[i].k_namep = act.index["Grid_" + p]
+            act.ap_grid[i].k_namep = -2
+            p = act.ap_grid[i].names[ "name" ]
+            act.ap_grid[i].k_namep = act.index["Grid_" + p]
         except:
             pass
 

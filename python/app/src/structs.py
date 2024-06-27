@@ -27,9 +27,13 @@ class ActT:
         self.ap_frame = []
         self.ap_a = []
         self.ap_use = []
-        self.ap_grid = []
         self.ap_col = []
-        self.ap_r = []
+        self.ap_grid = []
+        self.ap_doc = []
+        self.ap_d = []
+        self.ap_concept = []
+        self.ap_topic = []
+        self.ap_t = []
         self.ap_actor = []
         self.ap_all = []
         self.ap_du = []
@@ -1697,79 +1701,6 @@ class KpUse(Kp):
             return( go_act(glob.dats.ap_model[ self.k_modelp ], glob, act) )
         return(0)
 
-class KpGrid(Kp):
-    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
-        self.err = False
-        self.line_no = lno
-        self.me2 = len(act.kp_all)
-        self.me = len(act.ap_grid)
-        self.all_from = len( act.kp_all )
-        self.all_to = len( act.kp_all )
-        self.names = {}
-        self.names["k_comp"] = "Grid"
-        self.names["k_me"] = str( self.me )
-        self.col_from = len( act.ap_col )
-        self.col_to = len( act.ap_col )
-        na = ff.getw( ff.lines[ln], 1 )
-        self.names[ "name" ] = na
-        act.index[ "Grid_" + na ] = self.me
-        self.names[ "file" ] = ff.getw( ff.lines[ln], 1 )
-        self.names[ "info" ] = ff.getws( ff.lines[ln], 1 )
-
-    def get_me2(self) -> int:
-        return(self.me2)
-
-    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
-        if na[0] == "Col_name":
-            for i in range( len(act.ap_col) ):
-                if act.ap_col[i].k_namep == self.me:
-                    return( act.ap_col[i].get_var(act, na[1:], lno) )
-        if na[0] == "R_name":
-            for i in range( len(act.ap_r) ):
-                if act.ap_r[i].k_namep == self.me:
-                    return( act.ap_r[i].get_var(act, na[1:], lno) )
-        try:
-            if len(na) > 1:
-                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Grid?", True );
-            return( self.names[ na[0] ], False )
-        except:
-            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Grid?", True );
-
-    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
-        if what[0] == "Col":
-            for i in range( self.col_from, self.col_to ):
-                if len(what) > 1:
-                    ret = glob.dats.ap_col[i].do_its(glob, what[1:], act)
-                    if ret != 0:
-                        return(ret)
-                    continue
-                ret = go_act(glob.dats.ap_col[i], glob, act)
-                if ret != 0:
-                    return(ret)
-        if what[0] == "Col_name":
-            for i in range( len( glob.dats.ap_col ) ):
-                if glob.dats.ap_col[i].k_namep == self.me:
-                    if len(what) > 1:
-                        ret = glob.dats.ap_col[i].do_its(glob, what[1:], act)
-                        if ret != 0:
-                            return(ret)
-                        continue
-                    ret = go_act(glob.dats.ap_col[i], glob, act)
-                    if ret != 0:
-                        return(ret)
-        if what[0] == "R_name":
-            for i in range( len( glob.dats.ap_r ) ):
-                if glob.dats.ap_r[i].k_namep == self.me:
-                    if len(what) > 1:
-                        ret = glob.dats.ap_r[i].do_its(glob, what[1:], act)
-                        if ret != 0:
-                            return(ret)
-                        continue
-                    ret = go_act(glob.dats.ap_r[i], glob, act)
-                    if ret != 0:
-                        return(ret)
-        return(0)
-
 class KpCol(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
@@ -1782,8 +1713,6 @@ class KpCol(Kp):
         self.names["k_comp"] = "Col"
         self.names["k_me"] = str( self.me )
         self.k_namep = -1
-        self.r_from = len( act.ap_r )
-        self.r_to = len( act.ap_r )
         na = ff.getw( ff.lines[ln], 1 )
         self.names[ "name" ] = na
         self.names[ "index" ] = ff.getw( ff.lines[ln], 1 )
@@ -1818,16 +1747,6 @@ class KpCol(Kp):
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Col?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
-        if what[0] == "R":
-            for i in range( self.r_from, self.r_to ):
-                if len(what) > 1:
-                    ret = glob.dats.ap_r[i].do_its(glob, what[1:], act)
-                    if ret != 0:
-                        return(ret)
-                    continue
-                ret = go_act(glob.dats.ap_r[i], glob, act)
-                if ret != 0:
-                    return(ret)
         if what[0] == "parent" and self.k_parentp >= 0:
             if len(what) > 1:
                 return( glob.dats.ap_grid[ self.k_parentp ].do_its(glob, what[1:], act) )
@@ -1892,33 +1811,25 @@ class KpCol(Kp):
                 return(0)
         return(0)
 
-class KpR(Kp):
+class KpGrid(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
         self.line_no = lno
         self.me2 = len(act.kp_all)
-        self.me = len(act.ap_r)
+        self.me = len(act.ap_grid)
         self.all_from = len( act.kp_all )
         self.all_to = len( act.kp_all )
         self.names = {}
-        self.names["k_comp"] = "R"
+        self.names["k_comp"] = "Grid"
         self.names["k_me"] = str( self.me )
         self.k_namep = -1
+        self.col_from = len( act.ap_col )
+        self.col_to = len( act.ap_col )
         na = ff.getw( ff.lines[ln], 1 )
         self.names[ "name" ] = na
+        act.index[ "Grid_" + na ] = self.me
         self.names[ "file" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "info" ] = ff.getws( ff.lines[ln], 1 )
-        self.k_parentp = -2
-        i = len( act.ap_col )
-        if i > 0:
-            act.ap_col[i-1].all_to = self.me2 + 1
-            act.ap_col[i-1].r_to = self.me + 1
-            self.k_parentp = i-1
-            s = str(self.k_parentp) + "_R_" + na
-            act.index[ s ] = self.me
-        else:
-            print( "No Col parent for R" )
-            self.err = True
 
     def get_me2(self) -> int:
         return(self.me2)
@@ -1926,24 +1837,408 @@ class KpR(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         if na[0] == "name" and len(na) > 1 and self.k_namep >= 0:
             return( act.ap_grid[ self.k_namep ].get_var(act, na[1:], lno) )
-        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
-            return( act.ap_col[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "Col_name":
+            for i in range( len(act.ap_col) ):
+                if act.ap_col[i].k_namep == self.me:
+                    return( act.ap_col[i].get_var(act, na[1:], lno) )
+        if na[0] == "Grid_name":
+            for i in range( len(act.ap_grid) ):
+                if act.ap_grid[i].k_namep == self.me:
+                    return( act.ap_grid[i].get_var(act, na[1:], lno) )
         try:
             if len(na) > 1:
-                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",R?", True );
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Grid?", True );
             return( self.names[ na[0] ], False )
         except:
-            return("?" + na[0] + "?" + self.line_no + "," + lno + ",R?", True );
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Grid?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
-        if what[0] == "parent" and self.k_parentp >= 0:
-            if len(what) > 1:
-                return( glob.dats.ap_col[ self.k_parentp ].do_its(glob, what[1:], act) )
-            return( go_act(glob.dats.ap_col[ self.k_parentp ], glob, act) )
+        if what[0] == "Col":
+            for i in range( self.col_from, self.col_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_col[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
+                ret = go_act(glob.dats.ap_col[i], glob, act)
+                if ret != 0:
+                    return(ret)
         if what[0] == "name" and self.k_namep >= 0:
             if len(what) > 1:
                 return( glob.dats.ap_grid[ self.k_namep ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_grid[ self.k_namep ], glob, act) )
+        if what[0] == "Col_name":
+            for i in range( len( glob.dats.ap_col ) ):
+                if glob.dats.ap_col[i].k_namep == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_col[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
+                        continue
+                    ret = go_act(glob.dats.ap_col[i], glob, act)
+                    if ret != 0:
+                        return(ret)
+        if what[0] == "Grid_name":
+            for i in range( len( glob.dats.ap_grid ) ):
+                if glob.dats.ap_grid[i].k_namep == self.me:
+                    if len(what) > 1:
+                        ret = glob.dats.ap_grid[i].do_its(glob, what[1:], act)
+                        if ret != 0:
+                            return(ret)
+                        continue
+                    ret = go_act(glob.dats.ap_grid[i], glob, act)
+                    if ret != 0:
+                        return(ret)
+        return(0)
+
+class KpDoc(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_doc)
+        self.all_from = len( act.kp_all )
+        self.all_to = len( act.kp_all )
+        self.names = {}
+        self.names["k_comp"] = "Doc"
+        self.names["k_me"] = str( self.me )
+        self.d_from = len( act.ap_d )
+        self.d_to = len( act.ap_d )
+        self.names[ "tag" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "concept" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "var_topic" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "flow_topic" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "cmd_topic" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "desc" ] = ff.getws( ff.lines[ln], 1 )
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Doc?", True );
+            return( self.names[ na[0] ], False )
+        except:
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Doc?", True );
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "D":
+            for i in range( self.d_from, self.d_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_d[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
+                ret = go_act(glob.dats.ap_d[i], glob, act)
+                if ret != 0:
+                    return(ret)
+        if what[0] == "concept":
+            try:
+                isin = False
+                pos = int( self.names[ "concept" ] )
+                if pos == 0:
+                    return( 0 )
+                for i in range( len( glob.dats.ap_doc ) ):
+                    st = glob.dats.ap_doc[i]
+                    if self.me == st.me:
+                        isin = True
+                        continue
+                    if isin == False:
+                        continue
+                    pos2 = int( st.names[ "concept" ] )
+                    if pos2 == 0:
+                        continue
+                    if pos2 <= pos:
+                        break
+                    if pos2 == (pos+1):
+                        ret = go_act(st, glob, act)
+                        if ret != 0:
+                            return(ret)
+            except:
+                return(0)
+        if what[0] == "var_topic":
+            try:
+                isin = False
+                pos = int( self.names[ "var_topic" ] )
+                if pos == 0:
+                    return( 0 )
+                for i in range( len( glob.dats.ap_doc ) ):
+                    st = glob.dats.ap_doc[i]
+                    if self.me == st.me:
+                        isin = True
+                        continue
+                    if isin == False:
+                        continue
+                    pos2 = int( st.names[ "var_topic" ] )
+                    if pos2 == 0:
+                        continue
+                    if pos2 <= pos:
+                        break
+                    if pos2 == (pos+1):
+                        ret = go_act(st, glob, act)
+                        if ret != 0:
+                            return(ret)
+            except:
+                return(0)
+        if what[0] == "flow_topic":
+            try:
+                isin = False
+                pos = int( self.names[ "flow_topic" ] )
+                if pos == 0:
+                    return( 0 )
+                for i in range( len( glob.dats.ap_doc ) ):
+                    st = glob.dats.ap_doc[i]
+                    if self.me == st.me:
+                        isin = True
+                        continue
+                    if isin == False:
+                        continue
+                    pos2 = int( st.names[ "flow_topic" ] )
+                    if pos2 == 0:
+                        continue
+                    if pos2 <= pos:
+                        break
+                    if pos2 == (pos+1):
+                        ret = go_act(st, glob, act)
+                        if ret != 0:
+                            return(ret)
+            except:
+                return(0)
+        if what[0] == "cmd_topic":
+            try:
+                isin = False
+                pos = int( self.names[ "cmd_topic" ] )
+                if pos == 0:
+                    return( 0 )
+                for i in range( len( glob.dats.ap_doc ) ):
+                    st = glob.dats.ap_doc[i]
+                    if self.me == st.me:
+                        isin = True
+                        continue
+                    if isin == False:
+                        continue
+                    pos2 = int( st.names[ "cmd_topic" ] )
+                    if pos2 == 0:
+                        continue
+                    if pos2 <= pos:
+                        break
+                    if pos2 == (pos+1):
+                        ret = go_act(st, glob, act)
+                        if ret != 0:
+                            return(ret)
+            except:
+                return(0)
+        return(0)
+
+class KpD(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_d)
+        self.all_from = len( act.kp_all )
+        self.all_to = len( act.kp_all )
+        self.names = {}
+        self.names["k_comp"] = "D"
+        self.names["k_me"] = str( self.me )
+        self.names[ "file" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "desc" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_parentp = -2
+        i = len( act.ap_doc )
+        if i > 0:
+            act.ap_doc[i-1].all_to = self.me2 + 1
+            act.ap_doc[i-1].d_to = self.me + 1
+            self.k_parentp = i-1
+        else:
+            print( "No Doc parent for D" )
+            self.err = True
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+            return( act.ap_doc[ self.k_parentp ].get_var(act, na[1:], lno) )
+        try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",D?", True );
+            return( self.names[ na[0] ], False )
+        except:
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",D?", True );
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "parent" and self.k_parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_doc[ self.k_parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_doc[ self.k_parentp ], glob, act) )
+        return(0)
+
+class KpConcept(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_concept)
+        self.all_from = len( act.kp_all )
+        self.all_to = len( act.kp_all )
+        self.names = {}
+        self.names["k_comp"] = "Concept"
+        self.names["k_me"] = str( self.me )
+        self.topic_from = len( act.ap_topic )
+        self.topic_to = len( act.ap_topic )
+        na = ff.getw( ff.lines[ln], 1 )
+        self.names[ "name" ] = na
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Concept?", True );
+            return( self.names[ na[0] ], False )
+        except:
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Concept?", True );
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "Topic":
+            for i in range( self.topic_from, self.topic_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_topic[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
+                ret = go_act(glob.dats.ap_topic[i], glob, act)
+                if ret != 0:
+                    return(ret)
+        return(0)
+
+class KpTopic(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_topic)
+        self.all_from = len( act.kp_all )
+        self.all_to = len( act.kp_all )
+        self.names = {}
+        self.names["k_comp"] = "Topic"
+        self.names["k_me"] = str( self.me )
+        self.t_from = len( act.ap_t )
+        self.t_to = len( act.ap_t )
+        na = ff.getw( ff.lines[ln], 1 )
+        self.names[ "name" ] = na
+        self.names[ "level" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "desc" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_parentp = -2
+        i = len( act.ap_concept )
+        if i > 0:
+            act.ap_concept[i-1].all_to = self.me2 + 1
+            act.ap_concept[i-1].topic_to = self.me + 1
+            self.k_parentp = i-1
+        else:
+            print( "No Concept parent for Topic" )
+            self.err = True
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+            return( act.ap_concept[ self.k_parentp ].get_var(act, na[1:], lno) )
+        try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Topic?", True );
+            return( self.names[ na[0] ], False )
+        except:
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",Topic?", True );
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "T":
+            for i in range( self.t_from, self.t_to ):
+                if len(what) > 1:
+                    ret = glob.dats.ap_t[i].do_its(glob, what[1:], act)
+                    if ret != 0:
+                        return(ret)
+                    continue
+                ret = go_act(glob.dats.ap_t[i], glob, act)
+                if ret != 0:
+                    return(ret)
+        if what[0] == "parent" and self.k_parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_concept[ self.k_parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_concept[ self.k_parentp ], glob, act) )
+        if what[0] == "level":
+            try:
+                isin = False
+                pos = int( self.names[ "level" ] )
+                if pos == 0:
+                    return( 0 )
+                if self.k_parentp < 0:
+                    return(0)
+                par = glob.dats.ap_concept[ self.k_parentp ]
+                for i in range( par.topic_from, par.topic_to ):
+                    st = glob.dats.ap_topic[i]
+                    if self.me == st.me:
+                        isin = True
+                        continue
+                    if isin == False:
+                        continue
+                    pos2 = int( st.names[ "level" ] )
+                    if pos2 == 0:
+                        continue
+                    if pos2 <= pos:
+                        break
+                    if pos2 == (pos+1):
+                        ret = go_act(st, glob, act)
+                        if ret != 0:
+                            return(ret)
+            except:
+                return(0)
+        return(0)
+
+class KpT(Kp):
+    def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
+        self.err = False
+        self.line_no = lno
+        self.me2 = len(act.kp_all)
+        self.me = len(act.ap_t)
+        self.all_from = len( act.kp_all )
+        self.all_to = len( act.kp_all )
+        self.names = {}
+        self.names["k_comp"] = "T"
+        self.names["k_me"] = str( self.me )
+        self.names[ "file" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "desc" ] = ff.getws( ff.lines[ln], 1 )
+        self.k_parentp = -2
+        i = len( act.ap_topic )
+        if i > 0:
+            act.ap_topic[i-1].all_to = self.me2 + 1
+            act.ap_topic[i-1].t_to = self.me + 1
+            self.k_parentp = i-1
+        else:
+            print( "No Topic parent for T" )
+            self.err = True
+
+    def get_me2(self) -> int:
+        return(self.me2)
+
+    def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
+            return( act.ap_topic[ self.k_parentp ].get_var(act, na[1:], lno) )
+        try:
+            if len(na) > 1:
+                return("?" + na[0] + ".?" + self.line_no + "," + lno + ",T?", True );
+            return( self.names[ na[0] ], False )
+        except:
+            return("?" + na[0] + "?" + self.line_no + "," + lno + ",T?", True );
+
+    def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "parent" and self.k_parentp >= 0:
+            if len(what) > 1:
+                return( glob.dats.ap_topic[ self.k_parentp ].do_its(glob, what[1:], act) )
+            return( go_act(glob.dats.ap_topic[ self.k_parentp ], glob, act) )
         return(0)
 
 class KpActor(Kp):
@@ -2485,21 +2780,45 @@ def do_all(glob, what: List[str], act: int) -> int:
             if ret != 0:
                 return ret
         return 0
-    if what[0] == "Grid":
-        for i in range(len(glob.dats.ap_grid)):
-            ret = go_act(glob.dats.ap_grid[i], glob, act)
-            if ret != 0:
-                return ret
-        return 0
     if what[0] == "Col":
         for i in range(len(glob.dats.ap_col)):
             ret = go_act(glob.dats.ap_col[i], glob, act)
             if ret != 0:
                 return ret
         return 0
-    if what[0] == "R":
-        for i in range(len(glob.dats.ap_r)):
-            ret = go_act(glob.dats.ap_r[i], glob, act)
+    if what[0] == "Grid":
+        for i in range(len(glob.dats.ap_grid)):
+            ret = go_act(glob.dats.ap_grid[i], glob, act)
+            if ret != 0:
+                return ret
+        return 0
+    if what[0] == "Doc":
+        for i in range(len(glob.dats.ap_doc)):
+            ret = go_act(glob.dats.ap_doc[i], glob, act)
+            if ret != 0:
+                return ret
+        return 0
+    if what[0] == "D":
+        for i in range(len(glob.dats.ap_d)):
+            ret = go_act(glob.dats.ap_d[i], glob, act)
+            if ret != 0:
+                return ret
+        return 0
+    if what[0] == "Concept":
+        for i in range(len(glob.dats.ap_concept)):
+            ret = go_act(glob.dats.ap_concept[i], glob, act)
+            if ret != 0:
+                return ret
+        return 0
+    if what[0] == "Topic":
+        for i in range(len(glob.dats.ap_topic)):
+            ret = go_act(glob.dats.ap_topic[i], glob, act)
+            if ret != 0:
+                return ret
+        return 0
+    if what[0] == "T":
+        for i in range(len(glob.dats.ap_t)):
+            ret = go_act(glob.dats.ap_t[i], glob, act)
             if ret != 0:
                 return ret
         return 0

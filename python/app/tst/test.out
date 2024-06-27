@@ -16,12 +16,12 @@ z
 Found items model
 r
 Found items  a str model
-Found items  a str 4
 Found items  a str 3
 Found items  a str 2
-Found items  a str 5
+Found items  a str 4
 Found items  a str 6
 Found items  a str 7
+Found items  a str 5
 find,val,X
 uniq,finds,A
 finds
@@ -29,14 +29,14 @@ q KpA
 r model
 s KpA
 set  Key: uniq  value: {'model'}  model  model  
-set  Key: finds  value: {<structs.KpA object at 0x7f1aa001e4f0>}  KpA  KpA  
-set  Key: A  value: {'5', '6', '7'}  5,6,7  5,6,7  6
+set  Key: finds  value: {<structs.KpA object at 0x7f0c00319970>}  KpA  KpA  
+set  Key: A  value: {'6', '7', '5'}  6,7,5  5,6,7  6
 a
 KpA  Key: find  value: KpA  KpA  KpA  KpA
 str  Key: val  value: abc  abc  abc  
 str  Key: X  value: abc  abc  abc  
 b
-list  Key: finds  value: [<structs.KpA object at 0x7f1aa001e4f0>]  KpA  KpA  
+list  Key: finds  value: [<structs.KpA object at 0x7f0c00319970>]  KpA  KpA  
 c
 KpA  Key: find  value: KpA
 KpA  KpA  note.def:143, mtst.act:66
@@ -115,12 +115,12 @@ Frame 2  schema  -  notes app
 match2.act
 ::::::::::::::
 Iaa,Ibb
-group,join,layout
+group,layout,join
 Abc
 
 Iaa,Ibb,zz,yy,bb
- test thinking,frame  Iaa
- test group,join,layout  Ibb
+ test frame,thinking  Iaa
+ test group,layout,join  Ibb
  test2 abc  zz,yy,bb
 
 files  join
@@ -140,21 +140,21 @@ group,join - 4
 layout - 5
 Arg3,Args,Arg4,Arg5,Iaa,Ibb
 Arg3,Args,Arg4,Arg5,Iaa,Ibb
-join,group
+group,join
 Abc
-Arg5,Arg4,Arg3
+Arg4,Arg3,Arg5
 
 Arg3,Args,Arg4,Arg5,Iaa,Ibb,zz,yy,bb
- test thinking,frame Iaa
- test join,group Ibb
+ test frame,thinking Iaa
+ test group,join Ibb
  test2 abc zz,yy,bb
- test3 thinking,frame Arg3
- test3 join,group Arg4
+ test3 frame,thinking Arg3
+ test3 group,join Arg4
  test3 layout Arg5
 
-1 Arg5 Arg4
-1 Arg5 Arg3
 1 Arg4 Arg3
+1 Arg4 Arg5
+1 Arg3 Arg5
 ::::::::::::::
 daoimpl.act
 ::::::::::::::
@@ -214,14 +214,9 @@ grid.act
 section
 subsection
 subsubsection
-item 
-item 
-item 
 subsubsection
-item 
 subsection
 subsubsection
-item 
 section
 subsection
 col1 a
@@ -267,11 +262,11 @@ tst5b.act
 4  C-C
    s 2  C-A
    s 1  C-A
- all 3 B-C,A-B 
- all 4 B-C,A-B 
+ all 3 A-B,B-C 
+ all 4 A-B,B-C 
  all 1 B-A,C-A,B-C 
  no 5 B-C 
- all 2 A-C,C-A,C-B 
+ all 2 A-C,C-B,C-A 
 ::::::::::::::
 tst5c.act
 ::::::::::::::
@@ -289,15 +284,18 @@ G
 4  A-C
 5  C-A
 4  C-C
- a B-C
-   s 1  B-C
-   s 4  B-C
-   s 3  B-C
-   s 5  B-C
- a C-B
-   s 2  C-B
  a B-A
    s 1  B-A
+ a B-C
+   s 1  B-C
+   s 4  B-C
+   s 3  B-C
+   s 5  B-C
+ a A-B
+   s 3  A-B
+   s 4  A-B
+ a C-B
+   s 2  C-B
  a A-B
    s 3  A-B
    s 4  A-B
@@ -307,54 +305,51 @@ G
    s 3  B-C
    s 5  B-C
  a C-C
- a A-B
-   s 3  A-B
-   s 4  A-B
  a A-C
    s 2  A-C
- a C-C
  a A-A
+ a C-C
+ a C-B
+   s 2  C-B
  a A-C
    s 2  A-C
  a C-C
  a C-A
    s 2  C-A
    s 1  C-A
- a C-B
-   s 2  C-B
  a A-C
    s 2  A-C
  a C-A
    s 2  C-A
    s 1  C-A
 
-     M,1 B-C  
-     M,1 C-B  
      M,1 B-A  
+     M,1 B-C  
      M,1 A-B  
+     M,1 C-B  
+     M,2 A-B  
      M,2 B-C  
      M,2 C-C  
-     M,2 A-B  
      M,3 A-C  
-     M,3 C-C  
      M,3 A-A  
+     M,3 C-C  
+     M,4 C-B  
      M,4 A-C  
      M,4 C-C  
      M,4 C-A  
-     M,4 C-B  
      M,5 A-C  
      M,5 C-A  
+     G,1 B-A  
      G,1 B-C  
      G,1 C-A  
-     G,1 B-A  
      G,4 B-C  
      G,4 A-B  
      G,3 B-C  
      G,3 A-B  
      G,5 B-C  
+     G,2 C-B  
      G,2 A-C  
      G,2 C-A  
-     G,2 C-B  
 
      M,1 A-B,B-A,B-C,C-B  
      M,2 A-B,B-C,C-C  
@@ -368,9 +363,9 @@ G
      G,5 B-C  
      G,2 A-C,C-A,C-B  
 
-x {'A-C', 'C-A', 'C-B'}
-y A-C,C-A,C-B
-x {'M,1': {'B-C', 'C-B', 'B-A', 'A-B'}, 'M,2': {'B-C', 'C-C', 'A-B'}, 'M,3': {'A-C', 'C-C', 'A-A'}, 'M,4': {'A-C', 'C-C', 'C-A', 'C-B'}, 'M,5': {'A-C', 'C-A'}, 'G,1': {'B-C', 'C-A', 'B-A'}, 'G,4': {'B-C', 'A-B'}, 'G,3': {'B-C', 'A-B'}, 'G,5': {'B-C'}, 'G,2': {'A-C', 'C-A', 'C-B'}}
+x {'C-B', 'A-C', 'C-A'}
+y C-B,A-C,C-A
+x {'M,1': {'B-A', 'B-C', 'A-B', 'C-B'}, 'M,2': {'A-B', 'B-C', 'C-C'}, 'M,3': {'A-C', 'A-A', 'C-C'}, 'M,4': {'C-B', 'A-C', 'C-C', 'C-A'}, 'M,5': {'A-C', 'C-A'}, 'G,1': {'B-A', 'B-C', 'C-A'}, 'G,4': {'B-C', 'A-B'}, 'G,3': {'B-C', 'A-B'}, 'G,5': {'B-C'}, 'G,2': {'C-B', 'A-C', 'C-A'}}
 y M,1,M,2,M,3,M,4,M,5,G,1,G,4,G,3,G,5,G,2
 ::::::::::::::
 json.act
@@ -482,24 +477,36 @@ here2c parent  str  TN
 db.act
 ::::::::::::::
 key: ship_id,ship_name,ship_destination
+keys: ['ship_id', 'ship_name', 'ship_destination'] - ship_id
+['ship_id', 'ship_name', 'ship_destination']
 
 1 tuple (1, 'tata-hitachi', 'noida') 1,tata-hitachi,noida
 
 int ship_id 1
+int ship_id 1
 str ship_name tata-hitachi
+str ship_name tata-hitachi
+str ship_destination noida
 str ship_destination noida
 
 2 tuple (2, 'tata-mumbai', 'mumbai') 2,tata-mumbai,mumbai
 
 int ship_id 2
+int ship_id 2
 str ship_name tata-mumbai
+str ship_name tata-mumbai
+str ship_destination mumbai
 str ship_destination mumbai
 
 3 tuple (3, 'tata-express', 'hyderabad') 3,tata-express,hyderabad
 
 int ship_id 3
+int ship_id 3
+str ship_name tata-express
 str ship_name tata-express
 str ship_destination hyderabad
+str ship_destination hyderabad
+json string
 [
  {
  "ship_id": 1, 
@@ -541,6 +548,25 @@ json3.act
 ::::::::::::::
 id  list  [1, 2, 3]
 userId  int  1
+
+${._var.J}  dict  {'id': [1, 2, 3], 'userId': 1}
+
+{'id': [1, 2, 3], 'userId': 1} - [1, 2, 3]
+
+
+{'ids': [4, 5, 6], 'userId': 7} - 7 [4, 5, 6]  4
+
+build  info  model  - new model  
+describe  info  model  - new model  
+
+{'id': [1, 2, 3, 'build', 'describe'], 'userId': 1, 'build': <structs.KpA object at 0x7f25bde61580>, 'describe': <structs.KpA object at 0x7f25bde680a0>}
+info
+KpA
+
+KpA build  info  model  - new model  
+
+{'J': '{"id": [1, 2, 3], "userId": 1}', 'D': {'id': [1, 2, 3, 'build', 'describe'], 'userId': 1, 'build': <structs.KpA object at 0x7f25bde61580>, 'describe': <structs.KpA object at 0x7f25bde680a0>}, 'E': {'ids': [4, 5, 6], 'userId': 7}, 'X': <structs.KpA object at 0x7f25bde680a0>}
+KpA describe  info  model  - new model  
 ::::::::::::::
 regx.act
 ::::::::::::::
@@ -637,3 +663,174 @@ The documentaion for Contractor_company function
 The code for Contractor_company function
 The documentaion for Company_rating function
 The code for Company_rating function
+::::::::::::::
+def_unit.act
+::::::::::::::
+::::::::::::::
+def_unit.act
+::::::::::::::
+::::::::::::::
+p_check.act sample.tst_unit
+::::::::::::::
+::::::::::::::
+p_check.act note.tst_unit
+::::::::::::::
+::::::::::::::
+doc.act concept
+::::::::::::::
+<h1 Introduction></h1>
+<a name=intro></a>
+A start.
+<h1 Commands></h1>
+<a name=cmd></a>
+The commands
+<link rel="commands" href="cmd.html#cmd">
+<h1 Variables></h1>
+<a name=var></a>
+The variable
+<link rel="variables" href="var.html#var">
+<h1 Actors></h1>
+<a name=actor></a>
+The actors
+An actor is like a function call to a class, except the call is to the run time engine.
+The actor commands has access to the class functions and variables.
+The actor is like a function overload that instead of having different functions for the data types, it has a overload that matches variables in the class.
+It behaves like an advanced case statement with multiple matches.
+<link rel="commands" href="cmd.html#actor">
+<link rel="flow" href="flow.html#actor">
+<link rel="variables" href="var.html#actor">
+::::::::::::::
+doc.act var
+::::::::::::::
+<h1 Variables></h1>
+<a name=var></a>
+The variable
+<link rel="concept" href="concept.html#var">
+<h1 Actors></h1>
+<a name=actor></a>
+The actors
+An actor is like a function call to a class, except the call is to the run time engine.
+The actor commands has access to the class functions and variables.
+The actor is like a function overload that instead of having different functions for the data types, it has a overload that matches variables in the class.
+It behaves like an advanced case statement with multiple matches.
+<link rel="concept" href="concept.html#actor">
+<link rel="commands" href="cmd.html#actor">
+<link rel="flow" href="flow.html#actor">
+<h2 Actor variables></h2>
+<a name=actor_var></a>
+The actor match has access to the same variables as the commands in the actor has.
+::::::::::::::
+doc.act flow
+::::::::::::::
+<h1 Actors></h1>
+<a name=actor></a>
+The actors
+An actor is like a function call to a class, except the call is to the run time engine.
+The actor commands has access to the class functions and variables.
+The actor is like a function overload that instead of having different functions for the data types, it has a overload that matches variables in the class.
+It behaves like an advanced case statement with multiple matches.
+<link rel="concept" href="concept.html#actor">
+<link rel="commands" href="cmd.html#actor">
+<link rel="variables" href="var.html#actor">
+<h2 Actor flow></h2>
+<a name=actor_flow></a>
+Multiple actors of the same name can match, and the Break command stops any further matches.
+::::::::::::::
+doc.act cmd
+::::::::::::::
+<h1 Commands></h1>
+<a name=cmd></a>
+The commands
+<link rel="concept" href="concept.html#cmd">
+<h1 Actors></h1>
+<a name=actor></a>
+The actors
+An actor is like a function call to a class, except the call is to the run time engine.
+The actor commands has access to the class functions and variables.
+The actor is like a function overload that instead of having different functions for the data types, it has a overload that matches variables in the class.
+It behaves like an advanced case statement with multiple matches.
+<link rel="concept" href="concept.html#actor">
+<link rel="flow" href="flow.html#actor">
+<link rel="variables" href="var.html#actor">
+<h2 Actor commands></h2>
+<a name=actor_cmd></a>
+The Du, All, Its, This and That commands call other actors.
+::::::::::::::
+concept.act index
+::::::::::::::
+
+<h1 Introduction></h1>
+<a name=tag_0></a>
+A start.
+
+<h1 Commands></h1>
+<a name=tag_1></a>
+The commands
+<link rel="cmd" href="cmd.html#tag_1">
+
+<h2 Commands></h2>
+<a name=tag_2></a>
+
+<h1 Actors></h1>
+<a name=tag_4></a>
+The actors
+<link rel="var" href="var.html#tag_4">
+<link rel="flow" href="flow.html#tag_4">
+<link rel="cmd" href="cmd.html#tag_4">
+
+<h2 Functions></h2>
+<a name=tag_5></a>
+An actor is like a function call to a class, except the call is to the run time engine.
+The actor commands has access to the class functions and variables.
+The actor is like a function overload that instead of having different functions for the data types, it has a overload that matches variables in the class.
+It behaves like an advanced case statement with multiple matches.
+::::::::::::::
+concept.act var
+::::::::::::::
+
+<h1 Actors></h1>
+<a name=tag_4></a>
+The actors
+<link rel="index" href="index.html#tag_4">
+<link rel="flow" href="flow.html#tag_4">
+<link rel="cmd" href="cmd.html#tag_4">
+
+<h2 Actor variables></h2>
+<a name=tag_6></a>
+The actor match has access to the same variables as the commands in the actor has.
+::::::::::::::
+concept.act flow
+::::::::::::::
+
+<h1 Actors></h1>
+<a name=tag_4></a>
+The actors
+<link rel="index" href="index.html#tag_4">
+<link rel="var" href="var.html#tag_4">
+<link rel="cmd" href="cmd.html#tag_4">
+
+<h2 Actor flow></h2>
+<a name=tag_7></a>
+Multiple actors of the same name can match, and the Break command stops any further matches.
+::::::::::::::
+concept.act cmd
+::::::::::::::
+
+<h1 Commands></h1>
+<a name=tag_1></a>
+The commands
+<link rel="index" href="index.html#tag_1">
+
+<h2 Actor commands></h2>
+<a name=tag_3></a>
+
+<h1 Actors></h1>
+<a name=tag_4></a>
+The actors
+<link rel="index" href="index.html#tag_4">
+<link rel="var" href="var.html#tag_4">
+<link rel="flow" href="flow.html#tag_4">
+
+<h2 Actor commands></h2>
+<a name=tag_8></a>
+The Du, All, Its, This and That commands call other actors.
