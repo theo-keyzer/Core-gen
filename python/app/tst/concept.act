@@ -5,33 +5,6 @@ Actor main
 All Topic topic ${3}
 
 ----------------------------------------------------------------
-Actor topic Topic name = .
-----------------------------------------------------------------
-
-Add var Is false
-Its parent.Topic topic_is
-Du topic_this
-
-----------------------------------------------------------------
-Actor topic_is Topic name = ${.main.3}
-----------------------------------------------------------------
-
-Add var Is true
-Break loop
-
-----------------------------------------------------------------
-Actor topic_this Topic _.Is = true
-----------------------------------------------------------------
-
-C
-C <h${level} ${desc}></h${level}>
-C <a name=tag_${k_me}></a>
-
-Its T t
-Its parent.Topic links
-Clear set Unique
-
-----------------------------------------------------------------
 Actor topic Topic name = ${.main.3}
 ----------------------------------------------------------------
 
@@ -42,10 +15,59 @@ C <a name=tag_${k_me}></a>
 Its T t
 
 ----------------------------------------------------------------
-Actor t
+Actor topic Topic name = _
+----------------------------------------------------------------
+
+Add var Is false
+Its level topic_is
+Check.break var Is false
+
+C
+C <h${level} ${desc}></h${level}>
+C <a name=tag_${k_me}></a>
+
+Its T t
+
+----------------------------------------------------------------
+Actor topic Topic name = .
+----------------------------------------------------------------
+
+Add var Is false
+Its parent.Topic topic_is
+Check.break var Is false
+
+C
+C <h${level} ${desc}></h${level}>
+C <a name=tag_${k_me}></a>
+
+Its T t
+Its parent.Topic links
+Clear set Unique
+
+----------------------------------------------------------------
+Actor t T desc != .
 ----------------------------------------------------------------
 
 C ${desc}
+
+----------------------------------------------------------------
+Actor t T file != .
+----------------------------------------------------------------
+
+That file if ${file} include
+
+----------------------------------------------------------------
+Actor include
+----------------------------------------------------------------
+
+C ${.}
+
+----------------------------------------------------------------
+Actor topic_is Topic name = ${.main.3}
+----------------------------------------------------------------
+
+Add var Is true
+Break loop
 
 ----------------------------------------------------------------
 Actor links Topic name != .
@@ -55,6 +77,4 @@ Actor links Topic name &!= ${.main.3}
 Add.break set Unique ${name}
 
 C <link rel="${name}" href="${name}.html#tag_${.topic.k_me}">
-
-
 
