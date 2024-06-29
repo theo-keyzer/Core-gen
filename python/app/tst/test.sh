@@ -266,5 +266,13 @@ python ../src/main.py concept.act concept.def cmd
 if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
 
 
+echo ::::::::::::::
+echo concept.act var,cmd
+echo ::::::::::::::
+
+python ../src/main.py concept.act concept.def var,cmd
+if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
+
+
 
 

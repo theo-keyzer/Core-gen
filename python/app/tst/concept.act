@@ -5,7 +5,7 @@ Actor main
 All Topic topic ${3}
 
 ----------------------------------------------------------------
-Actor topic Topic name = ${.main.3}
+Actor topic Topic name in ${.main.3}
 ----------------------------------------------------------------
 
 C
@@ -13,6 +13,7 @@ C <h${level} ${desc}></h${level}>
 C <a name=tag_${k_me}></a>
 
 Its T t
+Break
 
 ----------------------------------------------------------------
 Actor topic Topic name = _
@@ -63,7 +64,7 @@ Actor include
 C ${.}
 
 ----------------------------------------------------------------
-Actor topic_is Topic name = ${.main.3}
+Actor topic_is Topic name in ${.main.3}
 ----------------------------------------------------------------
 
 Add var Is true
@@ -71,7 +72,7 @@ Break loop
 
 ----------------------------------------------------------------
 Actor links Topic name != .
-Actor links Topic name &!= ${.main.3}
+Actor links Topic name &!in ${.main.3}
 ----------------------------------------------------------------
 
 Add.break set Unique ${name}
