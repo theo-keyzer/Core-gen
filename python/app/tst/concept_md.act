@@ -10,8 +10,10 @@ Actor topic Topic .main.3 |= *
 ----------------------------------------------------------------
 
 C
-C <${tag} ${desc}></${tag}>
-C <a name=tag_${k_me}></a>
+
+Du tag
+
+C ${desc}
 
 Its T t
 Break
@@ -25,8 +27,10 @@ Its level topic_is
 Check.break var Is false
 
 C
-C <${tag} ${desc}></${tag}>
-C <a name=tag_${k_me}></a>
+
+Du tag
+
+C ${desc}
 
 Its T t
 
@@ -39,12 +43,20 @@ Its parent.Topic topic_is
 Check.break var Is false
 
 C
-C <${tag} ${desc}></${tag}>
-C <a name=tag_${k_me}></a>
+
+Du tag
+
+C ${desc}
 
 Its T t
 Its parent.Topic links
 Clear set Unique
+
+----------------------------------------------------------------
+Actor tag Topic tag in h1,h2,h3,h4
+----------------------------------------------------------------
+
+Cs ## 
 
 ----------------------------------------------------------------
 Actor t T desc != .
@@ -79,5 +91,13 @@ Actor links Topic name &!in ${.main.3}
 
 Add.break set Unique ${name}
 
-C <link rel="${name}" href="${name}.html#tag_${.topic.k_me}">
+That re_sub - ${.topic.desc}  replace  
+
+C [${name}](${name}.md#${_.replaced:l})
+
+----------------------------------
+Actor replace .
+----------------------------------
+
+Add var replaced ${.}
 

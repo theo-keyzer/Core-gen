@@ -110,6 +110,7 @@ Comp Topic parent Concept
 
 	Element name           C1 WORD       * topic name
 	Element level          N1 WORD       * index tree level
+	Element tag            C1 WORD       * html or formating tag
 	Element desc           V1 DESC       * doc to output.
 
 ----------------------------------------------------------------

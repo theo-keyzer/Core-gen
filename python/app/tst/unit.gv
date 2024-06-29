@@ -1,0 +1,119 @@
+digraph unit {
+node [shape=box];
+"Domain"
+"Model"
+"Model" -> "Domain" [label = "parent"];
+"Domain" -> "Model" [label = "Model"];
+"Frame"
+"Frame" -> "Domain" [label = "domain"];
+"Domain" -> "Frame" [label = "Frame_domain"];
+"Frame" -> "Model" [label = "parent"];
+"Model" -> "Frame" [label = "Frame"];
+"A"
+"A" -> "Domain" [label = "domain"];
+"A" -> "Model" [label = "model"];
+"Model" -> "A" [label = "A_model"];
+"A" -> "Frame" [label = "parent"];
+"Frame" -> "A" [label = "A"];
+"Use"
+"Use" -> "Model" [label = "model"];
+"Use" -> "Frame" [label = "frame"];
+"Frame" -> "Use" [label = "Use_frame"];
+"Use" -> "A" [label = "a"];
+"A" -> "Use" [label = "Use_a"];
+"Use" -> "A" [label = "parent"];
+"A" -> "Use" [label = "Use"];
+"Col"
+"Col" -> "Grid" [label = "name"];
+"Grid" -> "Col" [label = "Col_name"];
+"Col" -> "Grid" [label = "parent"];
+"Grid" -> "Col" [label = "Col"];
+"Grid"
+"Grid" -> "Grid" [label = "name"];
+"Grid" -> "Grid" [label = "Grid_name"];
+"Doc"
+"D"
+"D" -> "Doc" [label = "parent"];
+"Doc" -> "D" [label = "D"];
+"Concept"
+"Topic"
+"Topic" -> "Concept" [label = "parent"];
+"Concept" -> "Topic" [label = "Topic"];
+"T"
+"T" -> "Topic" [label = "parent"];
+"Topic" -> "T" [label = "T"];
+"Node"
+"Node" -> "Node" [label = "parent"];
+"Node" -> "Node" [label = "Node_parent"];
+"Link"
+"Link" -> "Node" [label = "to"];
+"Node" -> "Link" [label = "Link_to"];
+"Link" -> "Node" [label = "parent"];
+"Node" -> "Link" [label = "Link"];
+"Graph"
+"Matrix"
+"Table"
+"Field"
+"Field" -> "Type" [label = "type"];
+"Type" -> "Field" [label = "Field_type"];
+"Field" -> "Table" [label = "parent"];
+"Table" -> "Field" [label = "Field"];
+"Attrs"
+"Attrs" -> "Field" [label = "parent"];
+"Field" -> "Attrs" [label = "Attrs"];
+"Of"
+"Of" -> "Field" [label = "field"];
+"Field" -> "Of" [label = "Of_field"];
+"Of" -> "Type" [label = "type"];
+"Of" -> "Attr" [label = "attr"];
+"Attr" -> "Of" [label = "Of_attr"];
+"Of" -> "Attr" [label = "from"];
+"Attr" -> "Of" [label = "Of_from"];
+"Of" -> "Table" [label = "parent"];
+"Table" -> "Of" [label = "Of"];
+"Join"
+"Join" -> "Field" [label = "field1"];
+"Field" -> "Join" [label = "Join_field1"];
+"Join" -> "Table" [label = "table2"];
+"Table" -> "Join" [label = "Join_table2"];
+"Join" -> "Field" [label = "field2"];
+"Field" -> "Join" [label = "Join_field2"];
+"Join" -> "Table" [label = "parent"];
+"Table" -> "Join" [label = "Join"];
+"Join2"
+"Join2" -> "Field" [label = "field1"];
+"Field" -> "Join2" [label = "Join2_field1"];
+"Join2" -> "Table" [label = "table2"];
+"Table" -> "Join2" [label = "Join2_table2"];
+"Join2" -> "Field" [label = "field2"];
+"Field" -> "Join2" [label = "Join2_field2"];
+"Join2" -> "Attrs" [label = "attr2"];
+"Attrs" -> "Join2" [label = "Join2_attr2"];
+"Join2" -> "Table" [label = "parent"];
+"Table" -> "Join2" [label = "Join2"];
+"Type"
+"Data"
+"Data" -> "Type" [label = "parent"];
+"Type" -> "Data" [label = "Data"];
+"Attr"
+"Attr" -> "Type" [label = "table"];
+"Type" -> "Attr" [label = "Attr_table"];
+"Attr" -> "Type" [label = "parent"];
+"Type" -> "Attr" [label = "Attr"];
+"Where"
+"Where" -> "Attr" [label = "attr"];
+"Attr" -> "Where" [label = "Where_attr"];
+"Where" -> "Table" [label = "table"];
+"Where" -> "Attr" [label = "from_id"];
+"Attr" -> "Where" [label = "Where_from_id"];
+"Where" -> "Attr" [label = "id"];
+"Attr" -> "Where" [label = "Where_id"];
+"Where" -> "Type" [label = "parent"];
+"Type" -> "Where" [label = "Where"];
+"Logic"
+"Logic" -> "Attr" [label = "attr"];
+"Attr" -> "Logic" [label = "Logic_attr"];
+"Logic" -> "Type" [label = "parent"];
+"Type" -> "Logic" [label = "Logic"];
+}
+

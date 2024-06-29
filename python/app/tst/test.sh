@@ -215,64 +215,44 @@ echo ::::::::::::::
 python ../src/main.py doc.act doc.def concept
 if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
 
-echo ::::::::::::::
-echo doc.act var
-echo ::::::::::::::
-
-python ../src/main.py doc.act doc.def var
-if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
-
-echo ::::::::::::::
-echo doc.act flow
-echo ::::::::::::::
-
-python ../src/main.py doc.act doc.def flow
-if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
-
-echo ::::::::::::::
-echo doc.act cmd
-echo ::::::::::::::
-
-python ../src/main.py doc.act doc.def cmd
-if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
-
 
 echo ::::::::::::::
 echo concept.act index
 echo ::::::::::::::
 
-python ../src/main.py concept.act concept.def index
+python ../src/main.py concept.act concept.def index import
 if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
 
 echo ::::::::::::::
-echo concept.act var
+echo concept.act "*"
 echo ::::::::::::::
 
-python ../src/main.py concept.act concept.def var
+python ../src/main.py concept.act concept.def "*"
 if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
 
 echo ::::::::::::::
-echo concept.act flow
+echo concept.act var,flow,cmd
 echo ::::::::::::::
 
-python ../src/main.py concept.act concept.def flow
+python ../src/main.py concept.act concept.def var,flow,cmd import
 if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
 
 echo ::::::::::::::
-echo concept.act cmd
+echo concept_md.act cmd
 echo ::::::::::::::
 
-python ../src/main.py concept.act concept.def cmd
-if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
+
+python ../src/main.py concept_md.act concept.def cmd import
+if [ $? != 0 ]; then echo concept_md.act concept.def has errors; fi
 
 
 echo ::::::::::::::
-echo concept.act var,cmd
+echo dot.act
 echo ::::::::::::::
 
-python ../src/main.py concept.act concept.def var,cmd
-if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
-
+python ../gen/main.py dot.act ../bld2/note.unit,../bld2/app.unit,../bld2/sample.unit >unit.gv
+if [ $? != 0 ]; then echo dot.act ../bld2/note.unit,../bld2/app.unit,../bld2/sample.unit has errors; fi
+dot -Tjpg unit.gv >unit.jpg
 
 
 

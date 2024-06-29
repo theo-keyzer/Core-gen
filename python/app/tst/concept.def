@@ -2,7 +2,7 @@
 Concept intro
 ----------------------------------------------------------------
 
-Topic index 1 Introduction
+Topic index 1 h1 Introduction
 
 T . A start.
 
@@ -10,37 +10,36 @@ T . A start.
 Concept cmd
 ----------------------------------------------------------------
 
-Topic . 1 Commands
+Topic . 1 h2 The Commands
 
 T . The commands
 
-Topic index 2 Commands
-Topic cmd 2 Actor commands
+Topic index 2 p Commands
+Topic   cmd 2 p Actor commands
 
 ----------------------------------------------------------------
 Concept actor
 ----------------------------------------------------------------
 
-Topic . 1 Actors
+Topic . 1 h2 Actors
 
-T . The actors
+T . An actor has a list of commands to run.
 
-Topic index 2 Functions
+Topic index 2 p Functions
 
-T . An actor is like a function call to a class, except the call is to the run time engine.
 T . The actor commands has access to the class functions and variables.
 T . The actor is like a function overload that instead of having different functions for the data types, it has a overload that matches variables in the class.
 T . It behaves like an advanced case statement with multiple matches.
 
-Topic var 2 Actor variables
+Topic var 2 p Actor variables
 
 T . The actor match has access to the same variables as the commands in the actor has.
 
-Topic flow 2 Actor flow
+Topic flow 2 p Actor flow
 
 T . Multiple actors of the same name can match, and the Break command stops any further matches.
 
-Topic cmd 2 Actor commands
+Topic cmd 2 p Actor commands
 
 T . The Du, All, Its, This and That commands call other actors.
 

@@ -2130,6 +2130,7 @@ class KpTopic(Kp):
         na = ff.getw( ff.lines[ln], 1 )
         self.names[ "name" ] = na
         self.names[ "level" ] = ff.getw( ff.lines[ln], 1 )
+        self.names[ "tag" ] = ff.getw( ff.lines[ln], 1 )
         self.names[ "desc" ] = ff.getws( ff.lines[ln], 1 )
         self.k_parentp = -2
         i = len( act.ap_concept )
