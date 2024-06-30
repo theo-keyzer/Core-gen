@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Introduction</h1>
+<a name=tag_0></a>
+A start.
+
+<h2>Actors</h2>
+<a name=tag_1></a>
+The actor node has a list of commands to run.
+It uses a data node or object passed.
+
+<p>Actor variables.</p>
+<a name=tag_2></a>
+The actor match has access to the same variables as the commands in the actor has.
+
+<p>Actor flow.</p>
+<a name=tag_3></a>
+Multiple actors of the same name can match, and the Break command stops any further matches.
+
+<p>Actor commands.</p>
+<a name=tag_4></a>
+The Du, All, Its, This and That commands call other actors.
+
+<p>Actor function.</p>
+<a name=tag_5></a>
+The go_act function in the run-time engine processes the actor call.
+It calls the go_cmds function to process the command list.
+
+<p>Actor generated.</p>
+<a name=tag_6></a>
+The generated code for the actors is the loader and data classes.
+No runtime code is generated for this.
+
+<h2>The Commands</h2>
+<a name=tag_7></a>
+The command nodes.
+
+<p>Command generated.</p>
+<a name=tag_8></a>
+The generated code for the cmds is the loader and data classes.
+No runtime code is generated for this.
+
+<p>Actor commands.</p>
+<a name=tag_9></a>
+The commands has access to the variables and functions in the node object of the actor.
+
+<h2>Data Nodes</h2>
+<a name=tag_10></a>
+The data nodes.
+
+<p>Node functions.</p>
+<a name=tag_11></a>
+The get_var function in the generated code get the values for the varaiables.
+The do_its function there calls the go_act function with a related node.
+
+<p>Node generated.</p>
+<a name=tag_12></a>
+The generated code for the nodes is the loader, data classes and run-time functions.
+
+<p>Node flow.</p>
+<a name=tag_13></a>
+The code in the nodes can chain to other node functions.
+A path is passed for the route.
+The returned code can end loops.
+
+<h2>Node options</h2>
+<a name=tag_14></a>
+Command node options is specified like Add.me.break.
+This is separated to the Add token and a list with the rest.
+Data node options is not implemented, but can be added if meaningful.
+
+<h2>Collection Nodes</h2>
+<a name=tag_15></a>
+The collection nodes.
+Any data can be added here.
+
+<p>Collection areas.</p>
+<a name=tag_16></a>
+They are var, list and set.
+
+<p>Collection commands.</p>
+<a name=tag_17></a>
+They are Add, Clear, Check and This.
+
+<p>Collection options.</p>
+<a name=tag_18></a>
+They are me, json, eval and break.
+
+<h2>Json Nodes</h2>
+<a name=tag_19></a>
+The json nodes.
+</body>
+</html>

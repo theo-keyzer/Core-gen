@@ -209,40 +209,26 @@ python ../gen/main.py p_check.act note.tst_unit
 if [ $? != 0 ]; then echo p_check.act note.tst_unit has errors; fi
 
 echo ::::::::::::::
-echo doc.act concept
+echo doc.act flow
 echo ::::::::::::::
 
-python ../src/main.py doc.act doc.def concept
+python ../src/main.py doc.act doc.def flow
 if [ $? != 0 ]; then echo doc.act doc.def has errors; fi
 
-
-echo ::::::::::::::
-echo concept.act index
-echo ::::::::::::::
-
-python ../src/main.py concept.act concept.def index import
-if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
 
 echo ::::::::::::::
 echo concept.act "*"
 echo ::::::::::::::
 
-python ../src/main.py concept.act concept.def "*"
+python ../src/main.py concept.act concept.def "*" >concept.html
 if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
 
 echo ::::::::::::::
-echo concept.act var,flow,cmd
-echo ::::::::::::::
-
-python ../src/main.py concept.act concept.def var,flow,cmd import
-if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
-
-echo ::::::::::::::
-echo concept_md.act cmd
+echo concept_md.act "*"
 echo ::::::::::::::
 
 
-python ../src/main.py concept_md.act concept.def cmd import
+python ../src/main.py concept_md.act concept.def "*" import >concept.md
 if [ $? != 0 ]; then echo concept_md.act concept.def has errors; fi
 
 

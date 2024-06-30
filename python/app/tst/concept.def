@@ -2,20 +2,9 @@
 Concept intro
 ----------------------------------------------------------------
 
-Topic index 1 h1 Introduction
+Topic . 1 h1 Introduction
 
 T . A start.
-
-----------------------------------------------------------------
-Concept cmd
-----------------------------------------------------------------
-
-Topic . 1 h2 The Commands
-
-T . The commands
-
-Topic index 2 p Commands
-Topic   cmd 2 p Actor commands
 
 ----------------------------------------------------------------
 Concept actor
@@ -23,24 +12,110 @@ Concept actor
 
 Topic . 1 h2 Actors
 
-T . An actor has a list of commands to run.
+T . The actor node has a list of commands to run.
+T . It uses a data node or object passed.
 
-Topic index 2 p Functions
-
-T . The actor commands has access to the class functions and variables.
-T . The actor is like a function overload that instead of having different functions for the data types, it has a overload that matches variables in the class.
-T . It behaves like an advanced case statement with multiple matches.
-
-Topic var 2 p Actor variables
+Topic var 2 p Actor variables.
 
 T . The actor match has access to the same variables as the commands in the actor has.
 
-Topic flow 2 p Actor flow
+Topic flow 2 p Actor flow.
 
 T . Multiple actors of the same name can match, and the Break command stops any further matches.
 
-Topic cmd 2 p Actor commands
+Topic cmd 2 p Actor commands.
 
 T . The Du, All, Its, This and That commands call other actors.
+
+Topic run 2 p Actor function.
+
+T . The go_act function in the run-time engine processes the actor call.
+T . It calls the go_cmds function to process the command list.
+
+Topic gen 2 p Actor generated.
+
+T . The generated code for the actors is the loader and data classes.
+T . No runtime code is generated for this.
+
+----------------------------------------------------------------
+Concept cmd
+----------------------------------------------------------------
+
+Topic . 1 h2 The Commands
+
+T . The command nodes.
+
+Topic gen 2 p Command generated.
+
+T . The generated code for the cmds is the loader and data classes.
+T . No runtime code is generated for this.
+
+Topic cmd 2 p Actor commands.
+
+T . The commands has access to the variables and functions in the node object of the actor.
+
+----------------------------------------------------------------
+Concept node
+----------------------------------------------------------------
+
+Topic . 1 h2 Data Nodes
+
+T . The data nodes.
+
+Topic run 2 p Node functions.
+
+T . The get_var function in the generated code get the values for the varaiables.
+T . The do_its function there calls the go_act function with a related node.
+
+Topic gen 2 p Node generated.
+
+T . The generated code for the nodes is the loader, data classes and run-time functions.
+
+Topic flow 2 p Node flow.
+
+T . The code in the nodes can chain to other node functions.
+T . A path is passed for the route.
+T . The returned code can end loops.
+
+----------------------------------------------------------------
+Concept options
+----------------------------------------------------------------
+
+Topic . 1 h2 Node options
+
+T . Command node options is specified like Add.me.break.
+T . This is separated to the Add token and a list with the rest.
+T . Data node options is not implemented, but can be added if meaningful.
+
+----------------------------------------------------------------
+Concept collections
+----------------------------------------------------------------
+
+Topic . 1 h2 Collection Nodes
+
+T . The collection nodes.
+T . Any data can be added here.
+
+Topic coll 2 p Collection areas.
+
+T . They are var, list and set.
+
+Topic cmd 2 p Collection commands.
+
+T . They are Add, Clear, Check and This.
+
+Topic opt 2 p Collection options.
+
+T . They are me, json, eval and break.
+
+----------------------------------------------------------------
+Concept json
+----------------------------------------------------------------
+
+Topic . 1 h2 Json Nodes
+
+T . The json nodes.
+
+
 
 

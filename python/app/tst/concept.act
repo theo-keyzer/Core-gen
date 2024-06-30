@@ -2,7 +2,14 @@
 Actor main
 ----------------------------------------------------------------
 
+C <!DOCTYPE html>
+C <html>
+C <body>
+
 All Topic topic ${3}
+
+C </body>
+C </html>
 
 ----------------------------------------------------------------
 Actor topic Topic name in ${.main.3}
@@ -10,7 +17,7 @@ Actor topic Topic .main.3 |= *
 ----------------------------------------------------------------
 
 C
-C <${tag} ${desc}></${tag}>
+C <${tag}>${desc}</${tag}>
 C <a name=tag_${k_me}></a>
 
 Its T t
@@ -25,7 +32,7 @@ Its level topic_is
 Check.break var Is false
 
 C
-C <${tag} ${desc}></${tag}>
+C <${tag}>${desc}</${tag}>
 C <a name=tag_${k_me}></a>
 
 Its T t
@@ -39,7 +46,7 @@ Its parent.Topic topic_is
 Check.break var Is false
 
 C
-C <${tag} ${desc}></${tag}>
+C <${tag}>${desc}</${tag}>
 C <a name=tag_${k_me}></a>
 
 Its T t
@@ -79,5 +86,5 @@ Actor links Topic name &!in ${.main.3}
 
 Add.break set Unique ${name}
 
-C <link rel="${name}" href="${name}.html#tag_${.topic.k_me}">
+C <a href="${name}.html#tag_${.topic.k_me}">${name}</a>
 
