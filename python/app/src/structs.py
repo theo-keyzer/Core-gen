@@ -99,6 +99,7 @@ class KpArgs(Kp):
 class KpNode(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_node)
@@ -133,6 +134,8 @@ class KpNode(Kp):
             for i in range( len(act.ap_link) ):
                 if act.ap_link[i].k_top == self.me:
                     return( act.ap_link[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Node?", True );
@@ -177,11 +180,17 @@ class KpNode(Kp):
                     ret = go_act(glob.dats.ap_link[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpLink(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_link)
@@ -210,6 +219,8 @@ class KpLink(Kp):
             return( act.ap_node[ self.k_top ].get_var(act, na[1:], lno) )
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_node[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Link?", True );
@@ -226,11 +237,17 @@ class KpLink(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_node[ self.k_top ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_node[ self.k_top ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpGraph(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_graph)
@@ -249,6 +266,8 @@ class KpGraph(Kp):
         return(self.me2)
 
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Graph?", True );
@@ -257,11 +276,17 @@ class KpGraph(Kp):
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Graph?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpMatrix(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_matrix)
@@ -280,6 +305,8 @@ class KpMatrix(Kp):
         return(self.me2)
 
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Matrix?", True );
@@ -288,11 +315,17 @@ class KpMatrix(Kp):
             return("?" + na[0] + "?" + self.line_no + "," + lno + ",Matrix?", True );
 
     def do_its(self, glob: GlobT, what: List[str], act: int) -> int:
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpTable(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_table)
@@ -331,6 +364,8 @@ class KpTable(Kp):
             for i in range( len(act.ap_where) ):
                 if act.ap_where[i].k_tablep == self.me:
                     return( act.ap_where[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Table?", True );
@@ -412,11 +447,17 @@ class KpTable(Kp):
                     ret = go_act(glob.dats.ap_where[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpField(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_field)
@@ -474,6 +515,8 @@ class KpField(Kp):
             for i in range( len(act.ap_join2) ):
                 if act.ap_join2[i].k_field2p == self.me:
                     return( act.ap_join2[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Field?", True );
@@ -555,11 +598,17 @@ class KpField(Kp):
                     ret = go_act(glob.dats.ap_join2[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpAttrs(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_attrs)
@@ -592,6 +641,8 @@ class KpAttrs(Kp):
             for i in range( len(act.ap_join2) ):
                 if act.ap_join2[i].k_attr2p == self.me:
                     return( act.ap_join2[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Attrs?", True );
@@ -615,11 +666,17 @@ class KpAttrs(Kp):
                     ret = go_act(glob.dats.ap_join2[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpOf(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_of)
@@ -661,6 +718,8 @@ class KpOf(Kp):
             return( act.ap_type[ self.k_typep ].get_var(act, na[1:], lno) )
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_table[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Of?", True );
@@ -689,11 +748,17 @@ class KpOf(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_type[ self.k_typep ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_type[ self.k_typep ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpJoin(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_join)
@@ -732,6 +797,8 @@ class KpJoin(Kp):
             return( act.ap_field[ self.k_field2p ].get_var(act, na[1:], lno) )
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_table[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Join?", True );
@@ -756,11 +823,17 @@ class KpJoin(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_field[ self.k_field2p ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_field[ self.k_field2p ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpJoin2(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_join2)
@@ -801,6 +874,8 @@ class KpJoin2(Kp):
             return( act.ap_attrs[ self.k_attr2p ].get_var(act, na[1:], lno) )
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_table[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Join2?", True );
@@ -829,11 +904,17 @@ class KpJoin2(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_attrs[ self.k_attr2p ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_attrs[ self.k_attr2p ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpType(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_type)
@@ -871,6 +952,8 @@ class KpType(Kp):
             for i in range( len(act.ap_of) ):
                 if act.ap_of[i].k_typep == self.me:
                     return( act.ap_of[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Type?", True );
@@ -952,11 +1035,17 @@ class KpType(Kp):
                     ret = go_act(glob.dats.ap_of[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpData(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_data)
@@ -985,6 +1074,8 @@ class KpData(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_type[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Data?", True );
@@ -997,11 +1088,17 @@ class KpData(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_type[ self.k_parentp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_type[ self.k_parentp ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpAttr(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_attr)
@@ -1064,6 +1161,8 @@ class KpAttr(Kp):
             for i in range( len(act.ap_where) ):
                 if act.ap_where[i].k_from_idp == self.me:
                     return( act.ap_where[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Attr?", True );
@@ -1146,11 +1245,17 @@ class KpAttr(Kp):
                     ret = go_act(glob.dats.ap_where[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpWhere(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_where)
@@ -1193,6 +1298,8 @@ class KpWhere(Kp):
             return( act.ap_table[ self.k_tablep ].get_var(act, na[1:], lno) )
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_type[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Where?", True );
@@ -1221,11 +1328,17 @@ class KpWhere(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_table[ self.k_tablep ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_table[ self.k_tablep ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpLogic(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_logic)
@@ -1256,6 +1369,8 @@ class KpLogic(Kp):
             return( act.ap_attr[ self.k_attrp ].get_var(act, na[1:], lno) )
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_type[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Logic?", True );
@@ -1272,11 +1387,17 @@ class KpLogic(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_attr[ self.k_attrp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_attr[ self.k_attrp ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpDomain(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_domain)
@@ -1305,6 +1426,8 @@ class KpDomain(Kp):
             for i in range( len(act.ap_a) ):
                 if act.ap_a[i].k_domainp == self.me:
                     return( act.ap_a[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Domain?", True );
@@ -1345,11 +1468,17 @@ class KpDomain(Kp):
                     ret = go_act(glob.dats.ap_a[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpModel(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_model)
@@ -1390,6 +1519,8 @@ class KpModel(Kp):
             for i in range( len(act.ap_use) ):
                 if act.ap_use[i].k_modelp == self.me:
                     return( act.ap_use[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Model?", True );
@@ -1434,11 +1565,17 @@ class KpModel(Kp):
                     ret = go_act(glob.dats.ap_use[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpFrame(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_frame)
@@ -1480,6 +1617,8 @@ class KpFrame(Kp):
             for i in range( len(act.ap_use) ):
                 if act.ap_use[i].k_framep == self.me:
                     return( act.ap_use[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Frame?", True );
@@ -1544,11 +1683,17 @@ class KpFrame(Kp):
                             return(ret)
             except:
                 return(0)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpA(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_a)
@@ -1592,6 +1737,8 @@ class KpA(Kp):
             for i in range( len(act.ap_use) ):
                 if act.ap_use[i].k_ap == self.me:
                     return( act.ap_use[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",A?", True );
@@ -1633,11 +1780,17 @@ class KpA(Kp):
                     ret = go_act(glob.dats.ap_use[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpUse(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_use)
@@ -1675,6 +1828,8 @@ class KpUse(Kp):
             return( act.ap_model[ self.k_modelp ].get_var(act, na[1:], lno) )
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_a[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Use?", True );
@@ -1699,11 +1854,17 @@ class KpUse(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_model[ self.k_modelp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_model[ self.k_modelp ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpCol(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_col)
@@ -1739,6 +1900,8 @@ class KpCol(Kp):
             return( act.ap_grid[ self.k_namep ].get_var(act, na[1:], lno) )
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_grid[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Col?", True );
@@ -1809,11 +1972,17 @@ class KpCol(Kp):
                             return(ret)
             except:
                 return(0)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpGrid(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_grid)
@@ -1845,6 +2014,8 @@ class KpGrid(Kp):
             for i in range( len(act.ap_grid) ):
                 if act.ap_grid[i].k_namep == self.me:
                     return( act.ap_grid[i].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Grid?", True );
@@ -1889,11 +2060,17 @@ class KpGrid(Kp):
                     ret = go_act(glob.dats.ap_grid[i], glob, act)
                     if ret != 0:
                         return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpDoc(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_doc)
@@ -1915,6 +2092,8 @@ class KpDoc(Kp):
         return(self.me2)
 
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Doc?", True );
@@ -2029,11 +2208,17 @@ class KpDoc(Kp):
                             return(ret)
             except:
                 return(0)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpD(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_d)
@@ -2060,6 +2245,8 @@ class KpD(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_doc[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",D?", True );
@@ -2072,11 +2259,17 @@ class KpD(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_doc[ self.k_parentp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_doc[ self.k_parentp ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpConcept(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_concept)
@@ -2094,6 +2287,8 @@ class KpConcept(Kp):
         return(self.me2)
 
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Concept?", True );
@@ -2112,11 +2307,17 @@ class KpConcept(Kp):
                 ret = go_act(glob.dats.ap_topic[i], glob, act)
                 if ret != 0:
                     return(ret)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpTopic(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_topic)
@@ -2148,6 +2349,8 @@ class KpTopic(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_concept[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",Topic?", True );
@@ -2197,11 +2400,17 @@ class KpTopic(Kp):
                             return(ret)
             except:
                 return(0)
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpT(Kp):
     def __init__(self, ff: Input, ln: int, act: ActT, lno: str, flag):
         self.err = False
+        self.flag = flag
         self.line_no = lno
         self.me2 = len(act.kp_all)
         self.me = len(act.ap_t)
@@ -2228,6 +2437,8 @@ class KpT(Kp):
     def get_var(self, act: ActT, na: List[str], lno: str) -> (str, bool):
         if na[0] == "parent" and len(na) > 1 and self.k_parentp >= 0:
             return( act.ap_topic[ self.k_parentp ].get_var(act, na[1:], lno) )
+        if na[0] == "options":
+            return( self.flag, False )
         try:
             if len(na) > 1:
                 return("?" + na[0] + ".?" + self.line_no + "," + lno + ",T?", True );
@@ -2240,6 +2451,11 @@ class KpT(Kp):
             if len(what) > 1:
                 return( glob.dats.ap_topic[ self.k_parentp ].do_its(glob, what[1:], act) )
             return( go_act(glob.dats.ap_topic[ self.k_parentp ], glob, act) )
+        if what[0] == "options":
+            for i in range( len(self.flag) ):
+                ret = go_act(self.flag[i], glob, act)
+                if ret != 0:
+                    return(ret)
         return(0)
 
 class KpActor(Kp):

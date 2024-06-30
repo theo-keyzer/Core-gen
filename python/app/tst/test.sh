@@ -240,5 +240,12 @@ python ../gen/main.py dot.act ../bld2/note.unit,../bld2/app.unit,../bld2/sample.
 if [ $? != 0 ]; then echo dot.act ../bld2/note.unit,../bld2/app.unit,../bld2/sample.unit has errors; fi
 dot -Tjpg unit.gv >unit.jpg
 
+echo ::::::::::::::
+echo opt.act "*"
+echo ::::::::::::::
+
+python ../src/main.py opt.act opt.def
+if [ $? != 0 ]; then echo opt.act opt.def has errors; fi
+
 
 
