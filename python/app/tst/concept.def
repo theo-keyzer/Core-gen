@@ -62,6 +62,15 @@ Topic . 1 h2 Data Nodes
 
 T . The data nodes.
 
+Topic var 2 p Node variables.
+
+T . The variables are the node items.
+T . Or node items related via a path.
+
+Topic var 2 p Node commands.
+
+T . The Its command gets other related nodes via a path.
+
 Topic run 2 p Node functions.
 
 T . The get_var function in the generated code get the values for the varaiables.
@@ -85,7 +94,15 @@ Topic . 1 h2 Node options
 
 T . Command node options is specified like Add.me.break.
 T . This is separated to the Add token and a list with the rest.
-T . Data node options is not implemented, but can be added if meaningful.
+T . Data node options is the same.
+
+Topic cmd 2 p Option commands.
+
+T . The command is Its options.
+
+Topic var 2 p Option variables.
+
+T . The variable name is options.
 
 ----------------------------------------------------------------
 Concept collections
@@ -95,18 +112,33 @@ Topic . 1 h2 Collection Nodes
 
 T . The collection nodes.
 T . Any data can be added here.
-
-Topic coll 2 p Collection areas.
-
-T . They are var, list and set.
+T . It has a dict for var, set and list.
+T . The Add command can also add to the current node (me), or to a path to a node (node).
 
 Topic cmd 2 p Collection commands.
 
 T . They are Add, Clear, Check and This.
+T . The This command is also path driven like the Its command.
+T . The This command uses the var, set and list as starting point whereas the Its command uses the current node to start.
 
-Topic opt 2 p Collection options.
+Topic cmd 2 p Collection areas.
 
-T . They are me, json, eval and break.
+T . They are var, list, set, node and me to specify where to add.
+
+Topic cmd 2 p Collection options.
+
+T . They are me, node, json, eval to specify what to add. It defaults to the string provided.
+T . The break is to break out of the actor loop for duplicates.
+T . Its also sets a break flag for the Break command to use for advanced breaks.
+
+Topic var 2 p Collection variables.
+
+T . For debugging, ._list.D, ._set.D
+T . For the var.D it is _.D
+T . If the var is a data node, it works the same as the data node.
+T . If the var is a dict, it is the dict items.
+T . A dict var can have data nodes in it.
+T . The path is then via the dict into the data node.
 
 ----------------------------------------------------------------
 Concept json
@@ -114,8 +146,17 @@ Concept json
 
 Topic . 1 h2 Json Nodes
 
-T . The json nodes.
+T . The json nodes is converted to python nodes.
+T . The are dict, list and objects.
 
+Topic cmd 2 p Json commands.
+
+T . They are Add.json, That json
+
+Topic var 2 p Json variables.
+
+T . The variables are the dict items.
+T . Or nested dict items via a path.
 
 
 
