@@ -103,3 +103,23 @@ They are Add.json, That json
 Json variables.
 The variables are the dict items.
 Or nested dict items via a path.
+
+## Concept
+The concept process
+
+Topic.
+A document is build for every topic based on its name.
+The document links to a section based on the concept to other documents.
+The content is shared to all topic files if the topic name is (.)
+The content is shared to all topic files within the nested level group if the topic name is (_).
+
+Build.
+The topic name is given to build the document.
+Multiple topics can be combined like var,cmd.
+All topics can be combined with (*).
+The import is given to import the files or not.
+
+Concept.
+Some of the topics can be concepts.
+This is to create links to simular concepts.
+The links can then be to relate concepts and topics.

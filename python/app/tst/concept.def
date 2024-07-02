@@ -158,5 +158,33 @@ Topic var 2 p Json variables.
 T . The variables are the dict items.
 T . Or nested dict items via a path.
 
+----------------------------------------------------------------
+Concept concept
+----------------------------------------------------------------
+
+Topic . 1 h2 Concept
+
+T . The concept process
+
+Topic concept 2 p Topic.
+
+T . A document is build for every topic based on its name.
+T . The document links to a section based on the concept to other documents.
+T . The content is shared to all topic files if the topic name is (.)
+T . The content is shared to all topic files within the nested level group if the topic name is (_).
+
+Topic concept 2 p Build.
+
+T . The topic name is given to build the document.
+T . Multiple topics can be combined like var,cmd.
+T . All topics can be combined with (*).
+T . The import is given to import the files or not.
+
+Topic concept 2 p Concept.
+
+T . Some of the topics can be concepts.
+T . This is to create links to simular concepts.
+T . The links can then be to relate concepts and topics.
+
 
 
