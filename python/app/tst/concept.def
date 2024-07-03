@@ -4,7 +4,7 @@ Concept intro
 
 Topic . 1 h1 Introduction
 
-T . A start.
+T . It converts the input to output.
 
 ----------------------------------------------------------------
 Concept actor
@@ -14,10 +14,13 @@ Topic . 1 h2 Actors
 
 T . The actor node has a list of commands to run.
 T . It uses a data node or object passed.
+T . The actor has a match condition.
 
 Topic var 2 p Actor variables.
 
 T . The actor match has access to the same variables as the commands in the actor has.
+T . The match is string based.
+T . The idea is to have a separate match function for the node option that compares data objects.
 
 Topic flow 2 p Actor flow.
 
@@ -95,6 +98,8 @@ Topic . 1 h2 Node options
 T . Command node options is specified like Add.me.break.
 T . This is separated to the Add token and a list with the rest.
 T . Data node options is the same.
+T . This is to add extra options to a node without changing the input file format.
+T . Options do not have a value, but can be parsed later on.
 
 Topic cmd 2 p Option commands.
 
@@ -114,24 +119,40 @@ T . The collection nodes.
 T . Any data can be added here.
 T . It has a dict for var, set and list.
 T . The Add command can also add to the current node (me), or to a path to a node (node).
+T . That is if it is a dict or a list.
 
-Topic cmd 2 p Collection commands.
+Topic cmd 2 p Commands.
 
 T . They are Add, Clear, Check and This.
 T . The This command is also path driven like the Its command.
 T . The This command uses the var, set and list as starting point whereas the Its command uses the current node to start.
 
-Topic cmd 2 p Collection areas.
+Topic cmd 2 p Areas.
 
 T . They are var, list, set, node and me to specify where to add.
 
-Topic cmd 2 p Collection options.
+Topic cmd 2 p Options.
 
-T . They are me, node, json, eval to specify what to add. It defaults to the string provided.
+T . They are me, node, json, eval and strs to specify what to add. It defaults to the string provided.
 T . The break is to break out of the actor loop for duplicates.
 T . Its also sets a break flag for the Break command to use for advanced breaks.
 
-Topic var 2 p Collection variables.
+Topic cmd 3 p Option node.
+
+T . This is add a node object versus a string of it.
+T . Not as complete as the variable names.
+
+Topic cmd 3 Option me.
+
+T . This is to add the current object.
+
+Topic cmd 4 Option strs.
+
+T . The string value is processed via the strs function to replace variable names.
+T . The result is passed to the strs function again to further replace variable names.
+T . This is for when a variable has a variable name in it.
+
+Topic var 2 p Variables.
 
 T . For debugging, ._list.D, ._set.D
 T . For the var.D it is _.D
