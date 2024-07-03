@@ -464,6 +464,8 @@ def add_cmd(cmd,glob,dat) -> bool:
             val = cmd.k_data
         else:
             val,err = strs(glob, cmd.k_data, glob.winp, cmd.line_no, True, True)
+            if 'strs' in cmd.flag:
+                val,err = strs(glob, val, glob.winp, cmd.line_no, True, True)
     if 'eval' in cmd.flag:
         val = eval( val , {'__builtins__':None}, {})
     if whats[0] == "node" and len(whats) > 1:
@@ -769,6 +771,9 @@ def o_get_var(glob, ss: list[str], winp: int, lno: str) -> (str, bool):
             return( "", True )
         if ss[1] == "_keys":
             return( glob.wins[winp].items, False )
+        for i in range(winp-1, -1, -1):
+            if ss[1] == glob.wins[i].name:
+                return( glob.wins[i].dat, False )
         return( "", True )
     except Exception as e:
         return ("?" + str(e) + " var?" + str(ss) + "?" + lno + "?", True)
