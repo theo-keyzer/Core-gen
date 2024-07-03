@@ -662,6 +662,16 @@ def chk(glob, eqa: str, aval: str, val: str, prev: bool, attr_err: bool, val_err
             return False
         except:
             return False
+    elif eq == "hasin":
+        try:
+            a = val.split(",")
+            b = aval.split(",")
+            c = [value for value in a if value in b]
+            if len(c) > 0:
+                return True
+            return False
+        except:
+            return False
     elif eq == "is":
         try:
             a = val.split(",")
