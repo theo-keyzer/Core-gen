@@ -5,6 +5,14 @@ Actor main
 All Table tbl
 All Table rules
 
+Add var xx abc
+Add.r var yy ${_.xx}
+Add.strs var zz ${_.yy}
+
+C ${_.xx}
+C ${_.yy}
+C ${_.zz}
+
 ----------------------------------------------------------------
 Actor tbl Table options:join hasin b,c
 ----------------------------------------------------------------
@@ -26,7 +34,7 @@ Actor opts
 C ${.}
 
 ----------------------------------------------------------------
-Actor rules
+Actor rules Table
 ----------------------------------------------------------------
 
 Add var rule false
@@ -36,20 +44,16 @@ Check.break var rule false
 C if ${name:l}.${_.from.name} > ${name:l}.${_.to.name}: print('${_.from.name} > ${_.to.name}')
 
 ----------------------------------------------------------------
-Actor flds
+Actor flds Field
 ----------------------------------------------------------------
 
-Add var has false
 Its options range
-Check.break var false
-Add.me var ${_.item} 
+
+----------------------------------------------------------------
+Actor range Str . in from,to
+----------------------------------------------------------------
+
 Add var rule true
-
-----------------------------------------------------------------
-Actor range
-----------------------------------------------------------------
-
-Add var has true
-Add var item ${.}
+Add.node var ${.} .flds
 
 
