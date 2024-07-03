@@ -1,2 +1,17 @@
 Table.a.b.c tb1 as a
 
+Table temp
+
+ Field.from . cold
+ Field.to   . hot
+
+Table size
+
+ Field.from . small
+ Field.to   . big
+
+Table vis
+
+ Field.from . dark
+ Field.to   . light
+
