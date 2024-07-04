@@ -142,11 +142,11 @@ Topic cmd 3 p Option node.
 T . This is add a node object versus a string of it.
 T . Not as complete as the variable names.
 
-Topic cmd 3 Option me.
+Topic cmd 3 p Option me.
 
 T . This is to add the current object.
 
-Topic cmd 4 Option strs.
+Topic cmd 4 p Option strs.
 
 T . The string value is processed via the strs function to replace variable names.
 T . The result is passed to the strs function again to further replace variable names.
@@ -180,6 +180,93 @@ T . The variables are the dict items.
 T . Or nested dict items via a path.
 
 ----------------------------------------------------------------
+Concept gen
+----------------------------------------------------------------
+
+Topic . 1 h2 Code generation.
+
+T . Metrics.
+
+Topic gen 2 p Size.
+
+T . If the input def and actor file size is larger than the generated code, it is a wast of time to build and maintain the system.
+
+Topic gen 2 p Time.
+
+T . Write twice. Write the code and then see how to generate it.
+T . No point if it is used once.
+T . If it is to expand a system, then it is just to see how to generate it.
+
+Topic gen 2 p Scope changes.
+
+T . If the scope of the project changes a lot, it make sense to even generate hard coded files.
+T . It becomes easier to re-generate the whole project than to modify parts of it every time.
+T . This where the most errors seem to happen.
+
+Topic gen 2 p Business logic.
+
+T . The actor deal with the general logic with some exceptions.
+T . This is hard to define as it relates to too many areas.
+T . Better to just code it or hard code the actors for this.
+T . An example of this is form_validate.a in the java. Maybe it can be better.
+T . In short, do not waist time on it. In long, it may interest you to define it.
+
+Topic gen 2 p Refine and optimize.
+
+T . In a a large system less effort is done to make it better.
+T . The generator is better at refactoring as it reaches a larger area.
+T . If this code can do this, then this code can use it like this.
+
+Topic gen 2 p Complexity.
+
+T . The actors break down complexity into small parts.
+T . So it can build larger complex systems.
+
+Topic gen 2 p Memory.
+
+T . The actors have a good memory how to build.
+T . Its like generating employees.
+
+Topic gen 2 p Code.
+
+T . The code generated is fragments of hand written code.
+T . It is no obscure mess.
+T . It gets reviewed, tested and handed over.
+
+Topic gen 2 p Handover.
+
+T . The code is handed over to the maintenance team.
+T . The generator is a personal tool and they have no interest or skill in learning it.
+
+Topic gen p Project.
+
+T . Projects to generate are rare, so it is hard to see if it is worth the effort.
+T . With enough skill, all projects can be generated.
+T . Every project expands the generator to build the system.
+T . This make the generator more capable to build a new generator.
+
+----------------------------------------------------------------
+Concept process
+----------------------------------------------------------------
+
+Topic . 1 h2 Process
+
+T . The build process
+
+Topic flow 2 p Robot
+
+T . The run-rime engine is the the lab robot.
+T . The robot knows where to find items as part of the run-time is generated.
+T . The input def files has the ingredients.
+T . The actor files has the formula for the mixing and instuctions for the robot.
+
+Topic flow 2 p Nodes.
+
+T . Takes notes.
+T . Separate the formulas from the ingredients.
+T . Start the lab tests.
+
+----------------------------------------------------------------
 Concept concept
 ----------------------------------------------------------------
 
@@ -206,6 +293,5 @@ Topic concept 2 p Concept.
 T . Some of the topics can be concepts.
 T . This is to create links to simular concepts.
 T . The links can then be to relate concepts and topics.
-
 
 

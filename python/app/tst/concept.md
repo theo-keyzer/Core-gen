@@ -95,10 +95,10 @@ Option node.
 This is add a node object versus a string of it.
 Not as complete as the variable names.
 
-me.
+Option me.
 This is to add the current object.
 
-strs.
+Option strs.
 The string value is processed via the strs function to replace variable names.
 The result is passed to the strs function again to further replace variable names.
 This is for when a variable has a variable name in it.
@@ -121,6 +121,71 @@ They are Add.json, That json
 Json variables.
 The variables are the dict items.
 Or nested dict items via a path.
+
+## Code generation.
+Metrics.
+
+Size.
+If the input def and actor file size is larger than the generated code, it is a wast of time to build and maintain the system.
+
+Time.
+Write twice. Write the code and then see how to generate it.
+No point if it is used once.
+If it is to expand a system, then it is just to see how to generate it.
+
+Scope changes.
+If the scope of the project changes a lot, it make sense to even generate hard coded files.
+It becomes easier to re-generate the whole project than to modify parts of it every time.
+This where the most errors seem to happen.
+
+Business logic.
+The actor deal with the general logic with some exceptions.
+This is hard to define as it relates to too many areas.
+Better to just code it or hard code the actors for this.
+An example of this is form_validate.a in the java. Maybe it can be better.
+In short, do not waist time on it. In long, it may interest you to define it.
+
+Refine and optimize.
+In a a large system less effort is done to make it better.
+The generator is better at refactoring as it reaches a larger area.
+If this code can do this, then this code can use it like this.
+
+Complexity.
+The actors break down complexity into small parts.
+So it can build larger complex systems.
+
+Memory.
+The actors have a good memory how to build.
+Its like generating employees.
+
+Code.
+The code generated is fragments of hand written code.
+It is no obscure mess.
+It gets reviewed, tested and handed over.
+
+Handover.
+The code is handed over to the maintenance team.
+The generator is a personal tool and they have no interest or skill in learning it.
+
+
+Projects to generate are rare, so it is hard to see if it is worth the effort.
+With enough skill, all projects can be generated.
+Every project expands the generator to build the system.
+This make the generator more capable to build a new generator.
+
+## Process
+The build process
+
+Robot
+The run-rime engine is the the lab robot.
+The robot knows where to find items as part of the run-time is generated.
+The input def files has the ingredients.
+The actor files has the formula for the mixing and instuctions for the robot.
+
+Nodes.
+Takes notes.
+Separate the formulas from the ingredients.
+Start the lab tests.
 
 ## Concept
 The concept process
