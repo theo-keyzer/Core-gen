@@ -1,0 +1,330 @@
+----------------------------------------------------------------
+Comp Actor parent . Find
+----------------------------------------------------------------
+* Loader definition for actors.
+* These are like routines the generator calls
+* for generating code.
+* Actors group on name
+----------------------------------------------------------------
+
+	Element name   C1 NAME  * of actor
+	Element comp   C1 COMP  * what it belongs to
+	Element attr   C1 WORD  * what to check
+	Element eq     C1 WORD  * to equal
+	Element value  C1 WORD  * this
+	Element cc     V1 WORD  * code to generate.
+
+----------------------------------------------------------------
+Comp Dbcreate parent Actor
+----------------------------------------------------------------
+* create table of current def
+----------------------------------------------------------------
+
+	Element where  C1 WORD    * database url
+	Element tbl    C1 WORD    * create table
+
+----------------------------------------------------------------
+Comp Dbload parent Actor
+----------------------------------------------------------------
+* insert current def into db
+----------------------------------------------------------------
+
+	Element where  C1 WORD    * database url
+	Element tbl    C1 WORD    * into table
+
+----------------------------------------------------------------
+Comp Dbselect parent Actor
+----------------------------------------------------------------
+* select from db, call actor for each row
+----------------------------------------------------------------
+
+	Element actor   R1 ACTOR   * what actor to run for it
+	Element where   C1 WORD    * database url
+	Element what    V1 WORD    * what to select
+
+Ref actor Actor check
+
+----------------------------------------------------------------
+Comp All parent Actor
+----------------------------------------------------------------
+* An actor calling type.
+* For each component call this actor.
+* The match is for the component.
+----------------------------------------------------------------
+
+	Element what    C1 WORD    * what to look for
+	Element actor   R1 ACTOR   * what actor to run for it
+	Element attr    C1 WORD    * what to check
+	Element eq      C1 WORD    * to equal
+	Element value   C1 WORD    * this
+	Element args    V1 WORD    * arg data value
+
+Ref actor Actor check
+
+----------------------------------------------------------------
+Comp Du parent Actor
+----------------------------------------------------------------
+* An actor calling type.
+* Coditional call to actor
+----------------------------------------------------------------
+
+	Element actor  R1 ACTOR * what actor to run for it
+	Element attr   C1 WORD  * what to check
+	Element eq     C1 WORD  * to equal
+	Element value  C1 WORD  * this
+	Element args   V1 WORD  * arg data value
+	
+Ref actor Actor check
+
+----------------------------------------------------------------
+Comp New parent Actor
+----------------------------------------------------------------
+* Create new comp and add
+----------------------------------------------------------------
+
+	Element where  C1 WORD  * add to dats or acts
+	Element what   C1 WORD  * what comp to load
+	Element line   V1 WORD  * load line args
+	
+----------------------------------------------------------------
+Comp Refs parent Actor
+----------------------------------------------------------------
+* Re run refs after loading new defs
+----------------------------------------------------------------
+
+	Element where  C1 WORD  * ref of dats or acts
+
+----------------------------------------------------------------
+Comp Var parent Actor
+----------------------------------------------------------------
+* Set variable to value
+----------------------------------------------------------------
+
+	Element attr   C1 WORD  * variable name
+	Element eq     C1 WORD  * to equal
+	Element value  V1 WORD  * this
+
+----------------------------------------------------------------
+Comp Its parent Actor
+----------------------------------------------------------------
+* Call this actor
+* For each child or reference of this def
+* The match is for the component.
+* Its what actor . . . args - to bypass the match
+----------------------------------------------------------------
+
+	Element what    C1 WORD      * to look for
+	Element actor   R1 ACTOR     * what to do
+	Element attr    C1 WORD      * what to check
+	Element eq      C1 WORD      * to equal
+	Element value   C1 WORD      * this
+	Element args    V1 WORD      * arg data value
+	
+Ref actor Actor check
+	
+----------------------------------------------------------------
+Comp C parent Actor
+----------------------------------------------------------------
+* Output code to file.
+----------------------------------------------------------------
+
+	Element desc   V1 DESC * code to output.
+
+----------------------------------------------------------------
+Comp Cs parent Actor
+----------------------------------------------------------------
+* Output code sniplet to file - no newline
+----------------------------------------------------------------
+
+	Element desc   V1 DESC * code to output.
+
+----------------------------------------------------------------
+Comp Include parent Actor
+----------------------------------------------------------------
+* Include code fragment from a file.
+----------------------------------------------------------------
+
+	Element opt     C1 WORD          * optional or check - error if not found
+		Opt check                * check - error if not found
+		Opt ?                    * no error if not found
+	Element file    V1 WORD          * file name
+
+----------------------------------------------------------------
+Comp Out parent Actor
+----------------------------------------------------------------
+* Output control
+* delay: output is off until first C in next actor
+* normal: back to normal
+* off: cascade all output  off
+----------------------------------------------------------------
+
+	Element what   C1 WORD      * to look for
+	Element pad    C1 WORD      * to look for
+	Element desc   V1 DESC * code to buffer.
+
+----------------------------------------------------------------
+Comp Break parent Actor
+----------------------------------------------------------------
+* Break out of actor loop
+* To not do the default one
+----------------------------------------------------------------
+
+	Element what  C1      WORD * what to break
+		Opt   actor        * continue with calling actor - break actor case.
+		Opt   loop         * continue after calling All, Its cmd - break loop chain.
+		Opt   cmd          * continue with actor case - break cmd list.
+	Element on    C1      WORD * on what condition.
+		Opt   on_error     * if var has errors.
+		Opt   on_ok        * if var has no errors.
+	Element vars  V1      WORD * var strings to eval - ${a}  ${b}
+
+----------------------------------------------------------------
+Comp Unique parent Actor
+----------------------------------------------------------------
+* Used to not duplicate output.
+* Exit the actor if found
+* Add value to key
+*
+* Cmd add   (key) - add to key, ends actor if found.
+* Cmd check (key) - ends actor if there, does not add
+* Cmd clear (key) - removes a key entry
+* Cmd clear       - clears the keys
+----------------------------------------------------------------
+
+	Element cmd    C1 WORD  * add / clear
+	Element key    C1 WORD  * compare key
+	Element value  V1 WORD  * value to add to key
+
+----------------------------------------------------------------
+Comp Collect parent Actor
+----------------------------------------------------------------
+* Add current def to pocket
+* Collect items for later use
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+
+----------------------------------------------------------------
+Comp Hash parent Actor
+----------------------------------------------------------------
+* Set current def to pocket key
+* Collect items for later use
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+	Element key     C1 WORD * key
+	Element value   V1 WORD * value
+
+----------------------------------------------------------------
+Comp Group parent Actor
+----------------------------------------------------------------
+* Add key to pocket and value to key
+* Group items for later use
+* Does not duplicate
+* Could be as Set
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+	Element key     C1 WORD * key
+	Element value   V1 WORD * value
+
+----------------------------------------------------------------
+Comp Add parent Actor
+----------------------------------------------------------------
+* Add item to pocket
+----------------------------------------------------------------
+	
+	Element pocket  C1 WORD * where to add
+	Element what    C1 WORD * what to add
+	Element item    C1 WORD * item or file
+	Element data    V1 WORD * data
+
+----------------------------------------------------------------
+Comp Append parent Actor
+----------------------------------------------------------------
+* Append to the collection map or node path.
+* The path for the collect is _.
+* The path for the current node is .
+* The default is to the string data.
+* Options are:
+* me to add the current node.
+* json to add a converted json node.
+* map to add a map.
+* list to add a list.
+----------------------------------------------------------------
+	
+	Element path     C1 WORD * node path where to add
+	Element data     V1 WORD * data to add
+
+----------------------------------------------------------------
+Comp This parent Actor
+----------------------------------------------------------------
+* Call this actor
+* For each child or item in the collection
+----------------------------------------------------------------
+
+	Element path    C1 WORD      * node path
+	Element actor   R1 ACTOR     * what to do
+	Element args    V1 WORD      * arg data value
+	
+Ref actor Actor check
+
+----------------------------------------------------------------
+Comp Clear parent Actor
+----------------------------------------------------------------
+* Clear item in pocket
+----------------------------------------------------------------
+	
+	Element pocket  C1 WORD * where to add
+	Element what    C1 WORD * what to add
+	Element item    C1 WORD * item or file
+	Element data    V1 WORD * data
+
+----------------------------------------------------------------
+Comp Check parent Actor
+----------------------------------------------------------------
+* Check item in pocket
+----------------------------------------------------------------
+	
+	Element pocket  C1 WORD * where to add
+	Element what    C1 WORD * what to add
+	Element item    C1 WORD * item or file
+	Element data    V1 WORD * data
+
+----------------------------------------------------------------
+Comp Json parent Actor
+----------------------------------------------------------------
+* Add json file to pocket
+* Group items for later use
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+	Element file    V1 WORD * file name
+
+----------------------------------------------------------------
+Comp Yaml parent Actor
+----------------------------------------------------------------
+* Add yaml file to pocket
+* Group items for later use
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+	Element file    V1 WORD * file name
+
+----------------------------------------------------------------
+Comp Xml parent Actor
+----------------------------------------------------------------
+* Add xml file to pocket
+* Group items for later use
+----------------------------------------------------------------
+	
+	Element cmd     C1 WORD * add / clear
+	Element pocket  C1 WORD * where to add
+	Element file    V1 WORD * file name
+
+

@@ -1,0 +1,177 @@
+----------------------------------------------------------------
+Concept intro
+----------------------------------------------------------------
+
+Topic . 1 h1 Introduction
+
+T . It converts the input to output.
+T . This is for the Dart version.
+T . Most of the changes is not done yet.
+
+----------------------------------------------------------------
+Concept actor
+----------------------------------------------------------------
+
+Topic . 1 h2 Actors.
+
+T . The actor node has a list of commands to run.
+T . It uses a data node or object passed.
+T . The actor has a match condition.
+
+Topic var 2 p Actor variables.
+
+T . The actor match has access to the same variables as the commands in the actor has.
+T . The match is string based.
+T . The idea is to have a separate match function for the node option that compares data objects.
+
+Topic flow 2 p Actor flow.
+
+T . Multiple actors of the same name can match, and the Break command stops any further matches.
+
+Topic cmd 2 p Actor commands.
+
+T . The Du, All, Its, This and That commands call other actors.
+
+Topic run 2 p Actor function.
+
+T . The go_act function in the run-time engine processes the actor call.
+T . It calls the go_cmds function to process the command list.
+
+Topic gen 2 p Actor generated.
+
+T . The generated code for the actors is the loader and data classes.
+T . No runtime code is generated for this.
+
+----------------------------------------------------------------
+Concept cmd
+----------------------------------------------------------------
+
+Topic . 1 h2 The Commands.
+
+T . The command nodes.
+
+Topic gen 2 p Command generated.
+
+T . The generated code for the cmds is the loader and data classes.
+T . No runtime code is generated for this.
+
+Topic cmd 2 p Actor commands.
+
+T . The commands has access to the variables and functions in the node object of the actor.
+
+----------------------------------------------------------------
+Concept node
+----------------------------------------------------------------
+
+Topic . 1 h2 Data Nodes.
+
+T . The data nodes.
+
+Topic var 2 p Node variables.
+
+T . The variables are the node items.
+T . Or node items related via a path.
+
+Topic var 2 p Node commands.
+
+T . The Its command gets other related nodes via a path.
+
+Topic run 2 p Node functions.
+
+T . The get_var function in the generated code get the values for the varaiables.
+T . The do_its function there calls the go_act function with a related node.
+
+Topic gen 2 p Node generated.
+
+T . The generated code for the nodes is the loader, data classes and run-time functions.
+
+Topic flow 2 p Node flow.
+
+T . The code in the nodes can chain to other node functions.
+T . A path is passed for the route.
+T . The returned code can end loops.
+
+----------------------------------------------------------------
+Concept options
+----------------------------------------------------------------
+
+Topic . 1 h2 Node options.
+
+T . Command node options is specified like Add.me.break.
+T . This is separated to the Add token and a list with the rest.
+T . Data node options is the same.
+T . This is to add extra options to a node without changing the input file format.
+T . Options do not have a value, but can be parsed later on.
+
+Topic cmd 2 p Option commands.
+
+T . The command is Its options.
+
+Topic var 2 p Option variables.
+
+T . The variable name is options.
+
+----------------------------------------------------------------
+Concept collections
+----------------------------------------------------------------
+
+Topic . 1 h2 Collection Nodes.
+
+T . The collection nodes.
+T . Any data can be added here.
+T . It has a map for the collections.
+T . A node path uses the same format for variable names as it does for the Append and This commands.
+
+Topic cmd 2 p Commands.
+
+T . They are Append and This.
+T . The This command is also path driven like the Its command.
+T . The This command uses a path as starting point whereas the Its command uses the current node to start.
+
+Topic cmd 2 p Append.
+
+T . Append _.D abc, put the string into the D.
+T . Append.list _.L, creates the list to L.
+T . Append _.L abc, adds the string abc to the L list if L is a list.
+T . Append.map _.M, creates the map M.
+T . Append _M.S abc adds the abc string to S entry of the map M if M is a map.
+T . Append.map.str _M.S abc, creates the map M is not there and adds abc to the S entry.
+T . Append.map _M.M2, creates the map M2 in the Map M if M is a map.
+T . If the current node is a map then Append S abc, adds the map entry S with abc.
+T . If the current node is a list then Append . abc, adds abc to the list.
+
+Topic cmd 2 p Areas.
+
+T . It has a node path to specify where to add.
+T . The (.) is the current node.
+T . The (_) is for the collection nodes.
+
+Topic cmd 2 p Options.
+
+T . They are me, node, json, eval, map, list and strs to specify what to add. It defaults to the string provided.
+T . The break is to break out of the actor loop for duplicates.
+T . Its also sets a break flag for the Break command to use for advanced breaks.
+
+Topic cmd 3 p Option node.
+
+T . This is add a node object versus a string of it.
+T . Not as complete as the variable names.
+
+Topic cmd 3 p Option me.
+
+T . This is to add the current object.
+
+Topic cmd 4 p Option strs.
+
+T . The string value is processed via the strs function to replace variable names.
+T . The result is passed to the strs function again to further replace variable names.
+T . This is for when a variable has a variable name in it.
+
+Topic var 2 p Variables.
+
+T . For the D it is _.D.
+T . If the value is a data node, the path works the same as the data node.
+T . If the value is a map, the path is in the map.
+T . Any items can have data nodes in it.
+
+
