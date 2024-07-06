@@ -1,7 +1,7 @@
 
 ## Introduction
 It converts the input to output.
-This is for the Dart version.
+This is for the Dart version. Only install the Dart sdk as Flutter is more for the Web and GUI.
 Most of the changes is not done yet.
 
 ## Actors.

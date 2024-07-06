@@ -5,7 +5,7 @@ Concept intro
 Topic . 1 h1 Introduction
 
 T . It converts the input to output.
-T . This is for the Dart version.
+T . This is for the Dart version. Only install the Dart sdk as Flutter is more for the Web and GUI.
 T . Most of the changes is not done yet.
 
 ----------------------------------------------------------------
