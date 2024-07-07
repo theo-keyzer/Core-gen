@@ -502,12 +502,15 @@ int do_all(glob, va, lno)
 	return 0;
 }
 
-bool load(act, tok, ln, pos, lno)
+bool load(act, toks, ln, pos, lno)
 {
 	bool errs = false;
+	var ss = toks.split(".");
+	var tok = ss[0];
+	var flag = ss.sublist(1);
 	if ( tok.compareTo( "Domain" ) == 0 ) {
 		var comp = new KpDomain();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -515,7 +518,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Model" ) == 0 ) {
 		var comp = new KpModel();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -523,7 +526,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Frame" ) == 0 ) {
 		var comp = new KpFrame();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -531,7 +534,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "A" ) == 0 ) {
 		var comp = new KpA();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -539,7 +542,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Use" ) == 0 ) {
 		var comp = new KpUse();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -547,7 +550,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Grid" ) == 0 ) {
 		var comp = new KpGrid();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -555,7 +558,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Col" ) == 0 ) {
 		var comp = new KpCol();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -563,7 +566,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "R" ) == 0 ) {
 		var comp = new KpR();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -571,7 +574,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Concept" ) == 0 ) {
 		var comp = new KpConcept();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -579,7 +582,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Topic" ) == 0 ) {
 		var comp = new KpTopic();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -587,7 +590,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "T" ) == 0 ) {
 		var comp = new KpT();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -595,7 +598,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Actor" ) == 0 ) {
 		var comp = new KpActor();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -603,7 +606,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Dbcreate" ) == 0 ) {
 		var comp = new KpDbcreate();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -611,7 +614,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Dbload" ) == 0 ) {
 		var comp = new KpDbload();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -619,7 +622,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Dbselect" ) == 0 ) {
 		var comp = new KpDbselect();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -627,7 +630,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "All" ) == 0 ) {
 		var comp = new KpAll();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -635,7 +638,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Du" ) == 0 ) {
 		var comp = new KpDu();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -643,7 +646,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "New" ) == 0 ) {
 		var comp = new KpNew();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -651,7 +654,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Refs" ) == 0 ) {
 		var comp = new KpRefs();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -659,7 +662,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Var" ) == 0 ) {
 		var comp = new KpVar();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -667,7 +670,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Its" ) == 0 ) {
 		var comp = new KpIts();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -675,7 +678,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "C" ) == 0 ) {
 		var comp = new KpC();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -683,7 +686,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Cs" ) == 0 ) {
 		var comp = new KpCs();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -691,7 +694,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Include" ) == 0 ) {
 		var comp = new KpInclude();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -699,7 +702,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Out" ) == 0 ) {
 		var comp = new KpOut();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -707,7 +710,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Break" ) == 0 ) {
 		var comp = new KpBreak();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -715,7 +718,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Unique" ) == 0 ) {
 		var comp = new KpUnique();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -723,7 +726,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Collect" ) == 0 ) {
 		var comp = new KpCollect();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -731,7 +734,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Hash" ) == 0 ) {
 		var comp = new KpHash();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -739,7 +742,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Group" ) == 0 ) {
 		var comp = new KpGroup();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -747,7 +750,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Add" ) == 0 ) {
 		var comp = new KpAdd();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -755,7 +758,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Append" ) == 0 ) {
 		var comp = new KpAppend();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -763,7 +766,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "This" ) == 0 ) {
 		var comp = new KpThis();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -771,7 +774,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Clear" ) == 0 ) {
 		var comp = new KpClear();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -779,7 +782,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Check" ) == 0 ) {
 		var comp = new KpCheck();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -787,7 +790,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Json" ) == 0 ) {
 		var comp = new KpJson();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -795,7 +798,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Yaml" ) == 0 ) {
 		var comp = new KpYaml();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -803,7 +806,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Xml" ) == 0 ) {
 		var comp = new KpXml();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}

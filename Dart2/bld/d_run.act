@@ -47,9 +47,12 @@ C 	print("?No all " + va[0] + " cmd " + "," + lno + "?");
 C 	return 0;
 C }
 C
-C bool load(act, tok, ln, pos, lno)
+C bool load(act, toks, ln, pos, lno)
 C {
 C 	bool errs = false;
+C 	var ss = toks.split(".");
+C 	var tok = ss[0];
+C 	var flag = ss.sublist(1);
 
 All Comp load
 
@@ -68,7 +71,7 @@ Actor load .
 
 C 	if ( tok.compareTo( "${name}c" ) == 0 ) {
 C 		var comp = new Kp${name}c();
-C 		var r = comp.load(act, ln, pos, lno);
+C 		var r = comp.load(act, ln, pos, lno, flag);
 C 		if (r == false) {
 C 			errs = true;
 C 		}

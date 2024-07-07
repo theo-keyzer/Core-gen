@@ -9,6 +9,7 @@ C {
 C 	int me = -1;
 C 	String comp = "Kp";
 C 	String line_no = "";
+C 	List <String> flags = [];
 C 	Map names = new Map();
 -C 	property names : Hash(String, String) = Hash(String, String).new
 C 	int do_its(glob, va, lno) {
@@ -43,11 +44,12 @@ Its Element val_inc
 Its Element val_inc2
 
 C 	List <Kp> childs = [];
-C 	bool load(act, ln, pos, lno) {
+C 	bool load(act, ln, pos, lno, flag) {
 -C 		var p = pos;
 C 		var tok = [pos, ''];
 C 		comp = "${name}c";
 C 		line_no = lno;
+C 		flags = flag;
 C 		me = act.ap_${name}l.length;
 
 Its Element ele_act
@@ -75,11 +77,12 @@ Its Element val_inc
 Its Element val_inc2
 
 C 	List <Kp> childs = [];
-C 	bool load(act, ln, pos, lno) {
+C 	bool load(act, ln, pos, lno, flag) {
 -C 		var p = pos;
 C 		var tok = [pos, ''];
 C 		comp = "${name}c";
 C 		line_no = lno;
+C 		flags = flag;
 C 		me = act.ap_${name}l.length;
 
 Its Element ele_act
@@ -107,11 +110,12 @@ Its Element val_inc_d
 Its Comp_parent childs
 
 C
-C 	bool load(act, ln, pos, lno) {
+C 	bool load(act, ln, pos, lno, flag) {
 -C 		var p = pos;
 C 		var tok = [pos, ''];
 C 		comp = "${name}c";
 C 		line_no = lno;
+C 		flags = flag;
 C 		me = act.ap_${name}l.length;
 C 		names["k_me"] = me.toString();
 C 		names["k_parent"] = "-1";

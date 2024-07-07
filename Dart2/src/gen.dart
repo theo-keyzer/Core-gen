@@ -12,6 +12,7 @@ class GlobT
 	List<WinT> wins = [];
 	Map pocket = new Map();
 	Map jsons = new Map();
+	Map collect = new Map();
 }
 
 class WinT {
@@ -175,6 +176,19 @@ int go_cmds(glob, ca, winp)
 			var ret = do_all(glob, va, cmd.line_no);
 			if (ret > 1) {
 				return(ret);
+			}
+		}
+		if (cmd is KpThis) {
+			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no, "", "", "");
+			var ret = this_cmd(glob,winp,cmd);
+			if (ret > 1) {
+				return(ret);
+			}
+		}
+		if (cmd is KpAppend) {
+			var ret = append_cmd(glob,winp,cmd);
+			if( ret != 0 ) {
+				break;
 			}
 		}
 		if (cmd is KpDu) {

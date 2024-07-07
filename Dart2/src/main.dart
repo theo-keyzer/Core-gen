@@ -6,6 +6,7 @@ part 'structs.dart';
 part 'run.dart';
 part 'gen.dart';
 part 'extra.dart';
+part 'collect.dart';
 
 void main(List<String> args) 
 {
