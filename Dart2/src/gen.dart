@@ -322,6 +322,18 @@ void re_go_cmds(glob,winp)
 
 List s_get_var(glob, winp, va, lno)
 {
+	var path = va;
+	var rec = get_path(glob, winp, path, lno);
+	var dat = rec.dat;
+	if(dat is Kp && rec.path.length > 0 && rec.path[0] != ".")
+	{
+		return( dat.get_var(glob, rec.path, lno) );
+	}
+	return( [true, dat.toString()] );
+}
+
+List s_get_varx(glob, winp, va, lno)
+{
 	if (va.length == 1 && va[0].length > 0 ) {
 		if (va[0][0] == ' ' || va[0][0] == '	') {
 			var ret = "";

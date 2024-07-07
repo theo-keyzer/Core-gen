@@ -7,6 +7,14 @@ int this_cmd(glob,winp,cmd)
 	var va = cmd.k_path.split(".");
 	var rec = get_path(glob, glob.winp, va, cmd.line_no);
 	var dat = rec.dat;
+	if( rec.path.length == 0 )
+	{
+		var ret = go_act(glob,dat);
+		if (ret > 1) {
+			return(ret);
+		}
+		return(0);
+	}
 	if(dat is Kp)
 	{
 		var ret = rec.dat.do_its(glob, rec.path, cmd.line_no);
@@ -15,9 +23,25 @@ int this_cmd(glob,winp,cmd)
 		}
 		return(0);
 	}
-	var ret = go_act(glob,dat);
-	if (ret > 1) {
-		return(ret);
+	if(dat is List)
+	{
+		for(var std in dat) {
+			var ret = go_act(glob,std);
+			if (ret > 1) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if(dat is Map)
+	{
+		for(var key in dat.keys) {
+			var ret = go_act(glob,dat[key]);
+			if (ret > 1) {
+				return(ret);
+			}
+		}
+		return(0);
 	}
 	return(0);
 }
@@ -27,7 +51,6 @@ int append_cmd(glob,winp,cmd)
 	var va = cmd.k_path.split(":");
 	var path = va[0].split(".");
 	var rec = get_path(glob, glob.winp, path, cmd.line_no);
-//	print(cmd.flags);
 	var dat = rec.dat;
 	if(dat is List)
 	{
@@ -54,7 +77,8 @@ Record get_path(glob, winp, va, lno)
 	dynamic dat;
 	if( va.length == 0 )
 	{
-		return(ok: false, dat: "err", path: va);
+		return(ok: true, dat: glob.wins[winp].dat, path: []);
+//		return(ok: false, dat: "err2", path: va);
 	}
 	if( va[0] == "_" )
 	{
@@ -65,6 +89,10 @@ Record get_path(glob, winp, va, lno)
 	{
 		dat = glob.wins[winp].dat;
 		return( get_node( glob, dat, va, lno ) );
+	}
+	if( va[1].length == 0 )
+	{
+		return(ok: true, dat: glob.wins[winp].dat, path: []);
 	}
 	for(var i = winp-1; i >= 0; i--) 
 	{
@@ -78,9 +106,13 @@ Record get_path(glob, winp, va, lno)
 
 Record get_node(glob, dat, va, lno)
 {
-	if( va.length == 0 || va[0].length == 0 )
+	if( va.length == 0 )
 	{
 		return(ok: true, dat: dat, path: va);
+	}
+	if( va[0].length == 0 )
+	{
+		return(ok: true, dat: dat, path: ["."]);
 	}
 	if(dat is Map)
 	{
