@@ -79,7 +79,7 @@ C 		act.ap_${name}l.add( comp );
 C 	}
 
 
-Its Token load_tok
+-Its Token load_tok
 
 ----------------------------------------------------------------
 Actor load_tok .
@@ -87,7 +87,7 @@ Actor load_tok .
 
 C 	if ( tok.compareTo( "${token}n" ) == 0 ) {
 C 		var comp = Kp${.load.name}c();
-C 		var r = comp.load(act, ln, pos, lno);
+C 		var r = comp.load(act, ln, pos, lno, flag);
 C 		if (r == false) {
 C 			errs = true;
 C 		}
@@ -179,8 +179,8 @@ C 		}
 Actor refs_ele . mw in F1,FS
 ----------------------------------------------------------------
 
--C 		r, st.k_${name}lp = fnd(act, st.parentp.toString() + "_${Ref_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref_element.opt} ", st.line_no )
-C 		res = fnd(act, st.parentp.toString() + "_${Ref_element.comp.name}c_" + get_name(st.names, "${name}l") , get_name(st.names, "${name}l"),  "${Ref_element.opt} ", st.line_no );
+-C 		r, st.k_${name}lp = fnd(act, st.k_parentp.toString() + "_${Ref_element.comp.name}c_" + st.names["${name}l"] , st.names["${name}l"],  "${Ref_element.opt} ", st.line_no )
+C 		res = fnd(act, st.k_parentp.toString() + "_${Ref_element.comp.name}c_" + get_name(st.names, "${name}l") , get_name(st.names, "${name}l"),  "${Ref_element.opt} ", st.line_no );
 C 		st.k_${name}lp = res[1];
 C 		st.names["k_${name}lp"] = st.k_${name}lp.toString();
 C 		if (res[0] == false) {
@@ -199,12 +199,25 @@ C 			errs = true;
 C 		}
 
 ----------------------------------------------------------------
+Actor refs_ele2 . mw = U0
+----------------------------------------------------------------
+
+C 		var t = st.k_${Refu_element.element2}lp;
+C 		if(t >= 0) {
+C 			st.k_${name}lp = act.ap_${Refu_element.comp_ref.name}l[t].k_${Refu_element.element3}lp;
+C 		} else if ( "${Refu_element.opt} ".compareTo( "?" ) != 0 ) {
+C 			print( "ref error ${Refu_element.element2}l not resolved " + st.line_no);
+C 			errs = true;
+C 		}
+C 		st.names["k_${name}lp"] = st.k_${name}lp.toString();
+
+----------------------------------------------------------------
 Actor refs_ele2 . mw in Q1,QS
 ----------------------------------------------------------------
 
 C 		{
 C 		var tp = -1;
-C 		var ap = st.parentp;
+C 		var ap = st.k_parentp;
 C 		if (ap >= 0) {
 C 			tp = act.ap_${Refq_element.comp_ref.name}l[ap].k_${Refq_element.element2.name}lp;
 C 		}

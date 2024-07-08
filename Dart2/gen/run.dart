@@ -4,18 +4,15 @@ class ActT
 {
 	Map index = new Map();
 	List<KpComp> ap_comp = [];
-	List<KpToken> ap_token = [];
-	List<KpStar> ap_star = [];
 	List<KpElement> ap_element = [];
 	List<KpOpt> ap_opt = [];
 	List<KpRef> ap_ref = [];
 	List<KpRef2> ap_ref2 = [];
 	List<KpRef3> ap_ref3 = [];
 	List<KpRefq> ap_refq = [];
+	List<KpRefu> ap_refu = [];
+	List<KpJoin> ap_join = [];
 	List<KpActor> ap_actor = [];
-	List<KpDbcreate> ap_dbcreate = [];
-	List<KpDbload> ap_dbload = [];
-	List<KpDbselect> ap_dbselect = [];
 	List<KpAll> ap_all = [];
 	List<KpDu> ap_du = [];
 	List<KpNew> ap_new = [];
@@ -24,21 +21,14 @@ class ActT
 	List<KpIts> ap_its = [];
 	List<KpC> ap_c = [];
 	List<KpCs> ap_cs = [];
-	List<KpInclude> ap_include = [];
 	List<KpOut> ap_out = [];
+	List<KpIn> ap_in = [];
 	List<KpBreak> ap_break = [];
-	List<KpUnique> ap_unique = [];
-	List<KpCollect> ap_collect = [];
-	List<KpHash> ap_hash = [];
-	List<KpGroup> ap_group = [];
 	List<KpAdd> ap_add = [];
 	List<KpAppend> ap_append = [];
 	List<KpThis> ap_this = [];
 	List<KpClear> ap_clear = [];
 	List<KpCheck> ap_check = [];
-	List<KpJson> ap_json = [];
-	List<KpYaml> ap_yaml = [];
-	List<KpXml> ap_xml = [];
 }
 
 bool refs(act)
@@ -133,9 +123,22 @@ bool refs(act)
 			errs = true;
 		}
 	}
-	for(var st in act.ap_dbselect) {
-		res = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no );
-		st.k_actorp = res[1];
+	for(var st in act.ap_refu) {
+		res = fnd(act, st.parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
+		st.k_elementp = res[1];
+		st.names["k_elementp"] = st.k_elementp.toString();
+		if (res[0] == false) {
+			errs = true;
+		}
+		res = fnd(act, "Comp_" + get_name(st.names, "comp") , get_name(st.names, "comp"),  "check", st.line_no );
+		st.k_compp = res[1];
+		st.names["k_compp"] = st.k_compp.toString();
+		if (res[0] == false) {
+			errs = true;
+		}
+		res = fnd(act, "Comp_" + get_name(st.names, "comp_ref") , get_name(st.names, "comp_ref"),  "check", st.line_no );
+		st.k_comp_refp = res[1];
+		st.names["k_comp_refp"] = st.k_comp_refp.toString();
 		if (res[0] == false) {
 			errs = true;
 		}
@@ -207,58 +210,6 @@ int do_all(glob, va, lno)
 			return(0);
 		}
 		for(var st in glob.dats.ap_comp) {
-			if (va.length > 2) {
-				var ret = st.do_its(glob, va.sublist(2), lno);
-				if (ret != 0) {
-					return(ret);
-				}
-				continue;
-			}
-			var ret = go_act(glob, st);
-			if (ret != 0) {
-				return(ret);
-			}
-		}
-		return(0);
-	}
-	if (va[0].compareTo("Token") == 0) {
-		if (va.length > 1 && va[1].length > 0) {
-			var en = glob.dats.index["Token_" + va[1] ];
-			if (en != null) {
-				if (va.length > 2) {
-					return( glob.dats.ap_token[en].do_its(glob, va.sublist(2), lno) );
-				}
-				return( go_act(glob, glob.dats.ap_token[en]) );
-			}
-			return(0);
-		}
-		for(var st in glob.dats.ap_token) {
-			if (va.length > 2) {
-				var ret = st.do_its(glob, va.sublist(2), lno);
-				if (ret != 0) {
-					return(ret);
-				}
-				continue;
-			}
-			var ret = go_act(glob, st);
-			if (ret != 0) {
-				return(ret);
-			}
-		}
-		return(0);
-	}
-	if (va[0].compareTo("Star") == 0) {
-		if (va.length > 1 && va[1].length > 0) {
-			var en = glob.dats.index["Star_" + va[1] ];
-			if (en != null) {
-				if (va.length > 2) {
-					return( glob.dats.ap_star[en].do_its(glob, va.sublist(2), lno) );
-				}
-				return( go_act(glob, glob.dats.ap_star[en]) );
-			}
-			return(0);
-		}
-		for(var st in glob.dats.ap_star) {
 			if (va.length > 2) {
 				var ret = st.do_its(glob, va.sublist(2), lno);
 				if (ret != 0) {
@@ -429,6 +380,58 @@ int do_all(glob, va, lno)
 		}
 		return(0);
 	}
+	if (va[0].compareTo("Refu") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["Refu_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( glob.dats.ap_refu[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( go_act(glob, glob.dats.ap_refu[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_refu) {
+			if (va.length > 2) {
+				var ret = st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if (va[0].compareTo("Join") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["Join_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( glob.dats.ap_join[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( go_act(glob, glob.dats.ap_join[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_join) {
+			if (va.length > 2) {
+				var ret = st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
 	if (va[0].compareTo("Actor") == 0) {
 		if (va.length > 1 && va[1].length > 0) {
 			var en = glob.dats.index["Actor_" + va[1] ];
@@ -459,44 +462,23 @@ int do_all(glob, va, lno)
 	return 0;
 }
 
-bool load(act, tok, ln, pos, lno)
+bool load(act, toks, ln, pos, lno)
 {
 	bool errs = false;
+	var ss = toks.split(".");
+	var tok = ss[0];
+	var flag = ss.sublist(1);
 	if ( tok.compareTo( "Comp" ) == 0 ) {
 		var comp = new KpComp();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
 		act.ap_comp.add( comp );
 	}
-	if ( tok.compareTo( "Token" ) == 0 ) {
-		var comp = new KpToken();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_token.add( comp );
-	}
-	if ( tok.compareTo( "Star" ) == 0 ) {
-		var comp = new KpStar();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_star.add( comp );
-	}
-	if ( tok.compareTo( "*" ) == 0 ) {
-		var comp = KpStar();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_star.add( comp );
-	}
 	if ( tok.compareTo( "Element" ) == 0 ) {
 		var comp = new KpElement();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -504,7 +486,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Opt" ) == 0 ) {
 		var comp = new KpOpt();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -512,7 +494,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Ref" ) == 0 ) {
 		var comp = new KpRef();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -520,7 +502,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Ref2" ) == 0 ) {
 		var comp = new KpRef2();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -528,7 +510,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Ref3" ) == 0 ) {
 		var comp = new KpRef3();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -536,47 +518,39 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Refq" ) == 0 ) {
 		var comp = new KpRefq();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
 		act.ap_refq.add( comp );
 	}
+	if ( tok.compareTo( "Refu" ) == 0 ) {
+		var comp = new KpRefu();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_refu.add( comp );
+	}
+	if ( tok.compareTo( "Join" ) == 0 ) {
+		var comp = new KpJoin();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_join.add( comp );
+	}
 	if ( tok.compareTo( "Actor" ) == 0 ) {
 		var comp = new KpActor();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
 		act.ap_actor.add( comp );
 	}
-	if ( tok.compareTo( "Dbcreate" ) == 0 ) {
-		var comp = new KpDbcreate();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_dbcreate.add( comp );
-	}
-	if ( tok.compareTo( "Dbload" ) == 0 ) {
-		var comp = new KpDbload();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_dbload.add( comp );
-	}
-	if ( tok.compareTo( "Dbselect" ) == 0 ) {
-		var comp = new KpDbselect();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_dbselect.add( comp );
-	}
 	if ( tok.compareTo( "All" ) == 0 ) {
 		var comp = new KpAll();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -584,7 +558,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Du" ) == 0 ) {
 		var comp = new KpDu();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -592,7 +566,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "New" ) == 0 ) {
 		var comp = new KpNew();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -600,7 +574,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Refs" ) == 0 ) {
 		var comp = new KpRefs();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -608,7 +582,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Var" ) == 0 ) {
 		var comp = new KpVar();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -616,7 +590,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Its" ) == 0 ) {
 		var comp = new KpIts();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -624,7 +598,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "C" ) == 0 ) {
 		var comp = new KpC();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -632,71 +606,39 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Cs" ) == 0 ) {
 		var comp = new KpCs();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
 		act.ap_cs.add( comp );
 	}
-	if ( tok.compareTo( "Include" ) == 0 ) {
-		var comp = new KpInclude();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_include.add( comp );
-	}
 	if ( tok.compareTo( "Out" ) == 0 ) {
 		var comp = new KpOut();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
 		act.ap_out.add( comp );
 	}
+	if ( tok.compareTo( "In" ) == 0 ) {
+		var comp = new KpIn();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_in.add( comp );
+	}
 	if ( tok.compareTo( "Break" ) == 0 ) {
 		var comp = new KpBreak();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
 		act.ap_break.add( comp );
 	}
-	if ( tok.compareTo( "Unique" ) == 0 ) {
-		var comp = new KpUnique();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_unique.add( comp );
-	}
-	if ( tok.compareTo( "Collect" ) == 0 ) {
-		var comp = new KpCollect();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_collect.add( comp );
-	}
-	if ( tok.compareTo( "Hash" ) == 0 ) {
-		var comp = new KpHash();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_hash.add( comp );
-	}
-	if ( tok.compareTo( "Group" ) == 0 ) {
-		var comp = new KpGroup();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_group.add( comp );
-	}
 	if ( tok.compareTo( "Add" ) == 0 ) {
 		var comp = new KpAdd();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -704,7 +646,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Append" ) == 0 ) {
 		var comp = new KpAppend();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -712,7 +654,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "This" ) == 0 ) {
 		var comp = new KpThis();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -720,7 +662,7 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Clear" ) == 0 ) {
 		var comp = new KpClear();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
@@ -728,35 +670,11 @@ bool load(act, tok, ln, pos, lno)
 	}
 	if ( tok.compareTo( "Check" ) == 0 ) {
 		var comp = new KpCheck();
-		var r = comp.load(act, ln, pos, lno);
+		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
 		act.ap_check.add( comp );
-	}
-	if ( tok.compareTo( "Json" ) == 0 ) {
-		var comp = new KpJson();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_json.add( comp );
-	}
-	if ( tok.compareTo( "Yaml" ) == 0 ) {
-		var comp = new KpYaml();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_yaml.add( comp );
-	}
-	if ( tok.compareTo( "Xml" ) == 0 ) {
-		var comp = new KpXml();
-		var r = comp.load(act, ln, pos, lno);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_xml.add( comp );
 	}
 	return(errs);
 }

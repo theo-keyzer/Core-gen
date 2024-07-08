@@ -4,14 +4,17 @@ Actor main
 
 All Topic topic
 
-Append      _:D abc
-Append      _:D wsa
-Append.map  _:M
-Append      _.M:zz aaa
-Append      _.M:ww qqq
-Append.list _:L
-Append      _.L aaa
-Append      _.L vvv
+Add        _:D abc
+Add        _:D wsa
+Add.map    _:M
+Add        _.M:zz aaa
+Add        _.M:ww qqq
+Add.list   _:L
+Add        _.L aaa
+Add        _.L vvv
+Add.check  _.L vvv
+
+Break cmds for . False
 
 This _.D pr
 This _.L pr

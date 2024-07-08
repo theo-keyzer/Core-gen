@@ -46,7 +46,7 @@ int this_cmd(glob,winp,cmd)
 	return(0);
 }
 
-int append_cmd(glob,winp,cmd)
+int check_cmd(glob,winp,cmd)
 {
 	var va = cmd.k_path.split(":");
 	var path = va[0].split(".");
@@ -54,17 +54,72 @@ int append_cmd(glob,winp,cmd)
 	var dat = rec.dat;
 	if(dat is List)
 	{
+		if( cmd.flags.contains("check") || cmd.flags.contains("break") ) {
+			if( dat.contains( cmd.k_data ) ) {
+				if( cmd.flags.contains("break") ) {
+					return(2);
+				}
+                		glob.wins[winp].is_check = true;
+				return(0);
+			}
+		}
+	}
+	if(dat is Map)
+	{
+		if( cmd.flags.contains("check") || cmd.flags.contains("break") ) {
+			if( dat[ va[1] ] == cmd.k_data ) {
+				if( cmd.flags.contains("break") ) {
+					return(2);
+				}
+                		glob.wins[winp].is_check = true;
+				return(0);
+			}
+		}
+	}
+	return(0);
+}
+
+int add_cmd(glob,winp,cmd)
+{
+	var va = cmd.k_path.split(":");
+	var path = va[0].split(".");
+	var rec = get_path(glob, glob.winp, path, cmd.line_no);
+	var dat = rec.dat;
+	if(dat is List)
+	{
+		if( cmd.flags.contains("check") || cmd.flags.contains("break") ) {
+			if( dat.contains( cmd.k_data ) ) {
+				if( cmd.flags.contains("break") ) {
+					return(2);
+				}
+                		glob.wins[winp].is_check = true;
+				return(0);
+			}
+		}
 		dat.add( cmd.k_data );
 	}
 	if(dat is Map)
 	{
 		if( cmd.flags.contains("map") ) {
-			dat[ va[1] ] = new Map();
+			if( dat[ va[1] ] is! Map || cmd.flags.contains("clear") ) {
+				dat[ va[1] ] = new Map();
+			}
 			return(0);
 		}
 		if( cmd.flags.contains("list") ) {
-			dat[ va[1] ] = [];
+			if( dat[ va[1] ] is! List || cmd.flags.contains("clear") ) {
+				dat[ va[1] ] = [];
+			}
 			return(0);
+		}
+		if( cmd.flags.contains("check") || cmd.flags.contains("break") ) {
+			if( dat[ va[1] ] == cmd.k_data ) {
+				if( cmd.flags.contains("break") ) {
+					return(2);
+				}
+                		glob.wins[winp].is_check = true;
+				return(0);
+			}
 		}
 		dat[ va[1] ] = cmd.k_data;
 	}

@@ -18,19 +18,17 @@ class GlobT
 class WinT {
 	String name = "";
 	int cnt = -1;
-//	Kp dat = new Kp();
 	dynamic dat = "";
-	String attr = "";
-	String eq = "";
-	String value = "";
 	String arg = "";
 	String flno = "";
 	int cur_act = 0;
 	int cur_pos = 0;
 	int on_pos = 0;
+        bool brk_act = false;
 	bool is_on = false;
 	bool is_trig = false;
 	bool is_prev = false;
+	bool is_check = false;
 }
 
 bool load_data(lns, act, file)
@@ -47,7 +45,7 @@ bool load_data(lns, act, file)
 	return(errs);
 }
 
-void new_act(glob, actn, arg, flno, attr, eq, value)
+void new_act(glob, actn, arg, flno)
 {
 	var winp = glob.winp+1;
 	if (glob.wins.length <= winp) {
@@ -57,9 +55,6 @@ void new_act(glob, actn, arg, flno, attr, eq, value)
 	glob.wins[winp].cnt = -1;
 	glob.wins[winp].arg = arg;
 	glob.wins[winp].flno = flno;
-	glob.wins[winp].attr = attr;
-	glob.wins[winp].eq = eq;
-	glob.wins[winp].value = value;
 	if (winp == 0) {
 		return;
 	}
@@ -75,17 +70,9 @@ int go_act(glob, dat)
 	var winp = glob.winp+1;
 	glob.winp = winp;
 	glob.wins[winp].dat = dat;
-	var attr = glob.wins[winp].attr;
-	if ( attr.compareTo("E_O_L") != 0 && attr.compareTo(".") != 0 && attr.compareTo("") != 0) {
-		var va = attr.split(".");
-		var v = dat.get_var(glob, va, glob.wins[winp].flno);
-		if (chk( glob.wins[winp].eq, v[1], glob.wins[winp].value) == false ) {
-			glob.winp = winp-1;
-			return(0);
-		}
-	}
 	var name = glob.wins[winp].name;
 	var prev = false;
+	var inc_cnt = true;
 	for(var i = 0; i < glob.acts.ap_actor.length; i++) {
 		if (glob.acts.ap_actor[i].k_name != name) {
 			continue;
@@ -98,23 +85,26 @@ int go_act(glob, dat)
 			if (chk( act.k_eq, v[1], value[1]) == false ) {
 				continue;
 			}
-			if (act.k_cc.compareTo( "" ) != 0) {
-				var res = strs(glob, winp, act.k_cc, act.line_no, true,true);
-				stdout.writeln(res[1]);
-			}
 		}
 		prev = true;
 		glob.wins[winp].cur_act = i;
-		glob.wins[winp].cnt += 1;
+		if( inc_cnt ) {
+			inc_cnt = false;
+			glob.wins[winp].cnt += 1;
+		}
 		var ret = go_cmds(glob, i, winp);
-		if (ret == 0) {
+		if( ret == 0 || ret == 3 ) {
 			continue;
 		}
-		glob.winp = winp-1;
-		if (ret == 1) {
-			return(ret);
+		var nret = ret;
+		if( ret == 2 ) {
+			nret = 0;
 		}
-		return(0);
+		if( ret < 0 && glob.wins[glob.winp].brk_act ) {
+			nret = -ret;
+		}
+		glob.winp -= 1;
+		return( nret );
 	}
 	glob.winp = winp-1;
 	return(0);
@@ -124,6 +114,7 @@ int go_cmds(glob, ca, winp)
 {
     	glob.wins[winp].is_on   = false;
     	glob.wins[winp].is_trig = false;
+	glob.wins[winp].is_check = false;
 	var a = glob.acts.ap_actor[ca];
 	for(var i = 0; i < a.childs.length; i++) {
 		glob.wins[winp].cur_pos = i;
@@ -146,55 +137,36 @@ int go_cmds(glob, ca, winp)
 		}
 		if (cmd is KpAll) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
-			var value = strs(glob, winp, cmd.k_value, cmd.line_no, true,true );
-			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, value[1]);
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no);
 			var what = strs(glob, winp, cmd.k_what, cmd.line_no, true,true );
 			var va = what[1].split(".");
-			if(va[0] == "Pocket") {
-				var ret = all_cmd(glob,winp,va);
-				if( ret != 0 ) {
-					break;
-				}
-				continue;
-			}
-			var st = glob.pocket[ va[0] ];
-			if(st != null)
-			{
-				if(va.length > 1) {
-					var ret = st.do_its(glob, va.sublist(1), cmd.line_no);
-					if (ret > 1) {
-						return(ret);
-					}
-					continue;
-				}
-				var ret = go_act(glob, st);
-				if (ret > 1) {
-					return(ret);
-				}
-				continue;
-			}
 			var ret = do_all(glob, va, cmd.line_no);
 			if (ret > 1) {
 				return(ret);
 			}
 		}
 		if (cmd is KpThis) {
-			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no, "", "", "");
+			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no);
 			var ret = this_cmd(glob,winp,cmd);
 			if (ret > 1) {
 				return(ret);
 			}
 		}
-		if (cmd is KpAppend) {
-			var ret = append_cmd(glob,winp,cmd);
+		if (cmd is KpAdd) {
+			var ret = add_cmd(glob,winp,cmd);
+			if( ret != 0 ) {
+				break;
+			}
+		}
+		if (cmd is KpCheck) {
+			var ret = check_cmd(glob,winp,cmd);
 			if( ret != 0 ) {
 				break;
 			}
 		}
 		if (cmd is KpDu) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
-			var value = strs(glob, winp, cmd.k_value, cmd.line_no, true,true );
-			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, value[1]);
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no);
 			var ret = go_act(glob,glob.wins[winp].dat);
 			if (ret > 1) {
 				return(ret);
@@ -202,8 +174,7 @@ int go_cmds(glob, ca, winp)
 		}
 		if (cmd is KpIts) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
-			var value = strs(glob, winp, cmd.k_value, cmd.line_no, true,true );
-			new_act(glob, cmd.k_actor, args[1], cmd.line_no, cmd.k_attr, cmd.k_eq, value[1]);
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no);
 			var va = cmd.k_what.split(".");
 			if (va[0].length == 0 && va.length > 1) {
 				for(var i = winp-1; i >= 0; i--) {
@@ -222,16 +193,37 @@ int go_cmds(glob, ca, winp)
 				return(ret);
 			}
 		}
-		if (cmd is KpBreak) {
+		if (cmd is KpBreak) 
+		{
+			if( cmd.k_check == "True" && glob.wins[winp].is_check == false ) {
+				continue;
+			}
+			if( cmd.k_check == "False" && glob.wins[winp].is_check == true ) {
+				continue;
+			}
+			var ret = 0;
 			if ( cmd.k_what.compareTo( "E_O_L" ) == 0 || cmd.k_what.compareTo( "actor" ) == 0 ) {
-				return(2);
+				ret = 2;
 			}
 			if (cmd.k_what.compareTo( "loop" ) == 0) {
-				return(1);
+				ret = 1;
 			}
 			if (cmd.k_what.compareTo( "cmd" ) == 0) {
-				break;
+				ret = 3;
 			}
+            		if( cmd.k_actor != "E_O_L" && cmd.k_actor != "." ) 
+            		{
+				for(var i = winp-1; i >= 0; i--) 
+				{
+					if ( glob.wins[i].name == cmd.k_actor ) 
+					{
+                        			glob.wins[i + 1].brk_act = true;
+                        			ret = -ret;
+						break;
+					}
+				}
+			}
+			return(ret);
 		}
 		if (cmd is KpVar) {
 			var res = strs(glob, winp, cmd.k_value, cmd.line_no, true,true );
@@ -267,15 +259,6 @@ int go_cmds(glob, ca, winp)
 		}
 		if (cmd is KpRefs) {
 			glob.load_errs |= refs(glob.dats);
-		}
-		if (cmd is KpAdd) {
-			var ret = add_cmd(glob,winp,cmd);
-			if( ret != 0 ) {
-				break;
-			}
-		}
-		if (cmd is KpClear) {
-			clear_cmd(glob,winp,cmd);
 		}
 	}
 	return(0);

@@ -178,14 +178,14 @@ C
 Actor nested Element mw = N1
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${name}l") == 0 && va.length > 1 && parentp >= 0) { // ${}
+C 		if (va[0].compareTo("${name}l") == 0 && va.length > 1 && k_parentp >= 0) { // ${}
 C 			var pos = 0;
 C 			var v = names[ "${name}l" ];
 C 			if( v != null) {
 C 				pos = int.parse(v);
 C 			}
 C 			if (va[1].compareTo("down") == 0 && pos > 0) {
-C 				var pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
+C 				var pst = glob.dats.ap_${.struct.parent.name}l[ k_parentp ];
 C 				var isin = false;
 C 				for(var st in pst.its${.struct.name}l) {
 C 					if (st.me == me) {
@@ -216,7 +216,7 @@ C 				}
 C 				return(0);
 C 			}
 C 			if (va[1].compareTo("up") == 0 && pos > 0) {
-C 				var pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
+C 				var pst = glob.dats.ap_${.struct.parent.name}l[ k_parentp ];
 C 				var isin = false;
 C 				var prev = 0;
 C 				for(var st in pst.its${.struct.name}l) {
@@ -246,7 +246,7 @@ C 				}
 C 				return(0);
 C 			}
 C 			if (va[1].compareTo("left") == 0 && pos > 0) {
-C 				var pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
+C 				var pst = glob.dats.ap_${.struct.parent.name}l[ k_parentp ];
 C 				var isin = false;
 C 				var prev = 0;
 C 				for(var st in pst.its${.struct.name}l) {
@@ -273,7 +273,7 @@ C 				}
 C 				return(0);
 C 			}
 C 			if (va[1].compareTo("right") == 0 && pos > 0) {
-C 				var pst = glob.dats.ap_${.struct.parent.name}l[ parentp ];
+C 				var pst = glob.dats.ap_${.struct.parent.name}l[ k_parentp ];
 C 				var isin = false;
 C 				for(var st in pst.its${.struct.name}l) {
 C 					if (st.me == me) {
@@ -336,25 +336,25 @@ Break loop
 Actor parent_field_p Comp name = Actor
 ----------------------------------------------------------------
 
-C 		parentp = act.ap_${name}l.length-1;
-C 		if (parentp < 0 ) { 
+C 		k_parentp = act.ap_${name}l.length-1;
+C 		if (k_parentp < 0 ) { 
 C 			print(lno + " ${.struct.name}c has no ${name}c parent") ;
 C 			return false;
 C 		}
-C 		act.ap_${name}l[ parentp ].childs.add( this );
+C 		act.ap_${name}l[ k_parentp ].childs.add( this );
 
 ----------------------------------------------------------------
 Actor parent_field_p Comp name != Actor
 ----------------------------------------------------------------
 
-C 		parentp = act.ap_${name}l.length-1;
-C 		names["k_parent"] = parentp.toString();
-C 		if (parentp < 0 ) { 
+C 		k_parentp = act.ap_${name}l.length-1;
+C 		names["k_parent"] = k_parentp.toString();
+C 		if (k_parentp < 0 ) { 
 C 			print( lno + " ${.struct.name}c has no ${name}c parent" );
 C 			return false;
 C 		}
-C 		act.ap_${name}l[ parentp ].its${.struct.name}l.add( this );
-C 		act.ap_${name}l[ parentp ].childs.add( this );
+C 		act.ap_${name}l[ k_parentp ].its${.struct.name}l.add( this );
+C 		act.ap_${name}l[ k_parentp ].childs.add( this );
 
 ----------------------------------------------------------------
 Actor index Comp find = Find
@@ -391,8 +391,8 @@ Its Element index_name_in
 Actor index_name_in Element name = name
 ----------------------------------------------------------------
 
--C 		var s = parentp.toString() + "_${.index.name}c_" + names["name"];
-C 		var s = parentp.toString() + "_${.index.name}c_" + get_name(names, "name");
+-C 		var s = k_parentp.toString() + "_${.index.name}c_" + names["name"];
+C 		var s = k_parentp.toString() + "_${.index.name}c_" + get_name(names, "name");
 C 		act.index[s] = me;
 
 ----------------------------------------------------------------
@@ -534,8 +534,8 @@ Actor parent_field_func Comp
 ----------------------------------------------------------------
 
 C 		if (va[0].compareTo("parent") == 0) { // ${}
-C 			if (parentp >= 0) {
-C 				var st = glob.dats.ap_${name}l[ parentp ];
+C 			if (k_parentp >= 0) {
+C 				var st = glob.dats.ap_${name}l[ k_parentp ];
 C 				if (va.length > 1) {
 C 					return( st.do_its(glob, va.sublist(1), lno) );
 C 				}
@@ -549,8 +549,8 @@ Actor parent_field_var Comp
 ----------------------------------------------------------------
 
 C 		if (va[0].compareTo("parent") == 0) { // ${}
-C 			if (parentp >= 0 && va.length > 1) {
-C 				return( glob.dats.ap_${name}l[ parentp ].get_var(glob, va.sublist(1),lno) );
+C 			if (k_parentp >= 0 && va.length > 1) {
+C 				return( glob.dats.ap_${name}l[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 C 			}
 C 		}
 
@@ -692,29 +692,22 @@ Actor val_inc_d Element
 D 	${name}l * ${doc} 
 
 ----------------------------------------------------------------
--Actor val_inc Element
-Actor val_inc Element mw = C1 	String k_${name}l = "";
-Actor val_inc Element mw = CS 	String k_${name}l = "";
-Actor val_inc Element mw = V1 	String k_${name}l = "";
-Actor val_inc Element mw = R1 	String k_${name}l = "";
-Actor val_inc Element mw = F1 	String k_${name}l = "";
-Actor val_inc Element mw = L1 	String k_${name}l = "";
-Actor val_inc Element mw = M1 	String k_${name}l = "";
-Actor val_inc2 Element mw = R1 	int k_${name}lp = -1;
-Actor val_inc2 Element mw = F1 	int k_${name}lp = -1;
-Actor val_inc2 Element mw = L1 	int k_${name}lp = -1;
-Actor val_inc2 Element mw = M1 	int k_${name}lp = -1;
-Actor val_inc2 Element mw = Q1 	int k_${name}lp = -1;
-Actor val_inc2 Element mw = RS 	int k_${name}lp = -1;
-Actor val_inc2 Element mw = FS 	int k_${name}lp = -1;
-Actor val_inc2 Element mw = LS 	int k_${name}lp = -1;
-Actor val_inc2 Element mw = MS 	int k_${name}lp = -1;
-Actor val_inc2 Element mw = QS 	int k_${name}lp = -1;
+Actor val_inc Element mw in C1,CS,V1,R1,F1,L1,M1
+----------------------------------------------------------------
+
+C 	String k_${name}l = "";
+
+----------------------------------------------------------------
+Actor val_inc2 Element mw in R1,F1,L1,M1,Q1,U0,RS,FS,LS,MS,QS
+----------------------------------------------------------------
+
+C 	int k_${name}lp = -1;
+
 ----------------------------------------------------------------
 Actor parent_field Comp
 ----------------------------------------------------------------
 
-C 	int parentp = -1;
+C 	int k_parentp = -1;
 
 ----------------------------------------------------------------
 Actor from_to Comp

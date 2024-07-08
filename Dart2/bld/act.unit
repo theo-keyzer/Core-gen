@@ -11,38 +11,8 @@ Comp Actor parent . Find
 	Element comp   C1 COMP  * what it belongs to
 	Element attr   C1 WORD  * what to check
 	Element eq     C1 WORD  * to equal
-	Element value  C1 WORD  * this
-	Element cc     V1 WORD  * code to generate.
-
-----------------------------------------------------------------
-Comp Dbcreate parent Actor
-----------------------------------------------------------------
-* create table of current def
-----------------------------------------------------------------
-
-	Element where  C1 WORD    * database url
-	Element tbl    C1 WORD    * create table
-
-----------------------------------------------------------------
-Comp Dbload parent Actor
-----------------------------------------------------------------
-* insert current def into db
-----------------------------------------------------------------
-
-	Element where  C1 WORD    * database url
-	Element tbl    C1 WORD    * into table
-
-----------------------------------------------------------------
-Comp Dbselect parent Actor
-----------------------------------------------------------------
-* select from db, call actor for each row
-----------------------------------------------------------------
-
-	Element actor   R1 ACTOR   * what actor to run for it
-	Element where   C1 WORD    * database url
-	Element what    V1 WORD    * what to select
-
-Ref actor Actor check
+	Element value  V1 WORD  * this
+-	Element cc     V1 WORD  * code to generate.
 
 ----------------------------------------------------------------
 Comp All parent Actor
@@ -54,9 +24,9 @@ Comp All parent Actor
 
 	Element what    C1 WORD    * what to look for
 	Element actor   R1 ACTOR   * what actor to run for it
-	Element attr    C1 WORD    * what to check
-	Element eq      C1 WORD    * to equal
-	Element value   C1 WORD    * this
+-	Element attr    C1 WORD    * what to check
+-	Element eq      C1 WORD    * to equal
+-	Element value   C1 WORD    * this
 	Element args    V1 WORD    * arg data value
 
 Ref actor Actor check
@@ -69,9 +39,9 @@ Comp Du parent Actor
 ----------------------------------------------------------------
 
 	Element actor  R1 ACTOR * what actor to run for it
-	Element attr   C1 WORD  * what to check
-	Element eq     C1 WORD  * to equal
-	Element value  C1 WORD  * this
+-	Element attr   C1 WORD  * what to check
+-	Element eq     C1 WORD  * to equal
+-	Element value  C1 WORD  * this
 	Element args   V1 WORD  * arg data value
 	
 Ref actor Actor check
@@ -115,9 +85,9 @@ Comp Its parent Actor
 
 	Element what    C1 WORD      * to look for
 	Element actor   R1 ACTOR     * what to do
-	Element attr    C1 WORD      * what to check
-	Element eq      C1 WORD      * to equal
-	Element value   C1 WORD      * this
+-	Element attr    C1 WORD      * what to check
+-	Element eq      C1 WORD      * to equal
+-	Element value   C1 WORD      * this
 	Element args    V1 WORD      * arg data value
 	
 Ref actor Actor check
@@ -139,17 +109,6 @@ Comp Cs parent Actor
 	Element desc   V1 DESC * code to output.
 
 ----------------------------------------------------------------
-Comp Include parent Actor
-----------------------------------------------------------------
-* Include code fragment from a file.
-----------------------------------------------------------------
-
-	Element opt     C1 WORD          * optional or check - error if not found
-		Opt check                * check - error if not found
-		Opt ?                    * no error if not found
-	Element file    V1 WORD          * file name
-
-----------------------------------------------------------------
 Comp Out parent Actor
 ----------------------------------------------------------------
 * Output control
@@ -163,87 +122,30 @@ Comp Out parent Actor
 	Element desc   V1 DESC * code to buffer.
 
 ----------------------------------------------------------------
+Comp In parent Actor
+----------------------------------------------------------------
+* Redirect output to the ins variable.
+----------------------------------------------------------------
+
+	Element flag   C1 WORD * set on or off
+
+----------------------------------------------------------------
 Comp Break parent Actor
 ----------------------------------------------------------------
 * Break out of actor loop
 * To not do the default one
 ----------------------------------------------------------------
 
-	Element what  C1      WORD * what to break
-		Opt   actor        * continue with calling actor - break actor case.
-		Opt   loop         * continue after calling All, Its cmd - break loop chain.
-		Opt   cmd          * continue with actor case - break cmd list.
-	Element on    C1      WORD * on what condition.
-		Opt   on_error     * if var has errors.
-		Opt   on_ok        * if var has no errors.
-	Element vars  V1      WORD * var strings to eval - ${a}  ${b}
-
-----------------------------------------------------------------
-Comp Unique parent Actor
-----------------------------------------------------------------
-* Used to not duplicate output.
-* Exit the actor if found
-* Add value to key
-*
-* Cmd add   (key) - add to key, ends actor if found.
-* Cmd check (key) - ends actor if there, does not add
-* Cmd clear (key) - removes a key entry
-* Cmd clear       - clears the keys
-----------------------------------------------------------------
-
-	Element cmd    C1 WORD  * add / clear
-	Element key    C1 WORD  * compare key
-	Element value  V1 WORD  * value to add to key
-
-----------------------------------------------------------------
-Comp Collect parent Actor
-----------------------------------------------------------------
-* Add current def to pocket
-* Collect items for later use
-----------------------------------------------------------------
-	
-	Element cmd     C1 WORD * add / clear
-	Element pocket  C1 WORD * where to add
-
-----------------------------------------------------------------
-Comp Hash parent Actor
-----------------------------------------------------------------
-* Set current def to pocket key
-* Collect items for later use
-----------------------------------------------------------------
-	
-	Element cmd     C1 WORD * add / clear
-	Element pocket  C1 WORD * where to add
-	Element key     C1 WORD * key
-	Element value   V1 WORD * value
-
-----------------------------------------------------------------
-Comp Group parent Actor
-----------------------------------------------------------------
-* Add key to pocket and value to key
-* Group items for later use
-* Does not duplicate
-* Could be as Set
-----------------------------------------------------------------
-	
-	Element cmd     C1 WORD * add / clear
-	Element pocket  C1 WORD * where to add
-	Element key     C1 WORD * key
-	Element value   V1 WORD * value
+	Element what   C1      WORD * what to break
+		Opt    actor        * continue with calling actor - break actor case.
+		Opt    loop         * continue after calling All, Its cmd - break loop chain.
+		Opt    cmds         * continue with actor case - break cmd list.
+	Element pad    C1 WORD      * padding (of)
+	Element actor  C1 ACTOR     * which actor to break
+	Element check  C1 WORD      * only if not unique
 
 ----------------------------------------------------------------
 Comp Add parent Actor
-----------------------------------------------------------------
-* Add item to pocket
-----------------------------------------------------------------
-	
-	Element pocket  C1 WORD * where to add
-	Element what    C1 WORD * what to add
-	Element item    C1 WORD * item or file
-	Element data    V1 WORD * data
-
-----------------------------------------------------------------
-Comp Append parent Actor
 ----------------------------------------------------------------
 * Append to the collection map or node path.
 * The path for the collect is _.
@@ -254,6 +156,19 @@ Comp Append parent Actor
 * json to add a converted json node.
 * map to add a map.
 * list to add a list.
+* clear to clear the map or list
+* check to not add dups
+* break on dups
+----------------------------------------------------------------
+	
+	Element path     C1 WORD * node path where to add
+	Element data     V1 WORD * data to add
+
+----------------------------------------------------------------
+Comp Check parent Actor
+----------------------------------------------------------------
+* Check item in collection
+* Same format as Add, but only checks.
 ----------------------------------------------------------------
 	
 	Element path     C1 WORD * node path where to add
@@ -272,59 +187,5 @@ Comp This parent Actor
 	
 Ref actor Actor check
 
-----------------------------------------------------------------
-Comp Clear parent Actor
-----------------------------------------------------------------
-* Clear item in pocket
-----------------------------------------------------------------
-	
-	Element pocket  C1 WORD * where to add
-	Element what    C1 WORD * what to add
-	Element item    C1 WORD * item or file
-	Element data    V1 WORD * data
-
-----------------------------------------------------------------
-Comp Check parent Actor
-----------------------------------------------------------------
-* Check item in pocket
-----------------------------------------------------------------
-	
-	Element pocket  C1 WORD * where to add
-	Element what    C1 WORD * what to add
-	Element item    C1 WORD * item or file
-	Element data    V1 WORD * data
-
-----------------------------------------------------------------
-Comp Json parent Actor
-----------------------------------------------------------------
-* Add json file to pocket
-* Group items for later use
-----------------------------------------------------------------
-	
-	Element cmd     C1 WORD * add / clear
-	Element pocket  C1 WORD * where to add
-	Element file    V1 WORD * file name
-
-----------------------------------------------------------------
-Comp Yaml parent Actor
-----------------------------------------------------------------
-* Add yaml file to pocket
-* Group items for later use
-----------------------------------------------------------------
-	
-	Element cmd     C1 WORD * add / clear
-	Element pocket  C1 WORD * where to add
-	Element file    V1 WORD * file name
-
-----------------------------------------------------------------
-Comp Xml parent Actor
-----------------------------------------------------------------
-* Add xml file to pocket
-* Group items for later use
-----------------------------------------------------------------
-	
-	Element cmd     C1 WORD * add / clear
-	Element pocket  C1 WORD * where to add
-	Element file    V1 WORD * file name
 
 

@@ -16,24 +16,6 @@ Comp Comp parent . Find
 Ref parent Comp .
 
 ----------------------------------------------------------------
-Comp Token parent Comp
-----------------------------------------------------------------
-* Token to use instead of the comps name.
-----------------------------------------------------------------
-
-	Element token   C1 NAME          * token to use
-
-----------------------------------------------------------------
-Comp Star parent .
-----------------------------------------------------------------
-* A document tag for a component.
-----------------------------------------------------------------
-
-	Element doc V1 WORD   * document string.
-
-Token *
-
-----------------------------------------------------------------
 Comp Element parent Comp FindIn
 ----------------------------------------------------------------
 * Loader definition for defining component's elements.
@@ -143,4 +125,40 @@ Comp Refq parent Comp
 Ref element  Element check
 Ref comp     Comp    check
 Ref comp_ref Comp    check
+
+----------------------------------------------------------------
+Comp Refu parent Comp
+----------------------------------------------------------------
+* Copy of element to comp and child of comp
+----------------------------------------------------------------
+
+	Element element  F1 ELEMENT       * link to remote element
+	Element comp     R1 COMP          * linking and ref Comp
+	Element element2 C1 ELEMENT       * use this element 
+	Element comp_ref R1 COMP          * ref Comp if comps differ
+	Element element3 C1 ELEMENT       * use this link from element for remote parent
+	Element opt      C1 WORD          * optional or check - error if not found
+		Opt check                 * check
+		Opt .                     * optional value to use
+	Element var      C1 WORD          * not used
+	Element doc      V1 WORD          * doc string
+	
+Ref element  Element check
+Ref comp     Comp    check
+Ref comp_ref Comp    check
+	
+----------------------------------------------------------------
+Comp Join parent Comp
+----------------------------------------------------------------
+* Add refs for this join
+----------------------------------------------------------------
+
+	Element element  C1 WORD
+	Element dir      C1 WORD
+	Element comp     C1 WORD
+	Element using    C1 WORD
+	Element element2 C1 WORD
+	Element comp2    C1 WORD
+	Element element3 C1 WORD
+
 
