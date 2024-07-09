@@ -150,20 +150,20 @@ int go_cmds(glob, ca, winp)
 		if (cmd is KpThis) {
 			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no);
 			var ret = this_cmd(glob,winp,cmd);
-			if (ret > 1) {
+			if (ret > 1 || ret < 0) {
 				return(ret);
 			}
 		}
 		if (cmd is KpAdd) {
 			var ret = add_cmd(glob,winp,cmd);
 			if( ret != 0 ) {
-				break;
+				return(ret);
 			}
 		}
 		if (cmd is KpCheck) {
 			var ret = check_cmd(glob,winp,cmd);
 			if( ret != 0 ) {
-				break;
+				return(ret);
 			}
 		}
 		if (cmd is KpDu) {

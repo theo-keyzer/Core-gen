@@ -81,14 +81,22 @@ int check_cmd(glob,winp,cmd)
 
 int add_cmd(glob,winp,cmd)
 {
-	var va = cmd.k_path.split(":");
+	dynamic k_data = cmd.k_data;
+	if( cmd.flags.contains("me") ) {
+		k_data = glob.wins[winp].dat;
+	} else {
+			var st = strs(glob, winp, cmd.k_data, cmd.line_no, true,true );
+			k_data = st[1];
+	}
+	var st = strs(glob, winp, cmd.k_path, cmd.line_no, true,true );
+	var va = st[1].split(":");
 	var path = va[0].split(".");
 	var rec = get_path(glob, glob.winp, path, cmd.line_no);
 	var dat = rec.dat;
 	if(dat is List)
 	{
 		if( cmd.flags.contains("check") || cmd.flags.contains("break") ) {
-			if( dat.contains( cmd.k_data ) ) {
+			if( dat.contains( k_data ) ) {
 				if( cmd.flags.contains("break") ) {
 					return(2);
 				}
@@ -96,7 +104,7 @@ int add_cmd(glob,winp,cmd)
 				return(0);
 			}
 		}
-		dat.add( cmd.k_data );
+		dat.add( k_data );
 	}
 	if(dat is Map)
 	{
@@ -113,7 +121,7 @@ int add_cmd(glob,winp,cmd)
 			return(0);
 		}
 		if( cmd.flags.contains("check") || cmd.flags.contains("break") ) {
-			if( dat[ va[1] ] == cmd.k_data ) {
+			if( dat[ va[1] ] == k_data ) {
 				if( cmd.flags.contains("break") ) {
 					return(2);
 				}
@@ -121,9 +129,9 @@ int add_cmd(glob,winp,cmd)
 				return(0);
 			}
 		}
-		dat[ va[1] ] = cmd.k_data;
+		dat[ va[1] ] = k_data;
 	}
-	print(glob.collect);
+//	print(glob.collect);
 	return(0);
 }
 
@@ -147,7 +155,7 @@ Record get_path(glob, winp, va, lno)
 	}
 	if( va[1].length == 0 )
 	{
-		return(ok: true, dat: glob.wins[winp].dat, path: []);
+		return(ok: true, dat: glob.wins[winp].dat, path: va.sublist(1));
 	}
 	if (va[1].compareTo( "+" ) == 0) {
 		return(ok: true, dat: (glob.wins[winp].cnt+1).toString(), path: [] );
@@ -163,6 +171,9 @@ Record get_path(glob, winp, va, lno)
 			return(ok: true, dat: "", path: []);
 		}
 		return(ok: true, dat: va[2], path: [] );
+	}
+	if (va[1].compareTo( "_arg" ) == 0) {
+		return(ok: true, dat: glob.wins[winp].arg, path: [] );
 	}
 	for(var i = winp-1; i >= 0; i--) 
 	{

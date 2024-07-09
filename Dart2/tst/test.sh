@@ -50,4 +50,25 @@ echo ::::::::::::::
 dart run ../src/main.dart p_check.act ../bld/sample.unit,../bld/app.unit
 if [ $? != 0 ]; then echo p_check.act sample.unit has errors; fi
 
+echo ::::::::::::::
+echo dag.act
+echo ::::::::::::::
+
+dart run ../src/main.dart  dag.act tst.def
+if [ $? != 0 ]; then echo dag.act tst.def has errors; fi
+
+echo ::::::::::::::
+echo tst5b.act
+echo ::::::::::::::
+
+dart run ../src/main.dart  tst5b.act tst.def check
+if [ $? != 0 ]; then echo tst5b.act tst.def has errors; fi
+
+echo ::::::::::::::
+echo tst5c.act
+echo ::::::::::::::
+
+dart run ../src/main.dart  tst5c.act tst.def check
+if [ $? != 0 ]; then echo tst5c.act tst.def has errors; fi
+
 
