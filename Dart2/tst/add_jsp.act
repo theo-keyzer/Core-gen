@@ -1,0 +1,204 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+-All Type.${2} body
+All Type body
+
+----------------------------------------------------------------
+Actor body  . name = User
+----------------------------------------------------------------
+
+C <%@ include file="/WEB-INF/jsp/include.jsp" %>
+C
+C <div class="portlet-section-header"></div>
+C
+C <div class="portlet-section-body">
+C		
+C 	<portlet:actionURL var="submitActionUrl">
+C 		<portlet:param name="action" value="submitNewForm"/>
+C 	</portlet:actionURL>
+C
+Cs 	<form:form id="${name:l}Form" name="${name:l}Form" commandName="${name:l}Form" method="post" action="$${submitActionUrl}" 
+
+Its Attr multipart flags regex ..Y.
+
+C >
+C 		
+
+Its Attr hidden
+
+C 		
+C 		<div><form:errors cssClass="portlet-msg-error" path="*" /></div>		
+C 		
+C 		<table border="0" cellpadding="4">
+
+Its Attr fld_flag
+
+-Its Attr fld flags regex ..Y.
+
+C 		</table>
+C	
+C 		<br><br>
+C		
+C 		<input type="submit" name="Save" value="<spring:message code="button.save.pkg.${name:l}"/>" onclick="javascript: ${name:l}Form_save_new();"/>&nbsp;&nbsp;
+C 		<input type="submit" name="Cancel" value="<spring:message code="button.cancel.pkg.${name:l}"/>" onclick="javascript: ${name:l}Form_cancel();"/>
+C 				
+C 	</form:form>	
+C </div>
+C 
+C <div class="portlet-section-footer">
+C </div>
+C
+
+----------------------------------------------------------------
+Actor multipart .    flags regex ..Y.
+Actor multipart . relation &=    file
+----------------------------------------------------------------
+
+Cs enctype="multipart/form-data" 
+
+----------------------------------------------------------------
+Actor fld_flag .    flags regex ..Y.
+----------------------------------------------------------------
+
+Du fld
+
+----------------------------------------------------------------
+Actor fld . relation = lookup
+----------------------------------------------------------------
+
+Du fld_var
+
+----------------------------------------------------------------
+Actor fld . relation in none,name,.
+----------------------------------------------------------------
+
+Du fld_var    mytype = CHAR
+Du fld_text   mytype = TEXT
+-Du fld_var    mytype = VARCHAR2
+-Du fld_number mytype = NUMBER
+Du fld_number mytype = FLOAT
+Du fld_date   mytype = DATE
+
+----------------------------------------------------------------
+Actor fld_var . mytype in CHAR,VARCHAR2
+----------------------------------------------------------------
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="${parent.name:l}.${name:l}" size="30" maxlength="${len}" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld_number . mytype in NUMBER,FLOAT
+----------------------------------------------------------------
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="${parent.name:l}.${name:l}" size="30" maxlength="${len}" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld_date . mytype = DATE
+----------------------------------------------------------------
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
+C 				<td>
+C 					<form:input cssClass="portlet-form-input-field" id="${name:l}" path="${parent.name:l}.${name:l}" size="30" />
+C 					<img src="<html:imagesPath/>dtp.gif" title='Click Here' alt='Click Here' onclick=" scwShow(scwID('${name:l}'),event);" />
+C 				</td>					
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = hidden
+----------------------------------------------------------------
+
+C 			<c:if test="$${isRol$HRN != null}">
+C 				<tr>
+C 					<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
+C 					<td colspan="3"><form:input cssClass="portlet-form-input-field" path="${parent.name:l}.${name:l}" size="30" maxlength="${len}" /></td>
+C 				</tr>
+C 			</c:if>
+
+----------------------------------------------------------------
+Actor fld . relation = pk-x
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:input cssClass="portlet-form-input-field" path="${parent.name:l}.${name:l}" size="30" maxlength="${len}" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld_text . mytype = TEXT
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><form:textarea cssClass="portlet-form-input-field" path="${parent.name:l}.${name:l}" rows="5" cols="30" /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = file
+----------------------------------------------------------------
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
+C 				<td colspan="3"><input type="file" name="${name:l}" size="30"  /></td>
+C 			</tr>
+
+----------------------------------------------------------------
+Actor fld . relation = dropdown
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
+C 				<td>
+C 					<form:select cssClass="portlet-form-input-field" path="${parent.name:l}.${name:l}" multiple="false" style="width: 18em;" size="1">
+C 						<form:option value=""> </form:option>
+C 						<c:forEach var="${table.name:l}Item" items="$${${table.name:l}Items}">
+C 							<form:option value="$${${table.name:l}Item.${Where_attr.from_id:l}}">$${${table.name:l}Item.displayFld}</form:option>
+C 						</c:forEach>
+C 					</form:select>
+C 				</td>
+C 			</tr>	
+
+----------------------------------------------------------------
+Actor fld . relation = select
+----------------------------------------------------------------
+
+C 			<tr>
+C 				<td class="portlet-form-field-label"><spring:message code="${desc}"/>&nbsp;&nbsp;</td>
+C 				<td>
+C 					<form:select cssClass="portlet-form-input-field" path="${parent.name:l}.${name:l}" multiple="false" style="width: 18em;" size="1">
+C 						<form:option value=""> </form:option>
+
+Its table.Data decode
+
+C 					</form:select>
+C 				</td>
+C 			</tr>
+
+
+----------------------------------------------------------------
+Actor decode .
+----------------------------------------------------------------
+
+C 							<form:option value="${name}">${value}</form:option>
+
+----------------------------------------------------------------
+Actor hidden . relation = pk
+----------------------------------------------------------------
+
+C 		<form:hidden ${name:l}="submitAction" path="submitAction"/>
+
+----------------------------------------------------------------
+Actor hidden . relation = none
+----------------------------------------------------------------
+
+-C 		<form:hidden path="target$CTNcRecord.pkg.${name:l}" />
+
+----------------------------------------------------------------
+Actor hidden . relation = text
+----------------------------------------------------------------
+
+-C 		<form:hidden path="target$CTNcRecord.pkg.${name:l}" />
+

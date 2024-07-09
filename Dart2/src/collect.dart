@@ -149,6 +149,21 @@ Record get_path(glob, winp, va, lno)
 	{
 		return(ok: true, dat: glob.wins[winp].dat, path: []);
 	}
+	if (va[1].compareTo( "+" ) == 0) {
+		return(ok: true, dat: (glob.wins[winp].cnt+1).toString(), path: [] );
+	}
+	if (va[1].compareTo( "0" ) == 0) {
+		if (glob.wins[winp].cnt != 0) {
+			return(ok: true, dat: "", path: [] );
+		}
+		return(ok: true, dat: va[2], path: [] );
+	}
+	if (va[1].compareTo( "1" ) == 0) {
+		if (glob.wins[winp].cnt == 0) {
+			return(ok: true, dat: "", path: []);
+		}
+		return(ok: true, dat: va[2], path: [] );
+	}
 	for(var i = winp-1; i >= 0; i--) 
 	{
 		if ( glob.wins[i].name == va[1] ) 

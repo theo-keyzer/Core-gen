@@ -1,0 +1,106 @@
+--------------------------------------------------------
+Type User User
+--------------------------------------------------------
+
+Attr .                         pk pk_id               NUMBER   22 N NNNN
+Attr User_typ              select user_type             CHAR    1 N YEYD User type
+Attr .                          . first_name        VARCHAR2  200 N YYYD First name
+Attr .                          . last_name         VARCHAR2  200 N YYYD Last name
+Attr Location            dropdown location_id         NUMBER   22 N YYYD Location
+Attr .                          . nt_id             VARCHAR2  255 N YYYD NT id
+Attr .                          . phone             VARCHAR2  255 Y NNYY Phone
+Attr .                          . email             VARCHAR2  255 Y NNYY Email
+Attr Activ                 select active                CHAR    1 N YYYY Active
+Attr Employee              lookup employee_id       VARCHAR2  200 Y YYYD Employee number
+Attr Employee                view employee_name     VARCHAR2  200 Y YYDD Employee name
+Attr Contractor_employee   lookup contractor_id     VARCHAR2  200 Y YYYD Contractor reference number
+Attr Contractor_employee     view contractor_name   VARCHAR2  200 Y YYDD Contractor name
+Attr Contractor_company  dropdown company_id          NUMBER   22 Y YYYD Company name
+
+Where contractor_id    id_number = contractor_id     = id_number
+Where contractor_name  id_number = contractor_id  like last_name || ' ' || first_name
+Where company_id           pk_id = company_id     like company_name
+Where employee_name           id = employee_id    like LAST_NAME || ' '  || FIRST_NAME
+Where employee_id             id = employee_id       = ID
+Where location_id             id = location_id       = location_name
+
+Logic      . = ORDER
+Logic  nt_id = ORDER_BY
+Logic active = Y
+
+---------------------------------------------
+Type User_typ
+---------------------------------------------
+
+Data 1 = Employee
+Data 2 = Contractor employee
+Data 3 = Contractor company
+
+--------------------------------------------------------
+Type Location
+--------------------------------------------------------
+
+Attr .   pk id                  NUMBER   22 N NNNN
+Attr .    . location_name     VARCHAR2 4000 N YYYY
+Attr .    . allowance_allowed   NUMBER   22 N NNNN
+Attr .    . friendly_name     VARCHAR2  255 N NNNN
+Attr . view display_fld       VARCHAR2   80 N NNNN
+
+---------------------------------------------
+Type Activ
+---------------------------------------------
+
+Data Y = Yes
+Data N = No
+
+--------------------------------------------------------
+Type Employee security
+--------------------------------------------------------
+
+Attr .               pk id                VARCHAR2  200 N NNNN
+Attr .                . first_name        VARCHAR2  200 N NNNN First name
+Attr .                . last_name         VARCHAR2  200 N NNNN Last name
+Attr .                . sap_id            VARCHAR2 4000 N NNNN SAP id
+Attr .                . bp_level          VARCHAR2 4000 N NNNN Level
+Attr Location  dropdown location_id         NUMBER   22 N NNNN Location
+Attr .                . manager_id          NUMBER   22 N NNNN Manager id
+Attr .                . nt_id             VARCHAR2  255 N NNNN NT id
+Attr .                . reports_to        VARCHAR2  255 N NNNN Reports to
+Attr .                . active              NUMBER   22 N NNNN Active
+
+---------------------------------------------
+Type Contractor_employee Contractor Employee
+---------------------------------------------
+
+Attr .                         pk pk_id                 NUMBER  22 N NNNN
+Attr .                          . id_number           VARCHAR2  80 N YEYY Reference number
+Attr .                          . first_name          VARCHAR2  70 N YYYY First name
+Attr .                          . last_name           VARCHAR2  70 N YYYY Surname
+Attr Contractor_company  dropdown company_id            NUMBER  22 N YYYD Company name
+Attr Location            dropdown location_id           NUMBER  22 N YYYY Location
+Attr .                          . job_description         TEXT 900 N NNYY Job description
+Attr .                       view display_fld         VARCHAR2  70 N NNNN
+
+---------------------------------------------
+Type Contractor_company Contractor Company
+---------------------------------------------
+
+Attr .                    pk pk_id              NUMBER  22 N NNNN
+Attr .                  none company_name     VARCHAR2  80 N YEYY Company name
+Attr Location       dropdown location_id        NUMBER  22 N YYYY Location
+Attr Company_rating dropdown company_rating_id  NUMBER  22 N YYYY Risk rating
+Attr .                     . email_address    VARCHAR2  50 Y NNYY Email address
+Attr .                     . contact_person   VARCHAR2  80 Y NNYY Contact person
+Attr .                     . service              TEXT 900 Y NNYY Service
+Attr .                  view display_fld      VARCHAR2  80 N NNNN
+
+---------------------------------------------
+Type Company_rating Company Risk Rating
+---------------------------------------------
+
+Attr .                pk pk_id              NUMBER  22 N NNNN
+Attr .              none description      VARCHAR2  80 N YEYY Rating description
+Attr .              view display_fld      VARCHAR2  80 N NNNN
+
+
+--------------------------------------------------------

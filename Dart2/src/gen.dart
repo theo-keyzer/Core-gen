@@ -55,6 +55,7 @@ void new_act(glob, actn, arg, flno)
 	glob.wins[winp].cnt = -1;
 	glob.wins[winp].arg = arg;
 	glob.wins[winp].flno = flno;
+	glob.wins[winp].brk_act = false;
 	if (winp == 0) {
 		return;
 	}
@@ -80,8 +81,9 @@ int go_act(glob, dat)
 		var act = glob.acts.ap_actor[i];
 		if (act.k_attr.compareTo("E_O_L") != 0) {
 			var value = strs(glob, winp, act.k_value, act.line_no, true,true );
-			var va = act.k_attr.split(".");
-			var v = s_get_var(glob, winp, va, act.line_no);
+			var sc = act.k_attr.split(":");
+			var va = sc[0].split(".");
+			var v = s_get_var(glob, winp, sc, va, act.line_no);
 			if (chk( act.k_eq, v[1], value[1]) == false ) {
 				continue;
 			}
@@ -189,7 +191,7 @@ int go_cmds(glob, ca, winp)
 				continue;
 			}
 			var ret = glob.wins[winp].dat.do_its(glob, va, cmd.line_no);
-			if (ret > 1) {
+			if (ret > 1 || ret < 0) {
 				return(ret);
 			}
 		}
@@ -208,7 +210,7 @@ int go_cmds(glob, ca, winp)
 			if (cmd.k_what.compareTo( "loop" ) == 0) {
 				ret = 1;
 			}
-			if (cmd.k_what.compareTo( "cmd" ) == 0) {
+			if (cmd.k_what.compareTo( "cmds" ) == 0) {
 				ret = 3;
 			}
             		if( cmd.k_actor != "E_O_L" && cmd.k_actor != "." ) 
@@ -303,16 +305,42 @@ void re_go_cmds(glob,winp)
 	}
 }
 
-List s_get_var(glob, winp, va, lno)
+List cmd_var(glob, sc, varv, lcnt)
+{
+	dynamic dat = varv;
+	for(var i = 1; i < sc.length; i++) 
+	{
+		if( dat is! String ) { continue; } // strings after this
+
+		if (sc[i] == 'u') {
+			dat = dat.toUpperCase();
+		}
+		if (sc[i] == 'l') {
+			dat = dat.toLowerCase();
+		}
+		if (sc[i] == 'c') {
+			dat = dat[0].toUpperCase() + dat.substring(1);
+		}
+	}
+	return( [ true, dat.toString() ] );
+}
+
+List s_get_var(glob, winp, sc, va, lno)
 {
 	var path = va;
 	var rec = get_path(glob, winp, path, lno);
-	var dat = rec.dat;
+//	print(rec);
+	dynamic dat = rec.dat;
 	if(dat is Kp && rec.path.length > 0 && rec.path[0] != ".")
 	{
-		return( dat.get_var(glob, rec.path, lno) );
+		var res = dat.get_var(glob, rec.path, lno);
+		if( res[0] == false ) {
+			return(res);
+		}
+		dat = res[1];
 	}
-	return( [true, dat.toString()] );
+	return( cmd_var(glob, sc, dat, 3) );
+//	return( [true, dat.toString()] );
 }
 
 List s_get_varx(glob, winp, va, lno)
@@ -361,7 +389,7 @@ List s_get_varx(glob, winp, va, lno)
 	}
 	for(var i = winp-1; i >= 0; i--) {
 		if ( glob.wins[i].name.compareTo( va[1] ) == 0 ) {
-			return( s_get_var(glob, i , va.sublist(2), lno) );
+			return( s_get_var(glob, i , [], va.sublist(2), lno) );
 		}
 	}
 	var st = glob.pocket[ va[1] ];
@@ -404,9 +432,10 @@ List strs(glob, winp, ss, lno, pr_err, is_err)
 		}
 		if (s[i] == '}') {
 			if (bp > 0) {
-				var va = s.sublist(bp+1,i).join().split(".");
+				var sc = s.sublist(bp+1,i).join().split(":");
+				var va = sc[0].split(".");
 //				r,v = s_get_var(glob, winp, va, lno );
-				var res = s_get_var(glob, winp, va, lno );
+				var res = s_get_var(glob, winp, sc, va, lno );
 				if (res[0] == false) {
 					ok = false;
 					if (pr_err == true) {
@@ -416,16 +445,16 @@ List strs(glob, winp, ss, lno, pr_err, is_err)
 						glob.run_errs = true;
 					}
 				}
-				if (l > i+1) {
-					i += 1;
-					if (res[0] != false) {
-						if (s[i] == '\$') {
-							res = strs(glob, winp, res[1], lno, pr_err, is_err);
-						} else {
-							res[1] = tocase(res[1], s[i]);
-						}
-					}
-				}
+//				if (l > i+1) {
+//					i += 1;
+//					if (res[0] != false) {
+//						if (s[i] == '\$') {
+//							res = strs(glob, winp, res[1], lno, pr_err, is_err);
+//						} else {
+//							res[1] = tocase(res[1], s[i]);
+//						}
+//					}
+//				}
 				ret += res[1];
 				pos = i+1;
 				dp = -3;
