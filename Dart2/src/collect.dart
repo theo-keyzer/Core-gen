@@ -7,6 +7,11 @@ int this_cmd(glob,winp,cmd)
 	var va = cmd.k_path.split(".");
 	var rec = get_path(glob, glob.winp, va, cmd.line_no);
 	var dat = rec.dat;
+	var data_type = dat.runtimeType.toString();
+	if(dat is List) data_type = "List";
+	if(dat is Map) data_type = "Map";
+	glob.wins[winp+1].data_type = data_type;
+	glob.wins[winp+1].data_key = "";
 	if( rec.path.length == 0 )
 	{
 		var ret = go_act(glob,dat);
@@ -17,6 +22,14 @@ int this_cmd(glob,winp,cmd)
 	}
 	if(dat is Kp)
 	{
+		if( rec.path[0].length == 0 || rec.path[0] == ".")
+		{
+			var ret = go_act(glob,dat);
+			if (ret > 1) {
+				return(ret);
+			}
+			return(0);
+		}
 		var ret = rec.dat.do_its(glob, rec.path, cmd.line_no);
 		if (ret > 1) {
 			return(ret);
@@ -36,6 +49,7 @@ int this_cmd(glob,winp,cmd)
 	if(dat is Map)
 	{
 		for(var key in dat.keys) {
+			glob.wins[winp+1].data_key = key;
 			var ret = go_act(glob,dat[key]);
 			if (ret > 1) {
 				return(ret);
@@ -87,6 +101,23 @@ int add_cmd(glob,winp,cmd)
 	} else {
 			var st = strs(glob, winp, cmd.k_data, cmd.line_no, true,true );
 			k_data = st[1];
+	}
+	if( cmd.flags.contains("file") ) {
+		try {
+			var file = File(k_data);
+			k_data = file.readAsStringSync();
+		} catch(e) {
+			print(e);
+			return(0);
+		}
+	}
+	if( cmd.flags.contains("json") ) {
+		try {
+			k_data = json.decode(k_data);
+		} catch(e) {
+			print(e);
+			return(0);
+		}
 	}
 	var st = strs(glob, winp, cmd.k_path, cmd.line_no, true,true );
 	var va = st[1].split(":");
@@ -174,6 +205,12 @@ Record get_path(glob, winp, va, lno)
 	}
 	if (va[1].compareTo( "_arg" ) == 0) {
 		return(ok: true, dat: glob.wins[winp].arg, path: [] );
+	}
+	if (va[1].compareTo( "_type" ) == 0) {
+		return(ok: true, dat: glob.wins[winp].data_type, path: [] );
+	}
+	if (va[1].compareTo( "_key" ) == 0) {
+		return(ok: true, dat: glob.wins[winp].data_key, path: [] );
 	}
 	for(var i = winp-1; i >= 0; i--) 
 	{

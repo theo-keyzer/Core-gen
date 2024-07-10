@@ -10,9 +10,12 @@ class GlobT
 	ActT dats = new ActT();
 	int winp = -1;
 	List<WinT> wins = [];
-	Map pocket = new Map();
-	Map jsons = new Map();
+//	Map pocket = new Map();
+//	Map jsons = new Map();
 	Map collect = new Map();
+	String ins = "";
+        bool out_on = true;
+	bool in_on = false;
 }
 
 class WinT {
@@ -21,6 +24,8 @@ class WinT {
 	dynamic dat = "";
 	String arg = "";
 	String flno = "";
+	String data_key = "";
+	String data_type = "";
 	int cur_act = 0;
 	int cur_pos = 0;
 	int on_pos = 0;
@@ -52,6 +57,8 @@ void new_act(glob, actn, arg, flno)
 		glob.wins.add(new WinT());
 	}
 	glob.wins[winp].name = actn;
+	glob.wins[winp].data_key = "";
+	glob.wins[winp].data_type = "";
 	glob.wins[winp].cnt = -1;
 	glob.wins[winp].arg = arg;
 	glob.wins[winp].flno = flno;

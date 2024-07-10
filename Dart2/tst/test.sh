@@ -71,4 +71,11 @@ echo ::::::::::::::
 dart run ../src/main.dart  tst5c.act tst.def check
 if [ $? != 0 ]; then echo tst5c.act tst.def has errors; fi
 
+echo ::::::::::::::
+echo json5.act
+echo ::::::::::::::
+
+dart run ../src/main.dart  json5.act tst.def check
+if [ $? != 0 ]; then echo json5.act tst.def has errors; fi
+
 
