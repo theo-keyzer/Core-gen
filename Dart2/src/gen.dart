@@ -189,7 +189,7 @@ int go_cmds(glob, ca, winp)
 				for(var i = winp-1; i >= 0; i--) {
 					if ( glob.wins[i].name.compareTo( va[1] ) == 0 ) {
 						var ret = glob.wins[i].dat.do_its(glob, va.sublist(2), cmd.line_no);
-						if (ret > 1) {
+						if (ret > 1 || ret < 0) {
 							return(ret);
 						}
 						break;

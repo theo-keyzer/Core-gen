@@ -2,7 +2,7 @@
 ## Introduction
 It converts the input to output.
 This is for the Dart version. Only install the Dart sdk as Flutter is more for the Web and GUI.
-Most of the changes is not done yet.
+Compiled Dart is about ten times faster than python for this and two times slower is not.
 
 ## Actors.
 The actor node has a list of commands to run.
@@ -80,34 +80,38 @@ It has a map for the collections.
 A node path uses the same format for variable names as it does for the Append and This commands.
 
 Commands.
-They are Append and This.
-The This command is also path driven like the Its command.
+They are Add and This.
+The This path actor, calls the actor with the node of the path.
+The This path. actor, calls the actor in a loop with each map or list entry.
 The This command uses a path as starting point whereas the Its command uses the current node to start.
 
 Append.
-Append _.D abc, put the string into the D.
-Append.list _.L, creates the list to L.
-Append _.L abc, adds the string abc to the L list if L is a list.
-Append.map _.M, creates the map M.
-Append _M.S abc adds the abc string to S entry of the map M if M is a map.
-Append.map.str _M.S abc, creates the map M is not there and adds abc to the S entry.
-Append.map _M.M2, creates the map M2 in the Map M if M is a map.
-If the current node is a map then Append S abc, adds the map entry S with abc.
-If the current node is a list then Append . abc, adds abc to the list.
+To add to a list, its Add path string.
+To add to a map, its Add path:key string.
+Add _:D abc, put the string into the D.
+Add.list _:L, creates the list to L.
+Add _.L abc, adds the string abc to the L list if L is a list.
+Add.map _:M, creates the map M.
+Add _.M:S abc adds the abc string to S entry of the map M if M is a map.
+Add.map _.M:M2, creates the map M2 in the Map M if M is a map.
 
 Areas.
 It has a node path to specify where to add.
-The (.) is the current node.
+The (.) is the current node. If it is a node entry, it is without the (.).
 The (_) is for the collection nodes.
 
 Options.
-They are me, node, json, eval, map, list and strs to specify what to add. It defaults to the string provided.
+They are me, node, json, eval, map, list, file and strs to specify what to add. It defaults to the string provided.
 The break is to break out of the actor loop for duplicates.
 Its also sets a break flag for the Break command to use for advanced breaks.
 
+Option check.
+This is to check that no duplicates are added.
+For the list and map, it will not recreate it if it is a map or list.
+Without the check, it creates a new one.
+
 Option node.
 This is add a node object versus a string of it.
-Not as complete as the variable names.
 
 Option me.
 This is to add the current object.
