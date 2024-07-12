@@ -20,7 +20,7 @@ Actor graph_collect Graph name = ${._arg}
 
 -C    s ${search}  ${name}
 
-Add.list.check _:${search}
+Add.list _:${search}
 
 Add.check _.${search} ${name}
 

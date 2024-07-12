@@ -85,7 +85,7 @@ The This path actor, calls the actor with the node of the path.
 The This path. actor, calls the actor in a loop with each map or list entry.
 The This command uses a path as starting point whereas the Its command uses the current node to start.
 
-Append.
+Add.
 To add to a list, its Add path string.
 To add to a map, its Add path:key string.
 Add _:D abc, put the string into the D.
@@ -107,8 +107,10 @@ Its also sets a break flag for the Break command to use for advanced breaks.
 
 Option check.
 This is to check that no duplicates are added.
-For the list and map, it will not recreate it if it is a map or list.
-Without the check, it creates a new one.
+
+Option clear.
+For the list and map, it will recreate it if there and create it if not.
+Without the clear, it will not recreate it if already t and create it if not.
 
 Option node.
 This is add a node object versus a string of it.
@@ -126,3 +128,7 @@ For the D it is _.D.
 If the value is a data node, the path works the same as the data node.
 If the value is a map, the path is in the map.
 Any items can have data nodes in it.
+
+Errors.
+More work needs to be done for error checking and reporting.
+The test cases does cover all the variations.

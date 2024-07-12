@@ -129,7 +129,7 @@ T . The This path actor, calls the actor with the node of the path.
 T . The This path. actor, calls the actor in a loop with each map or list entry.
 T . The This command uses a path as starting point whereas the Its command uses the current node to start.
 
-Topic cmd 2 p Append.
+Topic cmd 2 p Add.
 
 T . To add to a list, its Add path string.
 T . To add to a map, its Add path:key string.
@@ -155,8 +155,11 @@ T . Its also sets a break flag for the Break command to use for advanced breaks.
 Topic cmd 3 p Option check.
 
 T . This is to check that no duplicates are added.
-T . For the list and map, it will not recreate it if it is a map or list.
-T . Without the check, it creates a new one.
+
+Topic cmd 3 p Option clear.
+
+T . For the list and map, it will recreate it if there and create it if not.
+T . Without the clear, it will not recreate it if already t and create it if not.
 
 Topic cmd 3 p Option node.
 
@@ -178,5 +181,11 @@ T . For the D it is _.D.
 T . If the value is a data node, the path works the same as the data node.
 T . If the value is a map, the path is in the map.
 T . Any items can have data nodes in it.
+
+Topic var 2 p Errors.
+
+T . More work needs to be done for error checking and reporting.
+T . The test cases does cover all the variations.
+
 
 
