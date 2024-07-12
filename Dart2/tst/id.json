@@ -1,0 +1,29 @@
+[
+{
+   "_id": "USA",
+   "type":"state",
+   "children": ["TN","FL"],
+   "parent": null
+},
+{
+   "_id": "TN",
+   "type": "state",
+   "children": ["Nashville","Memphis"],
+   "parent": "USA"
+},
+{
+   "_id": "FL",
+   "type":"state",
+   "children": ["Miami","Jacksonville"],
+   "parent": "USA"
+},
+{
+   "_id": "Nashville",
+   "type":"city",
+   "children": [],
+   "parent": "TN"
+}
+]
+
+
+

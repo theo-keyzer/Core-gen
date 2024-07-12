@@ -91,7 +91,8 @@ int go_act(glob, dat)
 			var sc = act.k_attr.split(":");
 			var va = sc[0].split(".");
 			var v = s_get_var(glob, winp, sc, va, act.line_no);
-			if (chk( act.k_eq, v[1], value[1]) == false ) {
+			if (chk( act.k_eq, v[1], value[1], prev) == false ) {
+				prev = false;
 				continue;
 			}
 		}
@@ -155,7 +156,8 @@ int go_cmds(glob, ca, winp)
 			}
 		}
 		if (cmd is KpThis) {
-			new_act(glob, cmd.k_actor, cmd.k_args, cmd.line_no);
+			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
+			new_act(glob, cmd.k_actor, args[1], cmd.line_no);
 			var ret = this_cmd(glob,winp,cmd);
 			if (ret > 1 || ret < 0) {
 				return(ret);
@@ -489,8 +491,17 @@ String tocase(s, c)
 	return(s);
 }
 
-bool chk( eq, v, ss )
+bool chk( eqa, v, ss, prev )
 {
+	var eq = eqa;
+	if( eq[0] == "&" ) {
+		if( prev == false ) { return(false); }
+		eq = eq.substring(1);
+	}
+	if( eq[0] == "|" ) {
+		if( prev ) { return(true); }
+		eq = eq.substring(1);
+	}
 	if (eq.compareTo('=') == 0)
 	{
 		if(v.compareTo(ss) == 0) { return(true); }

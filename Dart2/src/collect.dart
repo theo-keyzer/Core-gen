@@ -102,6 +102,12 @@ int add_cmd(glob,winp,cmd)
 			var st = strs(glob, winp, cmd.k_data, cmd.line_no, true,true );
 			k_data = st[1];
 	}
+	if( cmd.flags.contains("node") ) {
+		var va = k_data.split(":");
+		var path = va[0].split(".");
+		var rec = get_path(glob, glob.winp, path, cmd.line_no);
+		k_data = rec.dat;
+	}
 	if( cmd.flags.contains("file") ) {
 		try {
 			var file = File(k_data);
@@ -206,8 +212,15 @@ Record get_path(glob, winp, va, lno)
 	if (va[1].compareTo( "_arg" ) == 0) {
 		return(ok: true, dat: glob.wins[winp].arg, path: [] );
 	}
+	if (va[1].compareTo( "_depth" ) == 0) {
+		return(ok: true, dat: winp.toString(), path: [] );
+	}
 	if (va[1].compareTo( "_type" ) == 0) {
-		return(ok: true, dat: glob.wins[winp].data_type, path: [] );
+		dat = glob.wins[winp].dat;
+		var data_type = dat.runtimeType.toString();
+		if(dat is List) data_type = "List";
+		if(dat is Map) data_type = "Map";
+		return(ok: true, dat: data_type, path: [] );
 	}
 	if (va[1].compareTo( "_key" ) == 0) {
 		return(ok: true, dat: glob.wins[winp].data_key, path: [] );

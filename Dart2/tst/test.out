@@ -1,0 +1,129 @@
+::::::::::::::
+concept_md.act *
+::::::::::::::
+::::::::::::::
+collect.act
+::::::::::::::
+Introduction
+Instance of 'KpTopic'    -- KpTopic key = 
+Introduction  -  Instance of 'KpTopic'
+It converts the input to output.
+This is for the Dart version. Only install the Dart sdk as Flutter is more for the Web and GUI.
+Compiled Dart is about ten times faster than python for this and two times slower is not.
+Wsa    -- String key = 
+[aaa, vvv]    -- List key = 
+Aaa    -- String key = 
+Vvv    -- String key = 
+{zz: aaa, ww: qqq}    -- Map key = 
+M zz - aaa
+M ww - qqq
+Qqq    -- String key = 
+Aaa    -- String key = zz
+Qqq    -- String key = ww
+[{_id: USA, type: state, children: [TN, FL], parent: null}, {_id: TN, type: state, children: [Nashville, Memphis], parent: USA}, {_id: FL, type: state, children: [Miami, Jacksonville], parent: USA}, {_id: Nashville, type: city, children: [], parent: TN}]
+
+USA state null
+ TN
+ FL
+
+TN state USA
+ Nashville
+ Memphis
+
+FL state USA
+ Miami
+ Jacksonville
+
+Nashville city TN
+::::::::::::::
+daoimpl.act
+::::::::::::::
+::::::::::::::
+add_jsp.act
+::::::::::::::
+::::::::::::::
+view.act
+::::::::::::::
+view.act sample.def has errors
+::::::::::::::
+tst2.act
+::::::::::::::
+Select (a.t1f2) from tb1 a
+Select (b.t2f1, a1.t1f2, a2.t1f2) from tb2 b, tb1 a1, tb1 a2 where a1.t1f1 = b.t2f1 and a2.t1f1 = b.t2f1
+::::::::::::::
+p_check.act sample.unit
+::::::::::::::
+::::::::::::::
+dag.act
+::::::::::::::
+  n21  - v  =  3
+  {
+   n11  - v  =  9
+   {
+    n22  - v  =  9
+   }
+  }
+  n12  - v  =  7
+  n2  - v  =  9
+  n221  - v  =  9
+  {
+   n1  - v  =  9
+  }
+::::::::::::::
+tst5b.act
+::::::::::::::
+ all 3 [A-B, B-C] 
+ all 4 [A-B, B-C] 
+ all 1 [B-C, B-A, C-A] 
+ no 5 [B-C] 
+ all 2 [A-C, C-B, C-A] 
+::::::::::::::
+tst5c.act
+::::::::::::::
+
+ all 3 [A-B, B-C] 
+ all 4 [A-B, B-C] 
+ all 1 [B-C, B-A, C-A] 
+ no 5 [B-C] 
+ all 2 [C-B, A-C, C-A] 
+
+::::::::::::::
+json5.act
+::::::::::::::
+Question: Which one is correct team name in NBA?  Huston Rocket
+{question: Which one is correct team name in NBA?, options: [New York Bulls, Los Angeles Kings, Golden State Warriros, Huston Rocket], answer: Huston Rocket}
+Question: 5 + 7 = ?  12
+{question: 5 + 7 = ?, options: [10, 11, 12, 13], answer: 12}
+Question: 12 - 8 = ?  4
+{question: 12 - 8 = ?, options: [1, 2, 3, 4], answer: 4}
+
+{question: 12 - 8 = ?, options: [1, 2, 3, 4], answer: 4}
+[1, 2, 3, 4]
+::::::::::::::
+copy.act
+::::::::::::::
+Add.map _.Copy:menu
+Add _.Copy.menu:id file
+Add _.Copy.menu:value File
+Add.map _.Copy.menu:popup
+Add.list _.Copy.menu.popup:menuitem
+prev_type List
+Add.map.clear _:T5
+Add _.T5:value New
+Add _.T5:onclick CreateNewDoc()
+Add _.Copy.menu.popup.menuitem _.T5
+prev_type List
+Add.map.clear _:T5
+Add _.T5:value Open
+Add _.T5:onclick OpenDoc()
+Add _.Copy.menu.popup.menuitem _.T5
+prev_type List
+Add.map.clear _:T5
+Add _.T5:value Close
+Add _.T5:onclick CloseDoc()
+Add _.T5:parent null
+Add _.Copy.menu.popup.menuitem _.T5
+{menu: {id: file, value: File, popup: {menuitem: [{value: New, onclick: CreateNewDoc()}, {value: Open, onclick: OpenDoc()}, {value: Close, onclick: CloseDoc(), parent: null}]}}}
+New
+Open
+Close

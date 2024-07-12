@@ -6,7 +6,7 @@ Topic . 1 h1 Introduction
 
 T . It converts the input to output.
 T . This is for the Dart version. Only install the Dart sdk as Flutter is more for the Web and GUI.
-T . Most of the changes is not done yet.
+T . Compiled Dart is about ten times faster than python for this and two times slower is not.
 
 ----------------------------------------------------------------
 Concept actor
@@ -124,38 +124,43 @@ T . A node path uses the same format for variable names as it does for the Appen
 
 Topic cmd 2 p Commands.
 
-T . They are Append and This.
-T . The This command is also path driven like the Its command.
+T . They are Add and This.
+T . The This path actor, calls the actor with the node of the path.
+T . The This path. actor, calls the actor in a loop with each map or list entry.
 T . The This command uses a path as starting point whereas the Its command uses the current node to start.
 
 Topic cmd 2 p Append.
 
-T . Append _.D abc, put the string into the D.
-T . Append.list _.L, creates the list to L.
-T . Append _.L abc, adds the string abc to the L list if L is a list.
-T . Append.map _.M, creates the map M.
-T . Append _M.S abc adds the abc string to S entry of the map M if M is a map.
-T . Append.map.str _M.S abc, creates the map M is not there and adds abc to the S entry.
-T . Append.map _M.M2, creates the map M2 in the Map M if M is a map.
-T . If the current node is a map then Append S abc, adds the map entry S with abc.
-T . If the current node is a list then Append . abc, adds abc to the list.
+T . To add to a list, its Add path string.
+T . To add to a map, its Add path:key string.
+T . Add _:D abc, put the string into the D.
+T . Add.list _:L, creates the list to L.
+T . Add _.L abc, adds the string abc to the L list if L is a list.
+T . Add.map _:M, creates the map M.
+T . Add _.M:S abc adds the abc string to S entry of the map M if M is a map.
+T . Add.map _.M:M2, creates the map M2 in the Map M if M is a map.
 
 Topic cmd 2 p Areas.
 
 T . It has a node path to specify where to add.
-T . The (.) is the current node.
+T . The (.) is the current node. If it is a node entry, it is without the (.).
 T . The (_) is for the collection nodes.
 
 Topic cmd 2 p Options.
 
-T . They are me, node, json, eval, map, list and strs to specify what to add. It defaults to the string provided.
+T . They are me, node, json, eval, map, list, file and strs to specify what to add. It defaults to the string provided.
 T . The break is to break out of the actor loop for duplicates.
 T . Its also sets a break flag for the Break command to use for advanced breaks.
+
+Topic cmd 3 p Option check.
+
+T . This is to check that no duplicates are added.
+T . For the list and map, it will not recreate it if it is a map or list.
+T . Without the check, it creates a new one.
 
 Topic cmd 3 p Option node.
 
 T . This is add a node object versus a string of it.
-T . Not as complete as the variable names.
 
 Topic cmd 3 p Option me.
 

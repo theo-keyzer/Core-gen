@@ -78,4 +78,11 @@ echo ::::::::::::::
 dart run ../src/main.dart  json5.act tst.def check
 if [ $? != 0 ]; then echo json5.act tst.def has errors; fi
 
+echo ::::::::::::::
+echo copy.act 
+echo ::::::::::::::
+
+dart run ../src/main.dart  copy.act tst.def
+if [ $? != 0 ]; then echo copy.act tst.def has errors; fi
+
 
