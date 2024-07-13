@@ -87,11 +87,11 @@ int go_act(glob, dat)
 		}
 		var act = glob.acts.ap_actor[i];
 		if (act.k_attr.compareTo("E_O_L") != 0) {
-			var value = strs(glob, winp, act.k_value, act.line_no, true,true );
+			var value = strs(glob, winp, act.k_value, act.line_no, false, false );
 			var sc = act.k_attr.split(":");
 			var va = sc[0].split(".");
 			var v = s_get_var(glob, winp, sc, va, act.line_no);
-			if (chk( act.k_eq, v[1], value[1], prev) == false ) {
+			if (chk(glob, act.k_eq, v[1], value[1], prev, v[0], value[0], act.line_no) == false ) {
 				prev = false;
 				continue;
 			}
@@ -338,7 +338,9 @@ List s_get_var(glob, winp, sc, va, lno)
 {
 	var path = va;
 	var rec = get_path(glob, winp, path, lno);
-//	print(rec);
+	if( rec.ok == false ) {
+		return( [false, rec.dat] );
+	}
 	dynamic dat = rec.dat;
 	if(dat is Kp && rec.path.length > 0 && rec.path[0] != ".")
 	{
@@ -349,7 +351,6 @@ List s_get_var(glob, winp, sc, va, lno)
 		dat = res[1];
 	}
 	return( cmd_var(glob, sc, dat, 3) );
-//	return( [true, dat.toString()] );
 }
 
 List s_get_varx(glob, winp, va, lno)
@@ -491,9 +492,19 @@ String tocase(s, c)
 	return(s);
 }
 
-bool chk( eqa, v, ss, prev )
+bool chk(glob, eqa, v, ss, prev, attr_ok, val_ok, lno )
 {
 	var eq = eqa;
+	if( eq == "??" ) { 
+		if( attr_ok == false ) { return(true); }
+		if( val_ok == false ) { return(true); }
+		return( false );
+	}
+	if( eq[0] == "?" ) {
+		if( attr_ok == false || val_ok == false ) { return(false); }
+		if( eq.length == 1) { return(true); }
+		eq = eq.substring(1);
+	}
 	if( eq[0] == "&" ) {
 		if( prev == false ) { return(false); }
 		eq = eq.substring(1);
@@ -501,6 +512,16 @@ bool chk( eqa, v, ss, prev )
 	if( eq[0] == "|" ) {
 		if( prev ) { return(true); }
 		eq = eq.substring(1);
+	}
+	if( attr_ok == false) {
+		glob.run_errs = true;
+		print(v);
+		return(false);
+	}
+	if( val_ok == false) {
+		glob.run_errs = true;
+		print(ss);
+		return(false);
 	}
 	if (eq.compareTo('=') == 0)
 	{

@@ -141,6 +141,9 @@ int add_cmd(glob,winp,cmd)
 				return(0);
 			}
 		}
+		if( cmd.flags.contains("no_add") ) {
+			return(0);
+		}
 		dat.add( k_data );
 	}
 	if(dat is Map)
@@ -165,6 +168,9 @@ int add_cmd(glob,winp,cmd)
                 		glob.wins[winp].is_check = true;
 				return(0);
 			}
+		}
+		if( cmd.flags.contains("no_add") ) {
+			return(0);
 		}
 		dat[ va[1] ] = k_data;
 	}
@@ -232,7 +238,7 @@ Record get_path(glob, winp, va, lno)
 			return( get_path(glob, i , va.sublist(2), lno) );
 		}
 	}
-	return(ok: false, dat: "err", path: va);
+	return(ok: false, dat: "?" + va[1] + "?" + lno + "?", path: va);
 }
 
 Record get_node(glob, dat, va, lno)
