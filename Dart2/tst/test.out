@@ -35,6 +35,13 @@ FL state USA
  Jacksonville
 
 Nashville city TN
+
+wwabcreabc
+wwcbarecba
+Replace 5 with red
+Replace red with 5
+${a}c  ${a.b.c}l $${xa}l ${xa}l
+${a}c  ${a.b.c:l} $${xa}l ${xa:l}
 ::::::::::::::
 daoimpl.act
 ::::::::::::::
