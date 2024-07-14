@@ -18,6 +18,13 @@ class ActT
 	List<KpOf> ap_of = [];
 	List<KpJoin1> ap_join1 = [];
 	List<KpJoin2> ap_join2 = [];
+	List<KpDomain> ap_domain = [];
+	List<KpModel> ap_model = [];
+	List<KpFrame> ap_frame = [];
+	List<KpA> ap_a = [];
+	List<KpUse> ap_use = [];
+	List<KpCol> ap_col = [];
+	List<KpGrid> ap_grid = [];
 	List<KpConcept> ap_concept = [];
 	List<KpTopic> ap_topic = [];
 	List<KpT> ap_t = [];
@@ -34,8 +41,8 @@ class ActT
 	List<KpIn> ap_in = [];
 	List<KpBreak> ap_break = [];
 	List<KpAdd> ap_add = [];
-	List<KpCheck> ap_check = [];
 	List<KpThis> ap_this = [];
+	List<KpReplace> ap_replace = [];
 	List<KpComp> ap_comp = [];
 	List<KpElement> ap_element = [];
 	List<KpOpt> ap_opt = [];
@@ -137,6 +144,30 @@ bool refs(act)
 		res = fnd(act, "Table_" + get_name(st.names, "table2") , get_name(st.names, "table2"),  "check", st.line_no );
 		st.k_table2p = res[1];
 		st.names["k_table2p"] = st.k_table2p.toString();
+		if (res[0] == false) {
+			errs = true;
+		}
+	}
+	for(var st in act.ap_frame) {
+		res = fnd(act, "Domain_" + get_name(st.names, "domain") , get_name(st.names, "domain"),  ".", st.line_no );
+		st.k_domainp = res[1];
+		st.names["k_domainp"] = st.k_domainp.toString();
+		if (res[0] == false) {
+			errs = true;
+		}
+	}
+	for(var st in act.ap_col) {
+		res = fnd(act, "Grid_" + get_name(st.names, "name") , get_name(st.names, "name"),  "?", st.line_no );
+		st.k_namep = res[1];
+		st.names["k_namep"] = st.k_namep.toString();
+		if (res[0] == false) {
+			errs = true;
+		}
+	}
+	for(var st in act.ap_grid) {
+		res = fnd(act, "Grid_" + get_name(st.names, "name") , get_name(st.names, "name"),  "?", st.line_no );
+		st.k_namep = res[1];
+		st.names["k_namep"] = st.k_namep.toString();
 		if (res[0] == false) {
 			errs = true;
 		}
@@ -337,6 +368,44 @@ bool refs(act)
 			errs = true;
 		}
 	}
+	for(var st in act.ap_a) {
+		var t = st.k_parentp;
+		if(t >= 0) {
+			st.k_domainp = act.ap_frame[t].k_domainp;
+		} else if ( ".".compareTo( "?" ) != 0 ) {
+			print( "ref error parent not resolved " + st.line_no);
+			errs = true;
+		}
+		st.names["k_domainp"] = st.k_domainp.toString();
+		res = fnd(act, st.k_domainp.toString() + "_Model_" + get_name(st.names, "model") , get_name(st.names, "model"),  "?", st.line_no );
+		st.k_modelp = res[1];
+		st.names["k_modelp"] = st.k_modelp.toString();
+		if (res[0] == false) {
+			errs = true;
+		}
+	}
+	for(var st in act.ap_use) {
+		var t = st.k_parentp;
+		if(t >= 0) {
+			st.k_modelp = act.ap_a[t].k_modelp;
+		} else if ( ".".compareTo( "?" ) != 0 ) {
+			print( "ref error parent not resolved " + st.line_no);
+			errs = true;
+		}
+		st.names["k_modelp"] = st.k_modelp.toString();
+		res = fnd(act, st.k_modelp.toString() + "_Frame_" + get_name(st.names, "frame") , get_name(st.names, "frame"),  ".", st.line_no );
+		st.k_framep = res[1];
+		st.names["k_framep"] = st.k_framep.toString();
+		if (res[0] == false) {
+			errs = true;
+		}
+		res = fnd(act, st.k_framep.toString() + "_A_" + get_name(st.names, "a") , get_name(st.names, "a"),  ".", st.line_no );
+		st.k_ap = res[1];
+		st.names["k_ap"] = st.k_ap.toString();
+		if (res[0] == false) {
+			errs = true;
+		}
+	}
 	return(errs);
 }
 
@@ -377,6 +446,20 @@ List var_all(glob, va, lno)
 		var en = glob.dats.index["Table_" + va[1] ];
 		if(en != null) {
 			return (glob.dats.ap_table[en].get_var(glob, va.sublist(2), lno));
+		}
+		return( [false, "?" + va[0] + "=" + va[1] + "?" + lno + "?"] );
+	}
+	if (va[0].compareTo("Domain") == 0) {
+		var en = glob.dats.index["Domain_" + va[1] ];
+		if(en != null) {
+			return (glob.dats.ap_domain[en].get_var(glob, va.sublist(2), lno));
+		}
+		return( [false, "?" + va[0] + "=" + va[1] + "?" + lno + "?"] );
+	}
+	if (va[0].compareTo("Grid") == 0) {
+		var en = glob.dats.index["Grid_" + va[1] ];
+		if(en != null) {
+			return (glob.dats.ap_grid[en].get_var(glob, va.sublist(2), lno));
 		}
 		return( [false, "?" + va[0] + "=" + va[1] + "?" + lno + "?"] );
 	}
@@ -775,6 +858,188 @@ int do_all(glob, va, lno)
 			return(0);
 		}
 		for(var st in glob.dats.ap_join2) {
+			if (va.length > 2) {
+				var ret = st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if (va[0].compareTo("Domain") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["Domain_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( glob.dats.ap_domain[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( go_act(glob, glob.dats.ap_domain[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_domain) {
+			if (va.length > 2) {
+				var ret = st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if (va[0].compareTo("Model") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["Model_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( glob.dats.ap_model[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( go_act(glob, glob.dats.ap_model[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_model) {
+			if (va.length > 2) {
+				var ret = st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if (va[0].compareTo("Frame") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["Frame_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( glob.dats.ap_frame[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( go_act(glob, glob.dats.ap_frame[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_frame) {
+			if (va.length > 2) {
+				var ret = st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if (va[0].compareTo("A") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["A_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( glob.dats.ap_a[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( go_act(glob, glob.dats.ap_a[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_a) {
+			if (va.length > 2) {
+				var ret = st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if (va[0].compareTo("Use") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["Use_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( glob.dats.ap_use[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( go_act(glob, glob.dats.ap_use[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_use) {
+			if (va.length > 2) {
+				var ret = st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if (va[0].compareTo("Col") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["Col_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( glob.dats.ap_col[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( go_act(glob, glob.dats.ap_col[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_col) {
+			if (va.length > 2) {
+				var ret = st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if (va[0].compareTo("Grid") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["Grid_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( glob.dats.ap_grid[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( go_act(glob, glob.dats.ap_grid[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_grid) {
 			if (va.length > 2) {
 				var ret = st.do_its(glob, va.sublist(2), lno);
 				if (ret != 0) {
@@ -1257,6 +1522,62 @@ bool load(act, toks, ln, pos, lno)
 		}
 		act.ap_join2.add( comp );
 	}
+	if ( tok.compareTo( "Domain" ) == 0 ) {
+		var comp = new KpDomain();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_domain.add( comp );
+	}
+	if ( tok.compareTo( "Model" ) == 0 ) {
+		var comp = new KpModel();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_model.add( comp );
+	}
+	if ( tok.compareTo( "Frame" ) == 0 ) {
+		var comp = new KpFrame();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_frame.add( comp );
+	}
+	if ( tok.compareTo( "A" ) == 0 ) {
+		var comp = new KpA();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_a.add( comp );
+	}
+	if ( tok.compareTo( "Use" ) == 0 ) {
+		var comp = new KpUse();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_use.add( comp );
+	}
+	if ( tok.compareTo( "Col" ) == 0 ) {
+		var comp = new KpCol();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_col.add( comp );
+	}
+	if ( tok.compareTo( "Grid" ) == 0 ) {
+		var comp = new KpGrid();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_grid.add( comp );
+	}
 	if ( tok.compareTo( "Concept" ) == 0 ) {
 		var comp = new KpConcept();
 		var r = comp.load(act, ln, pos, lno, flag);
@@ -1385,14 +1706,6 @@ bool load(act, toks, ln, pos, lno)
 		}
 		act.ap_add.add( comp );
 	}
-	if ( tok.compareTo( "Check" ) == 0 ) {
-		var comp = new KpCheck();
-		var r = comp.load(act, ln, pos, lno, flag);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_check.add( comp );
-	}
 	if ( tok.compareTo( "This" ) == 0 ) {
 		var comp = new KpThis();
 		var r = comp.load(act, ln, pos, lno, flag);
@@ -1400,6 +1713,14 @@ bool load(act, toks, ln, pos, lno)
 			errs = true;
 		}
 		act.ap_this.add( comp );
+	}
+	if ( tok.compareTo( "Replace" ) == 0 ) {
+		var comp = new KpReplace();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_replace.add( comp );
 	}
 	if ( tok.compareTo( "Comp" ) == 0 ) {
 		var comp = new KpComp();

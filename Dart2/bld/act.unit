@@ -153,22 +153,14 @@ Comp Add parent Actor
 * The default is to the string data.
 * Options are:
 * me to add the current node.
+* node to add a node from a path
 * json to add a converted json node.
 * map to add a map.
 * list to add a list.
 * clear to clear the map or list
 * check to not add dups
 * break on dups
-----------------------------------------------------------------
-	
-	Element path     C1 WORD * node path where to add
-	Element data     V1 WORD * data to add
-
-----------------------------------------------------------------
-Comp Check parent Actor
-----------------------------------------------------------------
-* Check item in collection
-* Same format as Add, but only checks.
+* no_add to only check
 ----------------------------------------------------------------
 	
 	Element path     C1 WORD * node path where to add
@@ -186,6 +178,19 @@ Comp This parent Actor
 	Element args    V1 WORD      * arg data value
 	
 Ref actor Actor check
+
+----------------------------------------------------------------
+Comp Replace parent Actor
+----------------------------------------------------------------
+* Replace string.
+* Replace _:D with abc match cba
+----------------------------------------------------------------
+	
+	Element path     C1 WORD * node path where to add
+	Element pad      C1 WORD * padding (with)
+	Element with     C1 WORD * what to replace with
+	Element pad2     C1 WORD * padding (match)
+	Element match    V1 WORD * string match pattern
 
 
 

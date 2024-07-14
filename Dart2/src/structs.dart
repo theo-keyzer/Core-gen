@@ -1894,6 +1894,1254 @@ class KpJoin2 extends Kp
 	}
 }
 
+class KpDomain extends Kp 
+{
+	List <KpModel> itsmodel = [];
+	List <Kp> childs = [];
+
+	bool load(act, ln, pos, lno, flag) {
+		var tok = [pos, ''];
+		comp = "Domain";
+		line_no = lno;
+		flags = flag;
+		me = act.ap_domain.length;
+		names["k_me"] = me.toString();
+		names["k_parent"] = "-1";
+		names["k_comp"] = "Domain";
+		tok = getw(ln,tok[0]);
+		names["name"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["pad"] = tok[1];
+		tok = getws(ln,tok[0]);
+		names["info"] = tok[1];
+		act.index["Domain_" + get_name(names, "name") ] = me;
+		return true;
+	}
+
+	List get_var(glob, va, lno) {
+		if (va[0].compareTo("Frame_domain") == 0 && va.length > 1) { // note.unit:27, d_struct.act:744
+			for (var st in glob.dats.ap_frame) {
+				if (st.k_domainp == me) {
+					return (st.get_var(glob, va.sublist(1), lno) );
+				}
+			}
+		}
+		if (va[0].compareTo("Model") == 0 && va.length > 2) { // note.unit:13, d_struct.act:456
+			var en = glob.dats.index[me.toString() + "_Model_" + va[1] ];
+			if(en != null) {
+				return (glob.dats.ap_model[en].get_var(glob, va.sublist(2), lno));
+			}
+			return( [false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?"] );
+		}
+		var v = names[ va[0] ];
+		if( v != null) {
+			return( [true, v] );
+		}
+		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Domain?"] );
+	}
+
+	int do_its(glob, va, lno) {
+		if (va[0].compareTo("Model") == 0) { // note.unit:10, d_struct.act:723
+			for(var st in itsmodel) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if (va[0].compareTo("Frame_domain") == 0) { // note.unit:27, d_struct.act:561
+			for (KpFrame st in glob.dats.ap_frame) {
+				if (st.k_domainp == me) {
+					if (va.length > 1) {
+						var ret = st.do_its(glob, va.sublist(1), lno);
+						if (ret != 0) {
+							return(ret);
+						}
+						continue;
+					}
+					var ret = go_act(glob, st);
+					if (ret != 0) {
+						return(ret);
+					}
+				}
+			}
+			return(0);
+		}
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:2, d_struct.act:163
+			for (var st in childs) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Domain," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
+}
+
+class KpModel extends Kp 
+{
+	int k_parentp = -1;
+	List <KpFrame> itsframe = [];
+	List <Kp> childs = [];
+
+	bool load(act, ln, pos, lno, flag) {
+		var tok = [pos, ''];
+		comp = "Model";
+		line_no = lno;
+		flags = flag;
+		me = act.ap_model.length;
+		names["k_me"] = me.toString();
+		names["k_parent"] = "-1";
+		names["k_comp"] = "Model";
+		tok = getw(ln,tok[0]);
+		names["name"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["pad"] = tok[1];
+		tok = getws(ln,tok[0]);
+		names["info"] = tok[1];
+		k_parentp = act.ap_domain.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
+			print( lno + " Model has no Domain parent" );
+			return false;
+		}
+		act.ap_domain[ k_parentp ].itsmodel.add( this );
+		act.ap_domain[ k_parentp ].childs.add( this );
+		var s = k_parentp.toString() + "_Model_" + get_name(names, "name");
+		act.index[s] = me;
+		return true;
+	}
+
+	List get_var(glob, va, lno) {
+		if (va[0].compareTo("parent") == 0) { // note.unit:2, d_struct.act:551
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_domain[ k_parentp ].get_var(glob, va.sublist(1),lno) );
+			}
+		}
+		if (va[0].compareTo("A_model") == 0 && va.length > 1) { // note.unit:43, d_struct.act:756
+			for (var st in glob.dats.ap_a) {
+				if (st.k_modelp == me) {
+					return (st.get_var(glob, va.sublist(1), lno) );
+				}
+			}
+		}
+		if (va[0].compareTo("Frame") == 0 && va.length > 2) { // note.unit:23, d_struct.act:456
+			var en = glob.dats.index[me.toString() + "_Frame_" + va[1] ];
+			if(en != null) {
+				return (glob.dats.ap_frame[en].get_var(glob, va.sublist(2), lno));
+			}
+			return( [false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?"] );
+		}
+		var v = names[ va[0] ];
+		if( v != null) {
+			return( [true, v] );
+		}
+		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Model?"] );
+	}
+
+	int do_its(glob, va, lno) {
+		if (va[0].compareTo("Frame") == 0) { // note.unit:18, d_struct.act:723
+			for(var st in itsframe) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if (va[0].compareTo("parent") == 0) { // note.unit:2, d_struct.act:536
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_domain[ k_parentp ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("A_model") == 0) { // note.unit:43, d_struct.act:584
+			for (KpA st in glob.dats.ap_a) {
+				if (st.k_modelp == me) {
+					if (va.length > 1) {
+						var ret = st.do_its(glob, va.sublist(1), lno);
+						if (ret != 0) {
+							return(ret);
+						}
+						continue;
+					}
+					var ret = go_act(glob, st);
+					if (ret != 0) {
+						return(ret);
+					}
+				}
+			}
+			return(0);
+		}
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:10, d_struct.act:163
+			for (var st in childs) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Model," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
+}
+
+class KpFrame extends Kp 
+{
+	int k_parentp = -1;
+	int k_domainp = -1;
+	List <KpA> itsa = [];
+	List <Kp> childs = [];
+
+	bool load(act, ln, pos, lno, flag) {
+		var tok = [pos, ''];
+		comp = "Frame";
+		line_no = lno;
+		flags = flag;
+		me = act.ap_frame.length;
+		names["k_me"] = me.toString();
+		names["k_parent"] = "-1";
+		names["k_comp"] = "Frame";
+		tok = getw(ln,tok[0]);
+		names["group"] = tok[1];
+		tok = getsw(ln,tok[0]);
+		names["domain"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["name"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["pad"] = tok[1];
+		tok = getws(ln,tok[0]);
+		names["info"] = tok[1];
+		k_parentp = act.ap_model.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
+			print( lno + " Frame has no Model parent" );
+			return false;
+		}
+		act.ap_model[ k_parentp ].itsframe.add( this );
+		act.ap_model[ k_parentp ].childs.add( this );
+		var s = k_parentp.toString() + "_Frame_" + get_name(names, "name");
+		act.index[s] = me;
+		return true;
+	}
+
+	List get_var(glob, va, lno) {
+		if (va[0].compareTo("domain") == 0) { // note.unit:27, d_struct.act:656
+			if (k_domainp >= 0 && va.length > 1) {
+				return( glob.dats.ap_domain[ k_domainp ].get_var(glob, va.sublist(1), lno) );
+			}
+		}
+		if (va[0].compareTo("parent") == 0) { // note.unit:10, d_struct.act:551
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_model[ k_parentp ].get_var(glob, va.sublist(1),lno) );
+			}
+		}
+		if (va[0].compareTo("Use_frame") == 0 && va.length > 1) { // note.unit:57, d_struct.act:756
+			for (var st in glob.dats.ap_use) {
+				if (st.k_framep == me) {
+					return (st.get_var(glob, va.sublist(1), lno) );
+				}
+			}
+		}
+		if (va[0].compareTo("A") == 0 && va.length > 2) { // note.unit:38, d_struct.act:456
+			var en = glob.dats.index[me.toString() + "_A_" + va[1] ];
+			if(en != null) {
+				return (glob.dats.ap_a[en].get_var(glob, va.sublist(2), lno));
+			}
+			return( [false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?"] );
+		}
+		var v = names[ va[0] ];
+		if( v != null) {
+			return( [true, v] );
+		}
+		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Frame?"] );
+	}
+
+	int do_its(glob, va, lno) {
+		if (va[0].compareTo("A") == 0) { // note.unit:30, d_struct.act:723
+			for(var st in itsa) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if (va[0].compareTo("parent") == 0) { // note.unit:10, d_struct.act:536
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_model[ k_parentp ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("domain") == 0) {
+			if (k_domainp >= 0) {
+				var st = glob.dats.ap_domain[ k_domainp ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("Use_frame") == 0) { // note.unit:57, d_struct.act:584
+			for (KpUse st in glob.dats.ap_use) {
+				if (st.k_framep == me) {
+					if (va.length > 1) {
+						var ret = st.do_its(glob, va.sublist(1), lno);
+						if (ret != 0) {
+							return(ret);
+						}
+						continue;
+					}
+					var ret = go_act(glob, st);
+					if (ret != 0) {
+						return(ret);
+					}
+				}
+			}
+			return(0);
+		}
+		if (va[0].compareTo("group") == 0 && va.length > 1 && k_parentp >= 0) { // note.unit:21, d_struct.act:181
+			var pos = 0;
+			var v = names[ "group" ];
+			if( v != null) {
+				pos = int.parse(v);
+			}
+			if (va[1].compareTo("down") == 0 && pos > 0) {
+				var pst = glob.dats.ap_model[ k_parentp ];
+				var isin = false;
+				for(var st in pst.itsframe) {
+					if (st.me == me) {
+						isin = true;
+						continue;
+					}
+					if (isin == false) {
+						continue;
+					}
+					var pos2 = 0;
+					var v2 = st.names[ "group" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 == (pos-1)) {
+						break;
+					}
+					if (pos2 == pos) {
+						if (va.length > 2) {
+							return( st.do_its(glob, va.sublist(2), lno) );
+						}
+						return( go_act(glob, st) );
+					}
+				}
+				return(0);
+			}
+			if (va[1].compareTo("up") == 0 && pos > 0) {
+				var pst = glob.dats.ap_model[ k_parentp ];
+				var isin = false;
+				var prev = 0;
+				for(var st in pst.itsframe) {
+					var pos2 = 0;
+					var v2 = st.names[ "group" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 == pos && st.me != me) {
+						prev = st.me;
+						isin = true;
+						continue;
+					}
+					if (pos2 == (pos-1)) {
+						isin = false;
+					}
+					if (st.me == me && isin == true) {
+						if (va.length > 2) {
+							return( glob.dats.ap_frame[prev].do_its(glob, va.sublist(2), lno) );
+						}
+						return( go_act(glob, glob.dats.ap_frame[prev] ) );
+					}
+				}
+				return(0);
+			}
+			if (va[1].compareTo("left") == 0 && pos > 0) {
+				var pst = glob.dats.ap_model[ k_parentp ];
+				var isin = false;
+				var prev = 0;
+				for(var st in pst.itsframe) {
+					var pos2 = 0;
+					var v2 = st.names[ "group" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 == (pos-1)) {
+						prev = st.me;
+						isin = true;
+						continue;
+					}
+					if (st.me == me && isin == true) {
+						if (va.length > 2) {
+							return( glob.dats.ap_frame[prev].do_its(glob, va.sublist(2), lno) );
+						}
+						return( go_act(glob, glob.dats.ap_frame[prev] ) );
+					}
+				}
+				return(0);
+			}
+			if (va[1].compareTo("right") == 0 && pos > 0) {
+				var pst = glob.dats.ap_model[ k_parentp ];
+				var isin = false;
+				for(var st in pst.itsframe) {
+					if (st.me == me) {
+						isin = true;
+						continue;
+					}
+					if (isin == false) {
+						continue;
+					}
+					var pos2 = 0;
+					var v2 = st.names[ "group" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 <= pos) {
+						break;
+					}
+					if (pos2 == (pos+1)) {
+						if (va.length > 2) {
+							var ret = st.do_its(glob, va.sublist(2), lno);
+							if (ret != 0) {
+								return(ret);
+							}
+							continue;
+						}
+						var ret = go_act(glob, st);
+						if (ret != 0) {
+							return(ret);
+						}
+					}
+				}
+				return(0);
+			}
+		}
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:18, d_struct.act:163
+			for (var st in childs) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Frame," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
+}
+
+class KpA extends Kp 
+{
+	int k_parentp = -1;
+	int k_domainp = -1;
+	int k_modelp = -1;
+	List <KpUse> itsuse = [];
+	List <Kp> childs = [];
+
+	bool load(act, ln, pos, lno, flag) {
+		var tok = [pos, ''];
+		comp = "A";
+		line_no = lno;
+		flags = flag;
+		me = act.ap_a.length;
+		names["k_me"] = me.toString();
+		names["k_parent"] = "-1";
+		names["k_comp"] = "A";
+		tok = getsw(ln,tok[0]);
+		names["model"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["name"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["pad"] = tok[1];
+		tok = getws(ln,tok[0]);
+		names["info"] = tok[1];
+		k_parentp = act.ap_frame.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
+			print( lno + " A has no Frame parent" );
+			return false;
+		}
+		act.ap_frame[ k_parentp ].itsa.add( this );
+		act.ap_frame[ k_parentp ].childs.add( this );
+		var s = k_parentp.toString() + "_A_" + get_name(names, "name");
+		act.index[s] = me;
+		return true;
+	}
+
+	List get_var(glob, va, lno) {
+		if (va[0].compareTo("model") == 0) { // note.unit:43, d_struct.act:666
+			if (k_modelp >= 0 && va.length > 1) {
+				return( glob.dats.ap_model[ k_modelp ].get_var(glob, va.sublist(1), lno) );
+			}
+		}
+		if (va[0].compareTo("parent") == 0) { // note.unit:18, d_struct.act:551
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_frame[ k_parentp ].get_var(glob, va.sublist(1),lno) );
+			}
+		}
+		if (va[0].compareTo("Use_a") == 0 && va.length > 1) { // note.unit:58, d_struct.act:756
+			for (var st in glob.dats.ap_use) {
+				if (st.k_ap == me) {
+					return (st.get_var(glob, va.sublist(1), lno) );
+				}
+			}
+		}
+		if (va[0].compareTo("Use") == 0 && va.length > 2 && itsuse.length > 0) { // note.unit:47, d_struct.act:468
+			return (itsuse[0].get_var(glob, va.sublist(1), lno));
+		}
+		var v = names[ va[0] ];
+		if( v != null) {
+			return( [true, v] );
+		}
+		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",A?"] );
+	}
+
+	int do_its(glob, va, lno) {
+		if (va[0].compareTo("Use") == 0) { // note.unit:47, d_struct.act:723
+			for(var st in itsuse) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if (va[0].compareTo("parent") == 0) { // note.unit:18, d_struct.act:536
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_frame[ k_parentp ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("model") == 0) {
+			if (k_modelp >= 0) {
+				var st = glob.dats.ap_model[ k_modelp ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("Use_a") == 0) { // note.unit:58, d_struct.act:584
+			for (KpUse st in glob.dats.ap_use) {
+				if (st.k_ap == me) {
+					if (va.length > 1) {
+						var ret = st.do_its(glob, va.sublist(1), lno);
+						if (ret != 0) {
+							return(ret);
+						}
+						continue;
+					}
+					var ret = go_act(glob, st);
+					if (ret != 0) {
+						return(ret);
+					}
+				}
+			}
+			return(0);
+		}
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:30, d_struct.act:163
+			for (var st in childs) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for A," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
+}
+
+class KpUse extends Kp 
+{
+	int k_parentp = -1;
+	int k_modelp = -1;
+	int k_framep = -1;
+	int k_ap = -1;
+
+	bool load(act, ln, pos, lno, flag) {
+		var tok = [pos, ''];
+		comp = "Use";
+		line_no = lno;
+		flags = flag;
+		me = act.ap_use.length;
+		names["k_me"] = me.toString();
+		names["k_parent"] = "-1";
+		names["k_comp"] = "Use";
+		tok = getsw(ln,tok[0]);
+		names["frame"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["a"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["pad"] = tok[1];
+		tok = getws(ln,tok[0]);
+		names["info"] = tok[1];
+		k_parentp = act.ap_a.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
+			print( lno + " Use has no A parent" );
+			return false;
+		}
+		act.ap_a[ k_parentp ].itsuse.add( this );
+		act.ap_a[ k_parentp ].childs.add( this );
+		return true;
+	}
+
+	List get_var(glob, va, lno) {
+		if (va[0].compareTo("frame") == 0) { // note.unit:57, d_struct.act:666
+			if (k_framep >= 0 && va.length > 1) {
+				return( glob.dats.ap_frame[ k_framep ].get_var(glob, va.sublist(1), lno) );
+			}
+		}
+		if (va[0].compareTo("a") == 0) { // note.unit:58, d_struct.act:666
+			if (k_ap >= 0 && va.length > 1) {
+				return( glob.dats.ap_a[ k_ap ].get_var(glob, va.sublist(1), lno) );
+			}
+		}
+		if (va[0].compareTo("parent") == 0) { // note.unit:30, d_struct.act:551
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_a[ k_parentp ].get_var(glob, va.sublist(1),lno) );
+			}
+		}
+		var v = names[ va[0] ];
+		if( v != null) {
+			return( [true, v] );
+		}
+		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Use?"] );
+	}
+
+	int do_its(glob, va, lno) {
+		if (va[0].compareTo("parent") == 0) { // note.unit:30, d_struct.act:536
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_a[ k_parentp ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("frame") == 0) {
+			if (k_framep >= 0) {
+				var st = glob.dats.ap_frame[ k_framep ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("a") == 0) {
+			if (k_ap >= 0) {
+				var st = glob.dats.ap_a[ k_ap ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:47, d_struct.act:163
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Use," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
+}
+
+class KpCol extends Kp 
+{
+	int k_parentp = -1;
+	int k_namep = -1;
+
+	bool load(act, ln, pos, lno, flag) {
+		var tok = [pos, ''];
+		comp = "Col";
+		line_no = lno;
+		flags = flag;
+		me = act.ap_col.length;
+		names["k_me"] = me.toString();
+		names["k_parent"] = "-1";
+		names["k_comp"] = "Col";
+		tok = getw(ln,tok[0]);
+		names["name"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["index"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["group"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["file"] = tok[1];
+		tok = getws(ln,tok[0]);
+		names["info"] = tok[1];
+		k_parentp = act.ap_grid.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
+			print( lno + " Col has no Grid parent" );
+			return false;
+		}
+		act.ap_grid[ k_parentp ].itscol.add( this );
+		act.ap_grid[ k_parentp ].childs.add( this );
+		var s = k_parentp.toString() + "_Col_" + get_name(names, "name");
+		act.index[s] = me;
+		return true;
+	}
+
+	List get_var(glob, va, lno) {
+		if (va[0].compareTo("name") == 0) { // note.unit:71, d_struct.act:656
+			if (k_namep >= 0 && va.length > 1) {
+				return( glob.dats.ap_grid[ k_namep ].get_var(glob, va.sublist(1), lno) );
+			}
+		}
+		if (va[0].compareTo("parent") == 0) { // note.unit:74, d_struct.act:551
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_grid[ k_parentp ].get_var(glob, va.sublist(1),lno) );
+			}
+		}
+		var v = names[ va[0] ];
+		if( v != null) {
+			return( [true, v] );
+		}
+		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Col?"] );
+	}
+
+	int do_its(glob, va, lno) {
+		if (va[0].compareTo("parent") == 0) { // note.unit:74, d_struct.act:536
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_grid[ k_parentp ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("name") == 0) {
+			if (k_namep >= 0) {
+				var st = glob.dats.ap_grid[ k_namep ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("index") == 0 && va.length > 1 && k_parentp >= 0) { // note.unit:66, d_struct.act:181
+			var pos = 0;
+			var v = names[ "index" ];
+			if( v != null) {
+				pos = int.parse(v);
+			}
+			if (va[1].compareTo("down") == 0 && pos > 0) {
+				var pst = glob.dats.ap_grid[ k_parentp ];
+				var isin = false;
+				for(var st in pst.itscol) {
+					if (st.me == me) {
+						isin = true;
+						continue;
+					}
+					if (isin == false) {
+						continue;
+					}
+					var pos2 = 0;
+					var v2 = st.names[ "index" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 == (pos-1)) {
+						break;
+					}
+					if (pos2 == pos) {
+						if (va.length > 2) {
+							return( st.do_its(glob, va.sublist(2), lno) );
+						}
+						return( go_act(glob, st) );
+					}
+				}
+				return(0);
+			}
+			if (va[1].compareTo("up") == 0 && pos > 0) {
+				var pst = glob.dats.ap_grid[ k_parentp ];
+				var isin = false;
+				var prev = 0;
+				for(var st in pst.itscol) {
+					var pos2 = 0;
+					var v2 = st.names[ "index" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 == pos && st.me != me) {
+						prev = st.me;
+						isin = true;
+						continue;
+					}
+					if (pos2 == (pos-1)) {
+						isin = false;
+					}
+					if (st.me == me && isin == true) {
+						if (va.length > 2) {
+							return( glob.dats.ap_col[prev].do_its(glob, va.sublist(2), lno) );
+						}
+						return( go_act(glob, glob.dats.ap_col[prev] ) );
+					}
+				}
+				return(0);
+			}
+			if (va[1].compareTo("left") == 0 && pos > 0) {
+				var pst = glob.dats.ap_grid[ k_parentp ];
+				var isin = false;
+				var prev = 0;
+				for(var st in pst.itscol) {
+					var pos2 = 0;
+					var v2 = st.names[ "index" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 == (pos-1)) {
+						prev = st.me;
+						isin = true;
+						continue;
+					}
+					if (st.me == me && isin == true) {
+						if (va.length > 2) {
+							return( glob.dats.ap_col[prev].do_its(glob, va.sublist(2), lno) );
+						}
+						return( go_act(glob, glob.dats.ap_col[prev] ) );
+					}
+				}
+				return(0);
+			}
+			if (va[1].compareTo("right") == 0 && pos > 0) {
+				var pst = glob.dats.ap_grid[ k_parentp ];
+				var isin = false;
+				for(var st in pst.itscol) {
+					if (st.me == me) {
+						isin = true;
+						continue;
+					}
+					if (isin == false) {
+						continue;
+					}
+					var pos2 = 0;
+					var v2 = st.names[ "index" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 <= pos) {
+						break;
+					}
+					if (pos2 == (pos+1)) {
+						if (va.length > 2) {
+							var ret = st.do_its(glob, va.sublist(2), lno);
+							if (ret != 0) {
+								return(ret);
+							}
+							continue;
+						}
+						var ret = go_act(glob, st);
+						if (ret != 0) {
+							return(ret);
+						}
+					}
+				}
+				return(0);
+			}
+		}
+		if (va[0].compareTo("group") == 0 && va.length > 1 && k_parentp >= 0) { // note.unit:67, d_struct.act:181
+			var pos = 0;
+			var v = names[ "group" ];
+			if( v != null) {
+				pos = int.parse(v);
+			}
+			if (va[1].compareTo("down") == 0 && pos > 0) {
+				var pst = glob.dats.ap_grid[ k_parentp ];
+				var isin = false;
+				for(var st in pst.itscol) {
+					if (st.me == me) {
+						isin = true;
+						continue;
+					}
+					if (isin == false) {
+						continue;
+					}
+					var pos2 = 0;
+					var v2 = st.names[ "group" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 == (pos-1)) {
+						break;
+					}
+					if (pos2 == pos) {
+						if (va.length > 2) {
+							return( st.do_its(glob, va.sublist(2), lno) );
+						}
+						return( go_act(glob, st) );
+					}
+				}
+				return(0);
+			}
+			if (va[1].compareTo("up") == 0 && pos > 0) {
+				var pst = glob.dats.ap_grid[ k_parentp ];
+				var isin = false;
+				var prev = 0;
+				for(var st in pst.itscol) {
+					var pos2 = 0;
+					var v2 = st.names[ "group" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 == pos && st.me != me) {
+						prev = st.me;
+						isin = true;
+						continue;
+					}
+					if (pos2 == (pos-1)) {
+						isin = false;
+					}
+					if (st.me == me && isin == true) {
+						if (va.length > 2) {
+							return( glob.dats.ap_col[prev].do_its(glob, va.sublist(2), lno) );
+						}
+						return( go_act(glob, glob.dats.ap_col[prev] ) );
+					}
+				}
+				return(0);
+			}
+			if (va[1].compareTo("left") == 0 && pos > 0) {
+				var pst = glob.dats.ap_grid[ k_parentp ];
+				var isin = false;
+				var prev = 0;
+				for(var st in pst.itscol) {
+					var pos2 = 0;
+					var v2 = st.names[ "group" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 == (pos-1)) {
+						prev = st.me;
+						isin = true;
+						continue;
+					}
+					if (st.me == me && isin == true) {
+						if (va.length > 2) {
+							return( glob.dats.ap_col[prev].do_its(glob, va.sublist(2), lno) );
+						}
+						return( go_act(glob, glob.dats.ap_col[prev] ) );
+					}
+				}
+				return(0);
+			}
+			if (va[1].compareTo("right") == 0 && pos > 0) {
+				var pst = glob.dats.ap_grid[ k_parentp ];
+				var isin = false;
+				for(var st in pst.itscol) {
+					if (st.me == me) {
+						isin = true;
+						continue;
+					}
+					if (isin == false) {
+						continue;
+					}
+					var pos2 = 0;
+					var v2 = st.names[ "group" ];
+					if(v2 != null) {
+						pos2 = int.parse(v2);
+					}
+					if (pos2 == 0) {
+						continue;
+					}
+					if (pos2 <= pos) {
+						break;
+					}
+					if (pos2 == (pos+1)) {
+						if (va.length > 2) {
+							var ret = st.do_its(glob, va.sublist(2), lno);
+							if (ret != 0) {
+								return(ret);
+							}
+							continue;
+						}
+						var ret = go_act(glob, st);
+						if (ret != 0) {
+							return(ret);
+						}
+					}
+				}
+				return(0);
+			}
+		}
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:62, d_struct.act:163
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Col," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
+}
+
+class KpGrid extends Kp 
+{
+	int k_namep = -1;
+	List <KpCol> itscol = [];
+	List <Kp> childs = [];
+
+	bool load(act, ln, pos, lno, flag) {
+		var tok = [pos, ''];
+		comp = "Grid";
+		line_no = lno;
+		flags = flag;
+		me = act.ap_grid.length;
+		names["k_me"] = me.toString();
+		names["k_parent"] = "-1";
+		names["k_comp"] = "Grid";
+		tok = getw(ln,tok[0]);
+		names["name"] = tok[1];
+		tok = getw(ln,tok[0]);
+		names["file"] = tok[1];
+		tok = getws(ln,tok[0]);
+		names["info"] = tok[1];
+		act.index["Grid_" + get_name(names, "name") ] = me;
+		return true;
+	}
+
+	List get_var(glob, va, lno) {
+		if (va[0].compareTo("name") == 0) { // note.unit:81, d_struct.act:656
+			if (k_namep >= 0 && va.length > 1) {
+				return( glob.dats.ap_grid[ k_namep ].get_var(glob, va.sublist(1), lno) );
+			}
+		}
+		if (va[0].compareTo("Col_name") == 0 && va.length > 1) { // note.unit:71, d_struct.act:744
+			for (var st in glob.dats.ap_col) {
+				if (st.k_namep == me) {
+					return (st.get_var(glob, va.sublist(1), lno) );
+				}
+			}
+		}
+		if (va[0].compareTo("Grid_name") == 0 && va.length > 1) { // note.unit:81, d_struct.act:744
+			for (var st in glob.dats.ap_grid) {
+				if (st.k_namep == me) {
+					return (st.get_var(glob, va.sublist(1), lno) );
+				}
+			}
+		}
+		if (va[0].compareTo("Col") == 0 && va.length > 2) { // note.unit:65, d_struct.act:456
+			var en = glob.dats.index[me.toString() + "_Col_" + va[1] ];
+			if(en != null) {
+				return (glob.dats.ap_col[en].get_var(glob, va.sublist(2), lno));
+			}
+			return( [false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?"] );
+		}
+		var v = names[ va[0] ];
+		if( v != null) {
+			return( [true, v] );
+		}
+		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",Grid?"] );
+	}
+
+	int do_its(glob, va, lno) {
+		if (va[0].compareTo("Col") == 0) { // note.unit:62, d_struct.act:723
+			for(var st in itscol) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if (va[0].compareTo("name") == 0) {
+			if (k_namep >= 0) {
+				var st = glob.dats.ap_grid[ k_namep ];
+				if (va.length > 1) {
+					return( st.do_its(glob, va.sublist(1), lno) );
+				}
+				return( go_act(glob, st) );
+			}
+			return(0);
+		}
+		if (va[0].compareTo("Col_name") == 0) { // note.unit:71, d_struct.act:561
+			for (KpCol st in glob.dats.ap_col) {
+				if (st.k_namep == me) {
+					if (va.length > 1) {
+						var ret = st.do_its(glob, va.sublist(1), lno);
+						if (ret != 0) {
+							return(ret);
+						}
+						continue;
+					}
+					var ret = go_act(glob, st);
+					if (ret != 0) {
+						return(ret);
+					}
+				}
+			}
+			return(0);
+		}
+		if (va[0].compareTo("Grid_name") == 0) { // note.unit:81, d_struct.act:561
+			for (KpGrid st in glob.dats.ap_grid) {
+				if (st.k_namep == me) {
+					if (va.length > 1) {
+						var ret = st.do_its(glob, va.sublist(1), lno);
+						if (ret != 0) {
+							return(ret);
+						}
+						continue;
+					}
+					var ret = go_act(glob, st);
+					if (ret != 0) {
+						return(ret);
+					}
+				}
+			}
+			return(0);
+		}
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:74, d_struct.act:163
+			for (var st in childs) {
+				if (va.length > 1) {
+					var ret = st.do_its(glob, va.sublist(1), lno);
+					if (ret != 0) {
+						return(ret);
+					}
+					continue;
+				}
+				var ret = go_act(glob, st);
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Grid," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
+}
+
 class KpConcept extends Kp 
 {
 	List <KpTopic> itstopic = [];
@@ -1914,7 +3162,7 @@ class KpConcept extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("Topic") == 0 && va.length > 2 && itstopic.length > 0) { // concept.unit:8, d_struct.act:468
+		if (va[0].compareTo("Topic") == 0 && va.length > 2 && itstopic.length > 0) { // note.unit:91, d_struct.act:468
 			return (itstopic[0].get_var(glob, va.sublist(1), lno));
 		}
 		var v = names[ va[0] ];
@@ -1925,7 +3173,7 @@ class KpConcept extends Kp
 	}
 
 	int do_its(glob, va, lno) {
-		if (va[0].compareTo("Topic") == 0) { // concept.unit:8, d_struct.act:723
+		if (va[0].compareTo("Topic") == 0) { // note.unit:91, d_struct.act:723
 			for(var st in itstopic) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -1941,7 +3189,7 @@ class KpConcept extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:2, d_struct.act:163
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:85, d_struct.act:163
 			for (var st in childs) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -1998,12 +3246,12 @@ class KpTopic extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("parent") == 0) { // concept.unit:2, d_struct.act:551
+		if (va[0].compareTo("parent") == 0) { // note.unit:85, d_struct.act:551
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_concept[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
-		if (va[0].compareTo("T") == 0 && va.length > 2 && itst.length > 0) { // concept.unit:17, d_struct.act:468
+		if (va[0].compareTo("T") == 0 && va.length > 2 && itst.length > 0) { // note.unit:100, d_struct.act:468
 			return (itst[0].get_var(glob, va.sublist(1), lno));
 		}
 		var v = names[ va[0] ];
@@ -2014,7 +3262,7 @@ class KpTopic extends Kp
 	}
 
 	int do_its(glob, va, lno) {
-		if (va[0].compareTo("T") == 0) { // concept.unit:17, d_struct.act:723
+		if (va[0].compareTo("T") == 0) { // note.unit:100, d_struct.act:723
 			for(var st in itst) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -2030,7 +3278,7 @@ class KpTopic extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("parent") == 0) { // concept.unit:2, d_struct.act:536
+		if (va[0].compareTo("parent") == 0) { // note.unit:85, d_struct.act:536
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_concept[ k_parentp ];
 				if (va.length > 1) {
@@ -2040,7 +3288,7 @@ class KpTopic extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("level") == 0 && va.length > 1 && k_parentp >= 0) { // concept.unit:12, d_struct.act:181
+		if (va[0].compareTo("level") == 0 && va.length > 1 && k_parentp >= 0) { // note.unit:95, d_struct.act:181
 			var pos = 0;
 			var v = names[ "level" ];
 			if( v != null) {
@@ -2173,7 +3421,7 @@ class KpTopic extends Kp
 				return(0);
 			}
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:8, d_struct.act:163
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:91, d_struct.act:163
 			for (var st in childs) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -2224,7 +3472,7 @@ class KpT extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:551
+		if (va[0].compareTo("parent") == 0) { // note.unit:91, d_struct.act:551
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_topic[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -2237,7 +3485,7 @@ class KpT extends Kp
 	}
 
 	int do_its(glob, va, lno) {
-		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:536
+		if (va[0].compareTo("parent") == 0) { // note.unit:91, d_struct.act:536
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_topic[ k_parentp ];
 				if (va.length > 1) {
@@ -2247,7 +3495,7 @@ class KpT extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:17, d_struct.act:163
+		if ( va[0].compareTo("Child") == 0 ) { // note.unit:100, d_struct.act:163
 			return(0);
 		}
 		print("?No its " + va[0] + " cmd for T," + line_no + "," + lno + "?");
@@ -2609,32 +3857,6 @@ class KpAdd extends Kp
 	}
 }
 
-class KpCheck extends Kp 
-{
-	int k_parentp = -1;
-	String k_path = "";
-	String k_data = "";
-	List <Kp> childs = [];
-	bool load(act, ln, pos, lno, flag) {
-		var tok = [pos, ''];
-		comp = "Check";
-		line_no = lno;
-		flags = flag;
-		me = act.ap_check.length;
-		tok = getw(ln,tok[0]);
-		k_path = tok[1];
-		tok = getws(ln,tok[0]);
-		k_data = tok[1];
-		k_parentp = act.ap_actor.length-1;
-		if (k_parentp < 0 ) { 
-			print(lno + " Check has no Actor parent") ;
-			return false;
-		}
-		act.ap_actor[ k_parentp ].childs.add( this );
-		return true;
-	}
-}
-
 class KpThis extends Kp 
 {
 	int k_parentp = -1;
@@ -2658,6 +3880,41 @@ class KpThis extends Kp
 		k_parentp = act.ap_actor.length-1;
 		if (k_parentp < 0 ) { 
 			print(lno + " This has no Actor parent") ;
+			return false;
+		}
+		act.ap_actor[ k_parentp ].childs.add( this );
+		return true;
+	}
+}
+
+class KpReplace extends Kp 
+{
+	int k_parentp = -1;
+	String k_path = "";
+	String k_pad = "";
+	String k_with = "";
+	String k_pad2 = "";
+	String k_match = "";
+	List <Kp> childs = [];
+	bool load(act, ln, pos, lno, flag) {
+		var tok = [pos, ''];
+		comp = "Replace";
+		line_no = lno;
+		flags = flag;
+		me = act.ap_replace.length;
+		tok = getw(ln,tok[0]);
+		k_path = tok[1];
+		tok = getw(ln,tok[0]);
+		k_pad = tok[1];
+		tok = getw(ln,tok[0]);
+		k_with = tok[1];
+		tok = getw(ln,tok[0]);
+		k_pad2 = tok[1];
+		tok = getws(ln,tok[0]);
+		k_match = tok[1];
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
+			print(lno + " Replace has no Actor parent") ;
 			return false;
 		}
 		act.ap_actor[ k_parentp ].childs.add( this );

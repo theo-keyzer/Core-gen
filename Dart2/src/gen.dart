@@ -169,8 +169,8 @@ int go_cmds(glob, ca, winp)
 				return(ret);
 			}
 		}
-		if (cmd is KpCheck) {
-			var ret = check_cmd(glob,winp,cmd);
+		if (cmd is KpReplace) {
+			var ret = replace_cmd(glob,winp,cmd);
 			if( ret != 0 ) {
 				return(ret);
 			}

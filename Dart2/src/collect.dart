@@ -60,37 +60,56 @@ int this_cmd(glob,winp,cmd)
 	return(0);
 }
 
-int check_cmd(glob,winp,cmd)
+int replace_cmd(glob,winp,cmd)
 {
-	var va = cmd.k_path.split(":");
+	var st = strs(glob, winp, cmd.k_match, cmd.line_no, true,true );
+	var k_match = st[1];
+	st = strs(glob, winp, cmd.k_with, cmd.line_no, true,true );
+	var k_with = st[1];
+	st = strs(glob, winp, cmd.k_path, cmd.line_no, true,true );
+	var va = st[1].split(":");
 	var path = va[0].split(".");
 	var rec = get_path(glob, glob.winp, path, cmd.line_no);
 	var dat = rec.dat;
-	if(dat is List)
-	{
-		if( cmd.flags.contains("check") || cmd.flags.contains("break") ) {
-			if( dat.contains( cmd.k_data ) ) {
-				if( cmd.flags.contains("break") ) {
-					return(2);
-				}
-                		glob.wins[winp].is_check = true;
-				return(0);
-			}
-		}
-	}
+//	print(k_match);
 	if(dat is Map)
 	{
-		if( cmd.flags.contains("check") || cmd.flags.contains("break") ) {
-			if( dat[ va[1] ] == cmd.k_data ) {
-				if( cmd.flags.contains("break") ) {
-					return(2);
-				}
-                		glob.wins[winp].is_check = true;
-				return(0);
-			}
+		var val = dat[ va[1] ];
+		if( val is! String ) { return(0); }
+		if( cmd.flags.contains("group") ) {
+			val = replaceMapped(val, RegExp(k_match), k_with);
+		} else {
+			val = val.replaceAll( RegExp(k_match), k_with);
 		}
+		dat[ va[1] ] = val;
 	}
 	return(0);
+}
+
+String replaceMapped(String originalString, RegExp regex, String replacement) {
+	final buffer = StringBuffer();
+	int start = 0;
+
+	for (final match in regex.allMatches(originalString)) {
+		final capturedGroups = match.groups;
+
+		if (capturedGroups == null) {
+		buffer.write(originalString.substring(start, match.start));
+		start = match.end;
+		continue;
+		}
+		buffer.write(originalString.substring(start, match.start));
+		start = match.end;
+		buffer.write(replacement.replaceAllMapped(RegExp(r'\\(\d+)'), (m) {
+			final groupIndex = int.tryParse(m.group(1)!) ?? 0;
+			var gg = match.group(groupIndex);
+			if(gg is String) return(gg);
+			return "-";
+		}));
+		start = match.end;
+	}
+	buffer.write(originalString.substring(start));
+	return buffer.toString();
 }
 
 int add_cmd(glob,winp,cmd)
