@@ -3,19 +3,16 @@ part of gen;
 
 class GlobT
 {
-//	final buffer = StringBuffer();
 	bool load_errs = false;
 	bool run_errs = false;
 	ActT acts = new ActT();
 	ActT dats = new ActT();
 	int winp = -1;
 	List<WinT> wins = [];
-//	Map pocket = new Map();
-//	Map jsons = new Map();
 	Map collect = new Map();
-	String ins = "";
         bool out_on = true;
 	bool in_on = false;
+	StringBuffer ins = StringBuffer();
 }
 
 class WinT {
@@ -129,21 +126,26 @@ int go_cmds(glob, ca, winp)
 	for(var i = 0; i < a.childs.length; i++) {
 		glob.wins[winp].cur_pos = i;
 		var cmd = a.childs[i];
+		if (cmd is KpIn) {
+			if( cmd.k_flag == "on" ) glob.in_on = true;
+			if( cmd.k_flag == "off" ) glob.in_on = false;
+			if( cmd.flags.contains("clear") )  glob.ins = StringBuffer();
+		}
 		if (cmd is KpC) {
-			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) {
-				continue;
-			}
+			if( glob.out_on == false ) continue;
+			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) continue;
 			trig(glob,winp);
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			stdout.writeln(res[1]);
+			if( glob.in_on ) glob.ins.writeln(res[1]);
+			else stdout.writeln(res[1]);
 		}
 		if (cmd is KpCs) {
-			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) {
-				continue;
-			}
+			if( glob.out_on == false ) continue;
+			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) continue;
 			trig(glob,winp);
 			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			stdout.write(res[1]);
+			if( glob.in_on ) glob.ins.write(res[1]);
+			else stdout.write(res[1]);
 		}
 		if (cmd is KpAll) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
@@ -151,37 +153,27 @@ int go_cmds(glob, ca, winp)
 			var what = strs(glob, winp, cmd.k_what, cmd.line_no, true,true );
 			var va = what[1].split(".");
 			var ret = do_all(glob, va, cmd.line_no);
-			if (ret > 1) {
-				return(ret);
-			}
+			if (ret > 1 || ret < 0) return(ret);
 		}
 		if (cmd is KpThis) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
 			new_act(glob, cmd.k_actor, args[1], cmd.line_no);
-			var ret = this_cmd(glob,winp,cmd);
-			if (ret > 1 || ret < 0) {
-				return(ret);
-			}
+			var ret = this_cmd(glob,winp,cmd, cmd.line_no);
+			if (ret > 1 || ret < 0) return(ret);
 		}
 		if (cmd is KpAdd) {
-			var ret = add_cmd(glob,winp,cmd);
-			if( ret != 0 ) {
-				return(ret);
-			}
+			var ret = add_cmd(glob,winp,cmd, cmd.line_no);
+			if( ret != 0 ) return(ret);
 		}
 		if (cmd is KpReplace) {
-			var ret = replace_cmd(glob,winp,cmd);
-			if( ret != 0 ) {
-				return(ret);
-			}
+			var ret = replace_cmd(glob,winp,cmd, cmd.line_no);
+			if( ret != 0 ) return(ret);
 		}
 		if (cmd is KpDu) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
 			new_act(glob, cmd.k_actor, args[1], cmd.line_no);
 			var ret = go_act(glob,glob.wins[winp].dat);
-			if (ret > 1) {
-				return(ret);
-			}
+			if (ret != 0) return(ret);
 		}
 		if (cmd is KpIts) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
@@ -251,16 +243,21 @@ int go_cmds(glob, ca, winp)
 			glob.wins[winp].dat.names[cmd.k_attr] = res[1];
 		}
 		if (cmd is KpOut) {
-			if (cmd.k_what.compareTo( "delay" ) == 0) {
+			var res = strs(glob, winp, cmd.k_what, cmd.line_no, true,true );
+			var k_what = res[1];
+			if( k_what == "on" ) glob.out_on = true;
+			if( k_what == "off" ) glob.out_on = false;
+			if (k_what == "delay" ) {
 				glob.wins[winp].is_on = true;
 				glob.wins[winp].on_pos = i;
 			}
-			if (cmd.k_what.compareTo( "normal" ) == 0) {
+			if (k_what == "normal" ) {
 				glob.wins[winp].is_on = false;
 				glob.wins[winp].is_trig = false;
 			}
 		}
 		if (cmd is KpNew) {
+			if( glob.out_on == false ) continue;
 			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) {
 				continue;
 			}

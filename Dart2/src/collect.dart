@@ -2,7 +2,7 @@ part of gen;
 
 typedef Record = ( {bool ok, dynamic dat, List path} );
 
-int this_cmd(glob,winp,cmd)
+int this_cmd(glob,winp,cmd,lno)
 {
 	var va = cmd.k_path.split(".");
 	var rec = get_path(glob, glob.winp, va, cmd.line_no);
@@ -36,6 +36,11 @@ int this_cmd(glob,winp,cmd)
 		}
 		return(0);
 	}
+	if( rec.path.length > 0 && rec.path[0] != "." && rec.path[0] != "")  {
+		glob.run_errs = true;
+		print("?" + rec.path[0] + "?" + lno + "?");
+		return(0);
+	}
 	if(dat is List)
 	{
 		for(var std in dat) {
@@ -60,7 +65,7 @@ int this_cmd(glob,winp,cmd)
 	return(0);
 }
 
-int replace_cmd(glob,winp,cmd)
+int replace_cmd(glob,winp,cmd,lno)
 {
 	var st = strs(glob, winp, cmd.k_match, cmd.line_no, true,true );
 	var k_match = st[1];
@@ -70,19 +75,35 @@ int replace_cmd(glob,winp,cmd)
 	var va = st[1].split(":");
 	var path = va[0].split(".");
 	var rec = get_path(glob, glob.winp, path, cmd.line_no);
+	if(rec.ok == false) {
+		glob.run_errs = true;
+		print(rec.dat.toString());
+		return(0);
+	}
 	var dat = rec.dat;
-//	print(k_match);
 	if(dat is Map)
 	{
+		if( va.length < 2 ) {
+			glob.run_errs = true;
+			print("?no key?" + lno + "?");
+			return(0);
+		}
 		var val = dat[ va[1] ];
-		if( val is! String ) { return(0); }
+		if( val is! String ) { 
+			glob.run_errs = true;
+			print("?" + cmd.k_path + "?" + lno + "?");
+			return(0); 
+		}
 		if( cmd.flags.contains("group") ) {
 			val = replaceMapped(val, RegExp(k_match), k_with);
 		} else {
 			val = val.replaceAll( RegExp(k_match), k_with);
 		}
 		dat[ va[1] ] = val;
+		return(0);
 	}
+	glob.run_errs = true;
+	print("?" + cmd.k_path + "?" + lno + "?");
 	return(0);
 }
 
@@ -112,7 +133,7 @@ String replaceMapped(String originalString, RegExp regex, String replacement) {
 	return buffer.toString();
 }
 
-int add_cmd(glob,winp,cmd)
+int add_cmd(glob,winp,cmd,lno)
 {
 	dynamic k_data = cmd.k_data;
 	if( cmd.flags.contains("me") ) {
@@ -126,6 +147,16 @@ int add_cmd(glob,winp,cmd)
 		var path = va[0].split(".");
 		var rec = get_path(glob, glob.winp, path, cmd.line_no);
 		k_data = rec.dat;
+		if(rec.ok == false) {
+			glob.run_errs = true;
+			print(rec.dat.toString());
+			return(0);
+		}
+		if( rec.path.length > 0 )  {
+			glob.run_errs = true;
+			print("?" + rec.path[0] + "?" + lno + "?");
+			return(0);
+		}
 	}
 	if( cmd.flags.contains("file") ) {
 		try {
@@ -148,6 +179,11 @@ int add_cmd(glob,winp,cmd)
 	var va = st[1].split(":");
 	var path = va[0].split(".");
 	var rec = get_path(glob, glob.winp, path, cmd.line_no);
+	if(rec.ok == false) {
+		glob.run_errs = true;
+		print(rec.dat.toString());
+		return(0);
+	}
 	var dat = rec.dat;
 	if(dat is List)
 	{
@@ -164,9 +200,15 @@ int add_cmd(glob,winp,cmd)
 			return(0);
 		}
 		dat.add( k_data );
+		return(0);
 	}
 	if(dat is Map)
 	{
+		if( va.length < 2 ) {
+			glob.run_errs = true;
+			print("?no key?" + lno + "?");
+			return(0);
+		}
 		if( cmd.flags.contains("map") ) {
 			if( dat[ va[1] ] is! Map || cmd.flags.contains("clear") ) {
 				dat[ va[1] ] = new Map();
@@ -192,8 +234,10 @@ int add_cmd(glob,winp,cmd)
 			return(0);
 		}
 		dat[ va[1] ] = k_data;
+		return(0);
 	}
-//	print(glob.collect);
+	glob.run_errs = true;
+	print("?" + cmd.k_path + "?" + lno + "?");
 	return(0);
 }
 
@@ -236,6 +280,9 @@ Record get_path(glob, winp, va, lno)
 	}
 	if (va[1].compareTo( "_arg" ) == 0) {
 		return(ok: true, dat: glob.wins[winp].arg, path: [] );
+	}
+	if (va[1].compareTo( "_ins" ) == 0) {
+		return(ok: true, dat: glob.ins.toString(), path: [] );
 	}
 	if (va[1].compareTo( "_depth" ) == 0) {
 		return(ok: true, dat: winp.toString(), path: [] );
