@@ -1,8 +1,6 @@
 
 ## Introduction
 It converts the input to output.
-This is for the Dart version. Only install the Dart sdk as Flutter is more for the Web and GUI.
-Compiled Dart is about ten times faster than python for this and two times slower is not.
 
 ## Actors.
 The actor node has a list of commands to run.
@@ -128,7 +126,3 @@ For the D it is _.D.
 If the value is a data node, the path works the same as the data node.
 If the value is a map, the path is in the map.
 Any items can have data nodes in it.
-
-Errors.
-More work needs to be done for error checking and reporting.
-The test cases does cover all the variations.

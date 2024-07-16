@@ -2,15 +2,19 @@ echo ::::::::::::::
 echo concept_md.act "*"
 echo ::::::::::::::
 
-
 dart run ../src/main.dart concept_md.act concept.def "*" import >concept.md
 if [ $? != 0 ]; then echo concept_md.act concept.def has errors; fi
 
+echo ::::::::::::::
+echo concept.act "*"
+echo ::::::::::::::
+
+dart run ../src/main.dart concept.act concept.def cmd import >concept.html
+if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
 
 echo ::::::::::::::
 echo collect.act
 echo ::::::::::::::
-
 
 dart run ../src/main.dart collect.act concept.def 
 if [ $? != 0 ]; then echo collect.act concept.def has errors; fi
@@ -84,5 +88,20 @@ echo ::::::::::::::
 
 dart run ../src/main.dart  copy.act tst.def
 if [ $? != 0 ]; then echo copy.act tst.def has errors; fi
+
+echo ::::::::::::::
+echo grid.act 
+echo ::::::::::::::
+
+dart run ../src/main.dart  grid.act grid.def
+if [ $? != 0 ]; then echo grid.act grid.def has errors; fi
+
+echo ::::::::::::::
+echo re_sub.act 
+echo ::::::::::::::
+
+dart run ../src/main.dart  re_sub.act tst.def
+if [ $? != 0 ]; then echo re_sub.act tst.def has errors; fi
+
 
 

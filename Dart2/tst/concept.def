@@ -5,8 +5,6 @@ Concept intro
 Topic . 1 h1 Introduction
 
 T . It converts the input to output.
-T . This is for the Dart version. Only install the Dart sdk as Flutter is more for the Web and GUI.
-T . Compiled Dart is about ten times faster than python for this and two times slower is not.
 
 ----------------------------------------------------------------
 Concept actor
@@ -182,10 +180,6 @@ T . If the value is a data node, the path works the same as the data node.
 T . If the value is a map, the path is in the map.
 T . Any items can have data nodes in it.
 
-Topic var 2 p Errors.
-
-T . More work needs to be done for error checking and reporting.
-T . The test cases does cover all the variations.
 
 
 

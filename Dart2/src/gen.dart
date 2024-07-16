@@ -135,9 +135,15 @@ int go_cmds(glob, ca, winp)
 			if( glob.out_on == false ) continue;
 			if (glob.wins[winp].is_on && glob.wins[winp].is_trig == false) continue;
 			trig(glob,winp);
-			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			if( glob.in_on ) glob.ins.writeln(res[1]);
-			else stdout.writeln(res[1]);
+			var k_desc = cmd.k_desc;
+			if( cmd.flags.contains("r") ) {
+				k_desc = cmd.k_desc;
+			} else {
+				var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
+				k_desc = res[1];
+			}
+			if( glob.in_on ) glob.ins.writeln( k_desc );
+			else stdout.writeln( k_desc );
 		}
 		if (cmd is KpCs) {
 			if( glob.out_on == false ) continue;
@@ -339,6 +345,9 @@ List s_get_var(glob, winp, sc, va, lno)
 		return( [false, rec.dat] );
 	}
 	dynamic dat = rec.dat;
+	if( dat is! Kp && rec.path.length > 0 && rec.path[0] != "." && rec.path[0] != "") {
+		return( [false, "?" + rec.path[0] + "?" + lno + "?"] );
+	}
 	if(dat is Kp && rec.path.length > 0 && rec.path[0] != ".")
 	{
 		var res = dat.get_var(glob, rec.path, lno);

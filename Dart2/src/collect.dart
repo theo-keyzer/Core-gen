@@ -139,8 +139,12 @@ int add_cmd(glob,winp,cmd,lno)
 	if( cmd.flags.contains("me") ) {
 		k_data = glob.wins[winp].dat;
 	} else {
+		if( cmd.flags.contains("r") ) {
+			k_data = cmd.k_data;
+		} else {
 			var st = strs(glob, winp, cmd.k_data, cmd.line_no, true,true );
 			k_data = st[1];
+		}
 	}
 	if( cmd.flags.contains("node") ) {
 		var va = k_data.split(":");
@@ -277,6 +281,12 @@ Record get_path(glob, winp, va, lno)
 			return(ok: true, dat: "", path: []);
 		}
 		return(ok: true, dat: va[2], path: [] );
+	}
+        if( va[1] == "_lno" ) {
+		if( glob.wins[winp].dat is Kp) {
+			return(ok: true, dat: glob.wins[winp].dat.line_no + ", " + lno, path: [] );
+		}
+		return(ok: true, dat: lno, path: [] );
 	}
 	if (va[1].compareTo( "_arg" ) == 0) {
 		return(ok: true, dat: glob.wins[winp].arg, path: [] );
