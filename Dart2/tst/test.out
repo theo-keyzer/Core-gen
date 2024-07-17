@@ -2,14 +2,15 @@
 concept_md.act *
 ::::::::::::::
 ::::::::::::::
+concept.act *
+::::::::::::::
+::::::::::::::
 collect.act
 ::::::::::::::
 Introduction
 Instance of 'KpTopic'    -- KpTopic key = 
 Introduction  -  Instance of 'KpTopic'
 It converts the input to output.
-This is for the Dart version. Only install the Dart sdk as Flutter is more for the Web and GUI.
-Compiled Dart is about ten times faster than python for this and two times slower is not.
 Wsa    -- String key = 
 [aaa, vvv]    -- List key = 
 Aaa    -- String key = 
@@ -134,3 +135,92 @@ Add _.Copy.menu.popup.menuitem _.T5
 New
 Open
 Close
+::::::::::::::
+grid.act
+::::::::::::::
+col_center a
+col_down g
+col_down_right h
+col_center b
+col_left a
+col_left_right b
+col_left_right e
+col_down e
+col_down_right f
+col_center c
+col_left b
+col_left_right c
+col_left_right d
+col_down d
+col_center d
+col_left b
+col_left_right c
+col_left_right d
+col_up c
+col_center e
+col_left a
+col_left_right b
+col_left_right e
+col_up b
+col_up_right c
+col_up_right d
+col_center f
+col_left e
+col_left_right f
+col_center g
+col_up a
+col_up_right b
+col_up_right e
+col_center h
+col_left g
+col_left_right h
+::::::::::::::
+re_sub.act
+::::::::::::::
+<c:forEach var="${table.name:l}Item" items="$${${table.name:l}Items}">
+  <form:option value="$${${table.name:l}Item.${Where_attr.from_id:l}}">$${${table.name:l}Item.displayFld}</form:option>
+</c:forEach> ${a:c} ${._lno} ${e} ${a.b.c:l} $${xa}l ${._lno}
+
+::::::::::::::
+def_unit.act
+::::::::::::::
+::::::::::::::
+def_unit.act
+::::::::::::::
+::::::::::::::
+p_check.act sample.tst_unit
+::::::::::::::
+::::::::::::::
+p_check.act note.tst_unit
+::::::::::::::
+::::::::::::::
+toggle.act doc
+::::::::::::::
+on off
+The documentaion for the table functions
+The documentaion for User function
+The documentaion for User_typ function
+The documentaion for Location function
+The documentaion for Activ function
+The documentaion for Employee function
+The documentaion for Contractor_employee function
+The documentaion for Contractor_company function
+The documentaion for Company_rating function
+::::::::::::::
+toggle.act code
+::::::::::::::
+off on
+The code for the table functions
+The code for User function
+The code for User_typ function
+The code for Location function
+The code for Activ function
+The code for Employee function
+The code for Contractor_employee function
+The code for Contractor_company function
+The code for Company_rating function
+
+real	0m0.099s
+user	0m0.055s
+sys	0m0.061s
+

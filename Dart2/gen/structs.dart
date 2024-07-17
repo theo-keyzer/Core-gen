@@ -62,63 +62,63 @@ class KpComp extends Kp
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("Comp_parent") == 0 && va.length > 1) { // gen.unit:16, d_struct.act:751
+		if (va[0].compareTo("Comp_parent") == 0 && va.length > 1) { // gen.unit:16, d_struct.act:744
 			for (var st in glob.dats.ap_comp) {
 				if (st.k_parentp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref_comp") == 0 && va.length > 1) { // gen.unit:65, d_struct.act:751
+		if (va[0].compareTo("Ref_comp") == 0 && va.length > 1) { // gen.unit:65, d_struct.act:744
 			for (var st in glob.dats.ap_ref) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref2_comp") == 0 && va.length > 1) { // gen.unit:83, d_struct.act:751
+		if (va[0].compareTo("Ref2_comp") == 0 && va.length > 1) { // gen.unit:83, d_struct.act:744
 			for (var st in glob.dats.ap_ref2) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref3_comp") == 0 && va.length > 1) { // gen.unit:104, d_struct.act:751
+		if (va[0].compareTo("Ref3_comp") == 0 && va.length > 1) { // gen.unit:104, d_struct.act:744
 			for (var st in glob.dats.ap_ref3) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref3_comp_ref") == 0 && va.length > 1) { // gen.unit:105, d_struct.act:751
+		if (va[0].compareTo("Ref3_comp_ref") == 0 && va.length > 1) { // gen.unit:105, d_struct.act:744
 			for (var st in glob.dats.ap_ref3) {
 				if (st.k_comp_refp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refq_comp") == 0 && va.length > 1) { // gen.unit:126, d_struct.act:751
+		if (va[0].compareTo("Refq_comp") == 0 && va.length > 1) { // gen.unit:126, d_struct.act:744
 			for (var st in glob.dats.ap_refq) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refq_comp_ref") == 0 && va.length > 1) { // gen.unit:127, d_struct.act:751
+		if (va[0].compareTo("Refq_comp_ref") == 0 && va.length > 1) { // gen.unit:127, d_struct.act:744
 			for (var st in glob.dats.ap_refq) {
 				if (st.k_comp_refp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refu_comp") == 0 && va.length > 1) { // gen.unit:147, d_struct.act:751
+		if (va[0].compareTo("Refu_comp") == 0 && va.length > 1) { // gen.unit:147, d_struct.act:744
 			for (var st in glob.dats.ap_refu) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refu_comp_ref") == 0 && va.length > 1) { // gen.unit:148, d_struct.act:751
+		if (va[0].compareTo("Refu_comp_ref") == 0 && va.length > 1) { // gen.unit:148, d_struct.act:744
 			for (var st in glob.dats.ap_refu) {
 				if (st.k_comp_refp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
@@ -158,7 +158,7 @@ class KpComp extends Kp
 	}
 
 	int do_its(glob, va, lno) {
-		if (va[0].compareTo("Element") == 0) { // gen.unit:19, d_struct.act:730
+		if (va[0].compareTo("Element") == 0) { // gen.unit:19, d_struct.act:723
 			for(var st in itselement) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -174,7 +174,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref") == 0) { // gen.unit:50, d_struct.act:730
+		if (va[0].compareTo("Ref") == 0) { // gen.unit:50, d_struct.act:723
 			for(var st in itsref) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -190,7 +190,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref2") == 0) { // gen.unit:68, d_struct.act:730
+		if (va[0].compareTo("Ref2") == 0) { // gen.unit:68, d_struct.act:723
 			for(var st in itsref2) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -206,7 +206,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref3") == 0) { // gen.unit:87, d_struct.act:730
+		if (va[0].compareTo("Ref3") == 0) { // gen.unit:87, d_struct.act:723
 			for(var st in itsref3) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -222,7 +222,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refq") == 0) { // gen.unit:109, d_struct.act:730
+		if (va[0].compareTo("Refq") == 0) { // gen.unit:109, d_struct.act:723
 			for(var st in itsrefq) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -238,7 +238,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refu") == 0) { // gen.unit:130, d_struct.act:730
+		if (va[0].compareTo("Refu") == 0) { // gen.unit:130, d_struct.act:723
 			for(var st in itsrefu) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -254,7 +254,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Join") == 0) { // gen.unit:151, d_struct.act:730
+		if (va[0].compareTo("Join") == 0) { // gen.unit:151, d_struct.act:723
 			for(var st in itsjoin) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -466,7 +466,7 @@ class KpComp extends Kp
 
 class KpElement extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	List <KpOpt> itsopt = [];
 	List <Kp> childs = [];
 
@@ -489,68 +489,68 @@ class KpElement extends Kp
 		names["pad"] = tok[1];
 		tok = getws(ln,tok[0]);
 		names["doc"] = tok[1];
-		parentp = act.ap_comp.length-1;
-		names["k_parent"] = parentp.toString();
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_comp.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
 			print( lno + " Element has no Comp parent" );
 			return false;
 		}
-		act.ap_comp[ parentp ].itselement.add( this );
-		act.ap_comp[ parentp ].childs.add( this );
-		var s = parentp.toString() + "_Element_" + get_name(names, "name");
+		act.ap_comp[ k_parentp ].itselement.add( this );
+		act.ap_comp[ k_parentp ].childs.add( this );
+		var s = k_parentp.toString() + "_Element_" + get_name(names, "name");
 		act.index[s] = me;
 		return true;
 	}
 
 	List get_var(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:551
-			if (parentp >= 0 && va.length > 1) {
-				return( glob.dats.ap_comp[ parentp ].get_var(glob, va.sublist(1),lno) );
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
-		if (va[0].compareTo("Ref_element") == 0 && va.length > 1) { // gen.unit:64, d_struct.act:751
+		if (va[0].compareTo("Ref_element") == 0 && va.length > 1) { // gen.unit:64, d_struct.act:744
 			for (var st in glob.dats.ap_ref) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref2_element") == 0 && va.length > 1) { // gen.unit:82, d_struct.act:751
+		if (va[0].compareTo("Ref2_element") == 0 && va.length > 1) { // gen.unit:82, d_struct.act:744
 			for (var st in glob.dats.ap_ref2) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref2_element2") == 0 && va.length > 1) { // gen.unit:84, d_struct.act:751
+		if (va[0].compareTo("Ref2_element2") == 0 && va.length > 1) { // gen.unit:84, d_struct.act:744
 			for (var st in glob.dats.ap_ref2) {
 				if (st.k_element2p == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref3_element") == 0 && va.length > 1) { // gen.unit:103, d_struct.act:751
+		if (va[0].compareTo("Ref3_element") == 0 && va.length > 1) { // gen.unit:103, d_struct.act:744
 			for (var st in glob.dats.ap_ref3) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref3_element2") == 0 && va.length > 1) { // gen.unit:106, d_struct.act:751
+		if (va[0].compareTo("Ref3_element2") == 0 && va.length > 1) { // gen.unit:106, d_struct.act:744
 			for (var st in glob.dats.ap_ref3) {
 				if (st.k_element2p == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refq_element") == 0 && va.length > 1) { // gen.unit:125, d_struct.act:751
+		if (va[0].compareTo("Refq_element") == 0 && va.length > 1) { // gen.unit:125, d_struct.act:744
 			for (var st in glob.dats.ap_refq) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refu_element") == 0 && va.length > 1) { // gen.unit:146, d_struct.act:751
+		if (va[0].compareTo("Refu_element") == 0 && va.length > 1) { // gen.unit:146, d_struct.act:744
 			for (var st in glob.dats.ap_refu) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
@@ -572,7 +572,7 @@ class KpElement extends Kp
 	}
 
 	int do_its(glob, va, lno) {
-		if (va[0].compareTo("Opt") == 0) { // gen.unit:39, d_struct.act:730
+		if (va[0].compareTo("Opt") == 0) { // gen.unit:39, d_struct.act:723
 			for(var st in itsopt) {
 				if (va.length > 1) {
 					var ret = st.do_its(glob, va.sublist(1), lno);
@@ -589,8 +589,8 @@ class KpElement extends Kp
 			return(0);
 		}
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:536
-			if (parentp >= 0) {
-				var st = glob.dats.ap_comp[ parentp ];
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
 					return( st.do_its(glob, va.sublist(1), lno) );
 				}
@@ -748,7 +748,7 @@ class KpElement extends Kp
 
 class KpOpt extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 
 	bool load(act, ln, pos, lno, flag) {
 		var tok = [pos, ''];
@@ -765,23 +765,23 @@ class KpOpt extends Kp
 		names["pad"] = tok[1];
 		tok = getws(ln,tok[0]);
 		names["doc"] = tok[1];
-		parentp = act.ap_element.length-1;
-		names["k_parent"] = parentp.toString();
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_element.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
 			print( lno + " Opt has no Element parent" );
 			return false;
 		}
-		act.ap_element[ parentp ].itsopt.add( this );
-		act.ap_element[ parentp ].childs.add( this );
-		var s = parentp.toString() + "_Opt_" + get_name(names, "name");
+		act.ap_element[ k_parentp ].itsopt.add( this );
+		act.ap_element[ k_parentp ].childs.add( this );
+		var s = k_parentp.toString() + "_Opt_" + get_name(names, "name");
 		act.index[s] = me;
 		return true;
 	}
 
 	List get_var(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:19, d_struct.act:551
-			if (parentp >= 0 && va.length > 1) {
-				return( glob.dats.ap_element[ parentp ].get_var(glob, va.sublist(1),lno) );
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_element[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
 		var v = names[ va[0] ];
@@ -793,8 +793,8 @@ class KpOpt extends Kp
 
 	int do_its(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:19, d_struct.act:536
-			if (parentp >= 0) {
-				var st = glob.dats.ap_element[ parentp ];
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_element[ k_parentp ];
 				if (va.length > 1) {
 					return( st.do_its(glob, va.sublist(1), lno) );
 				}
@@ -813,7 +813,7 @@ class KpOpt extends Kp
 
 class KpRef extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	int k_elementp = -1;
 	int k_compp = -1;
 
@@ -836,14 +836,14 @@ class KpRef extends Kp
 		names["var"] = tok[1];
 		tok = getws(ln,tok[0]);
 		names["doc"] = tok[1];
-		parentp = act.ap_comp.length-1;
-		names["k_parent"] = parentp.toString();
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_comp.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
 			print( lno + " Ref has no Comp parent" );
 			return false;
 		}
-		act.ap_comp[ parentp ].itsref.add( this );
-		act.ap_comp[ parentp ].childs.add( this );
+		act.ap_comp[ k_parentp ].itsref.add( this );
+		act.ap_comp[ k_parentp ].childs.add( this );
 		return true;
 	}
 
@@ -859,8 +859,8 @@ class KpRef extends Kp
 			}
 		}
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:551
-			if (parentp >= 0 && va.length > 1) {
-				return( glob.dats.ap_comp[ parentp ].get_var(glob, va.sublist(1),lno) );
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
 		var v = names[ va[0] ];
@@ -872,8 +872,8 @@ class KpRef extends Kp
 
 	int do_its(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:536
-			if (parentp >= 0) {
-				var st = glob.dats.ap_comp[ parentp ];
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
 					return( st.do_its(glob, va.sublist(1), lno) );
 				}
@@ -912,7 +912,7 @@ class KpRef extends Kp
 
 class KpRef2 extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	int k_elementp = -1;
 	int k_compp = -1;
 	int k_element2p = -1;
@@ -938,14 +938,14 @@ class KpRef2 extends Kp
 		names["var"] = tok[1];
 		tok = getws(ln,tok[0]);
 		names["doc"] = tok[1];
-		parentp = act.ap_comp.length-1;
-		names["k_parent"] = parentp.toString();
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_comp.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
 			print( lno + " Ref2 has no Comp parent" );
 			return false;
 		}
-		act.ap_comp[ parentp ].itsref2.add( this );
-		act.ap_comp[ parentp ].childs.add( this );
+		act.ap_comp[ k_parentp ].itsref2.add( this );
+		act.ap_comp[ k_parentp ].childs.add( this );
 		return true;
 	}
 
@@ -966,8 +966,8 @@ class KpRef2 extends Kp
 			}
 		}
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:551
-			if (parentp >= 0 && va.length > 1) {
-				return( glob.dats.ap_comp[ parentp ].get_var(glob, va.sublist(1),lno) );
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
 		var v = names[ va[0] ];
@@ -979,8 +979,8 @@ class KpRef2 extends Kp
 
 	int do_its(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:536
-			if (parentp >= 0) {
-				var st = glob.dats.ap_comp[ parentp ];
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
 					return( st.do_its(glob, va.sublist(1), lno) );
 				}
@@ -1029,7 +1029,7 @@ class KpRef2 extends Kp
 
 class KpRef3 extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	int k_elementp = -1;
 	int k_compp = -1;
 	int k_element2p = -1;
@@ -1060,14 +1060,14 @@ class KpRef3 extends Kp
 		names["var"] = tok[1];
 		tok = getws(ln,tok[0]);
 		names["doc"] = tok[1];
-		parentp = act.ap_comp.length-1;
-		names["k_parent"] = parentp.toString();
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_comp.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
 			print( lno + " Ref3 has no Comp parent" );
 			return false;
 		}
-		act.ap_comp[ parentp ].itsref3.add( this );
-		act.ap_comp[ parentp ].childs.add( this );
+		act.ap_comp[ k_parentp ].itsref3.add( this );
+		act.ap_comp[ k_parentp ].childs.add( this );
 		return true;
 	}
 
@@ -1093,8 +1093,8 @@ class KpRef3 extends Kp
 			}
 		}
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:551
-			if (parentp >= 0 && va.length > 1) {
-				return( glob.dats.ap_comp[ parentp ].get_var(glob, va.sublist(1),lno) );
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
 		var v = names[ va[0] ];
@@ -1106,8 +1106,8 @@ class KpRef3 extends Kp
 
 	int do_its(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:536
-			if (parentp >= 0) {
-				var st = glob.dats.ap_comp[ parentp ];
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
 					return( st.do_its(glob, va.sublist(1), lno) );
 				}
@@ -1166,7 +1166,7 @@ class KpRef3 extends Kp
 
 class KpRefq extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	int k_elementp = -1;
 	int k_compp = -1;
 	int k_comp_refp = -1;
@@ -1194,14 +1194,14 @@ class KpRefq extends Kp
 		names["var"] = tok[1];
 		tok = getws(ln,tok[0]);
 		names["doc"] = tok[1];
-		parentp = act.ap_comp.length-1;
-		names["k_parent"] = parentp.toString();
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_comp.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
 			print( lno + " Refq has no Comp parent" );
 			return false;
 		}
-		act.ap_comp[ parentp ].itsrefq.add( this );
-		act.ap_comp[ parentp ].childs.add( this );
+		act.ap_comp[ k_parentp ].itsrefq.add( this );
+		act.ap_comp[ k_parentp ].childs.add( this );
 		return true;
 	}
 
@@ -1222,8 +1222,8 @@ class KpRefq extends Kp
 			}
 		}
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:551
-			if (parentp >= 0 && va.length > 1) {
-				return( glob.dats.ap_comp[ parentp ].get_var(glob, va.sublist(1),lno) );
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
 		var v = names[ va[0] ];
@@ -1235,8 +1235,8 @@ class KpRefq extends Kp
 
 	int do_its(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:536
-			if (parentp >= 0) {
-				var st = glob.dats.ap_comp[ parentp ];
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
 					return( st.do_its(glob, va.sublist(1), lno) );
 				}
@@ -1285,7 +1285,7 @@ class KpRefq extends Kp
 
 class KpRefu extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	int k_elementp = -1;
 	int k_compp = -1;
 	int k_comp_refp = -1;
@@ -1315,14 +1315,14 @@ class KpRefu extends Kp
 		names["var"] = tok[1];
 		tok = getws(ln,tok[0]);
 		names["doc"] = tok[1];
-		parentp = act.ap_comp.length-1;
-		names["k_parent"] = parentp.toString();
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_comp.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
 			print( lno + " Refu has no Comp parent" );
 			return false;
 		}
-		act.ap_comp[ parentp ].itsrefu.add( this );
-		act.ap_comp[ parentp ].childs.add( this );
+		act.ap_comp[ k_parentp ].itsrefu.add( this );
+		act.ap_comp[ k_parentp ].childs.add( this );
 		return true;
 	}
 
@@ -1343,8 +1343,8 @@ class KpRefu extends Kp
 			}
 		}
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:551
-			if (parentp >= 0 && va.length > 1) {
-				return( glob.dats.ap_comp[ parentp ].get_var(glob, va.sublist(1),lno) );
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
 		var v = names[ va[0] ];
@@ -1356,8 +1356,8 @@ class KpRefu extends Kp
 
 	int do_its(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:536
-			if (parentp >= 0) {
-				var st = glob.dats.ap_comp[ parentp ];
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
 					return( st.do_its(glob, va.sublist(1), lno) );
 				}
@@ -1406,7 +1406,7 @@ class KpRefu extends Kp
 
 class KpJoin extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 
 	bool load(act, ln, pos, lno, flag) {
 		var tok = [pos, ''];
@@ -1431,21 +1431,21 @@ class KpJoin extends Kp
 		names["comp2"] = tok[1];
 		tok = getw(ln,tok[0]);
 		names["element3"] = tok[1];
-		parentp = act.ap_comp.length-1;
-		names["k_parent"] = parentp.toString();
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_comp.length-1;
+		names["k_parent"] = k_parentp.toString();
+		if (k_parentp < 0 ) { 
 			print( lno + " Join has no Comp parent" );
 			return false;
 		}
-		act.ap_comp[ parentp ].itsjoin.add( this );
-		act.ap_comp[ parentp ].childs.add( this );
+		act.ap_comp[ k_parentp ].itsjoin.add( this );
+		act.ap_comp[ k_parentp ].childs.add( this );
 		return true;
 	}
 
 	List get_var(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:551
-			if (parentp >= 0 && va.length > 1) {
-				return( glob.dats.ap_comp[ parentp ].get_var(glob, va.sublist(1),lno) );
+			if (k_parentp >= 0 && va.length > 1) {
+				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
 		var v = names[ va[0] ];
@@ -1457,8 +1457,8 @@ class KpJoin extends Kp
 
 	int do_its(glob, va, lno) {
 		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:536
-			if (parentp >= 0) {
-				var st = glob.dats.ap_comp[ parentp ];
+			if (k_parentp >= 0) {
+				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
 					return( st.do_its(glob, va.sublist(1), lno) );
 				}
@@ -1482,7 +1482,6 @@ class KpActor extends Kp
 	String k_attr = "";
 	String k_eq = "";
 	String k_value = "";
-	String k_cc = "";
 	List <Kp> childs = [];
 	bool load(act, ln, pos, lno, flag) {
 		var tok = [pos, ''];
@@ -1498,10 +1497,8 @@ class KpActor extends Kp
 		k_attr = tok[1];
 		tok = getw(ln,tok[0]);
 		k_eq = tok[1];
-		tok = getw(ln,tok[0]);
-		k_value = tok[1];
 		tok = getws(ln,tok[0]);
-		k_cc = tok[1];
+		k_value = tok[1];
 		act.index["Actor_" + k_name] = me;
 		return true;
 	}
@@ -1509,12 +1506,9 @@ class KpActor extends Kp
 
 class KpAll extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_what = "";
 	String k_actor = "";
-	String k_attr = "";
-	String k_eq = "";
-	String k_value = "";
 	String k_args = "";
 	int k_actorp = -1;
 	List <Kp> childs = [];
@@ -1528,31 +1522,22 @@ class KpAll extends Kp
 		k_what = tok[1];
 		tok = getw(ln,tok[0]);
 		k_actor = tok[1];
-		tok = getw(ln,tok[0]);
-		k_attr = tok[1];
-		tok = getw(ln,tok[0]);
-		k_eq = tok[1];
-		tok = getw(ln,tok[0]);
-		k_value = tok[1];
 		tok = getws(ln,tok[0]);
 		k_args = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " All has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpDu extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_actor = "";
-	String k_attr = "";
-	String k_eq = "";
-	String k_value = "";
 	String k_args = "";
 	int k_actorp = -1;
 	List <Kp> childs = [];
@@ -1564,27 +1549,21 @@ class KpDu extends Kp
 		me = act.ap_du.length;
 		tok = getw(ln,tok[0]);
 		k_actor = tok[1];
-		tok = getw(ln,tok[0]);
-		k_attr = tok[1];
-		tok = getw(ln,tok[0]);
-		k_eq = tok[1];
-		tok = getw(ln,tok[0]);
-		k_value = tok[1];
 		tok = getws(ln,tok[0]);
 		k_args = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " Du has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpNew extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_where = "";
 	String k_what = "";
 	String k_line = "";
@@ -1601,19 +1580,19 @@ class KpNew extends Kp
 		k_what = tok[1];
 		tok = getws(ln,tok[0]);
 		k_line = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " New has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpRefs extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_where = "";
 	List <Kp> childs = [];
 	bool load(act, ln, pos, lno, flag) {
@@ -1624,19 +1603,19 @@ class KpRefs extends Kp
 		me = act.ap_refs.length;
 		tok = getw(ln,tok[0]);
 		k_where = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " Refs has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpVar extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_attr = "";
 	String k_eq = "";
 	String k_value = "";
@@ -1653,24 +1632,21 @@ class KpVar extends Kp
 		k_eq = tok[1];
 		tok = getws(ln,tok[0]);
 		k_value = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " Var has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpIts extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_what = "";
 	String k_actor = "";
-	String k_attr = "";
-	String k_eq = "";
-	String k_value = "";
 	String k_args = "";
 	int k_actorp = -1;
 	List <Kp> childs = [];
@@ -1684,27 +1660,21 @@ class KpIts extends Kp
 		k_what = tok[1];
 		tok = getw(ln,tok[0]);
 		k_actor = tok[1];
-		tok = getw(ln,tok[0]);
-		k_attr = tok[1];
-		tok = getw(ln,tok[0]);
-		k_eq = tok[1];
-		tok = getw(ln,tok[0]);
-		k_value = tok[1];
 		tok = getws(ln,tok[0]);
 		k_args = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " Its has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpC extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_desc = "";
 	List <Kp> childs = [];
 	bool load(act, ln, pos, lno, flag) {
@@ -1715,19 +1685,19 @@ class KpC extends Kp
 		me = act.ap_c.length;
 		tok = getws(ln,tok[0]);
 		k_desc = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " C has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpCs extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_desc = "";
 	List <Kp> childs = [];
 	bool load(act, ln, pos, lno, flag) {
@@ -1738,19 +1708,19 @@ class KpCs extends Kp
 		me = act.ap_cs.length;
 		tok = getws(ln,tok[0]);
 		k_desc = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " Cs has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpOut extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_what = "";
 	String k_pad = "";
 	String k_desc = "";
@@ -1767,19 +1737,19 @@ class KpOut extends Kp
 		k_pad = tok[1];
 		tok = getws(ln,tok[0]);
 		k_desc = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " Out has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpIn extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_flag = "";
 	List <Kp> childs = [];
 	bool load(act, ln, pos, lno, flag) {
@@ -1790,19 +1760,19 @@ class KpIn extends Kp
 		me = act.ap_in.length;
 		tok = getw(ln,tok[0]);
 		k_flag = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " In has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpBreak extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_what = "";
 	String k_pad = "";
 	String k_actor = "";
@@ -1822,22 +1792,20 @@ class KpBreak extends Kp
 		k_actor = tok[1];
 		tok = getw(ln,tok[0]);
 		k_check = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " Break has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpAdd extends Kp 
 {
-	int parentp = -1;
-	String k_pocket = "";
-	String k_what = "";
-	String k_item = "";
+	int k_parentp = -1;
+	String k_path = "";
 	String k_data = "";
 	List <Kp> childs = [];
 	bool load(act, ln, pos, lno, flag) {
@@ -1847,52 +1815,22 @@ class KpAdd extends Kp
 		flags = flag;
 		me = act.ap_add.length;
 		tok = getw(ln,tok[0]);
-		k_pocket = tok[1];
-		tok = getw(ln,tok[0]);
-		k_what = tok[1];
-		tok = getw(ln,tok[0]);
-		k_item = tok[1];
-		tok = getws(ln,tok[0]);
-		k_data = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
-			print(lno + " Add has no Actor parent") ;
-			return false;
-		}
-		act.ap_actor[ parentp ].childs.add( this );
-		return true;
-	}
-}
-
-class KpAppend extends Kp 
-{
-	int parentp = -1;
-	String k_path = "";
-	String k_data = "";
-	List <Kp> childs = [];
-	bool load(act, ln, pos, lno, flag) {
-		var tok = [pos, ''];
-		comp = "Append";
-		line_no = lno;
-		flags = flag;
-		me = act.ap_append.length;
-		tok = getw(ln,tok[0]);
 		k_path = tok[1];
 		tok = getws(ln,tok[0]);
 		k_data = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
-			print(lno + " Append has no Actor parent") ;
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
+			print(lno + " Add has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
 class KpThis extends Kp 
 {
-	int parentp = -1;
+	int k_parentp = -1;
 	String k_path = "";
 	String k_actor = "";
 	String k_args = "";
@@ -1910,76 +1848,47 @@ class KpThis extends Kp
 		k_actor = tok[1];
 		tok = getws(ln,tok[0]);
 		k_args = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
 			print(lno + " This has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }
 
-class KpClear extends Kp 
+class KpReplace extends Kp 
 {
-	int parentp = -1;
-	String k_pocket = "";
-	String k_what = "";
-	String k_item = "";
-	String k_data = "";
+	int k_parentp = -1;
+	String k_path = "";
+	String k_pad = "";
+	String k_with = "";
+	String k_pad2 = "";
+	String k_match = "";
 	List <Kp> childs = [];
 	bool load(act, ln, pos, lno, flag) {
 		var tok = [pos, ''];
-		comp = "Clear";
+		comp = "Replace";
 		line_no = lno;
 		flags = flag;
-		me = act.ap_clear.length;
+		me = act.ap_replace.length;
 		tok = getw(ln,tok[0]);
-		k_pocket = tok[1];
+		k_path = tok[1];
 		tok = getw(ln,tok[0]);
-		k_what = tok[1];
+		k_pad = tok[1];
 		tok = getw(ln,tok[0]);
-		k_item = tok[1];
+		k_with = tok[1];
+		tok = getw(ln,tok[0]);
+		k_pad2 = tok[1];
 		tok = getws(ln,tok[0]);
-		k_data = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
-			print(lno + " Clear has no Actor parent") ;
+		k_match = tok[1];
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
+			print(lno + " Replace has no Actor parent") ;
 			return false;
 		}
-		act.ap_actor[ parentp ].childs.add( this );
-		return true;
-	}
-}
-
-class KpCheck extends Kp 
-{
-	int parentp = -1;
-	String k_pocket = "";
-	String k_what = "";
-	String k_item = "";
-	String k_data = "";
-	List <Kp> childs = [];
-	bool load(act, ln, pos, lno, flag) {
-		var tok = [pos, ''];
-		comp = "Check";
-		line_no = lno;
-		flags = flag;
-		me = act.ap_check.length;
-		tok = getw(ln,tok[0]);
-		k_pocket = tok[1];
-		tok = getw(ln,tok[0]);
-		k_what = tok[1];
-		tok = getw(ln,tok[0]);
-		k_item = tok[1];
-		tok = getws(ln,tok[0]);
-		k_data = tok[1];
-		parentp = act.ap_actor.length-1;
-		if (parentp < 0 ) { 
-			print(lno + " Check has no Actor parent") ;
-			return false;
-		}
-		act.ap_actor[ parentp ].childs.add( this );
+		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
 }

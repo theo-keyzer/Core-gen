@@ -25,10 +25,8 @@ class ActT
 	List<KpIn> ap_in = [];
 	List<KpBreak> ap_break = [];
 	List<KpAdd> ap_add = [];
-	List<KpAppend> ap_append = [];
 	List<KpThis> ap_this = [];
-	List<KpClear> ap_clear = [];
-	List<KpCheck> ap_check = [];
+	List<KpReplace> ap_replace = [];
 }
 
 bool refs(act)
@@ -44,7 +42,7 @@ bool refs(act)
 		}
 	}
 	for(var st in act.ap_ref) {
-		res = fnd(act, st.parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
+		res = fnd(act, st.k_parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
 		st.k_elementp = res[1];
 		st.names["k_elementp"] = st.k_elementp.toString();
 		if (res[0] == false) {
@@ -58,7 +56,7 @@ bool refs(act)
 		}
 	}
 	for(var st in act.ap_ref2) {
-		res = fnd(act, st.parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
+		res = fnd(act, st.k_parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
 		st.k_elementp = res[1];
 		st.names["k_elementp"] = st.k_elementp.toString();
 		if (res[0] == false) {
@@ -70,7 +68,7 @@ bool refs(act)
 		if (res[0] == false) {
 			errs = true;
 		}
-		res = fnd(act, st.parentp.toString() + "_Element_" + get_name(st.names, "element2") , get_name(st.names, "element2"),  "check", st.line_no );
+		res = fnd(act, st.k_parentp.toString() + "_Element_" + get_name(st.names, "element2") , get_name(st.names, "element2"),  "check", st.line_no );
 		st.k_element2p = res[1];
 		st.names["k_element2p"] = st.k_element2p.toString();
 		if (res[0] == false) {
@@ -78,7 +76,7 @@ bool refs(act)
 		}
 	}
 	for(var st in act.ap_ref3) {
-		res = fnd(act, st.parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
+		res = fnd(act, st.k_parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
 		st.k_elementp = res[1];
 		st.names["k_elementp"] = st.k_elementp.toString();
 		if (res[0] == false) {
@@ -90,7 +88,7 @@ bool refs(act)
 		if (res[0] == false) {
 			errs = true;
 		}
-		res = fnd(act, st.parentp.toString() + "_Element_" + get_name(st.names, "element2") , get_name(st.names, "element2"),  "check", st.line_no );
+		res = fnd(act, st.k_parentp.toString() + "_Element_" + get_name(st.names, "element2") , get_name(st.names, "element2"),  "check", st.line_no );
 		st.k_element2p = res[1];
 		st.names["k_element2p"] = st.k_element2p.toString();
 		if (res[0] == false) {
@@ -104,7 +102,7 @@ bool refs(act)
 		}
 	}
 	for(var st in act.ap_refq) {
-		res = fnd(act, st.parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
+		res = fnd(act, st.k_parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
 		st.k_elementp = res[1];
 		st.names["k_elementp"] = st.k_elementp.toString();
 		if (res[0] == false) {
@@ -124,7 +122,7 @@ bool refs(act)
 		}
 	}
 	for(var st in act.ap_refu) {
-		res = fnd(act, st.parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
+		res = fnd(act, st.k_parentp.toString() + "_Element_" + get_name(st.names, "element") , get_name(st.names, "element"),  "check", st.line_no );
 		st.k_elementp = res[1];
 		st.names["k_elementp"] = st.k_elementp.toString();
 		if (res[0] == false) {
@@ -644,14 +642,6 @@ bool load(act, toks, ln, pos, lno)
 		}
 		act.ap_add.add( comp );
 	}
-	if ( tok.compareTo( "Append" ) == 0 ) {
-		var comp = new KpAppend();
-		var r = comp.load(act, ln, pos, lno, flag);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_append.add( comp );
-	}
 	if ( tok.compareTo( "This" ) == 0 ) {
 		var comp = new KpThis();
 		var r = comp.load(act, ln, pos, lno, flag);
@@ -660,21 +650,13 @@ bool load(act, toks, ln, pos, lno)
 		}
 		act.ap_this.add( comp );
 	}
-	if ( tok.compareTo( "Clear" ) == 0 ) {
-		var comp = new KpClear();
+	if ( tok.compareTo( "Replace" ) == 0 ) {
+		var comp = new KpReplace();
 		var r = comp.load(act, ln, pos, lno, flag);
 		if (r == false) {
 			errs = true;
 		}
-		act.ap_clear.add( comp );
-	}
-	if ( tok.compareTo( "Check" ) == 0 ) {
-		var comp = new KpCheck();
-		var r = comp.load(act, ln, pos, lno, flag);
-		if (r == false) {
-			errs = true;
-		}
-		act.ap_check.add( comp );
+		act.ap_replace.add( comp );
 	}
 	return(errs);
 }

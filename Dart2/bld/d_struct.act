@@ -34,9 +34,9 @@ All Comp struct
 Actor struct Comp name = Actor
 ----------------------------------------------------------------
 
-D ${name}c struct
+D ${name:c} struct
 
-C class Kp${name}c extends Kp 
+C class Kp${name:c} extends Kp 
 C {
 
 Its parent parent_field
@@ -47,10 +47,10 @@ C 	List <Kp> childs = [];
 C 	bool load(act, ln, pos, lno, flag) {
 -C 		var p = pos;
 C 		var tok = [pos, ''];
-C 		comp = "${name}c";
+C 		comp = "${name:c}";
 C 		line_no = lno;
 C 		flags = flag;
-C 		me = act.ap_${name}l.length;
+C 		me = act.ap_${name:l}.length;
 
 Its Element ele_act
 Its parent parent_field_p
@@ -67,9 +67,9 @@ Break
 Actor struct Comp parent = Actor
 ----------------------------------------------------------------
 
-D ${name}c struct
+D ${name:c} struct
 
-C class Kp${name}c extends Kp 
+C class Kp${name:c} extends Kp 
 C {
 
 Its parent parent_field
@@ -80,10 +80,10 @@ C 	List <Kp> childs = [];
 C 	bool load(act, ln, pos, lno, flag) {
 -C 		var p = pos;
 C 		var tok = [pos, ''];
-C 		comp = "${name}c";
+C 		comp = "${name:c}";
 C 		line_no = lno;
 C 		flags = flag;
-C 		me = act.ap_${name}l.length;
+C 		me = act.ap_${name:l}.length;
 
 Its Element ele_act
 Its parent parent_field_p
@@ -100,7 +100,7 @@ Break
 Actor struct Comp
 ----------------------------------------------------------------
 
-C class Kp${name}c extends Kp 
+C class Kp${name:c} extends Kp 
 C {
 
 Its parent parent_field
@@ -113,13 +113,13 @@ C
 C 	bool load(act, ln, pos, lno, flag) {
 -C 		var p = pos;
 C 		var tok = [pos, ''];
-C 		comp = "${name}c";
+C 		comp = "${name:c}";
 C 		line_no = lno;
 C 		flags = flag;
-C 		me = act.ap_${name}l.length;
+C 		me = act.ap_${name:l}.length;
 C 		names["k_me"] = me.toString();
 C 		names["k_parent"] = "-1";
-C 		names["k_comp"] = "${name}c";
+C 		names["k_comp"] = "${name:c}";
 
 Its Element ele
 Its parent parent_field_p
@@ -143,7 +143,7 @@ C 		var v = names[ va[0] ];
 C 		if( v != null) {
 C 			return( [true, v] );
 C 		}
-C 		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",${name} ?"] );
+C 		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",${name}?"] );
 C 	}
 C
 C 	int do_its(glob, va, lno) {
@@ -160,14 +160,14 @@ Its Ref3_comp other_func3
 Its Refq_comp other_funcq
 Its Element nested
 
-C 		if ( va[0].compareTo("Child") == 0 ) { // ${}
+C 		if ( va[0].compareTo("Child") == 0 ) { // ${._lno}
 
 Its Comp_parent childs_func
 
 C 			return(0);
 C 		}
 
-C 		print("?No its " + va[0] + " cmd for ${name} ," + line_no + "," + lno + "?");
+C 		print("?No its " + va[0] + " cmd for ${name}," + line_no + "," + lno + "?");
 C 		glob.run_errs = true;
 C 		return(0);
 C 	}
@@ -178,16 +178,16 @@ C
 Actor nested Element mw = N1
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${name}l") == 0 && va.length > 1 && k_parentp >= 0) { // ${}
+C 		if (va[0].compareTo("${name:l}") == 0 && va.length > 1 && k_parentp >= 0) { // ${._lno}
 C 			var pos = 0;
-C 			var v = names[ "${name}l" ];
+C 			var v = names[ "${name:l}" ];
 C 			if( v != null) {
 C 				pos = int.parse(v);
 C 			}
 C 			if (va[1].compareTo("down") == 0 && pos > 0) {
-C 				var pst = glob.dats.ap_${.struct.parent.name}l[ k_parentp ];
+C 				var pst = glob.dats.ap_${.struct.parent.name:l}[ k_parentp ];
 C 				var isin = false;
-C 				for(var st in pst.its${.struct.name}l) {
+C 				for(var st in pst.its${.struct.name:l}) {
 C 					if (st.me == me) {
 C 						isin = true;
 C 						continue;
@@ -196,7 +196,7 @@ C 					if (isin == false) {
 C 						continue;
 C 					}
 C 					var pos2 = 0;
-C 					var v2 = st.names[ "${name}l" ];
+C 					var v2 = st.names[ "${name:l}" ];
 C 					if(v2 != null) {
 C 						pos2 = int.parse(v2);
 C 					}
@@ -216,12 +216,12 @@ C 				}
 C 				return(0);
 C 			}
 C 			if (va[1].compareTo("up") == 0 && pos > 0) {
-C 				var pst = glob.dats.ap_${.struct.parent.name}l[ k_parentp ];
+C 				var pst = glob.dats.ap_${.struct.parent.name:l}[ k_parentp ];
 C 				var isin = false;
 C 				var prev = 0;
-C 				for(var st in pst.its${.struct.name}l) {
+C 				for(var st in pst.its${.struct.name:l}) {
 C 					var pos2 = 0;
-C 					var v2 = st.names[ "${name}l" ];
+C 					var v2 = st.names[ "${name:l}" ];
 C 					if(v2 != null) {
 C 						pos2 = int.parse(v2);
 C 					}
@@ -238,20 +238,20 @@ C 						isin = false;
 C 					}
 C 					if (st.me == me && isin == true) {
 C 						if (va.length > 2) {
-C 							return( glob.dats.ap_${.struct.name}l[prev].do_its(glob, va.sublist(2), lno) );
+C 							return( glob.dats.ap_${.struct.name:l}[prev].do_its(glob, va.sublist(2), lno) );
 C 						}
-C 						return( go_act(glob, glob.dats.ap_${.struct.name}l[prev] ) );
+C 						return( go_act(glob, glob.dats.ap_${.struct.name:l}[prev] ) );
 C 					}
 C 				}
 C 				return(0);
 C 			}
 C 			if (va[1].compareTo("left") == 0 && pos > 0) {
-C 				var pst = glob.dats.ap_${.struct.parent.name}l[ k_parentp ];
+C 				var pst = glob.dats.ap_${.struct.parent.name:l}[ k_parentp ];
 C 				var isin = false;
 C 				var prev = 0;
-C 				for(var st in pst.its${.struct.name}l) {
+C 				for(var st in pst.its${.struct.name:l}) {
 C 					var pos2 = 0;
-C 					var v2 = st.names[ "${name}l" ];
+C 					var v2 = st.names[ "${name:l}" ];
 C 					if(v2 != null) {
 C 						pos2 = int.parse(v2);
 C 					}
@@ -265,17 +265,17 @@ C 						continue;
 C 					}
 C 					if (st.me == me && isin == true) {
 C 						if (va.length > 2) {
-C 							return( glob.dats.ap_${.struct.name}l[prev].do_its(glob, va.sublist(2), lno) );
+C 							return( glob.dats.ap_${.struct.name:l}[prev].do_its(glob, va.sublist(2), lno) );
 C 						}
-C 						return( go_act(glob, glob.dats.ap_${.struct.name}l[prev] ) );
+C 						return( go_act(glob, glob.dats.ap_${.struct.name:l}[prev] ) );
 C 					}
 C 				}
 C 				return(0);
 C 			}
 C 			if (va[1].compareTo("right") == 0 && pos > 0) {
-C 				var pst = glob.dats.ap_${.struct.parent.name}l[ k_parentp ];
+C 				var pst = glob.dats.ap_${.struct.parent.name:l}[ k_parentp ];
 C 				var isin = false;
-C 				for(var st in pst.its${.struct.name}l) {
+C 				for(var st in pst.its${.struct.name:l}) {
 C 					if (st.me == me) {
 C 						isin = true;
 C 						continue;
@@ -284,7 +284,7 @@ C 					if (isin == false) {
 C 						continue;
 C 					}
 C 					var pos2 = 0;
-C 					var v2 = st.names[ "${name}l" ];
+C 					var v2 = st.names[ "${name:l}" ];
 C 					if(v2 != null) {
 C 						pos2 = int.parse(v2);
 C 					}
@@ -336,25 +336,25 @@ Break loop
 Actor parent_field_p Comp name = Actor
 ----------------------------------------------------------------
 
-C 		k_parentp = act.ap_${name}l.length-1;
+C 		k_parentp = act.ap_${name:l}.length-1;
 C 		if (k_parentp < 0 ) { 
-C 			print(lno + " ${.struct.name}c has no ${name}c parent") ;
+C 			print(lno + " ${.struct.name:c} has no ${name:c} parent") ;
 C 			return false;
 C 		}
-C 		act.ap_${name}l[ k_parentp ].childs.add( this );
+C 		act.ap_${name:l}[ k_parentp ].childs.add( this );
 
 ----------------------------------------------------------------
 Actor parent_field_p Comp name != Actor
 ----------------------------------------------------------------
 
-C 		k_parentp = act.ap_${name}l.length-1;
+C 		k_parentp = act.ap_${name:l}.length-1;
 C 		names["k_parent"] = k_parentp.toString();
 C 		if (k_parentp < 0 ) { 
-C 			print( lno + " ${.struct.name}c has no ${name}c parent" );
+C 			print( lno + " ${.struct.name:c} has no ${name:c} parent" );
 C 			return false;
 C 		}
-C 		act.ap_${name}l[ k_parentp ].its${.struct.name}l.add( this );
-C 		act.ap_${name}l[ k_parentp ].childs.add( this );
+C 		act.ap_${name:l}[ k_parentp ].its${.struct.name:l}.add( this );
+C 		act.ap_${name:l}[ k_parentp ].childs.add( this );
 
 ----------------------------------------------------------------
 Actor index Comp find = Find
@@ -366,8 +366,8 @@ Its Element index_name
 Actor index_name Element name = name
 ----------------------------------------------------------------
 
--C 		act.index["${.index.name}c_" + names["name"]] = me;
-C 		act.index["${.index.name}c_" + get_name(names, "name") ] = me;
+-C 		act.index["${.index.name:c}_" + names["name"]] = me;
+C 		act.index["${.index.name:c}_" + get_name(names, "name") ] = me;
 
 ----------------------------------------------------------------
 Actor index_act Comp find = Find
@@ -379,7 +379,7 @@ Its Element index_act_name
 Actor index_act_name Element name = name
 ----------------------------------------------------------------
 
-C 		act.index["${.index_act.name}c_" + k_name] = me;
+C 		act.index["${.index_act.name:c}_" + k_name] = me;
 
 ----------------------------------------------------------------
 Actor index Comp find = FindIn
@@ -391,49 +391,49 @@ Its Element index_name_in
 Actor index_name_in Element name = name
 ----------------------------------------------------------------
 
--C 		var s = k_parentp.toString() + "_${.index.name}c_" + names["name"];
-C 		var s = k_parentp.toString() + "_${.index.name}c_" + get_name(names, "name");
+-C 		var s = k_parentp.toString() + "_${.index.name:c}_" + names["name"];
+C 		var s = k_parentp.toString() + "_${.index.name:c}_" + get_name(names, "name");
 C 		act.index[s] = me;
 
 ----------------------------------------------------------------
 Actor ele_act . mw in C1,R1,F1,L1
 ----------------------------------------------------------------
 
--C 		p, k_${name}l = getw(ln, p);
+-C 		p, k_${name:l} = getw(ln, p);
 C 		tok = getw(ln,tok[0]);
-C 		k_${name}l = tok[1];
+C 		k_${name:l} = tok[1];
 
 ----------------------------------------------------------------
 Actor ele_act . mw = V1
 ----------------------------------------------------------------
 
--C 		p, k_${name}l = getws(ln, p);
+-C 		p, k_${name:l} = getws(ln, p);
 C 		tok = getws(ln,tok[0]);
-C 		k_${name}l = tok[1];
+C 		k_${name:l} = tok[1];
 
 ----------------------------------------------------------------
 Actor ele . mw in C1,R1,F1,L1,M1,N1,P1,Q1
 ----------------------------------------------------------------
 
--C 		p, names["${name}l"] = getw(ln, p);
+-C 		p, names["${name:l}"] = getw(ln, p);
 C 		tok = getw(ln,tok[0]);
-C 		names["${name}l"] = tok[1];
+C 		names["${name:l}"] = tok[1];
 
 ----------------------------------------------------------------
 Actor ele . mw = V1
 ----------------------------------------------------------------
 
--C 		p, names["${name}l"] = getws(ln, p);
+-C 		p, names["${name:l}"] = getws(ln, p);
 C 		tok = getws(ln,tok[0]);
-C 		names["${name}l"] = tok[1];
+C 		names["${name:l}"] = tok[1];
 
 ----------------------------------------------------------------
 Actor ele . mw in CS,RS,FS,LS,MS,NS,PS,QS
 ----------------------------------------------------------------
 
--C 		p, names["${name}l"] = getsw(ln, p);
+-C 		p, names["${name:l}"] = getsw(ln, p);
 C 		tok = getsw(ln,tok[0]);
-C 		names["${name}l"] = tok[1];
+C 		names["${name:l}"] = tok[1];
 
 ----------------------------------------------------------------
 Actor childs Comp
@@ -453,10 +453,10 @@ Its Element ele_name_in
 Actor ele_name_in . name = name
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${.find.name}c") == 0 && va.length > 2) { // ${} 
-C 			var en = glob.dats.index[me.toString() + "_${.find.name}c_" + va[1] ];
+C 		if (va[0].compareTo("${.find.name:c}") == 0 && va.length > 2) { // ${._lno}
+C 			var en = glob.dats.index[me.toString() + "_${.find.name:c}_" + va[1] ];
 C 			if(en != null) {
-C 				return (glob.dats.ap_${.find.name}l[en].get_var(glob, va.sublist(2), lno));
+C 				return (glob.dats.ap_${.find.name:l}[en].get_var(glob, va.sublist(2), lno));
 C 			}
 C 			return( [false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?"] );
 C 		}
@@ -465,17 +465,17 @@ C 		}
 Actor find Comp find != FindIn
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${name}c") == 0 && va.length > 2 && its${name}l.length > 0) { // ${} 
-C 			return (its${name}l[0].get_var(glob, va.sublist(1), lno));
+C 		if (va[0].compareTo("${name:c}") == 0 && va.length > 2 && its${name:l}.length > 0) { // ${._lno}
+C 			return (its${name:l}[0].get_var(glob, va.sublist(1), lno));
 C 		}
 
 ----------------------------------------------------------------
 Actor ref_func Ref
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${element.name}l") == 0) {
-C 			if (k_${element.name}lp >= 0) {
-C 				var st = glob.dats.ap_${comp.name}l[ k_${element.name}lp ];
+C 		if (va[0].compareTo("${element.name:l}") == 0) {
+C 			if (k_${element.name:l}p >= 0) {
+C 				var st = glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ];
 C 				if (va.length > 1) {
 C 					return( st.do_its(glob, va.sublist(1), lno) );
 C 				}
@@ -488,9 +488,9 @@ C 		}
 Actor ref_func2 Ref2
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${element.name}l") == 0) {
-C 			if (k_${element.name}lp >= 0) {
-C 				var st = glob.dats.ap_${comp.name}l[ k_${element.name}lp ];
+C 		if (va[0].compareTo("${element.name:l}") == 0) {
+C 			if (k_${element.name:l}p >= 0) {
+C 				var st = glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ];
 C 				if (va.length > 1) {
 C 					return( st.do_its(glob, va.sublist(1), lno) );
 C 				}
@@ -503,9 +503,9 @@ C 		}
 Actor ref_func3 Ref3
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${element.name}l") == 0) {
-C 			if (k_${element.name}lp >= 0) {
-C 				var st = glob.dats.ap_${comp.name}l[ k_${element.name}lp ];
+C 		if (va[0].compareTo("${element.name:l}") == 0) {
+C 			if (k_${element.name:l}p >= 0) {
+C 				var st = glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ];
 C 				if (va.length > 1) {
 C 					return( st.do_its(glob, va.sublist(1), lno) );
 C 				}
@@ -518,9 +518,9 @@ C 		}
 Actor ref_funcq Refq
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${element.name}l") == 0) {
-C 			if (k_${element.name}lp >= 0) {
-C 				var st = glob.dats.ap_${comp.name}l[ k_${element.name}lp ];
+C 		if (va[0].compareTo("${element.name:l}") == 0) {
+C 			if (k_${element.name:l}p >= 0) {
+C 				var st = glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ];
 C 				if (va.length > 1) {
 C 					return( st.do_its(glob, va.sublist(1), lno) );
 C 				}
@@ -533,9 +533,9 @@ C 		}
 Actor parent_field_func Comp
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("parent") == 0) { // ${}
+C 		if (va[0].compareTo("parent") == 0) { // ${._lno}
 C 			if (k_parentp >= 0) {
-C 				var st = glob.dats.ap_${name}l[ k_parentp ];
+C 				var st = glob.dats.ap_${name:l}[ k_parentp ];
 C 				if (va.length > 1) {
 C 					return( st.do_its(glob, va.sublist(1), lno) );
 C 				}
@@ -548,9 +548,9 @@ C 		}
 Actor parent_field_var Comp
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("parent") == 0) { // ${}
+C 		if (va[0].compareTo("parent") == 0) { // ${._lno}
 C 			if (k_parentp >= 0 && va.length > 1) {
-C 				return( glob.dats.ap_${name}l[ k_parentp ].get_var(glob, va.sublist(1),lno) );
+C 				return( glob.dats.ap_${name:l}[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 C 			}
 C 		}
 
@@ -558,9 +558,9 @@ C 		}
 Actor other_func Ref
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${parent.name}c_${element.name}l") == 0) { // ${} 
-C 			for (Kp${parent.name}c st in glob.dats.ap_${parent.name}l) {
-C 				if (st.k_${element.name}lp == me) {
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0) { // ${._lno}
+C 			for (Kp${parent.name:c} st in glob.dats.ap_${parent.name:l}) {
+C 				if (st.k_${element.name:l}p == me) {
 C 					if (va.length > 1) {
 C 						var ret = st.do_its(glob, va.sublist(1), lno);
 C 						if (ret != 0) {
@@ -581,10 +581,10 @@ C 		}
 Actor other_func2 Ref2
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${parent.name}c_${element.name}l") == 0) { // ${} 
-C 			for (Kp${parent.name}c st in glob.dats.ap_${parent.name}l) {
--C 			glob.dats.ap_${parent.name}l.each do |st| {
-C 				if (st.k_${element.name}lp == me) {
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0) { // ${._lno}
+C 			for (Kp${parent.name:c} st in glob.dats.ap_${parent.name:l}) {
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 				if (st.k_${element.name:l}p == me) {
 C 					if (va.length > 1) {
 C 						var ret = st.do_its(glob, va.sublist(1), lno);
 C 						if (ret != 0) {
@@ -605,10 +605,10 @@ C 		}
 Actor other_func3 Ref3
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${parent.name}c_${element.name}l") == 0) { // ${} 
-C 			for (Kp${parent.name}c st in glob.dats.ap_${parent.name}l) {
--C 			glob.dats.ap_${parent.name}l.each do |st| {
-C 				if (st.k_${element.name}lp == me) {
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0) { // ${._lno}
+C 			for (Kp${parent.name:c} st in glob.dats.ap_${parent.name:l}) {
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 				if (st.k_${element.name:l}p == me) {
 C 					if (va.length > 1) {
 C 						var ret = st.do_its(glob, va.sublist(1), lno);
 C 						if (ret != 0) {
@@ -629,10 +629,10 @@ C 		}
 Actor other_funcq Refq
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${parent.name}c_${element.name}l") == 0) { // ${} 
-C 			for (Kp${parent.name}c st in glob.dats.ap_${parent.name}l) {
--C 			glob.dats.ap_${parent.name}l.each do |st| {
-C 				if (st.k_${element.name}lp == me) {
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0) { // ${._lno}
+C 			for (Kp${parent.name:c} st in glob.dats.ap_${parent.name:l}) {
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 				if (st.k_${element.name:l}p == me) {
 C 					if (va.length > 1) {
 C 						var ret = st.do_its(glob, va.sublist(1), lno);
 C 						if (ret != 0) {
@@ -653,9 +653,9 @@ C 		}
 Actor ref_var Ref
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${element.name}l") == 0) { // ${}
-C 			if (k_${element.name}lp >= 0 && va.length > 1) {
-C 				return( glob.dats.ap_${comp.name}l[ k_${element.name}lp ].get_var(glob, va.sublist(1), lno) );
+C 		if (va[0].compareTo("${element.name:l}") == 0) { // ${._lno}
+C 			if (k_${element.name:l}p >= 0 && va.length > 1) {
+C 				return( glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ].get_var(glob, va.sublist(1), lno) );
 C 			}
 C 		}
 
@@ -663,9 +663,9 @@ C 		}
 Actor ref_var2 Ref2
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${element.name}l") == 0) { // ${}
-C 			if (k_${element.name}lp >= 0 && va.length > 1) {
-C 				return( glob.dats.ap_${comp.name}l[ k_${element.name}lp ].get_var(glob, va.sublist(1), lno) );
+C 		if (va[0].compareTo("${element.name:l}") == 0) { // ${._lno}
+C 			if (k_${element.name:l}p >= 0 && va.length > 1) {
+C 				return( glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ].get_var(glob, va.sublist(1), lno) );
 C 			}
 C 		}
 
@@ -673,9 +673,9 @@ C 		}
 Actor ref_var3 Ref3
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${element.name}l") == 0) { // ${}
-C 			if (k_${element.name}lp >= 0 && va.length > 1) {
-C 				return( glob.dats.ap_${comp.name}l[ k_${element.name}lp ].get_var(glob, va.sublist(1), lno) );
+C 		if (va[0].compareTo("${element.name:l}") == 0) { // ${._lno}
+C 			if (k_${element.name:l}p >= 0 && va.length > 1) {
+C 				return( glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ].get_var(glob, va.sublist(1), lno) );
 C 			}
 C 		}
 
@@ -683,25 +683,25 @@ C 		}
 Actor star Star
 ----------------------------------------------------------------
 
-D 	* ${doc} 
+D 	* ${doc}
 
 ----------------------------------------------------------------
 Actor val_inc_d Element
 ----------------------------------------------------------------
 
-D 	${name}l * ${doc} 
+D 	${name:l} * ${doc}
 
 ----------------------------------------------------------------
 Actor val_inc Element mw in C1,CS,V1,R1,F1,L1,M1
 ----------------------------------------------------------------
 
-C 	String k_${name}l = "";
+C 	String k_${name:l} = "";
 
 ----------------------------------------------------------------
 Actor val_inc2 Element mw in R1,F1,L1,M1,Q1,U0,RS,FS,LS,MS,QS
 ----------------------------------------------------------------
 
-C 	int k_${name}lp = -1;
+C 	int k_${name:l}p = -1;
 
 ----------------------------------------------------------------
 Actor parent_field Comp
@@ -714,14 +714,14 @@ Actor from_to Comp
 ----------------------------------------------------------------
 
 
-C 	List <Kp${name}c> its${name}l = [];
+C 	List <Kp${name:c}> its${name:l} = [];
 
 ----------------------------------------------------------------
 Actor from_to_doo Comp
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${name}c") == 0) { // ${}
-C 			for(var st in its${name}l) {
+C 		if (va[0].compareTo("${name:c}") == 0) { // ${._lno}
+C 			for(var st in its${name:l}) {
 C 				if (va.length > 1) {
 C 					var ret = st.do_its(glob, va.sublist(1), lno);
 C 					if (ret != 0) {
@@ -741,9 +741,9 @@ C 		}
 Actor other_var Ref
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${parent.name}c_${element.name}l") == 0 && va.length > 1) { // ${} 
-C 			for (var st in glob.dats.ap_${parent.name}l) {
-C 				if (st.k_${element.name}lp == me) {
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0 && va.length > 1) { // ${._lno}
+C 			for (var st in glob.dats.ap_${parent.name:l}) {
+C 				if (st.k_${element.name:l}p == me) {
 C 					return (st.get_var(glob, va.sublist(1), lno) );
 C 				}
 C 			}
@@ -753,10 +753,10 @@ C 		}
 Actor other_var2 Ref2
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${parent.name}c_${element.name}l") == 0 && va.length > 1) { // ${} 
--C 			glob.dats.ap_${parent.name}l.each do |st| {
-C 			for (var st in glob.dats.ap_${parent.name}l) {
-C 				if (st.k_${element.name}lp == me) {
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0 && va.length > 1) { // ${._lno}
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 			for (var st in glob.dats.ap_${parent.name:l}) {
+C 				if (st.k_${element.name:l}p == me) {
 C 					return (st.get_var(glob, va.sublist(1), lno) );
 C 				}
 C 			}
@@ -766,14 +766,15 @@ C 		}
 Actor other_var3 Ref3
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${parent.name}c_${element.name}l") == 0 && va.length > 1) { // ${} 
--C 			glob.dats.ap_${parent.name}l.each do |st| {
-C 			for (var st in glob.dats.ap_${parent.name}l) {
-C 				if (st.k_${element.name}lp == me) {
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0 && va.length > 1) { // ${._lno}
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 			for (var st in glob.dats.ap_${parent.name:l}) {
+C 				if (st.k_${element.name:l}p == me) {
 C 					return (st.get_var(glob, va.sublist(1), lno) );
 C 				}
 C 			}
 C 		}
+
 
 
 
