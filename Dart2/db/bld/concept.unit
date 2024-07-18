@@ -1,0 +1,23 @@
+----------------------------------------------------------------
+Comp Concept parent . 
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * name of concept
+
+----------------------------------------------------------------
+Comp Topic parent Concept
+----------------------------------------------------------------
+
+	Element name           C1 WORD       * topic name
+	Element level          N1 WORD       * index tree level
+	Element tag            C1 WORD       * html or formating tag
+	Element desc           V1 DESC       * doc to output.
+
+----------------------------------------------------------------
+Comp T parent Topic
+----------------------------------------------------------------
+
+	Element file   C1 WORD       * optional file to include
+	Element desc   V1 DESC       * doc to output.
+
+

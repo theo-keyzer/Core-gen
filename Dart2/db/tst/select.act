@@ -1,0 +1,11 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+Dbconn localhost postgres postgres ${2}
+
+Add.execute _:res Select * from kp.domain
+
+C ${_.res}
+
+

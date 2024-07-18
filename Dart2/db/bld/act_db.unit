@@ -1,0 +1,11 @@
+----------------------------------------------------------------
+Comp Dbconn parent Actor
+----------------------------------------------------------------
+* connect to database
+----------------------------------------------------------------
+
+	Element host       C1 WORD    * 
+	Element database   C1 WORD    * 
+	Element username   C1 WORD    * 
+	Element password   C1 WORD    * 
+
