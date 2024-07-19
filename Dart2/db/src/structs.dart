@@ -833,6 +833,35 @@ class KpDbconn extends Kp
 	}
 }
 
+class KpHttp extends Kp 
+{
+	int k_parentp = -1;
+	String k_path = "";
+	String k_data = "";
+	String k_body = "";
+	List <Kp> childs = [];
+	bool load(act, ln, pos, lno, flag) {
+		var tok = [pos, ''];
+		comp = "Http";
+		line_no = lno;
+		flags = flag;
+		me = act.ap_http.length;
+		tok = getw(ln,tok[0]);
+		k_path = tok[1];
+		tok = getw(ln,tok[0]);
+		k_data = tok[1];
+		tok = getws(ln,tok[0]);
+		k_body = tok[1];
+		k_parentp = act.ap_actor.length-1;
+		if (k_parentp < 0 ) { 
+			print(lno + " Http has no Actor parent") ;
+			return false;
+		}
+		act.ap_actor[ k_parentp ].childs.add( this );
+		return true;
+	}
+}
+
 class KpComp extends Kp 
 {
 	int k_parentp = -1;

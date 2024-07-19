@@ -9,3 +9,14 @@ Comp Dbconn parent Actor
 	Element username   C1 WORD    * 
 	Element password   C1 WORD    * 
 
+----------------------------------------------------------------
+Comp Http parent Actor
+----------------------------------------------------------------
+* Append http data to the collection map or node path.
+----------------------------------------------------------------
+	
+	Element path     C1 WORD * node path where to add
+	Element data     C1 WORD * http url
+	Element body     V1 WORD * http body
+
+

@@ -64,7 +64,13 @@ Future<int> this_cmd(glob,winp,cmd,lno) async
 	}
 	return(0);
 }
-Future<int> add_cmd(glob,winp,cmd,lno) async
+
+Future<int> http_cmd(glob,winp,cmd,lno) async
+{
+	return( await add_cmd(glob,winp,cmd,lno,cmd.k_body) );
+}
+
+Future<int> add_cmd(glob,winp,cmd,lno,body) async
 {
 	dynamic k_data = cmd.k_data;
 	if( cmd.flags.contains("me") ) {
@@ -90,6 +96,25 @@ Future<int> add_cmd(glob,winp,cmd,lno) async
 		if( rec.path.length > 0 )  {
 			glob.run_errs = true;
 			print("?" + rec.path[0] + "?" + lno + "?");
+			return(0);
+		}
+	}
+	// Uri.parse('https://dart.dev/f/packages/http.json');
+	if( cmd.flags.contains("get") ) {
+		try {
+			var url = Uri.parse(k_data);
+			k_data = await http.read(url);
+//			print(res);
+		} catch(e) {
+			print(e);
+			return(0);
+		}
+	}
+	if( cmd.flags.contains("eval") ) {
+		try {
+			k_data = eval(k_data);
+		} catch(e) {
+			print(e);
 			return(0);
 		}
 	}

@@ -170,7 +170,11 @@ Future<int> go_cmds(glob, ca, winp) async
 			if (ret > 1 || ret < 0) return(ret);
 		}
 		if (cmd is KpAdd) {
-			var ret = await add_cmd(glob,winp,cmd, cmd.line_no);
+			var ret = await add_cmd(glob,winp,cmd, cmd.line_no, "");
+			if( ret != 0 ) return(ret);
+		}
+		if (cmd is KpHttp) {
+			var ret = await http_cmd(glob,winp,cmd, cmd.line_no);
 			if( ret != 0 ) return(ret);
 		}
 		if (cmd is KpDbconn) {

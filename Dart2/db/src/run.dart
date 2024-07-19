@@ -22,6 +22,7 @@ class ActT
 	List<KpThis> ap_this = [];
 	List<KpReplace> ap_replace = [];
 	List<KpDbconn> ap_dbconn = [];
+	List<KpHttp> ap_http = [];
 	List<KpComp> ap_comp = [];
 	List<KpElement> ap_element = [];
 	List<KpOpt> ap_opt = [];
@@ -699,6 +700,14 @@ bool load(act, toks, ln, pos, lno)
 			errs = true;
 		}
 		act.ap_dbconn.add( comp );
+	}
+	if ( tok.compareTo( "Http" ) == 0 ) {
+		var comp = new KpHttp();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_http.add( comp );
 	}
 	if ( tok.compareTo( "Comp" ) == 0 ) {
 		var comp = new KpComp();
