@@ -10,21 +10,28 @@ C ${_.res}
 
 Add.eval _:val [2+3, 7-1]
 
+C
 C ${_.val}
 
-Add.get.json _:dat https://dart.dev/f/packages/http.json
+Add.get _:dat https://dart.dev/f/packages/http.json
 
 C
-C ${_.dat.name}
 C ${_.dat}
 
 
 Http.get.json _:dat2 https://dart.dev/f/packages/http.json
 
 C
-C ${_.dat2.name}
-C ${_.dat2}
+C name = ${_.dat2.name}
 
--Http.get https://jsonplaceholder.typicode.com/posts/ {"id": [1, 2, 3], "userId":1}
--Http.post https://jsonplaceholder.typicode.com/posts/ {"userID": 1,"id": 1,"title": "Making a POST request","body": "This is the data we created."}
+Http.get _:G https://jsonplaceholder.typicode.com/posts/ {"id": ["1", "3"], "userId": "1" }
+
+C
+C ${_.G}
+
+
+Http.post _:P https://jsonplaceholder.typicode.com/posts/ {"userID": 1,"id": 1,"title": "Making a POST request","body": "This is the data we created."}
+
+C
+C ${_.P}
 

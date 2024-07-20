@@ -67,7 +67,26 @@ Future<int> this_cmd(glob,winp,cmd,lno) async
 
 Future<int> http_cmd(glob,winp,cmd,lno) async
 {
-	return( await add_cmd(glob,winp,cmd,lno,cmd.k_body) );
+	dynamic k_data = cmd.k_body;
+	var st = strs(glob, winp, k_data, cmd.line_no, true,true );
+	k_data = st[1];
+	if( cmd.flags.contains("body_node") ) {
+		var va = k_data.split(":");
+		var path = va[0].split(".");
+		var rec = get_path(glob, glob.winp, path, cmd.line_no);
+		k_data = rec.dat;
+		if(rec.ok == false) {
+			glob.run_errs = true;
+			print(rec.dat.toString());
+			return(0);
+		}
+		if( rec.path.length > 0 )  {
+			glob.run_errs = true;
+			print("?" + rec.path[0] + "?" + lno + "?");
+			return(0);
+		}
+	}
+	return( await add_cmd(glob,winp,cmd,lno,k_data) );
 }
 
 Future<int> add_cmd(glob,winp,cmd,lno,body) async
@@ -99,12 +118,27 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 			return(0);
 		}
 	}
-	// Uri.parse('https://dart.dev/f/packages/http.json');
+	if( cmd.flags.contains("post") ) {
+		try {
+			Map<String,String> headers = {'Content-type' : 'application/json', 'Accept': 'application/json'};
+			final response = await http.post( Uri.parse(k_data), headers: headers, body: body);
+			k_data = response.body;
+		} catch(e) {
+			print(e);
+			return(0);
+		}
+	}
 	if( cmd.flags.contains("get") ) {
 		try {
-			var url = Uri.parse(k_data);
-			k_data = await http.read(url);
-//			print(res);
+			if( body != "" ) {
+				var urlp = Uri.parse(k_data);
+				var url = Uri(scheme: urlp.scheme, host: urlp.host, path: urlp.path, queryParameters: json.decode(body) );
+				final response = await http.get(url);
+				k_data = response.body;
+			} else {
+				var url = Uri.parse(k_data);
+				k_data = await http.read(url);
+			}
 		} catch(e) {
 			print(e);
 			return(0);
