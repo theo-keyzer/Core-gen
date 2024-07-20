@@ -124,6 +124,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 			final response = await http.post( Uri.parse(k_data), headers: headers, body: body);
 			k_data = response.body;
 		} catch(e) {
+			glob.run_errs = true;
 			print(e);
 			return(0);
 		}
@@ -140,6 +141,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 				k_data = await http.read(url);
 			}
 		} catch(e) {
+			glob.run_errs = true;
 			print(e);
 			return(0);
 		}
@@ -148,6 +150,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 		try {
 			k_data = eval(k_data);
 		} catch(e) {
+			glob.run_errs = true;
 			print(e);
 			return(0);
 		}
@@ -157,6 +160,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 			var file = File(k_data);
 			k_data = file.readAsStringSync();
 		} catch(e) {
+			glob.run_errs = true;
 			print(e);
 			return(0);
 		}
@@ -165,6 +169,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 		try {
 			k_data = json.decode(k_data);
 		} catch(e) {
+			glob.run_errs = true;
 			print(e);
 			return(0);
 		}
@@ -175,6 +180,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 			k_data = await glob.conn.execute("Select * from kp.domain");
 	
 		} catch(e) {
+			glob.run_errs = true;
 			print(e);
 			return(0);
 		}
@@ -258,8 +264,8 @@ Future<int> dbconn_cmd(glob,winp,cmd,lno) async
 		glob.conn = conn;
 		glob.is_conn = true;
 	} catch(e) {
+		glob.run_errs = true;
 		print(e);
-		print('e');
 		return(0);
 	}
 	return(0);
@@ -272,6 +278,7 @@ Future<int> dbclose(glob) async
 		await glob.conn.close();
 	} catch(e) {
 		print(e);
+		glob.run_errs = true;
 		return(0);
 	}
 	return(0);

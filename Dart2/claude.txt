@@ -1,0 +1,379 @@
+Actors:
+
+Contain lists of commands to run
+Have match conditions
+Can access variables
+Multiple actors of the same name can match
+Use commands like Du, All, Its, This, and That to call other actors
+Processed by the go_act function in the runtime engine
+
+
+Commands:
+
+Defined in command nodes
+Have access to variables and functions in the actor's node object
+No runtime code is generated for commands
+
+
+Data Nodes:
+
+Contain variables (node items)
+Use the Its command to access related nodes
+Have generated code for loader, data classes, and runtime functions
+Can chain to other node functions
+
+
+Node Options:
+
+Specified like Add.me.break
+Apply to both command and data nodes
+Allow adding extra options without changing input file format
+
+
+Collection Nodes:
+
+Can store any data
+Use a map for collections
+Accessed using Add and This commands
+
+
+Path Notation:
+
+(.) represents the current node
+(_) represents collection nodes
+
+
+Add Command:
+
+Used to add data to lists or maps
+Has various options (me, node, json, eval, map, list, file, strs)
+
+
+This Command:
+
+Calls actors on specified paths
+Can iterate over collections
+
+
+Variables:
+
+Accessible in actors and commands
+Can be node items or related via paths
+
+
+Code Generation:
+
+Generates loader and data classes for actors and commands
+Generates additional runtime functions for nodes
+
+"This path actor":
+
+Purpose: Calls the specified actor once with the entire node at the given path.
+Behavior:
+
+Locates the node at the specified path.
+Calls the named actor, passing this entire node as the context.
+
+
+Use case: When you want to perform an operation on the entire node at once.
+
+
+"This path. actor":
+
+Purpose: Iterates over each item in a map or list at the given path, calling the actor for each entry.
+Behavior:
+
+Locates the node at the specified path.
+If the node is a map or list, it iterates over each entry.
+For each entry, it calls the named actor, passing the individual entry as the context.
+
+
+Use case: When you want to perform an operation on each item within a collection.
+
+
+
+The key difference is in the presence of the dot (.) after the path:
+
+Without the dot: The actor operates on the whole node at once.
+With the dot: The actor operates on each item within the node individually.
+
+This distinction provides a powerful way to control the granularity of operations:
+
+You can process entire collections or complex nodes as a single unit.
+You can iterate over collections, applying operations to each item separately.
+
+Examples:
+
+This _.M process_map: Calls the process_map actor once, passing the entire map at _.M.
+This _.M. process_entry: Calls the process_entry actor multiple times, once for each key-value pair in the map at _.M.
+
+Variable Format: ${path}
+
+The variable is enclosed in curly braces {} and prefixed with a dollar sign $.
+The 'path' inside the braces represents the path to the variable in the data structure.
+
+
+Examples:
+
+${name} might refer to a 'name' property in the current node.
+${_.user.email} could refer to the 'email' property of a 'user' object in the collection root.
+${parent.address.city} might access the 'city' from an 'address' object in the parent node.
+
+
+Usage in Commands:
+
+Add _:V "Hello, ${.name}!" - This would add a greeting using the 'name' from the current context.
+This . print_data "User email: ${_.user.email}" - This would print the user's email accessed via the collection path.
+
+
+For the current node:
+
+${name} refers directly to the 'name' property in the current node.
+There's no need for a dot (.) prefix when referring to properties of the current node.
+
+
+For other contexts:
+
+${_.user.email} would still be used to refer to items in the collection root.
+${parent.address.city} would still be used for accessing properties from parent or other non-current nodes.
+
+
+Add _:V "Hello, ${name}!" - This adds a greeting using the 'name' from the current node.
+This . print_data "User age: ${age}" - This prints the age from the current node.
+
+Relational Structure:
+
+Some node types have predefined relationships with other nodes.
+These relationships are represented in the generated classes.
+The relationships can be accessed using path notation.
+
+
+Path-based Access:
+
+The path notation serves as a way to navigate these relationships.
+This allows for traversing the node structure in a predefined manner.
+
+
+Code Generation:
+
+The relationships are likely defined in the system's schema or configuration.
+The code generator creates appropriate properties or methods in the classes to represent these relationships.
+
+
+Benefits:
+
+Type Safety: Since these relationships are encoded in the generated classes, it provides compile-time type checking.
+Intellisense/Autocomplete: In development environments, this can provide better code completion and suggestions.
+Performance: Direct relationships can be more efficiently accessed than general-purpose path resolution.
+
+
+Usage Examples:
+
+If a 'User' node has a relationship to 'Address', it might be accessed like: ${user.address.street}
+A 'Product' might have a relationship to its 'Category': ${product.category.name}
+
+
+Flexibility:
+
+This approach combines the flexibility of path-based access with the structure and type safety of strongly-typed classes.
+
+
+Scalability:
+
+As the data model grows, these relationships can help manage complexity by explicitly defining the connections between different node types.
+
+
+Consistency:
+
+This ensures that certain relationships are always available and accessed in a consistent manner across the system.
+
+
+Documentation:
+
+The generated classes serve as a form of self-documentation, making it clear what relationships exist between different node types.
+
+
+Extensibility:
+
+New relationships can be added by updating the schema/configuration and regenerating the classes, without needing to modify existing code that uses these relationships.
+
+
+this_cmd:
+
+Handles path-based operations on data structures.
+Processes different data types (List, Map, Kp).
+Calls go_act for certain conditions.
+
+
+http_cmd:
+
+Prepares data for HTTP requests.
+Handles body_node flag for path-based data retrieval.
+Calls add_cmd to perform the actual HTTP operation.
+
+
+add_cmd:
+
+Very versatile function that handles various operations based on flags.
+Supports HTTP GET and POST requests.
+Can evaluate expressions, read files, parse JSON, and execute database queries.
+Adds or checks data in Lists and Maps.
+
+
+dbconn_cmd:
+
+Establishes a database connection.
+
+
+dbclose:
+
+Closes an existing database connection.
+
+
+get_path:
+
+Navigates through nested data structures based on a path.
+Handles special cases like "_", "+", "0", "1", "_lno", "_arg", etc.
+
+
+get_node:
+
+Helper function for get_path to traverse nested structures.
+
+
+replace_cmd:
+
+Performs string replacements in Map values.
+Supports regular expressions and grouped replacements.
+
+
+replaceMapped:
+
+Helper function for replace_cmd that handles grouped replacements.
+
+Add Command:
+
+Purpose: Appends data to a collection map or node path.
+Path specifiers:
+
+"_" for the collection
+"." for the current node
+
+
+Default behavior: Adds string data
+Flags and their meanings:
+
+"me": Add the current node
+"node": Add a node from a specified path
+"json": Add converted JSON data
+"map": Add a map
+"list": Add a list
+"clear": Clear the existing map or list before adding
+"check": Prevent adding duplicates
+"break": Stop processing if a duplicate is found
+"no_add": Only check for existence, don't actually add
+
+
+Parameters:
+
+path: Where to add the data
+data: The data to be added
+
+
+
+
+Replace Command:
+
+Purpose: Replaces strings in a specified path
+Example usage: Replace _:D with abc match cba
+Parameters:
+
+path: Where to perform the replacement
+pad: Padding (with)
+with: What to replace with
+pad2: Padding (match)
+match: String match pattern
+
+
+
+
+Dbconn Command:
+
+Purpose: Connects to a database
+Parameters:
+
+host: Database host
+database: Database name
+username: Database username
+password: Database password
+
+
+
+
+Http Command:
+
+Purpose: Appends HTTP data to a collection map or node path
+Parameters:
+
+path: Where to add the HTTP data
+data: HTTP URL
+body: HTTP body content
+
+Basic Add operations:
+
+Adding simple strings to a collection: Add _:D abc
+Creating and populating maps: Add.map _:M, Add _.M:zz aaa
+Creating and populating lists: Add.list _:L, Add _.L aaa
+
+
+Checking and preventing duplicates:
+
+Add.check _.L vvv
+Add.no_add.break _:Is false
+
+
+File and JSON operations:
+
+Reading and parsing JSON files: Add.file.json _:F id.json
+Including file contents: Add.file _:inc ${file}
+
+
+String replacements:
+
+Simple replacement: Replace _:V with cba match abc
+More complex replacement: Replace.group *:V with ${*.R} match (\d+) (\w+) (\w+)
+
+
+Variable substitution:
+
+Using variables in paths and values: Add _:V $${a}c  $${a.b.c}l $$$${xa}l $${xa}l
+Using command arguments: Add *:input ${.*ins}
+
+
+Conditional operations:
+
+Breaking on certain conditions: Add.break _:Unique ${name}
+
+
+Clearing and recreating structures:
+
+Add.clear.map _:Unique
+
+
+Nested operations:
+
+Add.map ${._arg}:${._key}
+Add.list ${._arg}:${._key}
+
+
+Special path notations:
+
+Using depth in paths: Add.map.clear *:T${.*depth}
+Referencing parent nodes: Add.node ${._arg} *.T${.*depth}
+
+
+Complex data manipulations:
+
+Copying structures: Add.map _:Copy
+Creating multiple nested structures: Add.list _:D, Add.list _:S, Add.list _:A
+

@@ -102,6 +102,9 @@ Future<int> go_act(glob, dat) async
 			glob.wins[winp].cnt += 1;
 		}
 		var ret = await go_cmds(glob, i, winp);
+		if( ret == -4 ) {
+			return(ret);
+		}
 		if( ret == 0 || ret == 3 ) {
 			continue;
 		}
@@ -229,6 +232,11 @@ Future<int> go_cmds(glob, ca, winp) async
 			}
 			if (cmd.k_what.compareTo( "cmds" ) == 0) {
 				ret = 3;
+			}
+			if (cmd.k_what.compareTo( "exit" ) == 0) {
+				if (glob.load_errs == true || glob.run_errs == true) {
+					return(-4);
+				}
 			}
             		if( cmd.k_actor != "E_O_L" && cmd.k_actor != "." ) 
             		{
