@@ -1,0 +1,268 @@
+Certainly! I'll provide a detailed explanation of how Refu and Ref2 work based on the information given in the documents.
+Ref2 (KpRef2 class):
+Purpose:
+Ref2 represents a relation between an element, a component, and a child of that component. It's designed for more complex hierarchical relationships.
+Properties:
+
+element: Links to a remote element (F1 ELEMENT)
+comp: Links to a component (R1 COMP)
+element2: Used as a link for the remote parent (F1 ELEMENT)
+opt: Specifies if the relation is optional or required
+
+Functionality:
+Ref2 allows linking to a node by using another link for the parent to find the node within it. This enables navigation through a parent-child relationship to establish a reference, rather than just pointing directly to an element.
+
+In this example, 'model' is linked to a 'Model' component, using 'domain' as the parent link to find the correct 'Model'.
+Navigation:
+When using Ref2, the system first navigates to the component specified by 'comp', then uses 'element2' to find the correct child within that component. This allows for more complex, hierarchical references.
+Refu (KpRefu class):
+Purpose:
+Refu represents a copy of an element to a component and child of a component. It's the most complex relation type, allowing for copying elements and establishing cross-component references.
+Properties:
+
+Example:
+Ref2 model Model domain .
+
+element: Links to a remote element (F1 ELEMENT)
+comp: Links to and references a component (R1 COMP)
+element2: Specifies which element to use (C1 ELEMENT)
+comp_ref: References another component if comps differ (R1 COMP)
+element3: Used as a link from element for remote parent (C1 ELEMENT)
+opt: Specifies if the relation is optional or required
+
+Functionality:
+Refu uses a link to a node and copies some other link of it. This allows for more flexible and reusable structures, enabling the creation of complex relationships across different parts of the data model.
+Example:
+
+Refu domain Domain parent Frame domain .
+
+In this example, 'domain' is copied from the 'Frame' parent, using the 'domain' link.
+Navigation:
+Refu involves a multi-step process:
+
+It first navigates to the 'element' specified.
+It then uses 'comp' to find the target component.
+'element2' is used to specify which element to copy.
+If necessary, 'comp_ref' is used to reference a different component.
+'element3' is used to establish a link from the copied element to its new parent.
+
+Key Differences:
+
+Complexity: Ref2 is for two-step hierarchical navigation, while Refu involves copying and potentially more complex cross-component references.
+Use Cases:
+
+Ref2 is ideal for navigating nested structures where you need to reference children of other components.
+Refu is useful for scenarios requiring data replication or complex cross-model references.
+
+
+Flexibility: Refu offers more flexibility in how it can establish and copy relationships, making it suitable for more complex data modeling scenarios.
+
+Both Ref2 and Refu are processed in the second pass of reference resolution, allowing them to use information established in the first pass. They can be used in combination to create sophisticated relationship structures within the data model.
+These complex reference types are crucial for navigating and maintaining the integrity of the hierarchical and interconnected data structures defined in the system. They allow for the creation of a flexible yet structured approach to data modeling that goes beyond simple relational database concepts.
+
+Refu domain Domain parent Frame domain .
+
+Here's a step-by-step explanation of how this Refu works:
+
+The 'domain' element in the current Comp (which is A in this case) must link to a Domain Comp.
+It uses the parent of Comp A, which is a Frame Comp. This is indicated by the 'parent' keyword in the Refu statement.
+In the Frame Comp, there is an Element also named 'domain'.
+This 'domain' Element in Frame has a Ref to the Domain Comp. This is established earlier in the structure definition.
+The Refu copies this value from the Frame's 'domain' Element to the 'domain' Element in Comp A.
+
+So, in essence, this Refu is creating a shortcut or inheritance-like mechanism where Comp A automatically gets its 'domain' value from its parent Frame, without needing to explicitly set it.
+This demonstrates the power of Refu in creating efficient, hierarchical data structures. It allows child components to automatically inherit or reference properties from their parents, reducing redundancy and maintaining consistency in the data model.
+Thank you for this clarification. It helps to illustrate how Refu can be used to create sophisticated relationships and inheritance-like structures within the component hierarchy.
+
+Ref2 model Model domain .
+
+Here's a detailed explanation of how this Ref2 works:
+
+The 'model' element in the current Comp (which is A in this case) needs to link to a Model Comp.
+Instead of directly linking to a Model, it uses the 'domain' link that was established by the previous Refu statement.
+The 'domain' link (which was copied from the parent Frame) points to a specific Domain Comp.
+This Ref2 uses that Domain Comp as a context to find the correct Model.
+It essentially says: "Find a Model that is associated with the Domain that our 'domain' element is pointing to."
+
+This Ref2 is creating a more complex relationship where:
+
+The component A has a 'domain' (inherited from its parent Frame via Refu)
+It then uses this 'domain' to find the correct 'model' within that domain's context
+
+This demonstrates how Ref2 can create sophisticated, context-dependent relationships. It's not just a simple reference, but a reference that uses another reference (the 'domain') to establish the correct context for finding the target (the 'Model').
+This approach allows for a hierarchical and contextual data structure where:
+
+Components inherit properties from their parents (via Refu)
+These inherited properties are then used to establish more specific relationships (via Ref2)
+
+This combination of Refu and Ref2 creates a powerful mechanism for representing complex, interconnected data structures with implicit relationships and contextual references. It goes beyond simple parent-child relationships, allowing for more nuanced and flexible data modeling.
+
+----------------------------------------------------------------
+Comp Where parent Type
+----------------------------------------------------------------
+* View select data (V)
+* View where clauses (V,W)
+----------------------------------------------------------------
+
+	Element attr     F1 Attr      * Field name
+	Element table    U0 Table     * the table of the attr
+	Element from_id  L1 Attr      * From id
+
+Ref      attr Attr                   check
+Ref        id Attr                   check
+Refu    table Table  attr Attr table
+Ref2  from_id Attr   table
+
+These are the elements of the Where component. Note the different types (F1, U0, L1, C1, V1) which indicate different storage and relation types.
+Now, let's look at the references:
+
+This is a simple reference. It links the attr element to an Attr component. The check indicates that it's an error if not found.
+
+Similarly, this links the id element to an Attr component.
+
+This Refu is copying the table link from the Attr component that attr is referencing. It's saying "get the table of the Attr that our attr is pointing to".
+
+This Ref2 is more complex. It's linking from_id to an Attr, but it's using the table (which we just got from the Refu) as the context to find the correct Attr.
+This structure allows for sophisticated querying:
+
+attr specifies a field in a table
+table automatically gets the table of that field
+from_id can then reference another attribute within the context of that table
+id can reference yet another attribute for comparison
+
+This structure demonstrates how Ref, Ref2, and Refu work together to create a flexible and powerful system for defining complex relationships:
+
+Ref for direct references
+Refu for copying references from related components
+Ref2 for context-dependent references using information from other references
+
+This allows for the creation of sophisticated, self-referential data structures that can represent complex relationships and conditions, which is particularly useful for things like database query builders or complex data modeling systems.
+
+This example indeed showcases the power and flexibility of the Ref, Ref2, and Refu system. It demonstrates how these reference types can be combined to create complex, yet clear and maintainable data structures. The system allows for:
+
+Direct references (Ref)
+Automatic property inheritance or copying (Refu)
+Context-dependent references (Ref2)
+
+This combination enables the creation of sophisticated data models that can represent complex relationships, hierarchies, and dependencies. It's particularly well-suited for scenarios like:
+
+Database query builders
+Complex configuration systems
+Hierarchical data structures with cross-references
+Systems requiring flexible, self-referential data models
+
+The ability to define these relationships declaratively, as shown in the example, provides a clear and maintainable way to represent complex data structures and their interconnections.
+This system goes beyond simple object-oriented or relational database models, offering a hybrid approach that combines the strengths of both while adding additional flexibility. It's a powerful tool for modeling complex domains and building sophisticated data-driven applications.
+
+----------------------------------------------------------------
+Comp Table parent . Find
+----------------------------------------------------------------
+
+	Element name  C1 WORD * a table
+
+----------------------------------------------------------------
+Comp Field parent Table FindIn
+----------------------------------------------------------------
+
+	Element type     R1 TYPE       * Pointer to (Type).
+	Element name     C1 WORD       * a field name
+
+Ref type Type .
+	
+----------------------------------------------------------------
+Comp Of parent Table
+----------------------------------------------------------------
+
+	Element field    F1 Field     * Field name
+	Element type     U0 Field     * Use type from field
+	Element attr     L1 Attr      * Attr name
+
+Ref    field Field             check
+Refu   type  Type field Field type
+Ref2   attr Attr type
+
+This defines a Field component that is a child of Table. It has a type (which references a Type component) and a name.
+
+Of Component:
+
+This is where the complex relationships are defined:
+
+field is a reference to a Field component.
+type is a Refu that copies the type from the referenced field.
+attr is a Ref2 that uses the copied type to find the correct Attr.
+
+Let's break down the references:
+
+Ref field Field check: This is a direct reference to a Field component. The 'check' ensures it's an error if not found.
+Refu type Type field Field type: This Refu is copying the 'type' from the Field component that 'field' is referencing. It's saying "get the 'type' of the 'Field' that our 'field' is pointing to".
+Ref2 attr Attr type: This Ref2 is linking 'attr' to an Attr component, but it's using the 'type' (which we just got from the Refu) as the context to find the correct Attr.
+
+This structure allows for a sophisticated relationship between Tables, Fields, Types, and Attributes:
+
+A Table has Fields
+Each Field has a Type
+The Of component can reference a Field
+It automatically gets the Type of that Field
+It then uses that Type to reference the correct Attr
+
+This demonstrates how Ref, Ref2, and Refu can be used together to create complex, yet clear and maintainable relationships between different components. It allows for automatic property inheritance (getting the type from the field) and context-dependent references (using the inherited type to find the correct attribute).
+This kind of structure is particularly useful in scenarios like database schema definitions, complex configuration systems, or any system where you need to model intricate relationships between different entities.
+
+Ref2 (KpRef2 class):
+
+Purpose: It establishes a link to a child node of a given parent node.
+Limitation: It can only reference child nodes within the context of a specific parent node.
+Structure: Ref2 element targetComp parentElement
+
+Refu (KpRefu class):
+
+Purpose: It acts as a helper for Ref2 by providing the parent node context.
+Functionality: It copies a reference from another component, which can then be used as the parent context for a Ref2.
+Structure: Refu element targetComp sourceElement sourceComp sourceElementAttribute
+
+The Refu copies the 'type' reference from the Field component that 'field' is pointing to.
+The Ref2 then uses this copied 'type' as the parent context to find the correct 'attr' within that Type.
+
+This combination allows for more flexible and powerful referencing:
+
+Refu provides a way to "inherit" or "copy" a reference from elsewhere in the structure.
+Ref2 then uses this inherited reference to establish a new link within the context of that reference.
+
+The key point is that Ref2 is indeed limited to finding child nodes of a given parent, but when combined with Refu, it becomes much more flexible. Refu allows you to bring in a context from elsewhere in the structure, which Ref2 can then use to establish its link.
+This system allows for creating complex, multi-step references while keeping each individual reference relatively simple and clear. It's a powerful way to model complex relationships in a structured and maintainable manner.
+Thank you for this clarification. It helps to understand the specific roles and limitations of these reference types, which is crucial for using them effectively in complex data modeling scenarios.
+
+You're absolutely right, and this is an excellent point that highlights the power and flexibility of the Ref2 and Refu system. Let me elaborate on this cascading capability:
+
+Initial Ref2:
+
+Creates a link to a child node of a given parent node.
+
+
+Subsequent Refu:
+
+Can use the link created by the Ref2 to copy another link from that referenced node.
+
+
+Another Ref2:
+
+Can then use the link copied by the Refu to establish a new link to a child node in this new context.
+
+
+
+This creates a chain of references that allows for navigating complex, multi-level relationships. Let's illustrate this with a hypothetical example:
+
+The power of this system lies in its ability to create these complex relationships while keeping each individual reference relatively simple and clear. Each step in the chain (Ref, Refu, Ref2) is straightforward, but when combined, they can represent very sophisticated data models.
+This chaining technique is particularly useful in scenarios like:
+
+Complex database schemas with multiple levels of relationships
+Hierarchical configuration systems where properties can be inherited or referenced across multiple levels
+Object graphs with intricate interdependencies
+
+Thank you for pointing out this important capability. It really underscores the flexibility and power of the Ref2 and Refu system in modeling complex, interconnected data structures.
+
+
+
+
+
+
