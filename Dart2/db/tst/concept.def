@@ -138,6 +138,8 @@ T . Add.map _:M, creates the map M.
 T . Add _.M:S abc adds the abc string to S entry of the map M if M is a map.
 T . Add.map _.M:M2, creates the map M2 in the Map M if M is a map.
 
+See select.act
+
 Topic cmd 2 p Areas.
 
 T . It has a node path to specify where to add.
@@ -179,6 +181,14 @@ T . For the D it is _.D.
 T . If the value is a data node, the path works the same as the data node.
 T . If the value is a map, the path is in the map.
 T . Any items can have data nodes in it.
+
+----------------------------------------------------------------
+Concept select.act
+----------------------------------------------------------------
+
+Topic example 1 h2 Select example.
+
+T select.act The select actor file.
 
 
 

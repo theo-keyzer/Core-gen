@@ -3,9 +3,11 @@ part of gen;
 class ActT 
 {
 	Map index = new Map();
+	List<String> kp_doc = [];
 	List<KpConcept> ap_concept = [];
 	List<KpTopic> ap_topic = [];
 	List<KpT> ap_t = [];
+	List<KpSee> ap_see = [];
 	List<KpActor> ap_actor = [];
 	List<KpAll> ap_all = [];
 	List<KpDu> ap_du = [];
@@ -38,6 +40,14 @@ bool refs(act)
 {
 	var errs = false;
 	var res = fnd(act, '', '', '', '');
+	for(var st in act.ap_see) {
+		res = fnd(act, "Concept_" + get_name(st.names, "concept") , get_name(st.names, "concept"),  ".", st.line_no );
+		st.k_conceptp = res[1];
+		st.names["k_conceptp"] = st.k_conceptp.toString();
+		if (res[0] == false) {
+			errs = true;
+		}
+	}
 	for(var st in act.ap_all) {
 		res = fnd(act, "Actor_" + st.k_actor , st.k_actor,  ".", st.line_no );
 		st.k_actorp = res[1];
@@ -182,6 +192,13 @@ List var_all(glob, va, lno)
 	if (va.length < 3) {
 		return( [false, "?" + va.length.toString() + "<3?" + lno + "?"] );
 	}
+	if (va[0].compareTo("Concept") == 0) {
+		var en = glob.dats.index["Concept_" + va[1] ];
+		if(en != null) {
+			return (glob.dats.ap_concept[en].get_var(glob, va.sublist(2), lno));
+		}
+		return( [false, "?" + va[0] + "=" + va[1] + "?" + lno + "?"] );
+	}
 	if (va[0].compareTo("Actor") == 0) {
 		var en = glob.dats.index["Actor_" + va[1] ];
 		if(en != null) {
@@ -265,6 +282,32 @@ Future<int>  do_all(glob, va, lno) async
 			return(0);
 		}
 		for(var st in glob.dats.ap_t) {
+			if (va.length > 2) {
+				var ret = await st.do_its(glob, va.sublist(2), lno);
+				if (ret != 0) {
+					return(ret);
+				}
+				continue;
+			}
+			var ret = await go_act(glob, st);
+			if (ret != 0) {
+				return(ret);
+			}
+		}
+		return(0);
+	}
+	if (va[0].compareTo("See") == 0) {
+		if (va.length > 1 && va[1].length > 0) {
+			var en = glob.dats.index["See_" + va[1] ];
+			if (en != null) {
+				if (va.length > 2) {
+					return( await glob.dats.ap_see[en].do_its(glob, va.sublist(2), lno) );
+				}
+				return( await go_act(glob, glob.dats.ap_see[en]) );
+			}
+			return(0);
+		}
+		for(var st in glob.dats.ap_see) {
 			if (va.length > 2) {
 				var ret = await st.do_its(glob, va.sublist(2), lno);
 				if (ret != 0) {
@@ -546,6 +589,13 @@ Future<int>  do_all(glob, va, lno) async
 bool load(act, toks, ln, pos, lno)
 {
 	bool errs = false;
+	if(toks == "*")
+	{
+		var doc = getws(ln, pos);
+		act.kp_doc.add( doc[1] );
+		return(errs);
+	}
+	if( act.kp_doc.length > 0 && act.kp_doc[ act.kp_doc.length-1 ] != "" ) act.kp_doc.add( "" );
 	var ss = toks.split(".");
 	var tok = ss[0];
 	var flag = ss.sublist(1);
@@ -572,6 +622,14 @@ bool load(act, toks, ln, pos, lno)
 			errs = true;
 		}
 		act.ap_t.add( comp );
+	}
+	if ( tok.compareTo( "See" ) == 0 ) {
+		var comp = new KpSee();
+		var r = comp.load(act, ln, pos, lno, flag);
+		if (r == false) {
+			errs = true;
+		}
+		act.ap_see.add( comp );
 	}
 	if ( tok.compareTo( "Actor" ) == 0 ) {
 		var comp = new KpActor();

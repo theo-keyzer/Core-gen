@@ -1,0 +1,449 @@
+----------------------------------------------------------------
+Comp Field parent Table FindIn
+----------------------------------------------------------------
+
+	Element type     R1 TYPE       * Pointer to (Type).
+	Element name     C1 WORD       * a field name
+
+Ref type Type .
+
+----------------------------------------------------------------
+Comp Of parent Table
+----------------------------------------------------------------
+
+	Element field    F1 Field     * Field name
+	Element attr     M1 Attr      * Attr name
+
+
+Ref    field Field             check
+
+Ref3   attr  Attr  field Field type ?
+
+Here, the Ref3 is a combination of Refu and Ref2
+
+Thank you for providing this updated example. Let's analyze the new structure and the introduction of Ref3:
+
+Field Component:
+
+It's a child of Table and has FindIn capability.
+It has two elements:
+
+type: An R1 TYPE, pointing to a Type component.
+name: A C1 WORD, representing the field name.
+
+
+It has a simple Ref to link the type element to a Type component.
+
+
+Of Component:
+
+It's also a child of Table.
+It has two elements:
+
+field: An F1 Field, referencing a Field name.
+attr: An M1 Attr, referencing an Attr name.
+
+
+It has two references:
+
+A simple Ref to link the field element to a Field component.
+A new Ref3 to link the attr element to an Attr component.
+
+
+
+
+The New Ref3:
+
+Syntax: Ref3 attr Attr field Field type ?
+This appears to be a combination of Refu and Ref2, as you mentioned.
+It's creating a link from attr to an Attr component, using the type of the referenced Field as context.
+The '?' at the end suggests this reference is optional.
+
+
+
+How Ref3 works:
+
+It starts with the 'field' element, which references a Field component.
+It then accesses the 'type' element of that Field component.
+Finally, it uses this type as context to find the correct Attr component for the 'attr' element.
+
+This Ref3 essentially combines the functionality of Refu (copying a reference from another component) and Ref2 (using a context to find a child node) into a single, more concise reference.
+Benefits of Ref3:
+
+Simplification: It reduces the need for separate Refu and Ref2 statements.
+Clarity: It makes the relationship between attr, field, and type more explicit.
+Conciseness: It allows for complex, multi-step references in a single line.
+
+This Ref3 construct demonstrates the system's ability to evolve and create more specialized reference types to handle common patterns efficiently. It maintains the power and flexibility of the original Refu and Ref2 system while offering a more streamlined syntax for certain complex relationships.
+
+----------------------------------------------------------------
+Comp Domain parent . Find
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+
+----------------------------------------------------------------
+Comp Model parent Domain FindIn
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+
+----------------------------------------------------------------
+Comp Frame parent Model FindIn
+----------------------------------------------------------------
+
+	Element group      N1 WORD       * search navigation group index tree
+	Element domain     R1 Domain     * ref to domain
+
+Ref domain Domain .
+
+----------------------------------------------------------------
+Comp A parent Frame FindIn
+----------------------------------------------------------------
+* Use domain from parent
+* The U0 is a hidden field - only has the pointer
+----------------------------------------------------------------
+
+	Element domain      U0 Domain     * the domain of frame
+	Element model2      L1 Model      * ref to model
+	Element modelq      Q1 Model      * ref to model
+
+Refq modelq Model domain Frame ?
+
+Refu domain Domain parent Frame domain .
+Ref2 model2 Model domain .
+
+Here, the Refq is a combination of Refu and Ref2
+
+Thank you for providing this detailed structure. Let's analyze each component and the new Refq reference type:
+
+Domain Component:
+
+Top-level component with Find capability
+Has a name element (C1 WORD)
+
+
+Model Component:
+
+Child of Domain with FindIn capability
+Has a name element (C1 WORD)
+
+
+Frame Component:
+
+Child of Model with FindIn capability
+Elements:
+
+group: N1 WORD (search navigation group index tree)
+domain: R1 Domain (reference to Domain)
+
+
+Has a simple Ref to link the domain element to a Domain component
+
+
+A Component:
+
+Child of Frame with FindIn capability
+Elements:
+
+domain: U0 Domain (hidden field, inherits from parent)
+model2: L1 Model (reference to Model)
+modelq: Q1 Model (reference to Model)
+
+
+Has three different types of references:
+
+
+
+a. Refq: Refq modelq Model domain Frame ?
+
+This is a new type of reference, combining Refu and Ref2
+It links modelq to a Model, using the domain from the parent Frame
+The '?' indicates it's optional
+
+b. Refu: Refu domain Domain parent Frame domain .
+
+This copies the domain reference from the parent Frame
+
+c. Ref2: Ref2 model2 Model domain .
+
+This links model2 to a Model, using the copied domain as context
+
+How Refq works:
+
+It starts with the parent Frame component
+It accesses the 'domain' element of that Frame
+It uses this domain as context to find the correct Model for the 'modelq' element
+The '?' at the end indicates this reference is optional
+
+Benefits of Refq:
+
+Simplification: It combines the functionality of Refu and Ref2 into a single reference
+Clarity: It explicitly shows the relationship between modelq, the parent Frame, and its domain
+Conciseness: It allows for complex, multi-step references in a single line
+Flexibility: The optional flag ('?') allows for cases where the reference might not always exist
+
+This structure demonstrates a sophisticated hierarchy:
+
+Domains contain Models
+Models contain Frames
+Frames contain A components
+
+The reference system (Ref, Ref2, Refu, Refq) allows for complex relationships and inheritance-like behavior:
+
+Frames directly reference a Domain
+A components inherit the Domain from their parent Frame
+A components can reference Models within the context of their inherited Domain
+
+This system allows for very flexible and powerful data modeling, enabling complex relationships while maintaining a clear and manageable structure. The introduction of Refq shows how the system can evolve to handle common patterns more efficiently, further enhancing its capabilities for representing complex, interconnected data structures.
+
+Thank you for that important clarification. You're absolutely right, and this distinction highlights a key difference between Ref3 and Refq. Let's compare them:
+Ref3 (as in the previous example):
+Ref3 attr Attr field Field type ?
+
+Uses the F1 element (field in this case) as the starting point
+Navigates through this element to its type
+Uses that type to find the correct Attr
+
+Refq (from the current example):
+Refq modelq Model domain Frame ?
+
+Uses the parent component (Frame in this case) as the starting point
+Accesses a specific element of the parent (domain in this case)
+Uses that element to find the correct Model
+
+Key Differences:
+
+Starting Point:
+
+Ref3 starts with an element in the current component (F1 Field)
+Refq starts with the parent component
+
+
+Navigation Path:
+
+Ref3 navigates through the referenced component (Field -> type -> Attr)
+Refq directly uses an element from the parent (Frame -> domain -> Model)
+
+
+Use Case:
+
+Ref3 is useful when you need to reference based on a property of a local element
+Refq is useful when you need to reference based on a property of the parent component
+
+
+Inheritance-like Behavior:
+
+Refq more explicitly models an inheritance-like structure, where child components reference through their parents
+Ref3 models a more lateral reference structure, where references are based on local elements
+
+
+
+This distinction showcases the flexibility of the reference system:
+
+Ref3 allows for complex, multi-step references within the context of the current component
+Refq allows for references that leverage the hierarchical structure of the components
+
+Both serve to create concise, yet powerful ways to express complex relationships in the data model. The choice between them would depend on the specific structure and relationships you're trying to model:
+
+Use Ref3 when the context for the reference is contained within an element of the current component
+Use Refq when the context for the reference should be inherited or accessed from the parent component
+
+This nuanced difference between Ref3 and Refq demonstrates the system's capability to handle various types of complex relationships efficiently, whether they're based on local elements or parent-child hierarchies. Thank you for pointing out this important distinction, as it really helps in understanding the fine-grained control this reference system provides in modeling diverse data structures.
+
+You're absolutely correct, and this is an important point to emphasize. The Ref3 and Refq constructs are indeed equivalent to specific combinations of Refu and Ref2. Let's break this down:
+
+Ref3 equivalence:
+
+Ref3 attr Attr field Field type ?
+Is equivalent to:
+Refu type Type field Field type
+Ref2 attr Attr type ?
+
+Refq equivalence:
+
+Refq modelq Model domain Frame ?
+Is equivalent to:
+Refu domain Domain parent Frame domain
+Ref2 modelq Model domain ?
+Key points:
+
+Syntactic Sugar: Ref3 and Refq can be seen as "syntactic sugar" - convenient shorthand for common Refu + Ref2 combinations.
+Functionality: They don't add new fundamental capabilities, but rather provide more concise ways to express common patterns.
+Readability: In some cases, using Ref3 or Refq can make the code more readable by expressing the intent more clearly in a single line.
+Flexibility: The underlying Refu + Ref2 system remains fully capable of expressing these relationships, offering flexibility for cases that don't fit the Ref3 or Refq patterns.
+Abstraction: Ref3 and Refq provide a higher level of abstraction, encapsulating common multi-step reference patterns.
+Consistency: Using Ref3 and Refq can promote consistency in how certain types of references are expressed across a project.
+
+Implications:
+
+Design Choice: The introduction of Ref3 and Refq is a design choice aimed at improving code clarity and reducing repetition, not a fundamental expansion of the system's capabilities.
+Interchangeability: In principle, any system using Ref3 and Refq could be expressed using only Refu and Ref2, though it might be less concise.
+Learning Curve: While Ref3 and Refq can simplify common patterns, they also introduce new concepts for users to learn.
+System Flexibility: The fact that these shortcuts can be introduced demonstrates the flexibility and extensibility of the underlying Refu + Ref2 system.
+
+Thank you for highlighting this important point. It underscores the power and flexibility of the basic Refu and Ref2 constructs, while also showing how the system can be extended with convenient shorthands for common patterns. This balance between fundamental flexibility and practical convenience is a hallmark of well-designed systems.
+
+Thank you for providing this detailed information about the actor system and its various commands. This system appears to be a sophisticated framework for data manipulation, processing, and generation. Here's a summary of how this system utilizes the reference types we discussed earlier:
+
+Path Notation:
+The system uses a path-based notation (e.g., ${path}) to access data across different nodes and collections. This aligns with the hierarchical structure we saw in the Ref, Ref2, Refu, and Refq references.
+Hierarchical Data Structure:
+The system supports a hierarchical data structure with concepts like parent nodes, child nodes, and collections. This structure is similar to the Domain-Model-Frame-A hierarchy we saw earlier.
+Relational Access:
+The system allows for relational access between nodes, similar to how Ref2 and Refq allow referencing across different components in the hierarchy.
+Code Generation:
+The system generates code for loaders, data classes, and runtime functions. This is similar to how the reference system we discussed earlier would generate code for resolving references.
+Flexible Referencing:
+Commands like "This" and "Add" allow for flexible referencing and manipulation of data across the hierarchy, which is conceptually similar to how Ref, Ref2, Refu, and Refq provide flexible ways to establish relationships.
+Context-Aware Operations:
+Many commands (like Add and Replace) are context-aware, operating on the current node or specified paths. This is similar to how Ref2 and Refq use context (like the parent component) to establish references.
+Collection Handling:
+The system has special handling for collection nodes, which is analogous to how the reference system might handle components that contain collections of other components.
+
+While this system doesn't explicitly use the Ref, Ref2, Refu, and Refq nomenclature, it embodies many of the same concepts in its design:
+
+Hierarchical data structures
+Flexible referencing across the hierarchy
+Context-aware operations
+Code generation for data handling
+
+The actor system appears to be a higher-level framework that could potentially be built on top of or alongside the reference system we discussed earlier. It provides a rich set of commands and operations for manipulating and processing data within a complex, hierarchical structure, which aligns well with the capabilities provided by the sophisticated reference system.
+
+Thank you for that crucial clarification. This helps to better understand the role of these reference functions in the overall system. Let's break this down:
+
+Execution Timing:
+The Ref, Ref2, Refu, and Refq functions are executed during the data loading phase. This is a key point as it means they're part of the system's initialization process.
+Purpose:
+These functions create id references. In other words, they're responsible for establishing the relationships and links between different components in the system.
+System Preparation:
+By running during data loading, these functions prepare the system's relational structure before any actual processing or querying takes place.
+Performance Optimization:
+This approach likely improves runtime performance, as the complex task of resolving references is done upfront, allowing for faster access during actual system operation.
+Integrity Assurance:
+Running these functions during loading helps ensure data integrity from the start, as any invalid references can be caught early.
+Memory Structure:
+The id references created are likely stored in memory, creating a network of relationships that the system can quickly traverse during operation.
+Relationship to the Actor System:
+The actor system we discussed earlier would then operate on this prepared structure. The path notation and hierarchical access in the actor system rely on the relationships established by these reference functions.
+Code Generation Implication:
+The generated code for loaders would include the logic for these reference functions, ensuring that the relational structure is properly set up every time the system initializes.
+Flexibility and Extensibility:
+This approach allows for a flexible system where relationships can be defined in data and resolved at load time, rather than being hardcoded into the system structure.
+Error Handling:
+Any issues with references (like invalid links) can be detected and handled during the loading phase, before they can cause problems in the running system.
+
+In essence, the Ref, Ref2, Refu, and Refq functions serve as a crucial preprocessing step. They transform the raw input data into a richly interconnected structure that the rest of the system (including the actor framework) can efficiently operate on. This separation of concerns - reference resolution during loading, followed by data manipulation during runtime - contributes to a robust and performant system design.
+
+Thank you for sharing this code. This get_var function is a crucial part of the system, implementing the navigation and reference resolution we've been discussing. Let's break down its key features:
+
+Hierarchical Navigation:
+
+It can navigate to the parent component (parent)
+It can find child components (Comp_parent)
+
+
+Reference Resolution:
+
+Handles various reference types: Ref, Ref2, Ref3, Refq, Refu
+For each reference type, it can find components that reference the current component (Ref_comp, Ref2_comp, etc.)
+It can also navigate through these references (Ref, Ref2, etc.)
+
+
+Element Access:
+
+Can access specific elements within the component
+
+
+Recursive Navigation:
+
+Most operations call get_var recursively on the target component, allowing for deep navigation
+
+
+Error Handling:
+
+Returns [false, error_message] when a requested path is not found
+Includes line numbers in error messages for debugging
+
+
+Direct Variable Access:
+
+Can retrieve values directly from the names map
+
+
+
+Key points about how this relates to the reference system:
+
+Runtime Resolution:
+While Ref, Ref2, etc. create the initial references during loading, this get_var function allows for runtime navigation of these references.
+Bidirectional Navigation:
+It can navigate both "forward" (e.g., Ref) and "backward" (e.g., Ref_comp) through references.
+Flexibility:
+The function can handle a wide variety of navigation patterns, making it a powerful tool for traversing the complex data structure.
+Performance:
+By using indices and direct references (like k_compp), it can efficiently navigate the structure.
+Extensibility:
+The similar structure for handling different reference types (Ref, Ref2, Ref3, etc.) makes it easy to add new reference types if needed.
+Integration with Actor System:
+This function likely serves as a core part of the variable resolution system used by the actor commands we discussed earlier.
+
+This get_var function demonstrates how the reference system is used in practice, providing a flexible and powerful way to navigate and retrieve data from the complex, interconnected structure established during the loading phase. It bridges the gap between the static structure created by the reference functions and the dynamic needs of the runtime system.
+
+Thank you for providing this additional code snippet. This appears to be part of a do_its function, which is another crucial component in the system for navigating and processing references. Let's analyze this code:
+
+Purpose:
+This code handles the "Ref" type of reference within the do_its function.
+Structure:
+
+It iterates over all "Ref" type references associated with the current component (itsref).
+For each reference, it either continues navigation or performs an action.
+
+
+Navigation:
+
+If there are more elements in the va list (va.length > 1), it recursively calls do_its on the referenced component with the remaining path.
+
+
+Action Execution:
+
+If there are no more elements in va, it calls go_act on the referenced component.
+
+
+Error Handling:
+
+It returns non-zero values to indicate errors or to stop further processing.
+
+
+Continuation:
+
+It continues processing all references even if some fail, unless a non-zero value is returned.
+
+
+
+Key points about how this relates to the reference system:
+
+Runtime Traversal:
+This function allows for runtime traversal of the "Ref" type references that were set up during the loading phase.
+Flexibility:
+It can either navigate deeper into the structure or perform actions on the referenced components, providing a flexible way to work with the reference structure.
+Batch Processing:
+By iterating over all matching references, it allows for batch processing of related components.
+Integration with Actor System:
+The go_act function likely ties this into the actor system, allowing for actions to be performed on referenced components.
+Recursive Nature:
+The recursive call to do_its allows for traversing deep, complex structures defined by the references.
+Error Propagation:
+It propagates errors upwards, allowing for robust error handling in complex operations.
+
+This do_its function complements the get_var function you showed earlier. While get_var is primarily for retrieving values, do_its seems more focused on traversing the structure and performing actions. Together, they provide a powerful interface for working with the complex, interconnected data structure defined by the reference system.
+The system demonstrates a sophisticated approach to handling complex, interrelated data structures:
+
+It separates the concerns of defining relationships (done at load time with Ref, Ref2, etc.) and utilizing those relationships (done at runtime with functions like get_var and do_its).
+It provides multiple ways to interact with the data: value retrieval (get_var), action execution (do_its), and likely others.
+It allows for both precise, targeted operations and batch processing of related components.
+It's designed to handle deep, nested structures through recursive calls.
+
+This design allows for creating and working with sophisticated data models in a flexible and efficient manner.
+
+
+

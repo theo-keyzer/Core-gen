@@ -11,6 +11,7 @@ C 	String comp = "Kp";
 C 	String line_no = "";
 C 	List <String> flags = [];
 C 	Map names = new Map();
+C 	int kp_doc_from = -1;
 -C 	property names : Hash(String, String) = Hash(String, String).new
 C 	Future<int> do_its(glob, va, lno) async  {
 C 		print("?No its " + va[0] + " cmd for Kp," + lno + "?");
@@ -51,6 +52,7 @@ C 		comp = "${name:c}";
 C 		line_no = lno;
 C 		flags = flag;
 C 		me = act.ap_${name:l}.length;
+C 		kp_doc_from = act.kp_doc.length;
 
 Its Element ele_act
 Its parent parent_field_p
@@ -84,6 +86,7 @@ C 		comp = "${name:c}";
 C 		line_no = lno;
 C 		flags = flag;
 C 		me = act.ap_${name:l}.length;
+C 		kp_doc_from = act.kp_doc.length;
 
 Its Element ele_act
 Its parent parent_field_p
@@ -117,6 +120,7 @@ C 		comp = "${name:c}";
 C 		line_no = lno;
 C 		flags = flag;
 C 		me = act.ap_${name:l}.length;
+C 		kp_doc_from = act.kp_doc.length;
 C 		names["k_me"] = me.toString();
 C 		names["k_parent"] = "-1";
 C 		names["k_comp"] = "${name:c}";
@@ -164,6 +168,14 @@ C 		if ( va[0].compareTo("Child") == 0 ) { // ${._lno}
 
 Its Comp_parent childs_func
 
+C 			return(0);
+C 		}
+C 		if ( va[0].compareTo("kp_doc") == 0 ) { 
+C 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+C 				if( glob.dats.kp_doc[i] == "" ) return(0);
+-C 				print( glob.dats.kp_doc[i] );
+C 				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+C 			}
 C 			return(0);
 C 		}
 
