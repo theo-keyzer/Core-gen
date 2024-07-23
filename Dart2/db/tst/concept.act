@@ -21,8 +21,12 @@ Actor topic Topic .main.2 |= *
 C
 C <${tag}>${desc}</${tag}>
 C <a name=tag_${k_me}></a>
+C <pre>
 
 Its T t
+
+C </pre>
+
 Its See see
 Add.clear.map _:Unique
 Its parent.See_concept see_rev
@@ -71,9 +75,7 @@ Actor t T file &!= .
 
 Add.file _:inc ${file}
 
-C <pre>
 C ${_.inc}
-C </pre>
 
 ----------------------------------------------------------------
 Actor topic_is Topic name in ${.main.2}

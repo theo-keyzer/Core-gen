@@ -145,7 +145,7 @@ Comp Break parent Actor
 	Element check  C1 WORD      * only if not unique
 
 ----------------------------------------------------------------
-Comp Add parent Actor
+Comp Add parent Actor . Cmd
 ----------------------------------------------------------------
 * Append to the collection map or node path.
 * The path for the collect is _.

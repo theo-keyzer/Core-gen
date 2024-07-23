@@ -44,14 +44,14 @@ class KpConcept extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("See_concept") == 0 && va.length > 1) { // concept.unit:29, d_struct.act:756
+		if (va[0].compareTo("See_concept") == 0 && va.length > 1) { // concept.unit:29, d_struct.act:787
 			for (var st in glob.dats.ap_see) {
 				if (st.k_conceptp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Topic") == 0 && va.length > 2 && itstopic.length > 0) { // concept.unit:8, d_struct.act:480
+		if (va[0].compareTo("Topic") == 0 && va.length > 2 && itstopic.length > 0) { // concept.unit:8, d_struct.act:511
 			return (itstopic[0].get_var(glob, va.sublist(1), lno));
 		}
 		var v = names[ va[0] ];
@@ -62,7 +62,7 @@ class KpConcept extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("Topic") == 0) { // concept.unit:8, d_struct.act:735
+		if (va[0].compareTo("Topic") == 0) { // concept.unit:8, d_struct.act:766
 			for(var st in itstopic) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -78,7 +78,7 @@ class KpConcept extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("See_concept") == 0) { // concept.unit:29, d_struct.act:573
+		if (va[0].compareTo("See_concept") == 0) { // concept.unit:29, d_struct.act:604
 			for (KpSee st in glob.dats.ap_see) {
 				if (st.k_conceptp == me) {
 					if (va.length > 1) {
@@ -96,7 +96,7 @@ class KpConcept extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:2, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:2, d_struct.act:188
 			for (var st in childs) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -115,7 +115,19 @@ class KpConcept extends Kp
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -162,15 +174,15 @@ class KpTopic extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("parent") == 0) { // concept.unit:2, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // concept.unit:2, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_concept[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
-		if (va[0].compareTo("T") == 0 && va.length > 2 && itst.length > 0) { // concept.unit:17, d_struct.act:480
+		if (va[0].compareTo("T") == 0 && va.length > 2 && itst.length > 0) { // concept.unit:17, d_struct.act:511
 			return (itst[0].get_var(glob, va.sublist(1), lno));
 		}
-		if (va[0].compareTo("See") == 0 && va.length > 2 && itssee.length > 0) { // concept.unit:24, d_struct.act:480
+		if (va[0].compareTo("See") == 0 && va.length > 2 && itssee.length > 0) { // concept.unit:24, d_struct.act:511
 			return (itssee[0].get_var(glob, va.sublist(1), lno));
 		}
 		var v = names[ va[0] ];
@@ -181,7 +193,7 @@ class KpTopic extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("T") == 0) { // concept.unit:17, d_struct.act:735
+		if (va[0].compareTo("T") == 0) { // concept.unit:17, d_struct.act:766
 			for(var st in itst) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -197,7 +209,7 @@ class KpTopic extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("See") == 0) { // concept.unit:24, d_struct.act:735
+		if (va[0].compareTo("See") == 0) { // concept.unit:24, d_struct.act:766
 			for(var st in itssee) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -213,7 +225,7 @@ class KpTopic extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("parent") == 0) { // concept.unit:2, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // concept.unit:2, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_concept[ k_parentp ];
 				if (va.length > 1) {
@@ -223,7 +235,7 @@ class KpTopic extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("level") == 0 && va.length > 1 && k_parentp >= 0) { // concept.unit:12, d_struct.act:193
+		if (va[0].compareTo("level") == 0 && va.length > 1 && k_parentp >= 0) { // concept.unit:12, d_struct.act:224
 			var pos = 0;
 			var v = names[ "level" ];
 			if( v != null) {
@@ -356,7 +368,7 @@ class KpTopic extends Kp
 				return(0);
 			}
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:8, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:8, d_struct.act:188
 			for (var st in childs) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -375,7 +387,19 @@ class KpTopic extends Kp
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -415,7 +439,7 @@ class KpT extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_topic[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -428,7 +452,7 @@ class KpT extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_topic[ k_parentp ];
 				if (va.length > 1) {
@@ -438,13 +462,25 @@ class KpT extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:17, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:17, d_struct.act:188
 			return(0);
 		}
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -483,12 +519,12 @@ class KpSee extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("concept") == 0) { // concept.unit:29, d_struct.act:668
+		if (va[0].compareTo("concept") == 0) { // concept.unit:29, d_struct.act:699
 			if (k_conceptp >= 0 && va.length > 1) {
 				return( glob.dats.ap_concept[ k_conceptp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_topic[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -501,7 +537,7 @@ class KpSee extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // concept.unit:8, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_topic[ k_parentp ];
 				if (va.length > 1) {
@@ -521,13 +557,25 @@ class KpSee extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:24, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // concept.unit:24, d_struct.act:188
 			return(0);
 		}
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -596,6 +644,24 @@ class KpAll extends Kp
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:18, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for All," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
 }
 
 class KpDu extends Kp 
@@ -623,6 +689,24 @@ class KpDu extends Kp
 		}
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
+	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:35, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Du," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
 	}
 }
 
@@ -654,6 +738,24 @@ class KpNew extends Kp
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:50, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for New," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
 }
 
 class KpRefs extends Kp 
@@ -677,6 +779,24 @@ class KpRefs extends Kp
 		}
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
+	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:60, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Refs," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
 	}
 }
 
@@ -707,6 +827,24 @@ class KpVar extends Kp
 		}
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
+	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:68, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Var," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
 	}
 }
 
@@ -739,6 +877,24 @@ class KpIts extends Kp
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:78, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Its," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
 }
 
 class KpC extends Kp 
@@ -763,6 +919,24 @@ class KpC extends Kp
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:96, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for C," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
 }
 
 class KpCs extends Kp 
@@ -786,6 +960,24 @@ class KpCs extends Kp
 		}
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
+	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:104, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Cs," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
 	}
 }
 
@@ -817,6 +1009,24 @@ class KpOut extends Kp
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:112, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Out," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
 }
 
 class KpIn extends Kp 
@@ -840,6 +1050,24 @@ class KpIn extends Kp
 		}
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
+	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:125, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for In," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
 	}
 }
 
@@ -874,6 +1102,24 @@ class KpBreak extends Kp
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:133, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Break," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
 }
 
 class KpAdd extends Kp 
@@ -900,6 +1146,24 @@ class KpAdd extends Kp
 		}
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
+	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:148, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Add," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
 	}
 }
 
@@ -931,6 +1195,24 @@ class KpThis extends Kp
 		}
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
+	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:170, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for This," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
 	}
 }
 
@@ -968,6 +1250,24 @@ class KpReplace extends Kp
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act.unit:183, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Replace," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
 }
 
 class KpDbconn extends Kp 
@@ -1001,6 +1301,24 @@ class KpDbconn extends Kp
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
 	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act_db.unit:2, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Dbconn," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
+	}
 }
 
 class KpHttp extends Kp 
@@ -1030,6 +1348,24 @@ class KpHttp extends Kp
 		}
 		act.ap_actor[ k_parentp ].childs.add( this );
 		return true;
+	}
+	Future<int> do_its(glob, va, lno) async  {
+		if ( va[0].compareTo("Child") == 0 ) { // act_db.unit:13, d_struct.act:97
+			return(0);
+		}
+		if ( va[0].compareTo("kp_doc") == 0 ) { 
+			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+				if( glob.dats.kp_doc[i] == "" ) return(0);
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		print("?No its " + va[0] + " cmd for Http," + line_no + "," + lno + "?");
+		glob.run_errs = true;
+		return(0);
 	}
 }
 
@@ -1070,97 +1406,97 @@ class KpComp extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:16, d_struct.act:668
+		if (va[0].compareTo("parent") == 0) { // gen.unit:16, d_struct.act:699
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("Comp_parent") == 0 && va.length > 1) { // gen.unit:16, d_struct.act:756
+		if (va[0].compareTo("Comp_parent") == 0 && va.length > 1) { // gen.unit:16, d_struct.act:787
 			for (var st in glob.dats.ap_comp) {
 				if (st.k_parentp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref_comp") == 0 && va.length > 1) { // gen.unit:65, d_struct.act:756
+		if (va[0].compareTo("Ref_comp") == 0 && va.length > 1) { // gen.unit:65, d_struct.act:787
 			for (var st in glob.dats.ap_ref) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref2_comp") == 0 && va.length > 1) { // gen.unit:83, d_struct.act:756
+		if (va[0].compareTo("Ref2_comp") == 0 && va.length > 1) { // gen.unit:83, d_struct.act:787
 			for (var st in glob.dats.ap_ref2) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref3_comp") == 0 && va.length > 1) { // gen.unit:104, d_struct.act:756
+		if (va[0].compareTo("Ref3_comp") == 0 && va.length > 1) { // gen.unit:104, d_struct.act:787
 			for (var st in glob.dats.ap_ref3) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref3_comp_ref") == 0 && va.length > 1) { // gen.unit:105, d_struct.act:756
+		if (va[0].compareTo("Ref3_comp_ref") == 0 && va.length > 1) { // gen.unit:105, d_struct.act:787
 			for (var st in glob.dats.ap_ref3) {
 				if (st.k_comp_refp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refq_comp") == 0 && va.length > 1) { // gen.unit:126, d_struct.act:756
+		if (va[0].compareTo("Refq_comp") == 0 && va.length > 1) { // gen.unit:126, d_struct.act:787
 			for (var st in glob.dats.ap_refq) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refq_comp_ref") == 0 && va.length > 1) { // gen.unit:127, d_struct.act:756
+		if (va[0].compareTo("Refq_comp_ref") == 0 && va.length > 1) { // gen.unit:127, d_struct.act:787
 			for (var st in glob.dats.ap_refq) {
 				if (st.k_comp_refp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refu_comp") == 0 && va.length > 1) { // gen.unit:147, d_struct.act:756
+		if (va[0].compareTo("Refu_comp") == 0 && va.length > 1) { // gen.unit:147, d_struct.act:787
 			for (var st in glob.dats.ap_refu) {
 				if (st.k_compp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refu_comp_ref") == 0 && va.length > 1) { // gen.unit:148, d_struct.act:756
+		if (va[0].compareTo("Refu_comp_ref") == 0 && va.length > 1) { // gen.unit:148, d_struct.act:787
 			for (var st in glob.dats.ap_refu) {
 				if (st.k_comp_refp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Element") == 0 && va.length > 2) { // gen.unit:24, d_struct.act:468
+		if (va[0].compareTo("Element") == 0 && va.length > 2) { // gen.unit:24, d_struct.act:499
 			var en = glob.dats.index[me.toString() + "_Element_" + va[1] ];
 			if(en != null) {
 				return (glob.dats.ap_element[en].get_var(glob, va.sublist(2), lno));
 			}
 			return( [false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?"] );
 		}
-		if (va[0].compareTo("Ref") == 0 && va.length > 2 && itsref.length > 0) { // gen.unit:50, d_struct.act:480
+		if (va[0].compareTo("Ref") == 0 && va.length > 2 && itsref.length > 0) { // gen.unit:50, d_struct.act:511
 			return (itsref[0].get_var(glob, va.sublist(1), lno));
 		}
-		if (va[0].compareTo("Ref2") == 0 && va.length > 2 && itsref2.length > 0) { // gen.unit:68, d_struct.act:480
+		if (va[0].compareTo("Ref2") == 0 && va.length > 2 && itsref2.length > 0) { // gen.unit:68, d_struct.act:511
 			return (itsref2[0].get_var(glob, va.sublist(1), lno));
 		}
-		if (va[0].compareTo("Ref3") == 0 && va.length > 2 && itsref3.length > 0) { // gen.unit:87, d_struct.act:480
+		if (va[0].compareTo("Ref3") == 0 && va.length > 2 && itsref3.length > 0) { // gen.unit:87, d_struct.act:511
 			return (itsref3[0].get_var(glob, va.sublist(1), lno));
 		}
-		if (va[0].compareTo("Refq") == 0 && va.length > 2 && itsrefq.length > 0) { // gen.unit:109, d_struct.act:480
+		if (va[0].compareTo("Refq") == 0 && va.length > 2 && itsrefq.length > 0) { // gen.unit:109, d_struct.act:511
 			return (itsrefq[0].get_var(glob, va.sublist(1), lno));
 		}
-		if (va[0].compareTo("Refu") == 0 && va.length > 2 && itsrefu.length > 0) { // gen.unit:130, d_struct.act:480
+		if (va[0].compareTo("Refu") == 0 && va.length > 2 && itsrefu.length > 0) { // gen.unit:130, d_struct.act:511
 			return (itsrefu[0].get_var(glob, va.sublist(1), lno));
 		}
-		if (va[0].compareTo("Join") == 0 && va.length > 2 && itsjoin.length > 0) { // gen.unit:151, d_struct.act:480
+		if (va[0].compareTo("Join") == 0 && va.length > 2 && itsjoin.length > 0) { // gen.unit:151, d_struct.act:511
 			return (itsjoin[0].get_var(glob, va.sublist(1), lno));
 		}
 		var v = names[ va[0] ];
@@ -1171,7 +1507,7 @@ class KpComp extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("Element") == 0) { // gen.unit:19, d_struct.act:735
+		if (va[0].compareTo("Element") == 0) { // gen.unit:19, d_struct.act:766
 			for(var st in itselement) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1187,7 +1523,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref") == 0) { // gen.unit:50, d_struct.act:735
+		if (va[0].compareTo("Ref") == 0) { // gen.unit:50, d_struct.act:766
 			for(var st in itsref) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1203,7 +1539,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref2") == 0) { // gen.unit:68, d_struct.act:735
+		if (va[0].compareTo("Ref2") == 0) { // gen.unit:68, d_struct.act:766
 			for(var st in itsref2) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1219,7 +1555,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref3") == 0) { // gen.unit:87, d_struct.act:735
+		if (va[0].compareTo("Ref3") == 0) { // gen.unit:87, d_struct.act:766
 			for(var st in itsref3) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1235,7 +1571,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refq") == 0) { // gen.unit:109, d_struct.act:735
+		if (va[0].compareTo("Refq") == 0) { // gen.unit:109, d_struct.act:766
 			for(var st in itsrefq) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1251,7 +1587,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refu") == 0) { // gen.unit:130, d_struct.act:735
+		if (va[0].compareTo("Refu") == 0) { // gen.unit:130, d_struct.act:766
 			for(var st in itsrefu) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1267,7 +1603,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Join") == 0) { // gen.unit:151, d_struct.act:735
+		if (va[0].compareTo("Join") == 0) { // gen.unit:151, d_struct.act:766
 			for(var st in itsjoin) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1293,7 +1629,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Comp_parent") == 0) { // gen.unit:16, d_struct.act:573
+		if (va[0].compareTo("Comp_parent") == 0) { // gen.unit:16, d_struct.act:604
 			for (KpComp st in glob.dats.ap_comp) {
 				if (st.k_parentp == me) {
 					if (va.length > 1) {
@@ -1311,7 +1647,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref_comp") == 0) { // gen.unit:65, d_struct.act:573
+		if (va[0].compareTo("Ref_comp") == 0) { // gen.unit:65, d_struct.act:604
 			for (KpRef st in glob.dats.ap_ref) {
 				if (st.k_compp == me) {
 					if (va.length > 1) {
@@ -1329,7 +1665,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref2_comp") == 0) { // gen.unit:83, d_struct.act:573
+		if (va[0].compareTo("Ref2_comp") == 0) { // gen.unit:83, d_struct.act:604
 			for (KpRef2 st in glob.dats.ap_ref2) {
 				if (st.k_compp == me) {
 					if (va.length > 1) {
@@ -1347,7 +1683,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref3_comp") == 0) { // gen.unit:104, d_struct.act:573
+		if (va[0].compareTo("Ref3_comp") == 0) { // gen.unit:104, d_struct.act:604
 			for (KpRef3 st in glob.dats.ap_ref3) {
 				if (st.k_compp == me) {
 					if (va.length > 1) {
@@ -1365,7 +1701,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref3_comp_ref") == 0) { // gen.unit:105, d_struct.act:573
+		if (va[0].compareTo("Ref3_comp_ref") == 0) { // gen.unit:105, d_struct.act:604
 			for (KpRef3 st in glob.dats.ap_ref3) {
 				if (st.k_comp_refp == me) {
 					if (va.length > 1) {
@@ -1383,7 +1719,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refq_comp") == 0) { // gen.unit:126, d_struct.act:573
+		if (va[0].compareTo("Refq_comp") == 0) { // gen.unit:126, d_struct.act:604
 			for (KpRefq st in glob.dats.ap_refq) {
 				if (st.k_compp == me) {
 					if (va.length > 1) {
@@ -1401,7 +1737,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refq_comp_ref") == 0) { // gen.unit:127, d_struct.act:573
+		if (va[0].compareTo("Refq_comp_ref") == 0) { // gen.unit:127, d_struct.act:604
 			for (KpRefq st in glob.dats.ap_refq) {
 				if (st.k_comp_refp == me) {
 					if (va.length > 1) {
@@ -1419,7 +1755,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refu_comp") == 0) { // gen.unit:147, d_struct.act:573
+		if (va[0].compareTo("Refu_comp") == 0) { // gen.unit:147, d_struct.act:604
 			for (KpRefu st in glob.dats.ap_refu) {
 				if (st.k_compp == me) {
 					if (va.length > 1) {
@@ -1437,7 +1773,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refu_comp_ref") == 0) { // gen.unit:148, d_struct.act:573
+		if (va[0].compareTo("Refu_comp_ref") == 0) { // gen.unit:148, d_struct.act:604
 			for (KpRefu st in glob.dats.ap_refu) {
 				if (st.k_comp_refp == me) {
 					if (va.length > 1) {
@@ -1455,7 +1791,7 @@ class KpComp extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:2, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:2, d_struct.act:188
 			for (var st in childs) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1474,7 +1810,19 @@ class KpComp extends Kp
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -1524,61 +1872,61 @@ class KpElement extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
 		}
-		if (va[0].compareTo("Ref_element") == 0 && va.length > 1) { // gen.unit:64, d_struct.act:756
+		if (va[0].compareTo("Ref_element") == 0 && va.length > 1) { // gen.unit:64, d_struct.act:787
 			for (var st in glob.dats.ap_ref) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref2_element") == 0 && va.length > 1) { // gen.unit:82, d_struct.act:756
+		if (va[0].compareTo("Ref2_element") == 0 && va.length > 1) { // gen.unit:82, d_struct.act:787
 			for (var st in glob.dats.ap_ref2) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref2_element2") == 0 && va.length > 1) { // gen.unit:84, d_struct.act:756
+		if (va[0].compareTo("Ref2_element2") == 0 && va.length > 1) { // gen.unit:84, d_struct.act:787
 			for (var st in glob.dats.ap_ref2) {
 				if (st.k_element2p == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref3_element") == 0 && va.length > 1) { // gen.unit:103, d_struct.act:756
+		if (va[0].compareTo("Ref3_element") == 0 && va.length > 1) { // gen.unit:103, d_struct.act:787
 			for (var st in glob.dats.ap_ref3) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Ref3_element2") == 0 && va.length > 1) { // gen.unit:106, d_struct.act:756
+		if (va[0].compareTo("Ref3_element2") == 0 && va.length > 1) { // gen.unit:106, d_struct.act:787
 			for (var st in glob.dats.ap_ref3) {
 				if (st.k_element2p == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refq_element") == 0 && va.length > 1) { // gen.unit:125, d_struct.act:756
+		if (va[0].compareTo("Refq_element") == 0 && va.length > 1) { // gen.unit:125, d_struct.act:787
 			for (var st in glob.dats.ap_refq) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Refu_element") == 0 && va.length > 1) { // gen.unit:146, d_struct.act:756
+		if (va[0].compareTo("Refu_element") == 0 && va.length > 1) { // gen.unit:146, d_struct.act:787
 			for (var st in glob.dats.ap_refu) {
 				if (st.k_elementp == me) {
 					return (st.get_var(glob, va.sublist(1), lno) );
 				}
 			}
 		}
-		if (va[0].compareTo("Opt") == 0 && va.length > 2) { // gen.unit:45, d_struct.act:468
+		if (va[0].compareTo("Opt") == 0 && va.length > 2) { // gen.unit:45, d_struct.act:499
 			var en = glob.dats.index[me.toString() + "_Opt_" + va[1] ];
 			if(en != null) {
 				return (glob.dats.ap_opt[en].get_var(glob, va.sublist(2), lno));
@@ -1593,7 +1941,7 @@ class KpElement extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("Opt") == 0) { // gen.unit:39, d_struct.act:735
+		if (va[0].compareTo("Opt") == 0) { // gen.unit:39, d_struct.act:766
 			for(var st in itsopt) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1609,7 +1957,7 @@ class KpElement extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
@@ -1619,7 +1967,7 @@ class KpElement extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref_element") == 0) { // gen.unit:64, d_struct.act:573
+		if (va[0].compareTo("Ref_element") == 0) { // gen.unit:64, d_struct.act:604
 			for (KpRef st in glob.dats.ap_ref) {
 				if (st.k_elementp == me) {
 					if (va.length > 1) {
@@ -1637,7 +1985,7 @@ class KpElement extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref2_element") == 0) { // gen.unit:82, d_struct.act:573
+		if (va[0].compareTo("Ref2_element") == 0) { // gen.unit:82, d_struct.act:604
 			for (KpRef2 st in glob.dats.ap_ref2) {
 				if (st.k_elementp == me) {
 					if (va.length > 1) {
@@ -1655,7 +2003,7 @@ class KpElement extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref2_element2") == 0) { // gen.unit:84, d_struct.act:573
+		if (va[0].compareTo("Ref2_element2") == 0) { // gen.unit:84, d_struct.act:604
 			for (KpRef2 st in glob.dats.ap_ref2) {
 				if (st.k_element2p == me) {
 					if (va.length > 1) {
@@ -1673,7 +2021,7 @@ class KpElement extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref3_element") == 0) { // gen.unit:103, d_struct.act:573
+		if (va[0].compareTo("Ref3_element") == 0) { // gen.unit:103, d_struct.act:604
 			for (KpRef3 st in glob.dats.ap_ref3) {
 				if (st.k_elementp == me) {
 					if (va.length > 1) {
@@ -1691,7 +2039,7 @@ class KpElement extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Ref3_element2") == 0) { // gen.unit:106, d_struct.act:573
+		if (va[0].compareTo("Ref3_element2") == 0) { // gen.unit:106, d_struct.act:604
 			for (KpRef3 st in glob.dats.ap_ref3) {
 				if (st.k_element2p == me) {
 					if (va.length > 1) {
@@ -1709,7 +2057,7 @@ class KpElement extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refq_element") == 0) { // gen.unit:125, d_struct.act:573
+		if (va[0].compareTo("Refq_element") == 0) { // gen.unit:125, d_struct.act:604
 			for (KpRefq st in glob.dats.ap_refq) {
 				if (st.k_elementp == me) {
 					if (va.length > 1) {
@@ -1727,7 +2075,7 @@ class KpElement extends Kp
 			}
 			return(0);
 		}
-		if (va[0].compareTo("Refu_element") == 0) { // gen.unit:146, d_struct.act:573
+		if (va[0].compareTo("Refu_element") == 0) { // gen.unit:146, d_struct.act:604
 			for (KpRefu st in glob.dats.ap_refu) {
 				if (st.k_elementp == me) {
 					if (va.length > 1) {
@@ -1745,7 +2093,7 @@ class KpElement extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:19, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:19, d_struct.act:188
 			for (var st in childs) {
 				if (va.length > 1) {
 					var ret = await  st.do_its(glob, va.sublist(1), lno);
@@ -1764,7 +2112,19 @@ class KpElement extends Kp
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -1808,7 +2168,7 @@ class KpOpt extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:19, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // gen.unit:19, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_element[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -1821,7 +2181,7 @@ class KpOpt extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:19, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // gen.unit:19, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_element[ k_parentp ];
 				if (va.length > 1) {
@@ -1831,13 +2191,25 @@ class KpOpt extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:39, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:39, d_struct.act:188
 			return(0);
 		}
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -1885,17 +2257,17 @@ class KpRef extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("element") == 0) { // gen.unit:64, d_struct.act:668
+		if (va[0].compareTo("element") == 0) { // gen.unit:64, d_struct.act:699
 			if (k_elementp >= 0 && va.length > 1) {
 				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("comp") == 0) { // gen.unit:65, d_struct.act:668
+		if (va[0].compareTo("comp") == 0) { // gen.unit:65, d_struct.act:699
 			if (k_compp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -1908,7 +2280,7 @@ class KpRef extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
@@ -1938,13 +2310,25 @@ class KpRef extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:50, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:50, d_struct.act:188
 			return(0);
 		}
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -1995,22 +2379,22 @@ class KpRef2 extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("element") == 0) { // gen.unit:82, d_struct.act:668
+		if (va[0].compareTo("element") == 0) { // gen.unit:82, d_struct.act:699
 			if (k_elementp >= 0 && va.length > 1) {
 				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("comp") == 0) { // gen.unit:83, d_struct.act:668
+		if (va[0].compareTo("comp") == 0) { // gen.unit:83, d_struct.act:699
 			if (k_compp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("element2") == 0) { // gen.unit:84, d_struct.act:668
+		if (va[0].compareTo("element2") == 0) { // gen.unit:84, d_struct.act:699
 			if (k_element2p >= 0 && va.length > 1) {
 				return( glob.dats.ap_element[ k_element2p ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -2023,7 +2407,7 @@ class KpRef2 extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
@@ -2063,13 +2447,25 @@ class KpRef2 extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:68, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:68, d_struct.act:188
 			return(0);
 		}
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -2125,27 +2521,27 @@ class KpRef3 extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("element") == 0) { // gen.unit:103, d_struct.act:668
+		if (va[0].compareTo("element") == 0) { // gen.unit:103, d_struct.act:699
 			if (k_elementp >= 0 && va.length > 1) {
 				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("comp") == 0) { // gen.unit:104, d_struct.act:668
+		if (va[0].compareTo("comp") == 0) { // gen.unit:104, d_struct.act:699
 			if (k_compp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("comp_ref") == 0) { // gen.unit:105, d_struct.act:668
+		if (va[0].compareTo("comp_ref") == 0) { // gen.unit:105, d_struct.act:699
 			if (k_comp_refp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_comp_refp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("element2") == 0) { // gen.unit:106, d_struct.act:668
+		if (va[0].compareTo("element2") == 0) { // gen.unit:106, d_struct.act:699
 			if (k_element2p >= 0 && va.length > 1) {
 				return( glob.dats.ap_element[ k_element2p ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -2158,7 +2554,7 @@ class KpRef3 extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
@@ -2208,13 +2604,25 @@ class KpRef3 extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:87, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:87, d_struct.act:188
 			return(0);
 		}
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -2267,22 +2675,22 @@ class KpRefq extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("element") == 0) { // gen.unit:125, d_struct.act:668
+		if (va[0].compareTo("element") == 0) { // gen.unit:125, d_struct.act:699
 			if (k_elementp >= 0 && va.length > 1) {
 				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("comp") == 0) { // gen.unit:126, d_struct.act:668
+		if (va[0].compareTo("comp") == 0) { // gen.unit:126, d_struct.act:699
 			if (k_compp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("comp_ref") == 0) { // gen.unit:127, d_struct.act:668
+		if (va[0].compareTo("comp_ref") == 0) { // gen.unit:127, d_struct.act:699
 			if (k_comp_refp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_comp_refp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -2295,7 +2703,7 @@ class KpRefq extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
@@ -2335,13 +2743,25 @@ class KpRefq extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:109, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:109, d_struct.act:188
 			return(0);
 		}
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -2396,22 +2816,22 @@ class KpRefu extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("element") == 0) { // gen.unit:146, d_struct.act:668
+		if (va[0].compareTo("element") == 0) { // gen.unit:146, d_struct.act:699
 			if (k_elementp >= 0 && va.length > 1) {
 				return( glob.dats.ap_element[ k_elementp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("comp") == 0) { // gen.unit:147, d_struct.act:668
+		if (va[0].compareTo("comp") == 0) { // gen.unit:147, d_struct.act:699
 			if (k_compp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_compp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("comp_ref") == 0) { // gen.unit:148, d_struct.act:668
+		if (va[0].compareTo("comp_ref") == 0) { // gen.unit:148, d_struct.act:699
 			if (k_comp_refp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_comp_refp ].get_var(glob, va.sublist(1), lno) );
 			}
 		}
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -2424,7 +2844,7 @@ class KpRefu extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
@@ -2464,13 +2884,25 @@ class KpRefu extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:130, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:130, d_struct.act:188
 			return(0);
 		}
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}
@@ -2520,7 +2952,7 @@ class KpJoin extends Kp
 	}
 
 	List get_var(glob, va, lno) {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:563
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:594
 			if (k_parentp >= 0 && va.length > 1) {
 				return( glob.dats.ap_comp[ k_parentp ].get_var(glob, va.sublist(1),lno) );
 			}
@@ -2533,7 +2965,7 @@ class KpJoin extends Kp
 	}
 
 	Future<int> do_its(glob, va, lno) async  {
-		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:548
+		if (va[0].compareTo("parent") == 0) { // gen.unit:2, d_struct.act:579
 			if (k_parentp >= 0) {
 				var st = glob.dats.ap_comp[ k_parentp ];
 				if (va.length > 1) {
@@ -2543,13 +2975,25 @@ class KpJoin extends Kp
 			}
 			return(0);
 		}
-		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:151, d_struct.act:167
+		if ( va[0].compareTo("Child") == 0 ) { // gen.unit:151, d_struct.act:188
 			return(0);
 		}
 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 				if( glob.dats.kp_doc[i] == "" ) return(0);
-				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+				if (ret != 0) {
+					return(ret);
+				}
+			}
+			return(0);
+		}
+		if( va[0] == "options" ) {
+			for(var i = 0; i < flags.length; i++ ) {
+				var ret = go_act(glob, flags[i]);
+				if (ret != 0) {
+					return(ret);
+				}
 			}
 			return(0);
 		}

@@ -1,0 +1,93 @@
+Documentation Generation Script
+Overview
+This script generates multi-format documentation from a structured input, allowing for flexible, user-defined document creation with intelligent content sharing and linking.
+Key Components
+
+Input Structure
+Topic Processing
+Concept Handling
+Content Sharing Mechanisms
+External File Integration
+Multi-format Output Generation
+User Customization
+
+Detailed Functionality
+1. Input Structure
+
+The input consists of Concepts, which contain multiple Topics.
+Each Topic has a name and contains content items (T).
+Special Topic names:
+
+"." for content shared across all Topics in a Concept
+"_" for content shared at the same section level within a Concept
+
+
+
+2. Topic Processing
+
+Topics with the same name are aggregated into a single output document.
+Content from Topics is organized based on their originating Concepts and order in the input.
+
+3. Concept Handling
+
+Concepts describe relationships between multiple Topics.
+They serve as a framework for contextualizing and connecting various Topics.
+
+4. Content Sharing Mechanisms
+
+(.) content: Shared across all Topics within a Concept.
+(_) content: Shared only by Topics at the same section level within a Concept.
+
+5. External File Integration
+
+Topic items (T) can include references to external files (examples, text blocks).
+The script allows optional inclusion of these external files in the generated documents.
+
+6. Multi-format Output Generation
+
+Supports output in HTML, Markdown, LaTeX, and PDF formats.
+Ensures consistency across different output formats.
+
+7. User Customization
+
+Users can combine multiple Topics into a single custom document.
+Allows for creation of focused, relevant documentation without unnecessary information.
+
+Document Generation Process
+
+Parse input structure (Concepts, Topics, content items).
+Process Topics:
+
+Aggregate Topics with the same name.
+Apply content sharing rules (. and _).
+Integrate external files if specified.
+
+
+Generate links:
+
+Create links to Topics not included in the current document.
+Avoid internal links for combined Topics in custom documents.
+
+
+Apply user customization:
+
+Combine user-specified Topics into custom documents.
+
+
+Generate output:
+
+Create documents in specified format(s) (HTML, Markdown, LaTeX, PDF).
+
+
+
+Key Features
+
+Flexible document creation based on Topics rather than Concepts.
+Intelligent content sharing at Concept and section levels.
+Customizable document generation for user-specific needs.
+Multi-format output for diverse use cases.
+External file integration for modular content management.
+Efficient linking system that adapts to custom document creation.
+
+This script provides a powerful and flexible system for creating documentation that can be easily customized and maintained while preserving the complex relationships between different pieces of information.
+

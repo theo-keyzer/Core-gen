@@ -93,6 +93,27 @@ Its parent parent_field_p
 
 C 		return true;
 C 	}
+C 	Future<int> do_its(glob, va, lno) async  {
+C 		if ( va[0].compareTo("Child") == 0 ) { // ${._lno}
+
+Its Comp_parent childs_func
+
+C 			return(0);
+C 		}
+C 		if ( va[0].compareTo("kp_doc") == 0 ) { 
+C 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
+C 				if( glob.dats.kp_doc[i] == "" ) return(0);
+C 				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+C 				if (ret != 0) {
+C 					return(ret);
+C 				}
+C 			}
+C 			return(0);
+C 		}
+C 		print("?No its " + va[0] + " cmd for ${name}," + line_no + "," + lno + "?");
+C 		glob.run_errs = true;
+C 		return(0);
+C 	}
 C }
 C
 
@@ -173,12 +194,22 @@ C 		}
 C 		if ( va[0].compareTo("kp_doc") == 0 ) { 
 C 			for(var i = kp_doc_from; i <  glob.dats.kp_doc.length; i++) {
 C 				if( glob.dats.kp_doc[i] == "" ) return(0);
--C 				print( glob.dats.kp_doc[i] );
-C 				return( await  go_act(glob, glob.dats.kp_doc[i] ) );
+C 				var ret = await go_act(glob, glob.dats.kp_doc[i] );
+C 				if (ret != 0) {
+C 					return(ret);
+C 				}
 C 			}
 C 			return(0);
 C 		}
-
+C 		if( va[0] == "options" ) {
+C 			for(var i = 0; i < flags.length; i++ ) {
+C 				var ret = go_act(glob, flags[i]);
+C 				if (ret != 0) {
+C 					return(ret);
+C 				}
+C 			}
+C 			return(0);
+C 		}
 C 		print("?No its " + va[0] + " cmd for ${name}," + line_no + "," + lno + "?");
 C 		glob.run_errs = true;
 C 		return(0);

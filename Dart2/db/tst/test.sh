@@ -6,6 +6,13 @@ dart run ../src/main.dart concept_md.act concept.def "*" import >concept.md
 if [ $? != 0 ]; then echo concept_md.act concept.def has errors; fi
 
 echo ::::::::::::::
+echo concept.act cmd
+echo ::::::::::::::
+
+dart run ../src/main.dart concept.act concept.def cmd >cmd.html
+if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
+
+echo ::::::::::::::
 echo select.act
 echo ::::::::::::::
 
