@@ -17,6 +17,20 @@ T . attr: what to check
 T . eq: to equal
 T . value: this
 
+
+Topic bld 2 p eq options.
+
+T . ??: matches variable errors
+T . ?: match no variable errors
+T . &: previous actor match and current actor match
+T . &: previous actor match or current actor match
+T . =: equal
+T . !=: not equal
+T . in: item in a list
+T . !in: item not in list
+T . has: list has item
+T . regex: regex match
+
 Topic bld 2 p Child nodes.
 
 T . All: An actor calling type.
@@ -51,6 +65,7 @@ T . what: what to look for
 T . actor: what actor to run for it
 T . args: arg data value
 
+
 ----------------------------------------------------------------
 Concept Du
 ----------------------------------------------------------------
@@ -64,6 +79,7 @@ Topic bld 2 p Du variables.
 
 T . actor: what actor to run for it
 T . args: arg data value
+
 
 ----------------------------------------------------------------
 Concept New
@@ -79,6 +95,7 @@ T . where: add to dats or acts
 T . what: what comp to load
 T . line: load line args
 
+
 ----------------------------------------------------------------
 Concept Refs
 ----------------------------------------------------------------
@@ -90,6 +107,7 @@ T . Re run refs after loading new defs
 Topic bld 2 p Refs variables.
 
 T . where: ref of dats or acts
+
 
 ----------------------------------------------------------------
 Concept Var
@@ -104,6 +122,7 @@ Topic bld 2 p Var variables.
 T . attr: variable name
 T . eq: to equal
 T . value: this
+
 
 ----------------------------------------------------------------
 Concept Its
@@ -120,6 +139,7 @@ T . what: to look for
 T . actor: what to do
 T . args: arg data value
 
+
 ----------------------------------------------------------------
 Concept C
 ----------------------------------------------------------------
@@ -132,6 +152,7 @@ Topic bld 2 p C variables.
 
 T . desc: code to output.
 
+
 ----------------------------------------------------------------
 Concept Cs
 ----------------------------------------------------------------
@@ -143,6 +164,7 @@ T . Output code sniplet to file - no newline
 Topic bld 2 p Cs variables.
 
 T . desc: code to output.
+
 
 ----------------------------------------------------------------
 Concept Out
@@ -161,6 +183,14 @@ T . what: to look for.
 T . pad: to look for
 T . desc: code to buffer.
 
+
+Topic bld 2 p what options.
+
+T . delay: output is off until first C in next actor.
+T . normal: back to normal.
+T . of: output is off.
+T . on: output is on.
+
 ----------------------------------------------------------------
 Concept In
 ----------------------------------------------------------------
@@ -172,6 +202,7 @@ T . Redirect output to the ins variable.
 Topic bld 2 p In variables.
 
 T . flag: set on or off
+
 
 ----------------------------------------------------------------
 Concept Break
@@ -188,6 +219,18 @@ T . what: what to break
 T . pad: padding (of)
 T . actor: which actor to break
 T . check: only if not unique
+
+
+Topic bld 2 p what options.
+
+T . actor: continue with calling actor - break actor case.
+T . loop: continue after calling All, Its cmd - break loop chain.
+T . cmds: continue with actor case - break cmd list.
+T . exit: exit script.
+
+Topic bld 2 p check options.
+
+T . actor: continue with calling actor - break actor case.
 
 ----------------------------------------------------------------
 Concept Add
@@ -220,6 +263,7 @@ Topic bld 2 p Add variables.
 T . path: node path where to add
 T . data: data to add
 
+
 ----------------------------------------------------------------
 Concept This
 ----------------------------------------------------------------
@@ -235,6 +279,7 @@ Topic bld 2 p This variables.
 T . path: node path
 T . actor: what to do
 T . args: arg data value
+
 
 ----------------------------------------------------------------
 Concept Replace
@@ -255,6 +300,7 @@ T . with: what to replace with
 T . pad2: padding (match)
 T . match: string match pattern
 
+
 ----------------------------------------------------------------
 Concept Dbconn
 ----------------------------------------------------------------
@@ -271,6 +317,7 @@ T . database:
 T . username: 
 T . password: 
 
+
 ----------------------------------------------------------------
 Concept Http
 ----------------------------------------------------------------
@@ -278,7 +325,7 @@ Concept Http
 Topic bld 1 h1 Http
 
 T . Append http data to the collection map or node path.
-T . Calls the Add command.
+T . Calls the Add command with the body data.
 T . Options are:
 T . body_node use the body value as a node path.
 T . all the options of the Add command.
@@ -288,6 +335,7 @@ Topic bld 2 p Http variables.
 T . path: node path where to add
 T . data: http url
 T . body: http body
+
 
 ----------------------------------------------------------------
 Concept Comp
@@ -304,6 +352,13 @@ T . nop: ignored.
 T . parent: its parent.
 T . find: if need to be found.
 T . doc: documentation string
+
+
+Topic bld 2 p find options.
+
+T . Find: for top level comps
+T . FindIn: for nested comps
+T . .: has no name field or not needed.
 
 Topic bld 2 p Child nodes.
 
@@ -331,6 +386,18 @@ T . mw2: data type - not used.
 T . pad: separator.
 T . doc: documentation string.
 
+
+Topic bld 2 p mw options.
+
+T . C1: word
+T . V1: string to end of line.
+T . F1: link to local comp - same parent - needs a Ref.
+T . R1: link to top level comp - Find - needs a Ref.
+T . L1: link to child of previous link - R1 for first, L1 for chain - needs a Ref2.
+T . M1: link more of L1 - needs Ref3.
+T . Q1: link to child of link from parent element - need Refq.
+T . N1: nested comp.
+
 Topic bld 2 p Child nodes.
 
 T . Opt: Select options for element.
@@ -349,6 +416,7 @@ Topic bld 2 p Opt variables.
 T . name: name of value option
 T . pad: separator
 T . doc: documentation string
+
 
 ----------------------------------------------------------------
 Concept Ref
@@ -373,6 +441,13 @@ T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
 
+
+Topic bld 2 p opt options.
+
+T . check: check - error if not found
+T . .: optional, if value is also a (.)
+T . ?: no error if not found
+
 ----------------------------------------------------------------
 Concept Ref2
 ----------------------------------------------------------------
@@ -393,6 +468,12 @@ T . element2: element name to use for for the link for remote parent
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
+
+
+Topic bld 2 p opt options.
+
+T . check: check
+T . .: optional value to use
 
 ----------------------------------------------------------------
 Concept Ref3
@@ -418,6 +499,12 @@ T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
 
+
+Topic bld 2 p opt options.
+
+T . check: check
+T . .: optional value to use
+
 ----------------------------------------------------------------
 Concept Refq
 ----------------------------------------------------------------
@@ -440,6 +527,12 @@ T . comp_ref: parent's Comp
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
+
+
+Topic bld 2 p opt options.
+
+T . check: check
+T . .: optional value to use
 
 ----------------------------------------------------------------
 Concept Refu
@@ -464,6 +557,12 @@ T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
 
+
+Topic bld 2 p opt options.
+
+T . check: check
+T . .: optional value to use
+
 ----------------------------------------------------------------
 Concept Join
 ----------------------------------------------------------------
@@ -482,6 +581,7 @@ T . element2:
 T . comp2: 
 T . element3: 
 
+
 ----------------------------------------------------------------
 Concept Concept
 ----------------------------------------------------------------
@@ -492,6 +592,7 @@ Topic bld 1 h1 Concept
 Topic bld 2 p Concept variables.
 
 T . name: name of concept
+
 
 Topic bld 2 p Child nodes.
 
@@ -511,6 +612,7 @@ T . level: index tree level
 T . tag: html or formating tag
 T . desc: doc to output.
 
+
 Topic bld 2 p Child nodes.
 
 T . T: 
@@ -528,6 +630,7 @@ Topic bld 2 p T variables.
 T . file: optional file to include
 T . desc: doc to output.
 
+
 ----------------------------------------------------------------
 Concept See
 ----------------------------------------------------------------
@@ -538,4 +641,5 @@ Topic bld 1 h1 See
 Topic bld 2 p See variables.
 
 T . concept: Ref to concept
+
 

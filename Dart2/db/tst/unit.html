@@ -247,8 +247,23 @@ eq: to equal
 value: this
 </pre>
 
-<p>Child nodes.</p>
+<p>eq options.</p>
 <a name=tag_33></a>
+<pre>
+??: matches variable errors
+?: match no variable errors
+&: previous actor match and current actor match
+&: previous actor match or current actor match
+=: equal
+!=: not equal
+in: item in a list
+!in: item not in list
+has: list has item
+regex: regex match
+</pre>
+
+<p>Child nodes.</p>
+<a name=tag_34></a>
 <pre>
 All: An actor calling type.
 Du: An actor calling type.
@@ -269,14 +284,14 @@ Http: Append http data to the collection map or node path.
 </pre>
 
 <h1>All</h1>
-<a name=tag_34></a>
+<a name=tag_35></a>
 <pre>
 An actor calling type.
 For each component call this actor.
 </pre>
 
 <p>All variables.</p>
-<a name=tag_35></a>
+<a name=tag_36></a>
 <pre>
 what: what to look for
 actor: what actor to run for it
@@ -284,27 +299,27 @@ args: arg data value
 </pre>
 
 <h1>Du</h1>
-<a name=tag_36></a>
+<a name=tag_37></a>
 <pre>
 An actor calling type.
 Coditional call to actor
 </pre>
 
 <p>Du variables.</p>
-<a name=tag_37></a>
+<a name=tag_38></a>
 <pre>
 actor: what actor to run for it
 args: arg data value
 </pre>
 
 <h1>New</h1>
-<a name=tag_38></a>
+<a name=tag_39></a>
 <pre>
 Create new comp and add
 </pre>
 
 <p>New variables.</p>
-<a name=tag_39></a>
+<a name=tag_40></a>
 <pre>
 where: add to dats or acts
 what: what comp to load
@@ -312,25 +327,25 @@ line: load line args
 </pre>
 
 <h1>Refs</h1>
-<a name=tag_40></a>
+<a name=tag_41></a>
 <pre>
 Re run refs after loading new defs
 </pre>
 
 <p>Refs variables.</p>
-<a name=tag_41></a>
+<a name=tag_42></a>
 <pre>
 where: ref of dats or acts
 </pre>
 
 <h1>Var</h1>
-<a name=tag_42></a>
+<a name=tag_43></a>
 <pre>
 Set variable to value
 </pre>
 
 <p>Var variables.</p>
-<a name=tag_43></a>
+<a name=tag_44></a>
 <pre>
 attr: variable name
 eq: to equal
@@ -338,14 +353,14 @@ value: this
 </pre>
 
 <h1>Its</h1>
-<a name=tag_44></a>
+<a name=tag_45></a>
 <pre>
 Call this actor
 For each child or reference of this def
 </pre>
 
 <p>Its variables.</p>
-<a name=tag_45></a>
+<a name=tag_46></a>
 <pre>
 what: to look for
 actor: what to do
@@ -353,31 +368,31 @@ args: arg data value
 </pre>
 
 <h1>C</h1>
-<a name=tag_46></a>
+<a name=tag_47></a>
 <pre>
 Output code to file.
 </pre>
 
 <p>C variables.</p>
-<a name=tag_47></a>
+<a name=tag_48></a>
 <pre>
 desc: code to output.
 </pre>
 
 <h1>Cs</h1>
-<a name=tag_48></a>
+<a name=tag_49></a>
 <pre>
 Output code sniplet to file - no newline
 </pre>
 
 <p>Cs variables.</p>
-<a name=tag_49></a>
+<a name=tag_50></a>
 <pre>
 desc: code to output.
 </pre>
 
 <h1>Out</h1>
-<a name=tag_50></a>
+<a name=tag_51></a>
 <pre>
 Output control
 delay: output is off until first C in next actor
@@ -386,34 +401,43 @@ off: cascade all output  off
 </pre>
 
 <p>Out variables.</p>
-<a name=tag_51></a>
+<a name=tag_52></a>
 <pre>
 what: to look for.
 pad: to look for
 desc: code to buffer.
 </pre>
 
+<p>what options.</p>
+<a name=tag_53></a>
+<pre>
+delay: output is off until first C in next actor.
+normal: back to normal.
+of: output is off.
+on: output is on.
+</pre>
+
 <h1>In</h1>
-<a name=tag_52></a>
+<a name=tag_54></a>
 <pre>
 Redirect output to the ins variable.
 </pre>
 
 <p>In variables.</p>
-<a name=tag_53></a>
+<a name=tag_55></a>
 <pre>
 flag: set on or off
 </pre>
 
 <h1>Break</h1>
-<a name=tag_54></a>
+<a name=tag_56></a>
 <pre>
 Break out of actor loop
 To not do the default one
 </pre>
 
 <p>Break variables.</p>
-<a name=tag_55></a>
+<a name=tag_57></a>
 <pre>
 what: what to break
 pad: padding (of)
@@ -421,8 +445,23 @@ actor: which actor to break
 check: only if not unique
 </pre>
 
+<p>what options.</p>
+<a name=tag_58></a>
+<pre>
+actor: continue with calling actor - break actor case.
+loop: continue after calling All, Its cmd - break loop chain.
+cmds: continue with actor case - break cmd list.
+exit: exit script.
+</pre>
+
+<p>check options.</p>
+<a name=tag_59></a>
+<pre>
+actor: continue with calling actor - break actor case.
+</pre>
+
 <h1>Add</h1>
-<a name=tag_56></a>
+<a name=tag_60></a>
 <pre>
 Add to the collection map or list.
 The path for the collect is _.
@@ -446,14 +485,14 @@ execute database sql
 </pre>
 
 <p>Add variables.</p>
-<a name=tag_57></a>
+<a name=tag_61></a>
 <pre>
 path: node path where to add
 data: data to add
 </pre>
 
 <h1>This</h1>
-<a name=tag_58></a>
+<a name=tag_62></a>
 <pre>
 Call this actor
 For each child or item in the collection
@@ -461,7 +500,7 @@ Works the same as the Its command with added navigation for map and lists.
 </pre>
 
 <p>This variables.</p>
-<a name=tag_59></a>
+<a name=tag_63></a>
 <pre>
 path: node path
 actor: what to do
@@ -469,7 +508,7 @@ args: arg data value
 </pre>
 
 <h1>Replace</h1>
-<a name=tag_60></a>
+<a name=tag_64></a>
 <pre>
 Replace string.
 Replace _:D with abc match cba
@@ -478,7 +517,7 @@ group if the match has group sections.
 </pre>
 
 <p>Replace variables.</p>
-<a name=tag_61></a>
+<a name=tag_65></a>
 <pre>
 path: node path where to add
 pad: padding (with)
@@ -488,14 +527,14 @@ match: string match pattern
 </pre>
 
 <h1>Dbconn</h1>
-<a name=tag_62></a>
+<a name=tag_66></a>
 <pre>
 connect to database
 the connection closes at end of script.
 </pre>
 
 <p>Dbconn variables.</p>
-<a name=tag_63></a>
+<a name=tag_67></a>
 <pre>
 host: 
 database: 
@@ -504,17 +543,17 @@ password:
 </pre>
 
 <h1>Http</h1>
-<a name=tag_64></a>
+<a name=tag_68></a>
 <pre>
 Append http data to the collection map or node path.
-Calls the Add command.
+Calls the Add command with the body data.
 Options are:
 body_node use the body value as a node path.
 all the options of the Add command.
 </pre>
 
 <p>Http variables.</p>
-<a name=tag_65></a>
+<a name=tag_69></a>
 <pre>
 path: node path where to add
 data: http url
@@ -522,13 +561,13 @@ body: http body
 </pre>
 
 <h1>Comp</h1>
-<a name=tag_66></a>
+<a name=tag_70></a>
 <pre>
 Loader definition for defining components.
 </pre>
 
 <p>Comp variables.</p>
-<a name=tag_67></a>
+<a name=tag_71></a>
 <pre>
 name: of component.
 nop: ignored.
@@ -537,8 +576,16 @@ find: if need to be found.
 doc: documentation string
 </pre>
 
+<p>find options.</p>
+<a name=tag_72></a>
+<pre>
+Find: for top level comps
+FindIn: for nested comps
+.: has no name field or not needed.
+</pre>
+
 <p>Child nodes.</p>
-<a name=tag_68></a>
+<a name=tag_73></a>
 <pre>
 Element: Loader definition for defining component's elements.
 Ref: Relation of element to comp
@@ -550,13 +597,13 @@ Join: Add refs for this join
 </pre>
 
 <h1>Element</h1>
-<a name=tag_69></a>
+<a name=tag_74></a>
 <pre>
 Loader definition for defining component's elements.
 </pre>
 
 <p>Element variables.</p>
-<a name=tag_70></a>
+<a name=tag_75></a>
 <pre>
 name: of element
 mw: storage type
@@ -565,21 +612,34 @@ pad: separator.
 doc: documentation string.
 </pre>
 
+<p>mw options.</p>
+<a name=tag_76></a>
+<pre>
+C1: word
+V1: string to end of line.
+F1: link to local comp - same parent - needs a Ref.
+R1: link to top level comp - Find - needs a Ref.
+L1: link to child of previous link - R1 for first, L1 for chain - needs a Ref2.
+M1: link more of L1 - needs Ref3.
+Q1: link to child of link from parent element - need Refq.
+N1: nested comp.
+</pre>
+
 <p>Child nodes.</p>
-<a name=tag_71></a>
+<a name=tag_77></a>
 <pre>
 Opt: Select options for element.
 </pre>
 
 <h1>Opt</h1>
-<a name=tag_72></a>
+<a name=tag_78></a>
 <pre>
 Select options for element.
 Add meaning to documentation
 </pre>
 
 <p>Opt variables.</p>
-<a name=tag_73></a>
+<a name=tag_79></a>
 <pre>
 name: name of value option
 pad: separator
@@ -587,7 +647,7 @@ doc: documentation string
 </pre>
 
 <h1>Ref</h1>
-<a name=tag_74></a>
+<a name=tag_80></a>
 <pre>
 Relation of element to comp
 For (element field) of type R1, link to a comp.
@@ -600,7 +660,7 @@ Finally, it stores the reference id in the (element field)'s ref.
 </pre>
 
 <p>Ref variables.</p>
-<a name=tag_75></a>
+<a name=tag_81></a>
 <pre>
 element: element name to use to find a comp.
 comp: comp name it links to
@@ -609,8 +669,16 @@ var: not used
 doc: doc string
 </pre>
 
+<p>opt options.</p>
+<a name=tag_82></a>
+<pre>
+check: check - error if not found
+.: optional, if value is also a (.)
+?: no error if not found
+</pre>
+
 <h1>Ref2</h1>
-<a name=tag_76></a>
+<a name=tag_83></a>
 <pre>
 Relation of element to comp and child of comp
 It starts with the (element2 field), which references a component.
@@ -620,7 +688,7 @@ The (element field) is of type L1.
 </pre>
 
 <p>Ref2 variables.</p>
-<a name=tag_77></a>
+<a name=tag_84></a>
 <pre>
 element: element name to use to find a comp in the remote parent.
 comp: comp name it links to.
@@ -630,8 +698,15 @@ var: not used
 doc: doc string
 </pre>
 
+<p>opt options.</p>
+<a name=tag_85></a>
+<pre>
+check: check
+.: optional value to use
+</pre>
+
 <h1>Ref3</h1>
-<a name=tag_78></a>
+<a name=tag_86></a>
 <pre>
 Relation of element to comp and child of comp
 It starts with the (element2 field), which references a component.
@@ -642,7 +717,7 @@ The (element field) is of type M1.
 </pre>
 
 <p>Ref3 variables.</p>
-<a name=tag_79></a>
+<a name=tag_87></a>
 <pre>
 element: element name to use to find a comp in the remote parent.
 comp: comp name it links to.
@@ -654,8 +729,15 @@ var: not used
 doc: doc string
 </pre>
 
+<p>opt options.</p>
+<a name=tag_88></a>
+<pre>
+check: check
+.: optional value to use
+</pre>
+
 <h1>Refq</h1>
-<a name=tag_80></a>
+<a name=tag_89></a>
 <pre>
 Relation of element to comp and child of comp
 It starts with the parent, which references a component.
@@ -666,7 +748,7 @@ The (element field) is of type Q1.
 </pre>
 
 <p>Refq variables.</p>
-<a name=tag_81></a>
+<a name=tag_90></a>
 <pre>
 element: element name to use to find a comp in the remote parent.
 comp: comp name it links to.
@@ -677,8 +759,15 @@ var: not used
 doc: doc string
 </pre>
 
+<p>opt options.</p>
+<a name=tag_91></a>
+<pre>
+check: check
+.: optional value to use
+</pre>
+
 <h1>Refu</h1>
-<a name=tag_82></a>
+<a name=tag_92></a>
 <pre>
 Copy of element to comp and child of comp
 It starts with the (element2 field), which references a component.
@@ -688,7 +777,7 @@ The (element field) is of type U0 that is not a input field.
 </pre>
 
 <p>Refu variables.</p>
-<a name=tag_83></a>
+<a name=tag_93></a>
 <pre>
 element: element name to use to copy remote link..
 comp: comp name it links to.
@@ -700,14 +789,21 @@ var: not used
 doc: doc string
 </pre>
 
+<p>opt options.</p>
+<a name=tag_94></a>
+<pre>
+check: check
+.: optional value to use
+</pre>
+
 <h1>Join</h1>
-<a name=tag_84></a>
+<a name=tag_95></a>
 <pre>
 Add refs for this join
 </pre>
 
 <p>Join variables.</p>
-<a name=tag_85></a>
+<a name=tag_96></a>
 <pre>
 element: 
 dir: 
@@ -719,29 +815,29 @@ element3:
 </pre>
 
 <h1>Concept</h1>
-<a name=tag_86></a>
+<a name=tag_97></a>
 <pre>
 </pre>
 
 <p>Concept variables.</p>
-<a name=tag_87></a>
+<a name=tag_98></a>
 <pre>
 name: name of concept
 </pre>
 
 <p>Child nodes.</p>
-<a name=tag_88></a>
+<a name=tag_99></a>
 <pre>
 Topic: 
 </pre>
 
 <h1>Topic</h1>
-<a name=tag_89></a>
+<a name=tag_100></a>
 <pre>
 </pre>
 
 <p>Topic variables.</p>
-<a name=tag_90></a>
+<a name=tag_101></a>
 <pre>
 name: topic name
 level: index tree level
@@ -750,31 +846,31 @@ desc: doc to output.
 </pre>
 
 <p>Child nodes.</p>
-<a name=tag_91></a>
+<a name=tag_102></a>
 <pre>
 T: 
 See: 
 </pre>
 
 <h1>T</h1>
-<a name=tag_92></a>
+<a name=tag_103></a>
 <pre>
 </pre>
 
 <p>T variables.</p>
-<a name=tag_93></a>
+<a name=tag_104></a>
 <pre>
 file: optional file to include
 desc: doc to output.
 </pre>
 
 <h1>See</h1>
-<a name=tag_94></a>
+<a name=tag_105></a>
 <pre>
 </pre>
 
 <p>See variables.</p>
-<a name=tag_95></a>
+<a name=tag_106></a>
 <pre>
 concept: Ref to concept
 </pre>
