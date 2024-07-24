@@ -13,6 +13,20 @@ dart run ../src/main.dart concept.act concept.def cmd >cmd.html
 if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
 
 echo ::::::::::::::
+echo bld_doc.act
+echo ::::::::::::::
+
+dart run ../src/main.dart bld_doc.act ../bld/act.unit,../bld/act_db.unit,../bld/gen.unit,../bld/concept.unit >unit.def
+if [ $? != 0 ]; then echo dart run ../src/main.dart bld_doc.act ../bld/act.unit,../bld/act_db.unit,../bld/gen.unit,../bld/concept.unit >unit.def has errors; fi
+
+echo ::::::::::::::
+echo concept.act "*"
+echo ::::::::::::::
+
+dart run ../src/main.dart concept.act concept.def,unit.def "*" >unit.html
+if [ $? != 0 ]; then echo concept.act concept.def,unit.def has errors; fi
+
+echo ::::::::::::::
 echo select.act
 echo ::::::::::::::
 

@@ -11,22 +11,30 @@ Comp Actor parent . Find
 	Element comp   C1 COMP  * what it belongs to
 	Element attr   C1 WORD  * what to check
 	Element eq     C1 WORD  * to equal
+	    Opt ??              * matches variable errors
+	    Opt ?               * match no variable errors
+	    Opt &               * previous actor match and current actor match
+	    Opt &               * previous actor match or current actor match
+	    Opt =               * equal
+	    Opt !=              * not equal
+	    Opt in              * item in a list
+	    Opt !in             * item not in list
+	    Opt has             * list has item
+	    Opt regex           * regex match
 	Element value  V1 WORD  * this
 -	Element cc     V1 WORD  * code to generate.
+
+?? ? & | = != in !in has regex
 
 ----------------------------------------------------------------
 Comp All parent Actor
 ----------------------------------------------------------------
 * An actor calling type.
 * For each component call this actor.
-* The match is for the component.
 ----------------------------------------------------------------
 
 	Element what    C1 WORD    * what to look for
 	Element actor   R1 ACTOR   * what actor to run for it
--	Element attr    C1 WORD    * what to check
--	Element eq      C1 WORD    * to equal
--	Element value   C1 WORD    * this
 	Element args    V1 WORD    * arg data value
 
 Ref actor Actor check
@@ -79,15 +87,10 @@ Comp Its parent Actor
 ----------------------------------------------------------------
 * Call this actor
 * For each child or reference of this def
-* The match is for the component.
-* Its what actor . . . args - to bypass the match
 ----------------------------------------------------------------
 
 	Element what    C1 WORD      * to look for
 	Element actor   R1 ACTOR     * what to do
--	Element attr    C1 WORD      * what to check
--	Element eq      C1 WORD      * to equal
--	Element value   C1 WORD      * this
 	Element args    V1 WORD      * arg data value
 	
 Ref actor Actor check
@@ -117,7 +120,11 @@ Comp Out parent Actor
 * off: cascade all output  off
 ----------------------------------------------------------------
 
-	Element what   C1 WORD      * to look for
+	Element what   C1 WORD      * to look for.
+	    Opt delay               * output is off until first C in next actor.
+	    Opt normal              * back to normal.
+	    Opt of                  * output is off.
+	    Opt on                  * output is on.
 	Element pad    C1 WORD      * to look for
 	Element desc   V1 DESC * code to buffer.
 
@@ -137,17 +144,19 @@ Comp Break parent Actor
 ----------------------------------------------------------------
 
 	Element what   C1      WORD * what to break
-		Opt    actor        * continue with calling actor - break actor case.
-		Opt    loop         * continue after calling All, Its cmd - break loop chain.
-		Opt    cmds         * continue with actor case - break cmd list.
+	    Opt actor               * continue with calling actor - break actor case.
+	    Opt loop                * continue after calling All, Its cmd - break loop chain.
+	    Opt cmds                * continue with actor case - break cmd list.
+	    Opt exit                * exit script.
 	Element pad    C1 WORD      * padding (of)
 	Element actor  C1 ACTOR     * which actor to break
 	Element check  C1 WORD      * only if not unique
+	    Opt actor               * continue with calling actor - break actor case.
 
 ----------------------------------------------------------------
 Comp Add parent Actor . Cmd
 ----------------------------------------------------------------
-* Append to the collection map or node path.
+* Add to the collection map or list.
 * The path for the collect is _.
 * The path for the current node is .
 * The default is to the string data.
@@ -161,6 +170,11 @@ Comp Add parent Actor . Cmd
 * check to not add dups
 * break on dups
 * no_add to only check
+* file as input
+* eval string as input
+* post post to url
+* get from url
+* execute database sql
 ----------------------------------------------------------------
 	
 	Element path     C1 WORD * node path where to add
@@ -171,6 +185,7 @@ Comp This parent Actor
 ----------------------------------------------------------------
 * Call this actor
 * For each child or item in the collection
+* Works the same as the Its command with added navigation for map and lists.
 ----------------------------------------------------------------
 
 	Element path    C1 WORD      * node path
@@ -184,6 +199,8 @@ Comp Replace parent Actor
 ----------------------------------------------------------------
 * Replace string.
 * Replace _:D with abc match cba
+* Options are:
+* group if the match has group sections.
 ----------------------------------------------------------------
 	
 	Element path     C1 WORD * node path where to add

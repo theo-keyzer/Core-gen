@@ -2,6 +2,7 @@
 Comp Dbconn parent Actor
 ----------------------------------------------------------------
 * connect to database
+* the connection closes at end of script.
 ----------------------------------------------------------------
 
 	Element host       C1 WORD    * 
@@ -13,6 +14,10 @@ Comp Dbconn parent Actor
 Comp Http parent Actor
 ----------------------------------------------------------------
 * Append http data to the collection map or node path.
+* Calls the Add command with the body data.
+* Options are:
+* body_node use the body value as a node path.
+* all the options of the Add command.
 ----------------------------------------------------------------
 	
 	Element path     C1 WORD * node path where to add

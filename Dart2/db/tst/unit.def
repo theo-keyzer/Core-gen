@@ -1,77 +1,4 @@
 ----------------------------------------------------------------
-Concept Concept
-----------------------------------------------------------------
-
-Topic bld 1 h1 Concept
-
-T . Loader definition for actors.
-T . These are like routines the generator calls
-T . for generating code.
-T . Actors group on name
-
-Topic bld 2 p Concept variables.
-
-T . name: name of concept
-
-Topic bld 2 p Child nodes.
-
-T . Topic: Loader definition for actors.
-
-----------------------------------------------------------------
-Concept Topic
-----------------------------------------------------------------
-
-Topic bld 1 h1 Topic
-
-T . Loader definition for actors.
-T . These are like routines the generator calls
-T . for generating code.
-T . Actors group on name
-
-Topic bld 2 p Topic variables.
-
-T . name: topic name
-T . level: index tree level
-T . tag: html or formating tag
-T . desc: doc to output.
-
-Topic bld 2 p Child nodes.
-
-T . T: Loader definition for actors.
-T . See: Loader definition for actors.
-
-----------------------------------------------------------------
-Concept T
-----------------------------------------------------------------
-
-Topic bld 1 h1 T
-
-T . Loader definition for actors.
-T . These are like routines the generator calls
-T . for generating code.
-T . Actors group on name
-
-Topic bld 2 p T variables.
-
-T . file: optional file to include
-T . desc: doc to output.
-
-----------------------------------------------------------------
-Concept See
-----------------------------------------------------------------
-
-Topic bld 1 h1 See
-
-T . Loader definition for actors.
-T . These are like routines the generator calls
-T . for generating code.
-T . Actors group on name
-
-Topic bld 2 p See variables.
-
-T . concept: Ref to concept
-
-----------------------------------------------------------------
 Concept Actor
 ----------------------------------------------------------------
 
@@ -103,7 +30,7 @@ T . Cs: Output code sniplet to file - no newline
 T . Out: Output control
 T . In: Redirect output to the ins variable.
 T . Break: Break out of actor loop
-T . Add: Append to the collection map or node path.
+T . Add: Add to the collection map or list.
 T . This: Call this actor
 T . Replace: Replace string.
 T . Dbconn: connect to database
@@ -117,7 +44,6 @@ Topic bld 1 h1 All
 
 T . An actor calling type.
 T . For each component call this actor.
-T . The match is for the component.
 
 Topic bld 2 p All variables.
 
@@ -187,8 +113,6 @@ Topic bld 1 h1 Its
 
 T . Call this actor
 T . For each child or reference of this def
-T . The match is for the component.
-T . Its what actor . . . args - to bypass the match
 
 Topic bld 2 p Its variables.
 
@@ -233,7 +157,7 @@ T . off: cascade all output  off
 
 Topic bld 2 p Out variables.
 
-T . what: to look for
+T . what: to look for.
 T . pad: to look for
 T . desc: code to buffer.
 
@@ -271,7 +195,7 @@ Concept Add
 
 Topic bld 1 h1 Add
 
-T . Append to the collection map or node path.
+T . Add to the collection map or list.
 T . The path for the collect is _.
 T . The path for the current node is .
 T . The default is to the string data.
@@ -285,6 +209,11 @@ T . clear to clear the map or list
 T . check to not add dups
 T . break on dups
 T . no_add to only check
+T . file as input
+T . eval string as input
+T . post post to url
+T . get from url
+T . execute database sql
 
 Topic bld 2 p Add variables.
 
@@ -299,6 +228,7 @@ Topic bld 1 h1 This
 
 T . Call this actor
 T . For each child or item in the collection
+T . Works the same as the Its command with added navigation for map and lists.
 
 Topic bld 2 p This variables.
 
@@ -314,6 +244,8 @@ Topic bld 1 h1 Replace
 
 T . Replace string.
 T . Replace _:D with abc match cba
+T . Options are:
+T . group if the match has group sections.
 
 Topic bld 2 p Replace variables.
 
@@ -330,6 +262,7 @@ Concept Dbconn
 Topic bld 1 h1 Dbconn
 
 T . connect to database
+T . the connection closes at end of script.
 
 Topic bld 2 p Dbconn variables.
 
@@ -345,6 +278,10 @@ Concept Http
 Topic bld 1 h1 Http
 
 T . Append http data to the collection map or node path.
+T . Calls the Add command.
+T . Options are:
+T . body_node use the body value as a node path.
+T . all the options of the Add command.
 
 Topic bld 2 p Http variables.
 
@@ -420,12 +357,17 @@ Concept Ref
 Topic bld 1 h1 Ref
 
 T . Relation of element to comp
-T . For the R1, link to a comp.
-T . For the L1, link to local element (same parent).
+T . For (element field) of type R1, link to a comp.
+T . Uses the (element field) as name to find a comp.
+T . Finally, it stores the reference id in the (element field)'s ref.
+T . For (element field) of type F1, link to local element (same parent).
+T . It starts with the parent, which references a component.
+T . That component is then used as the parent to find the child (element field) component.
+T . Finally, it stores the reference id in the (element field)'s ref.
 
 Topic bld 2 p Ref variables.
 
-T . element: element name of link to local element
+T . element: element name to use to find a comp.
 T . comp: comp name it links to
 T . opt: optional or check - error if not found
 T . var: not used
@@ -441,6 +383,7 @@ T . Relation of element to comp and child of comp
 T . It starts with the (element2 field), which references a component.
 T . That component is then used as the parent to find the child (element field) component.
 T . Finally, it stores the reference id in the (element field)'s ref.
+T . The (element field) is of type L1.
 
 Topic bld 2 p Ref2 variables.
 
@@ -462,6 +405,7 @@ T . It starts with the (element2 field), which references a component.
 T . The (element3 field) in that component, references another component.
 T . That component is then used as the parent to find the child (element field) component.
 T . Finally, it stores the reference id in the (element field)'s ref.
+T . The (element field) is of type M1.
 
 Topic bld 2 p Ref3 variables.
 
@@ -481,12 +425,17 @@ Concept Refq
 Topic bld 1 h1 Refq
 
 T . Relation of element to comp and child of comp
+T . It starts with the parent, which references a component.
+T . The (element2 field) in that component, references another component.
+T . That component is then used as the parent to find the child (element field) component.
+T . Finally, it stores the reference id in the (element field)'s ref.
+T . The (element field) is of type Q1.
 
 Topic bld 2 p Refq variables.
 
 T . element: element name to use to find a comp in the remote parent.
 T . comp: comp name it links to.
-T . element2: element name to use to find its parent element in, use its link for the remote parent.
+T . element2: element name to use to find the remote element in, use its link for the remote parent.
 T . comp_ref: parent's Comp
 T . opt: optional or check - error if not found
 T . var: not used
@@ -499,6 +448,10 @@ Concept Refu
 Topic bld 1 h1 Refu
 
 T . Copy of element to comp and child of comp
+T . It starts with the (element2 field), which references a component.
+T . The (element3 field) in that component, references another component.
+T . Finally, it stores the same reference id in the (element field)'s ref.
+T . The (element field) is of type U0 that is not a input field.
 
 Topic bld 2 p Refu variables.
 
@@ -528,4 +481,61 @@ T . using:
 T . element2: 
 T . comp2: 
 T . element3: 
+
+----------------------------------------------------------------
+Concept Concept
+----------------------------------------------------------------
+
+Topic bld 1 h1 Concept
+
+
+Topic bld 2 p Concept variables.
+
+T . name: name of concept
+
+Topic bld 2 p Child nodes.
+
+T . Topic: 
+
+----------------------------------------------------------------
+Concept Topic
+----------------------------------------------------------------
+
+Topic bld 1 h1 Topic
+
+
+Topic bld 2 p Topic variables.
+
+T . name: topic name
+T . level: index tree level
+T . tag: html or formating tag
+T . desc: doc to output.
+
+Topic bld 2 p Child nodes.
+
+T . T: 
+T . See: 
+
+----------------------------------------------------------------
+Concept T
+----------------------------------------------------------------
+
+Topic bld 1 h1 T
+
+
+Topic bld 2 p T variables.
+
+T . file: optional file to include
+T . desc: doc to output.
+
+----------------------------------------------------------------
+Concept See
+----------------------------------------------------------------
+
+Topic bld 1 h1 See
+
+
+Topic bld 2 p See variables.
+
+T . concept: Ref to concept
 

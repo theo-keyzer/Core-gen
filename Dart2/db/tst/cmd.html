@@ -14,7 +14,9 @@ The actor has a match condition.
 
 <p>Actor commands.</p>
 <a name=tag_4></a>
+<pre>
 The Du, All, Its, This and That commands call other actors.
+</pre>
 
 <h2>The Commands.</h2>
 <a name=tag_7></a>
@@ -23,7 +25,9 @@ The command nodes.
 
 <p>Actor commands.</p>
 <a name=tag_9></a>
+<pre>
 The commands has access to the variables and functions in the node object of the actor.
+</pre>
 
 <h2>Node options.</h2>
 <a name=tag_16></a>
@@ -36,7 +40,9 @@ Options do not have a value, but can be parsed later on.
 
 <p>Option commands.</p>
 <a name=tag_17></a>
+<pre>
 The command is Its options.
+</pre>
 
 <h2>Collection Nodes.</h2>
 <a name=tag_19></a>
@@ -48,13 +54,16 @@ A node path uses the same format for variable names as it does for the Append an
 
 <p>Commands.</p>
 <a name=tag_20></a>
+<pre>
 They are Add and This.
 The This path actor, calls the actor with the node of the path.
 The This path. actor, calls the actor in a loop with each map or list entry.
 The This command uses a path as starting point whereas the Its command uses the current node to start.
+</pre>
 
 <p>Add.</p>
 <a name=tag_21></a>
+<pre>
 To add to a list, its Add path string.
 To add to a map, its Add path:key string.
 Add _:D abc, put the string into the D.
@@ -63,41 +72,56 @@ Add _.L abc, adds the string abc to the L list if L is a list.
 Add.map _:M, creates the map M.
 Add _.M:S abc adds the abc string to S entry of the map M if M is a map.
 Add.map _.M:M2, creates the map M2 in the Map M if M is a map.
+</pre>
 <a href="example.html#tag_30">example select.act</a>
 
 <p>Areas.</p>
 <a name=tag_22></a>
+<pre>
 It has a node path to specify where to add.
 The (.) is the current node. If it is a node entry, it is without the (.).
 The (_) is for the collection nodes.
+</pre>
 
 <p>Options.</p>
 <a name=tag_23></a>
+<pre>
 They are me, node, json, eval, map, list, file and strs to specify what to add. It defaults to the string provided.
 The break is to break out of the actor loop for duplicates.
 Its also sets a break flag for the Break command to use for advanced breaks.
+</pre>
 
 <p>Option check.</p>
 <a name=tag_24></a>
+<pre>
 This is to check that no duplicates are added.
+</pre>
 
 <p>Option clear.</p>
 <a name=tag_25></a>
+<pre>
 For the list and map, it will recreate it if there and create it if not.
 Without the clear, it will not recreate it if already t and create it if not.
+</pre>
 
 <p>Option node.</p>
 <a name=tag_26></a>
+<pre>
 This is add a node object versus a string of it.
+</pre>
 
 <p>Option me.</p>
 <a name=tag_27></a>
+<pre>
 This is to add the current object.
+</pre>
 
 <p>Option strs.</p>
 <a name=tag_28></a>
+<pre>
 The string value is processed via the strs function to replace variable names.
 The result is passed to the strs function again to further replace variable names.
 This is for when a variable has a variable name in it.
+</pre>
 </body>
 </html>
