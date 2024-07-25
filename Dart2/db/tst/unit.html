@@ -283,15 +283,24 @@ Dbconn: connect to database
 Http: Append http data to the collection map or node path.
 </pre>
 
-<h1>All</h1>
+<p>Reverse links.</p>
 <a name=tag_35></a>
+<pre>
+All_actor: what actor to run for it
+Du_actor: what actor to run for it
+Its_actor: what to do
+This_actor: what to do
+</pre>
+
+<h1>All</h1>
+<a name=tag_36></a>
 <pre>
 An actor calling type.
 For each component call this actor.
 </pre>
 
 <p>All variables.</p>
-<a name=tag_36></a>
+<a name=tag_37></a>
 <pre>
 what: what to look for
 actor: what actor to run for it
@@ -299,27 +308,27 @@ args: arg data value
 </pre>
 
 <h1>Du</h1>
-<a name=tag_37></a>
+<a name=tag_38></a>
 <pre>
 An actor calling type.
 Coditional call to actor
 </pre>
 
 <p>Du variables.</p>
-<a name=tag_38></a>
+<a name=tag_39></a>
 <pre>
 actor: what actor to run for it
 args: arg data value
 </pre>
 
 <h1>New</h1>
-<a name=tag_39></a>
+<a name=tag_40></a>
 <pre>
 Create new comp and add
 </pre>
 
 <p>New variables.</p>
-<a name=tag_40></a>
+<a name=tag_41></a>
 <pre>
 where: add to dats or acts
 what: what comp to load
@@ -327,25 +336,25 @@ line: load line args
 </pre>
 
 <h1>Refs</h1>
-<a name=tag_41></a>
+<a name=tag_42></a>
 <pre>
 Re run refs after loading new defs
 </pre>
 
 <p>Refs variables.</p>
-<a name=tag_42></a>
+<a name=tag_43></a>
 <pre>
 where: ref of dats or acts
 </pre>
 
 <h1>Var</h1>
-<a name=tag_43></a>
+<a name=tag_44></a>
 <pre>
 Set variable to value
 </pre>
 
 <p>Var variables.</p>
-<a name=tag_44></a>
+<a name=tag_45></a>
 <pre>
 attr: variable name
 eq: to equal
@@ -353,14 +362,14 @@ value: this
 </pre>
 
 <h1>Its</h1>
-<a name=tag_45></a>
+<a name=tag_46></a>
 <pre>
 Call this actor
 For each child or reference of this def
 </pre>
 
 <p>Its variables.</p>
-<a name=tag_46></a>
+<a name=tag_47></a>
 <pre>
 what: to look for
 actor: what to do
@@ -368,31 +377,31 @@ args: arg data value
 </pre>
 
 <h1>C</h1>
-<a name=tag_47></a>
+<a name=tag_48></a>
 <pre>
 Output code to file.
 </pre>
 
 <p>C variables.</p>
-<a name=tag_48></a>
+<a name=tag_49></a>
 <pre>
 desc: code to output.
 </pre>
 
 <h1>Cs</h1>
-<a name=tag_49></a>
+<a name=tag_50></a>
 <pre>
 Output code sniplet to file - no newline
 </pre>
 
 <p>Cs variables.</p>
-<a name=tag_50></a>
+<a name=tag_51></a>
 <pre>
 desc: code to output.
 </pre>
 
 <h1>Out</h1>
-<a name=tag_51></a>
+<a name=tag_52></a>
 <pre>
 Output control
 delay: output is off until first C in next actor
@@ -401,7 +410,7 @@ off: cascade all output  off
 </pre>
 
 <p>Out variables.</p>
-<a name=tag_52></a>
+<a name=tag_53></a>
 <pre>
 what: to look for.
 pad: to look for
@@ -409,7 +418,7 @@ desc: code to buffer.
 </pre>
 
 <p>what options.</p>
-<a name=tag_53></a>
+<a name=tag_54></a>
 <pre>
 delay: output is off until first C in next actor.
 normal: back to normal.
@@ -418,26 +427,26 @@ on: output is on.
 </pre>
 
 <h1>In</h1>
-<a name=tag_54></a>
+<a name=tag_55></a>
 <pre>
 Redirect output to the ins variable.
 </pre>
 
 <p>In variables.</p>
-<a name=tag_55></a>
+<a name=tag_56></a>
 <pre>
 flag: set on or off
 </pre>
 
 <h1>Break</h1>
-<a name=tag_56></a>
+<a name=tag_57></a>
 <pre>
 Break out of actor loop
 To not do the default one
 </pre>
 
 <p>Break variables.</p>
-<a name=tag_57></a>
+<a name=tag_58></a>
 <pre>
 what: what to break
 pad: padding (of)
@@ -446,7 +455,7 @@ check: only if not unique
 </pre>
 
 <p>what options.</p>
-<a name=tag_58></a>
+<a name=tag_59></a>
 <pre>
 actor: continue with calling actor - break actor case.
 loop: continue after calling All, Its cmd - break loop chain.
@@ -455,13 +464,13 @@ exit: exit script.
 </pre>
 
 <p>check options.</p>
-<a name=tag_59></a>
+<a name=tag_60></a>
 <pre>
 actor: continue with calling actor - break actor case.
 </pre>
 
 <h1>Add</h1>
-<a name=tag_60></a>
+<a name=tag_61></a>
 <pre>
 Add to the collection map or list.
 The path for the collect is _.
@@ -485,14 +494,14 @@ execute database sql
 </pre>
 
 <p>Add variables.</p>
-<a name=tag_61></a>
+<a name=tag_62></a>
 <pre>
 path: node path where to add
 data: data to add
 </pre>
 
 <h1>This</h1>
-<a name=tag_62></a>
+<a name=tag_63></a>
 <pre>
 Call this actor
 For each child or item in the collection
@@ -500,7 +509,7 @@ Works the same as the Its command with added navigation for map and lists.
 </pre>
 
 <p>This variables.</p>
-<a name=tag_63></a>
+<a name=tag_64></a>
 <pre>
 path: node path
 actor: what to do
@@ -508,7 +517,7 @@ args: arg data value
 </pre>
 
 <h1>Replace</h1>
-<a name=tag_64></a>
+<a name=tag_65></a>
 <pre>
 Replace string.
 Replace _:D with abc match cba
@@ -517,7 +526,7 @@ group if the match has group sections.
 </pre>
 
 <p>Replace variables.</p>
-<a name=tag_65></a>
+<a name=tag_66></a>
 <pre>
 path: node path where to add
 pad: padding (with)
@@ -527,14 +536,14 @@ match: string match pattern
 </pre>
 
 <h1>Dbconn</h1>
-<a name=tag_66></a>
+<a name=tag_67></a>
 <pre>
 connect to database
 the connection closes at end of script.
 </pre>
 
 <p>Dbconn variables.</p>
-<a name=tag_67></a>
+<a name=tag_68></a>
 <pre>
 host: 
 database: 
@@ -543,7 +552,7 @@ password:
 </pre>
 
 <h1>Http</h1>
-<a name=tag_68></a>
+<a name=tag_69></a>
 <pre>
 Append http data to the collection map or node path.
 Calls the Add command with the body data.
@@ -553,7 +562,7 @@ all the options of the Add command.
 </pre>
 
 <p>Http variables.</p>
-<a name=tag_69></a>
+<a name=tag_70></a>
 <pre>
 path: node path where to add
 data: http url
@@ -561,13 +570,13 @@ body: http body
 </pre>
 
 <h1>Comp</h1>
-<a name=tag_70></a>
+<a name=tag_71></a>
 <pre>
 Loader definition for defining components.
 </pre>
 
 <p>Comp variables.</p>
-<a name=tag_71></a>
+<a name=tag_72></a>
 <pre>
 name: of component.
 nop: ignored.
@@ -577,7 +586,7 @@ doc: documentation string
 </pre>
 
 <p>find options.</p>
-<a name=tag_72></a>
+<a name=tag_73></a>
 <pre>
 Find: for top level comps
 FindIn: for nested comps
@@ -585,7 +594,7 @@ FindIn: for nested comps
 </pre>
 
 <p>Child nodes.</p>
-<a name=tag_73></a>
+<a name=tag_74></a>
 <pre>
 Element: Loader definition for defining component's elements.
 Ref: Relation of element to comp
@@ -596,14 +605,28 @@ Refu: Copy of element to comp and child of comp
 Join: Add refs for this join
 </pre>
 
+<p>Reverse links.</p>
+<a name=tag_75></a>
+<pre>
+Comp_parent: its parent.
+Ref_comp: comp name it links to
+Ref2_comp: comp name it links to.
+Ref3_comp: the comp name it links to.
+Ref3_comp_ref: comp name it links to.
+Refq_comp: the comp name it links to.
+Refq_comp_ref: parent's Comp
+Refu_comp: comp name it links to.
+Refu_comp_ref: comp name it links to.
+</pre>
+
 <h1>Element</h1>
-<a name=tag_74></a>
+<a name=tag_76></a>
 <pre>
 Loader definition for defining component's elements.
 </pre>
 
 <p>Element variables.</p>
-<a name=tag_75></a>
+<a name=tag_77></a>
 <pre>
 name: of element
 mw: storage type
@@ -613,7 +636,7 @@ doc: documentation string.
 </pre>
 
 <p>mw options.</p>
-<a name=tag_76></a>
+<a name=tag_78></a>
 <pre>
 C1: word
 V1: string to end of line.
@@ -626,20 +649,32 @@ N1: nested comp.
 </pre>
 
 <p>Child nodes.</p>
-<a name=tag_77></a>
+<a name=tag_79></a>
 <pre>
 Opt: Select options for element.
 </pre>
 
+<p>Reverse links.</p>
+<a name=tag_80></a>
+<pre>
+Ref_element: link to element for this
+Ref2_element: element name to use to find a comp in the remote parent.
+Ref2_element2: element name to use for for the link for remote parent
+Ref3_element: element name to use to find a comp in the remote parent.
+Ref3_element2: element name to use for the link to another comp.
+Refq_element: element name to use to find a comp in the remote parent.
+Refu_element: element name to use to copy remote link.
+</pre>
+
 <h1>Opt</h1>
-<a name=tag_78></a>
+<a name=tag_81></a>
 <pre>
 Select options for element.
 Add meaning to documentation
 </pre>
 
 <p>Opt variables.</p>
-<a name=tag_79></a>
+<a name=tag_82></a>
 <pre>
 name: name of value option
 pad: separator
@@ -647,22 +682,21 @@ doc: documentation string
 </pre>
 
 <h1>Ref</h1>
-<a name=tag_80></a>
+<a name=tag_83></a>
 <pre>
 Relation of element to comp
-For (element field) of type R1, link to a comp.
-Uses the (element field) as name to find a comp.
-Finally, it stores the reference id in the (element field)'s ref.
-For (element field) of type F1, link to local element (same parent).
-It starts with the parent, which references a component.
-That component is then used as the parent to find the child (element field) component.
-Finally, it stores the reference id in the (element field)'s ref.
+For element type R1, is uses the Ref linked to it for:
+It finds a comp (the comp field of the Ref) with the name of the element value.
+Finally, it stores the reference id in the elements's ref.
+For element type F1, is uses the Ref linked to it for:
+It finds a child comp (the comp field of the Ref) of the parent with the name of the element value.
+Finally, it stores the reference id in the element's ref.
 </pre>
 
 <p>Ref variables.</p>
-<a name=tag_81></a>
+<a name=tag_84></a>
 <pre>
-element: element name to use to find a comp.
+element: link to element for this
 comp: comp name it links to
 opt: optional or check - error if not found
 var: not used
@@ -670,7 +704,7 @@ doc: doc string
 </pre>
 
 <p>opt options.</p>
-<a name=tag_82></a>
+<a name=tag_85></a>
 <pre>
 check: check - error if not found
 .: optional, if value is also a (.)
@@ -678,7 +712,7 @@ check: check - error if not found
 </pre>
 
 <h1>Ref2</h1>
-<a name=tag_83></a>
+<a name=tag_86></a>
 <pre>
 Relation of element to comp and child of comp
 It starts with the (element2 field), which references a component.
@@ -688,42 +722,11 @@ The (element field) is of type L1.
 </pre>
 
 <p>Ref2 variables.</p>
-<a name=tag_84></a>
-<pre>
-element: element name to use to find a comp in the remote parent.
-comp: comp name it links to.
-element2: element name to use for for the link for remote parent
-opt: optional or check - error if not found
-var: not used
-doc: doc string
-</pre>
-
-<p>opt options.</p>
-<a name=tag_85></a>
-<pre>
-check: check
-.: optional value to use
-</pre>
-
-<h1>Ref3</h1>
-<a name=tag_86></a>
-<pre>
-Relation of element to comp and child of comp
-It starts with the (element2 field), which references a component.
-The (element3 field) in that component, references another component.
-That component is then used as the parent to find the child (element field) component.
-Finally, it stores the reference id in the (element field)'s ref.
-The (element field) is of type M1.
-</pre>
-
-<p>Ref3 variables.</p>
 <a name=tag_87></a>
 <pre>
 element: element name to use to find a comp in the remote parent.
 comp: comp name it links to.
-element2: element name to use for the link to remote comp.
-comp_ref: comp name it links to.
-element3: element name to use to find the remote element in, use its link for the remote parent.
+element2: element name to use for for the link for remote parent
 opt: optional or check - error if not found
 var: not used
 doc: doc string
@@ -736,24 +739,25 @@ check: check
 .: optional value to use
 </pre>
 
-<h1>Refq</h1>
+<h1>Ref3</h1>
 <a name=tag_89></a>
 <pre>
 Relation of element to comp and child of comp
-It starts with the parent, which references a component.
-The (element2 field) in that component, references another component.
+It starts with the (element2 field), which references a component.
+The (element3 field) in that component, references another component.
 That component is then used as the parent to find the child (element field) component.
 Finally, it stores the reference id in the (element field)'s ref.
-The (element field) is of type Q1.
+The (element field) is of type M1.
 </pre>
 
-<p>Refq variables.</p>
+<p>Ref3 variables.</p>
 <a name=tag_90></a>
 <pre>
 element: element name to use to find a comp in the remote parent.
-comp: comp name it links to.
-element2: element name to use to find the remote element in, use its link for the remote parent.
-comp_ref: parent's Comp
+comp: the comp name it links to.
+element2: element name to use for the link to another comp.
+comp_ref: comp name it links to.
+element3: element name to use for the other comp's element name that has a link to the remote parent.
 opt: optional or check - error if not found
 var: not used
 doc: doc string
@@ -766,24 +770,24 @@ check: check
 .: optional value to use
 </pre>
 
-<h1>Refu</h1>
+<h1>Refq</h1>
 <a name=tag_92></a>
 <pre>
-Copy of element to comp and child of comp
-It starts with the (element2 field), which references a component.
-The (element3 field) in that component, references another component.
-Finally, it stores the same reference id in the (element field)'s ref.
-The (element field) is of type U0 that is not a input field.
+Relation of element to comp and child of comp
+It starts with the parent, which references a component.
+The (element2 field) in that component, references another component.
+That component is then used as the parent to find the child (element field) component.
+Finally, it stores the reference id in the (element field)'s ref.
+The (element field) is of type Q1.
 </pre>
 
-<p>Refu variables.</p>
+<p>Refq variables.</p>
 <a name=tag_93></a>
 <pre>
-element: element name to use to copy remote link..
-comp: comp name it links to.
-element2: element name to use for the link to remote comp.
-comp_ref: comp name it links to.
-element3: element name to use to find the remote element in, use its link
+element: element name to use to find a comp in the remote parent.
+comp: the comp name it links to.
+element2: element name to use for the parent's element name that has a link to the remote parent.
+comp_ref: parent's Comp
 opt: optional or check - error if not found
 var: not used
 doc: doc string
@@ -796,14 +800,44 @@ check: check
 .: optional value to use
 </pre>
 
-<h1>Join</h1>
+<h1>Refu</h1>
 <a name=tag_95></a>
+<pre>
+Copy of element to comp and child of comp
+It starts with the (element2 field), which references a component. It can be the parent.
+The (element3 field) in that component, references another component.
+Finally, it stores the same reference id in the (element field)'s ref.
+The (element field) is of type U0 that is not a input field.
+</pre>
+
+<p>Refu variables.</p>
+<a name=tag_96></a>
+<pre>
+element: element name to use to copy remote link.
+comp: comp name it links to.
+element2: element name to use for the link to remote comp.
+comp_ref: comp name it links to.
+element3: element name to use for the remote comp's element name that has a link, use its link
+opt: optional or check - error if not found
+var: not used
+doc: doc string
+</pre>
+
+<p>opt options.</p>
+<a name=tag_97></a>
+<pre>
+check: check
+.: optional value to use
+</pre>
+
+<h1>Join</h1>
+<a name=tag_98></a>
 <pre>
 Add refs for this join
 </pre>
 
 <p>Join variables.</p>
-<a name=tag_96></a>
+<a name=tag_99></a>
 <pre>
 element: 
 dir: 
@@ -815,29 +849,35 @@ element3:
 </pre>
 
 <h1>Concept</h1>
-<a name=tag_97></a>
+<a name=tag_100></a>
 <pre>
 </pre>
 
 <p>Concept variables.</p>
-<a name=tag_98></a>
+<a name=tag_101></a>
 <pre>
 name: name of concept
 </pre>
 
 <p>Child nodes.</p>
-<a name=tag_99></a>
+<a name=tag_102></a>
 <pre>
 Topic: 
 </pre>
 
+<p>Reverse links.</p>
+<a name=tag_103></a>
+<pre>
+See_concept: Ref to concept
+</pre>
+
 <h1>Topic</h1>
-<a name=tag_100></a>
+<a name=tag_104></a>
 <pre>
 </pre>
 
 <p>Topic variables.</p>
-<a name=tag_101></a>
+<a name=tag_105></a>
 <pre>
 name: topic name
 level: index tree level
@@ -846,31 +886,31 @@ desc: doc to output.
 </pre>
 
 <p>Child nodes.</p>
-<a name=tag_102></a>
+<a name=tag_106></a>
 <pre>
 T: 
 See: 
 </pre>
 
 <h1>T</h1>
-<a name=tag_103></a>
+<a name=tag_107></a>
 <pre>
 </pre>
 
 <p>T variables.</p>
-<a name=tag_104></a>
+<a name=tag_108></a>
 <pre>
 file: optional file to include
 desc: doc to output.
 </pre>
 
 <h1>See</h1>
-<a name=tag_105></a>
+<a name=tag_109></a>
 <pre>
 </pre>
 
 <p>See variables.</p>
-<a name=tag_106></a>
+<a name=tag_110></a>
 <pre>
 concept: Ref to concept
 </pre>

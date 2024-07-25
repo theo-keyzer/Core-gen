@@ -24,21 +24,35 @@ C Topic bld 2 p ${name} variables.
 C
 
 Its Element ele
-
-C
-
 Its Element ele_opt
-
-C
-
 Out delay
 
+C
 C Topic bld 2 p Child nodes.
 C
 
 Its Comp_parent childs
+Out normal
+Out delay
 
 C
+C Topic bld 2 p Reverse links.
+C
+
+Its Ref_comp rev
+Its Ref2_comp rev
+Its Ref3_comp rev
+Its Refq_comp rev
+Its Refu_comp rev
+Out normal
+
+C
+
+----------------------------------------------------------------
+Actor rev
+----------------------------------------------------------------
+
+C T . ${parent.name:c}_${element.name:l}: ${element.doc}
 
 ----------------------------------------------------------------
 Actor doc

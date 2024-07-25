@@ -17,7 +17,6 @@ T . attr: what to check
 T . eq: to equal
 T . value: this
 
-
 Topic bld 2 p eq options.
 
 T . ??: matches variable errors
@@ -50,6 +49,13 @@ T . Replace: Replace string.
 T . Dbconn: connect to database
 T . Http: Append http data to the collection map or node path.
 
+Topic bld 2 p Reverse links.
+
+T . All_actor: what actor to run for it
+T . Du_actor: what actor to run for it
+T . Its_actor: what to do
+T . This_actor: what to do
+
 ----------------------------------------------------------------
 Concept All
 ----------------------------------------------------------------
@@ -65,7 +71,6 @@ T . what: what to look for
 T . actor: what actor to run for it
 T . args: arg data value
 
-
 ----------------------------------------------------------------
 Concept Du
 ----------------------------------------------------------------
@@ -79,7 +84,6 @@ Topic bld 2 p Du variables.
 
 T . actor: what actor to run for it
 T . args: arg data value
-
 
 ----------------------------------------------------------------
 Concept New
@@ -95,7 +99,6 @@ T . where: add to dats or acts
 T . what: what comp to load
 T . line: load line args
 
-
 ----------------------------------------------------------------
 Concept Refs
 ----------------------------------------------------------------
@@ -107,7 +110,6 @@ T . Re run refs after loading new defs
 Topic bld 2 p Refs variables.
 
 T . where: ref of dats or acts
-
 
 ----------------------------------------------------------------
 Concept Var
@@ -122,7 +124,6 @@ Topic bld 2 p Var variables.
 T . attr: variable name
 T . eq: to equal
 T . value: this
-
 
 ----------------------------------------------------------------
 Concept Its
@@ -139,7 +140,6 @@ T . what: to look for
 T . actor: what to do
 T . args: arg data value
 
-
 ----------------------------------------------------------------
 Concept C
 ----------------------------------------------------------------
@@ -152,7 +152,6 @@ Topic bld 2 p C variables.
 
 T . desc: code to output.
 
-
 ----------------------------------------------------------------
 Concept Cs
 ----------------------------------------------------------------
@@ -164,7 +163,6 @@ T . Output code sniplet to file - no newline
 Topic bld 2 p Cs variables.
 
 T . desc: code to output.
-
 
 ----------------------------------------------------------------
 Concept Out
@@ -182,7 +180,6 @@ Topic bld 2 p Out variables.
 T . what: to look for.
 T . pad: to look for
 T . desc: code to buffer.
-
 
 Topic bld 2 p what options.
 
@@ -203,7 +200,6 @@ Topic bld 2 p In variables.
 
 T . flag: set on or off
 
-
 ----------------------------------------------------------------
 Concept Break
 ----------------------------------------------------------------
@@ -219,7 +215,6 @@ T . what: what to break
 T . pad: padding (of)
 T . actor: which actor to break
 T . check: only if not unique
-
 
 Topic bld 2 p what options.
 
@@ -263,7 +258,6 @@ Topic bld 2 p Add variables.
 T . path: node path where to add
 T . data: data to add
 
-
 ----------------------------------------------------------------
 Concept This
 ----------------------------------------------------------------
@@ -279,7 +273,6 @@ Topic bld 2 p This variables.
 T . path: node path
 T . actor: what to do
 T . args: arg data value
-
 
 ----------------------------------------------------------------
 Concept Replace
@@ -300,7 +293,6 @@ T . with: what to replace with
 T . pad2: padding (match)
 T . match: string match pattern
 
-
 ----------------------------------------------------------------
 Concept Dbconn
 ----------------------------------------------------------------
@@ -316,7 +308,6 @@ T . host:
 T . database: 
 T . username: 
 T . password: 
-
 
 ----------------------------------------------------------------
 Concept Http
@@ -336,7 +327,6 @@ T . path: node path where to add
 T . data: http url
 T . body: http body
 
-
 ----------------------------------------------------------------
 Concept Comp
 ----------------------------------------------------------------
@@ -352,7 +342,6 @@ T . nop: ignored.
 T . parent: its parent.
 T . find: if need to be found.
 T . doc: documentation string
-
 
 Topic bld 2 p find options.
 
@@ -370,6 +359,18 @@ T . Refq: Relation of element to comp and child of comp
 T . Refu: Copy of element to comp and child of comp
 T . Join: Add refs for this join
 
+Topic bld 2 p Reverse links.
+
+T . Comp_parent: its parent.
+T . Ref_comp: comp name it links to
+T . Ref2_comp: comp name it links to.
+T . Ref3_comp: the comp name it links to.
+T . Ref3_comp_ref: comp name it links to.
+T . Refq_comp: the comp name it links to.
+T . Refq_comp_ref: parent's Comp
+T . Refu_comp: comp name it links to.
+T . Refu_comp_ref: comp name it links to.
+
 ----------------------------------------------------------------
 Concept Element
 ----------------------------------------------------------------
@@ -386,7 +387,6 @@ T . mw2: data type - not used.
 T . pad: separator.
 T . doc: documentation string.
 
-
 Topic bld 2 p mw options.
 
 T . C1: word
@@ -401,6 +401,16 @@ T . N1: nested comp.
 Topic bld 2 p Child nodes.
 
 T . Opt: Select options for element.
+
+Topic bld 2 p Reverse links.
+
+T . Ref_element: link to element for this
+T . Ref2_element: element name to use to find a comp in the remote parent.
+T . Ref2_element2: element name to use for for the link for remote parent
+T . Ref3_element: element name to use to find a comp in the remote parent.
+T . Ref3_element2: element name to use for the link to another comp.
+T . Refq_element: element name to use to find a comp in the remote parent.
+T . Refu_element: element name to use to copy remote link.
 
 ----------------------------------------------------------------
 Concept Opt
@@ -417,7 +427,6 @@ T . name: name of value option
 T . pad: separator
 T . doc: documentation string
 
-
 ----------------------------------------------------------------
 Concept Ref
 ----------------------------------------------------------------
@@ -425,22 +434,20 @@ Concept Ref
 Topic bld 1 h1 Ref
 
 T . Relation of element to comp
-T . For (element field) of type R1, link to a comp.
-T . Uses the (element field) as name to find a comp.
-T . Finally, it stores the reference id in the (element field)'s ref.
-T . For (element field) of type F1, link to local element (same parent).
-T . It starts with the parent, which references a component.
-T . That component is then used as the parent to find the child (element field) component.
-T . Finally, it stores the reference id in the (element field)'s ref.
+T . For element type R1, is uses the Ref linked to it for:
+T . It finds a comp (the comp field of the Ref) with the name of the element value.
+T . Finally, it stores the reference id in the elements's ref.
+T . For element type F1, is uses the Ref linked to it for:
+T . It finds a child comp (the comp field of the Ref) of the parent with the name of the element value.
+T . Finally, it stores the reference id in the element's ref.
 
 Topic bld 2 p Ref variables.
 
-T . element: element name to use to find a comp.
+T . element: link to element for this
 T . comp: comp name it links to
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
-
 
 Topic bld 2 p opt options.
 
@@ -469,7 +476,6 @@ T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
 
-
 Topic bld 2 p opt options.
 
 T . check: check
@@ -491,14 +497,13 @@ T . The (element field) is of type M1.
 Topic bld 2 p Ref3 variables.
 
 T . element: element name to use to find a comp in the remote parent.
-T . comp: comp name it links to.
-T . element2: element name to use for the link to remote comp.
+T . comp: the comp name it links to.
+T . element2: element name to use for the link to another comp.
 T . comp_ref: comp name it links to.
-T . element3: element name to use to find the remote element in, use its link for the remote parent.
+T . element3: element name to use for the other comp's element name that has a link to the remote parent.
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
-
 
 Topic bld 2 p opt options.
 
@@ -521,13 +526,12 @@ T . The (element field) is of type Q1.
 Topic bld 2 p Refq variables.
 
 T . element: element name to use to find a comp in the remote parent.
-T . comp: comp name it links to.
-T . element2: element name to use to find the remote element in, use its link for the remote parent.
+T . comp: the comp name it links to.
+T . element2: element name to use for the parent's element name that has a link to the remote parent.
 T . comp_ref: parent's Comp
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
-
 
 Topic bld 2 p opt options.
 
@@ -541,22 +545,21 @@ Concept Refu
 Topic bld 1 h1 Refu
 
 T . Copy of element to comp and child of comp
-T . It starts with the (element2 field), which references a component.
+T . It starts with the (element2 field), which references a component. It can be the parent.
 T . The (element3 field) in that component, references another component.
 T . Finally, it stores the same reference id in the (element field)'s ref.
 T . The (element field) is of type U0 that is not a input field.
 
 Topic bld 2 p Refu variables.
 
-T . element: element name to use to copy remote link..
+T . element: element name to use to copy remote link.
 T . comp: comp name it links to.
 T . element2: element name to use for the link to remote comp.
 T . comp_ref: comp name it links to.
-T . element3: element name to use to find the remote element in, use its link
+T . element3: element name to use for the remote comp's element name that has a link, use its link
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
-
 
 Topic bld 2 p opt options.
 
@@ -581,7 +584,6 @@ T . element2:
 T . comp2: 
 T . element3: 
 
-
 ----------------------------------------------------------------
 Concept Concept
 ----------------------------------------------------------------
@@ -593,10 +595,13 @@ Topic bld 2 p Concept variables.
 
 T . name: name of concept
 
-
 Topic bld 2 p Child nodes.
 
 T . Topic: 
+
+Topic bld 2 p Reverse links.
+
+T . See_concept: Ref to concept
 
 ----------------------------------------------------------------
 Concept Topic
@@ -611,7 +616,6 @@ T . name: topic name
 T . level: index tree level
 T . tag: html or formating tag
 T . desc: doc to output.
-
 
 Topic bld 2 p Child nodes.
 
@@ -630,7 +634,6 @@ Topic bld 2 p T variables.
 T . file: optional file to include
 T . desc: doc to output.
 
-
 ----------------------------------------------------------------
 Concept See
 ----------------------------------------------------------------
@@ -641,5 +644,4 @@ Topic bld 1 h1 See
 Topic bld 2 p See variables.
 
 T . concept: Ref to concept
-
 
