@@ -2,7 +2,7 @@
 Concept Actor
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Actor
+Topic bld 1 h1 Actor class
 
 T . Loader definition for actors.
 T . These are like routines the generator calls
@@ -60,7 +60,7 @@ T . This_actor: what to do
 Concept All
 ----------------------------------------------------------------
 
-Topic bld 1 h1 All
+Topic bld 1 h1 All class
 
 T . An actor calling type.
 T . For each component call this actor.
@@ -71,11 +71,15 @@ T . what: what to look for
 T . actor: what actor to run for it
 T . args: arg data value
 
+Topic bld 2 p Links.
+
+T . actor: what actor to run for it
+
 ----------------------------------------------------------------
 Concept Du
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Du
+Topic bld 1 h1 Du class
 
 T . An actor calling type.
 T . Coditional call to actor
@@ -85,11 +89,15 @@ Topic bld 2 p Du variables.
 T . actor: what actor to run for it
 T . args: arg data value
 
+Topic bld 2 p Links.
+
+T . actor: what actor to run for it
+
 ----------------------------------------------------------------
 Concept New
 ----------------------------------------------------------------
 
-Topic bld 1 h1 New
+Topic bld 1 h1 New class
 
 T . Create new comp and add
 
@@ -103,7 +111,7 @@ T . line: load line args
 Concept Refs
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Refs
+Topic bld 1 h1 Refs class
 
 T . Re run refs after loading new defs
 
@@ -115,7 +123,7 @@ T . where: ref of dats or acts
 Concept Var
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Var
+Topic bld 1 h1 Var class
 
 T . Set variable to value
 
@@ -129,7 +137,7 @@ T . value: this
 Concept Its
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Its
+Topic bld 1 h1 Its class
 
 T . Call this actor
 T . For each child or reference of this def
@@ -140,11 +148,15 @@ T . what: to look for
 T . actor: what to do
 T . args: arg data value
 
+Topic bld 2 p Links.
+
+T . actor: what to do
+
 ----------------------------------------------------------------
 Concept C
 ----------------------------------------------------------------
 
-Topic bld 1 h1 C
+Topic bld 1 h1 C class
 
 T . Output code to file.
 
@@ -156,7 +168,7 @@ T . desc: code to output.
 Concept Cs
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Cs
+Topic bld 1 h1 Cs class
 
 T . Output code sniplet to file - no newline
 
@@ -168,7 +180,7 @@ T . desc: code to output.
 Concept Out
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Out
+Topic bld 1 h1 Out class
 
 T . Output control
 T . delay: output is off until first C in next actor
@@ -192,7 +204,7 @@ T . on: output is on.
 Concept In
 ----------------------------------------------------------------
 
-Topic bld 1 h1 In
+Topic bld 1 h1 In class
 
 T . Redirect output to the ins variable.
 
@@ -204,7 +216,7 @@ T . flag: set on or off
 Concept Break
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Break
+Topic bld 1 h1 Break class
 
 T . Break out of actor loop
 T . To not do the default one
@@ -231,7 +243,7 @@ T . actor: continue with calling actor - break actor case.
 Concept Add
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Add
+Topic bld 1 h1 Add class
 
 T . Add to the collection map or list.
 T . The path for the collect is _.
@@ -262,7 +274,7 @@ T . data: data to add
 Concept This
 ----------------------------------------------------------------
 
-Topic bld 1 h1 This
+Topic bld 1 h1 This class
 
 T . Call this actor
 T . For each child or item in the collection
@@ -274,11 +286,15 @@ T . path: node path
 T . actor: what to do
 T . args: arg data value
 
+Topic bld 2 p Links.
+
+T . actor: what to do
+
 ----------------------------------------------------------------
 Concept Replace
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Replace
+Topic bld 1 h1 Replace class
 
 T . Replace string.
 T . Replace _:D with abc match cba
@@ -297,7 +313,7 @@ T . match: string match pattern
 Concept Dbconn
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Dbconn
+Topic bld 1 h1 Dbconn class
 
 T . connect to database
 T . the connection closes at end of script.
@@ -313,7 +329,7 @@ T . password:
 Concept Http
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Http
+Topic bld 1 h1 Http class
 
 T . Append http data to the collection map or node path.
 T . Calls the Add command with the body data.
@@ -331,9 +347,11 @@ T . body: http body
 Concept Comp
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Comp
+Topic bld 1 h1 Comp class
 
-T . Loader definition for defining components.
+T . Loader definition for the generated classes.
+T . A node is defined by a class instance and has a index name of className_nodeName.
+T . For child nodes, the index name is 23_className_nodeName where 23 in the index value of its parent.
 
 Topic bld 2 p Comp variables.
 
@@ -351,33 +369,40 @@ T . .: has no name field or not needed.
 
 Topic bld 2 p Child nodes.
 
-T . Element: Loader definition for defining component's elements.
-T . Ref: Relation of element to comp
-T . Ref2: Relation of element to comp and child of comp
-T . Ref3: Relation of element to comp and child of comp
-T . Refq: Relation of element to comp and child of comp
+T . Element: Loader definition for the class variables.
+T . Ref: Relation of element to node.
+T . Ref2: Relation of element to a child node.
+T . Ref3: Relation of element to a child node.
+T . Refq: Relation of element to child node.
 T . Refu: Copy of element to comp and child of comp
 T . Join: Add refs for this join
+
+Topic bld 2 p Links.
+
+T . parent: its parent.
 
 Topic bld 2 p Reverse links.
 
 T . Comp_parent: its parent.
-T . Ref_comp: comp name it links to
-T . Ref2_comp: comp name it links to.
-T . Ref3_comp: the comp name it links to.
-T . Ref3_comp_ref: comp name it links to.
-T . Refq_comp: the comp name it links to.
-T . Refq_comp_ref: parent's Comp
-T . Refu_comp: comp name it links to.
-T . Refu_comp_ref: comp name it links to.
+T . Ref_comp: node class name of the link.
+T . Ref2_comp: node class name of the link.
+T . Ref3_comp: node class name of the link.
+T . Ref3_comp_ref: class name of the other node.
+T . Refq_comp: class name of the link.
+T . Refq_comp_ref: class name of the parent node.
+T . Refu_comp: class name of the remote node.
+T . Refu_comp_ref: class name of the remote node.
 
 ----------------------------------------------------------------
 Concept Element
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Element
+Topic bld 1 h1 Element class
 
-T . Loader definition for defining component's elements.
+T . Loader definition for the class variables.
+T . Navigation code is generated for the relations.
+T . A relational element has two variables, one for the node name and one for its id.
+T . The refs function is run after the data is loaded to link the relation id's.
 
 Topic bld 2 p Element variables.
 
@@ -404,19 +429,19 @@ T . Opt: Select options for element.
 
 Topic bld 2 p Reverse links.
 
-T . Ref_element: link to element for this
-T . Ref2_element: element name to use to find a comp in the remote parent.
-T . Ref2_element2: element name to use for for the link for remote parent
-T . Ref3_element: element name to use to find a comp in the remote parent.
-T . Ref3_element2: element name to use for the link to another comp.
-T . Refq_element: element name to use to find a comp in the remote parent.
-T . Refu_element: element name to use to copy remote link.
+T . Ref_element: node name and node ref.
+T . Ref2_element: node name and node ref.
+T . Ref2_element2: element name to use that has the link to the remote parent node.
+T . Ref3_element: node name and node ref.
+T . Ref3_element2: element name to use for the link to another node.
+T . Refq_element: element name to use for the name to find a node in the remote parent.
+T . Refu_element: element name to use to copy remote node id.
 
 ----------------------------------------------------------------
 Concept Opt
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Opt
+Topic bld 1 h1 Opt class
 
 T . Select options for element.
 T . Add meaning to documentation
@@ -431,20 +456,20 @@ T . doc: documentation string
 Concept Ref
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Ref
+Topic bld 1 h1 Ref class
 
-T . Relation of element to comp
+T . Relation of element to node.
 T . For element type R1, is uses the Ref linked to it for:
-T . It finds a comp (the comp field of the Ref) with the name of the element value.
+T . It finds a node with (the comp field of the Ref) with the name of the element value.
 T . Finally, it stores the reference id in the elements's ref.
 T . For element type F1, is uses the Ref linked to it for:
-T . It finds a child comp (the comp field of the Ref) of the parent with the name of the element value.
+T . It finds a child node with (the comp field of the Ref) in the parent node with the name of the element value.
 T . Finally, it stores the reference id in the element's ref.
 
 Topic bld 2 p Ref variables.
 
-T . element: link to element for this
-T . comp: comp name it links to
+T . element: node name and node ref.
+T . comp: node class name of the link.
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
@@ -455,23 +480,28 @@ T . check: check - error if not found
 T . .: optional, if value is also a (.)
 T . ?: no error if not found
 
+Topic bld 2 p Links.
+
+T . element: node name and node ref.
+T . comp: node class name of the link.
+
 ----------------------------------------------------------------
 Concept Ref2
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Ref2
+Topic bld 1 h1 Ref2 class
 
-T . Relation of element to comp and child of comp
-T . It starts with the (element2 field), which references a component.
-T . That component is then used as the parent to find the child (element field) component.
+T . Relation of element to a child node.
+T . It starts with the (element2 field), which references a node.
+T . That node is then used as the parent to find the child (element field) node.
 T . Finally, it stores the reference id in the (element field)'s ref.
 T . The (element field) is of type L1.
 
 Topic bld 2 p Ref2 variables.
 
-T . element: element name to use to find a comp in the remote parent.
-T . comp: comp name it links to.
-T . element2: element name to use for for the link for remote parent
+T . element: node name and node ref.
+T . comp: node class name of the link.
+T . element2: element name to use that has the link to the remote parent node.
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
@@ -480,27 +510,33 @@ Topic bld 2 p opt options.
 
 T . check: check
 T . .: optional value to use
+
+Topic bld 2 p Links.
+
+T . element: node name and node ref.
+T . comp: node class name of the link.
+T . element2: element name to use that has the link to the remote parent node.
 
 ----------------------------------------------------------------
 Concept Ref3
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Ref3
+Topic bld 1 h1 Ref3 class
 
-T . Relation of element to comp and child of comp
-T . It starts with the (element2 field), which references a component.
-T . The (element3 field) in that component, references another component.
-T . That component is then used as the parent to find the child (element field) component.
+T . Relation of element to a child node.
+T . It starts with the (element2 field), which references a node.
+T . The (element3 field) in that node, references another node.
+T . That node is then used as the parent to find the child node (element field).
 T . Finally, it stores the reference id in the (element field)'s ref.
 T . The (element field) is of type M1.
 
 Topic bld 2 p Ref3 variables.
 
-T . element: element name to use to find a comp in the remote parent.
-T . comp: the comp name it links to.
-T . element2: element name to use for the link to another comp.
-T . comp_ref: comp name it links to.
-T . element3: element name to use for the other comp's element name that has a link to the remote parent.
+T . element: node name and node ref.
+T . comp: node class name of the link.
+T . element2: element name to use for the link to another node.
+T . comp_ref: class name of the other node.
+T . element3: element name to use that has the element name of the other node for the link to a remote node.
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
@@ -509,26 +545,33 @@ Topic bld 2 p opt options.
 
 T . check: check
 T . .: optional value to use
+
+Topic bld 2 p Links.
+
+T . element: node name and node ref.
+T . comp: node class name of the link.
+T . element2: element name to use for the link to another node.
+T . comp_ref: class name of the other node.
 
 ----------------------------------------------------------------
 Concept Refq
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Refq
+Topic bld 1 h1 Refq class
 
-T . Relation of element to comp and child of comp
-T . It starts with the parent, which references a component.
-T . The (element2 field) in that component, references another component.
-T . That component is then used as the parent to find the child (element field) component.
+T . Relation of element to child node.
+T . It starts with the parent node.
+T . The (element2 field) in that node, references another node.
+T . That node is then used as the parent to find the child node using the (element field) as name..
 T . Finally, it stores the reference id in the (element field)'s ref.
 T . The (element field) is of type Q1.
 
 Topic bld 2 p Refq variables.
 
-T . element: element name to use to find a comp in the remote parent.
-T . comp: the comp name it links to.
-T . element2: element name to use for the parent's element name that has a link to the remote parent.
-T . comp_ref: parent's Comp
+T . element: element name to use for the name to find a node in the remote parent.
+T . comp: class name of the link.
+T . element2: element name to use for the element name in the parent node that has a link to the remote parent node.
+T . comp_ref: class name of the parent node.
 T . opt: optional or check - error if not found
 T . var: not used
 T . doc: doc string
@@ -538,24 +581,30 @@ Topic bld 2 p opt options.
 T . check: check
 T . .: optional value to use
 
+Topic bld 2 p Links.
+
+T . element: element name to use for the name to find a node in the remote parent.
+T . comp: class name of the link.
+T . comp_ref: class name of the parent node.
+
 ----------------------------------------------------------------
 Concept Refu
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Refu
+Topic bld 1 h1 Refu class
 
 T . Copy of element to comp and child of comp
-T . It starts with the (element2 field), which references a component. It can be the parent.
-T . The (element3 field) in that component, references another component.
+T . It starts with the (element2 field), which references a node. It can be the parent.
+T . The (element3 field) in that node, references another node.
 T . Finally, it stores the same reference id in the (element field)'s ref.
 T . The (element field) is of type U0 that is not a input field.
 
 Topic bld 2 p Refu variables.
 
-T . element: element name to use to copy remote link.
-T . comp: comp name it links to.
-T . element2: element name to use for the link to remote comp.
-T . comp_ref: comp name it links to.
+T . element: element name to use to copy remote node id.
+T . comp: class name of the remote node.
+T . element2: element name to use that has a link to a remote node.
+T . comp_ref: class name of the remote node.
 T . element3: element name to use for the remote comp's element name that has a link, use its link
 T . opt: optional or check - error if not found
 T . var: not used
@@ -566,11 +615,17 @@ Topic bld 2 p opt options.
 T . check: check
 T . .: optional value to use
 
+Topic bld 2 p Links.
+
+T . element: element name to use to copy remote node id.
+T . comp: class name of the remote node.
+T . comp_ref: class name of the remote node.
+
 ----------------------------------------------------------------
 Concept Join
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Join
+Topic bld 1 h1 Join class
 
 T . Add refs for this join
 
@@ -588,7 +643,7 @@ T . element3:
 Concept Concept
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Concept
+Topic bld 1 h1 Concept class
 
 
 Topic bld 2 p Concept variables.
@@ -607,7 +662,7 @@ T . See_concept: Ref to concept
 Concept Topic
 ----------------------------------------------------------------
 
-Topic bld 1 h1 Topic
+Topic bld 1 h1 Topic class
 
 
 Topic bld 2 p Topic variables.
@@ -626,7 +681,7 @@ T . See:
 Concept T
 ----------------------------------------------------------------
 
-Topic bld 1 h1 T
+Topic bld 1 h1 T class
 
 
 Topic bld 2 p T variables.
@@ -638,10 +693,14 @@ T . desc: doc to output.
 Concept See
 ----------------------------------------------------------------
 
-Topic bld 1 h1 See
+Topic bld 1 h1 See class
 
 
 Topic bld 2 p See variables.
+
+T . concept: Ref to concept
+
+Topic bld 2 p Links.
 
 T . concept: Ref to concept
 

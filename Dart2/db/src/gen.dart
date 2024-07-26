@@ -340,6 +340,19 @@ List cmd_var(glob, sc, varv, lcnt)
 	dynamic dat = varv;
 	for(var i = 1; i < sc.length; i++) 
 	{
+		if (sc[i] == 'join') {
+			if( dat is! List ) { continue; }
+			if( dat.length == 0 ) {
+				dat = "";
+				continue;
+			}
+			var ndat = dat[0];
+			for(var j = 1; j < dat.length; j++) {
+				ndat = "," + dat[j];
+			}
+			dat = ndat;
+			continue;
+		}
 		if( dat is! String ) { continue; } // strings after this
 
 		if (sc[i] == 'u') {

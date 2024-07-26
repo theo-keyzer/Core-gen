@@ -1,7 +1,9 @@
 ----------------------------------------------------------------
 Comp Comp parent . Find
 ----------------------------------------------------------------
-* Loader definition for defining components.
+* Loader definition for the generated classes.
+* A node is defined by a class instance and has a index name of className_nodeName.
+* For child nodes, the index name is 23_className_nodeName where 23 in the index value of its parent.
 ----------------------------------------------------------------
 
 	Element name   C1 NAME          * of component.
@@ -18,7 +20,10 @@ Ref parent Comp .
 ----------------------------------------------------------------
 Comp Element parent Comp FindIn
 ----------------------------------------------------------------
-* Loader definition for defining component's elements.
+* Loader definition for the class variables.
+* Navigation code is generated for the relations.
+* A relational element has two variables, one for the node name and one for its id.
+* The refs function is run after the data is loaded to link the relation id's.
 ----------------------------------------------------------------
 
 	Element name C1 NAME  * of element
@@ -49,18 +54,17 @@ Comp Opt parent Element FindIn
 ----------------------------------------------------------------
 Comp Ref parent Comp
 ----------------------------------------------------------------
-* Relation of element to comp
-* For (element field) of type R1, link to a comp.
-* Uses the (element field) as name to find a comp.
-* Finally, it stores the reference id in the (element field)'s ref.
-* For (element field) of type F1, link to local element (same parent).
-* It starts with the parent, which references a component.
-* That component is then used as the parent to find the child (element field) component.
-* Finally, it stores the reference id in the (element field)'s ref.
+* Relation of element to node.
+* For element type R1, is uses the Ref linked to it for:
+* It finds a node with (the comp field of the Ref) with the name of the element value.
+* Finally, it stores the reference id in the elements's ref.
+* For element type F1, is uses the Ref linked to it for:
+* It finds a child node with (the comp field of the Ref) in the parent node with the name of the element value.
+* Finally, it stores the reference id in the element's ref.
 ----------------------------------------------------------------
 
-	Element element F1 ELEMENT       * element name to use to find a comp.
-	Element comp    R1 COMP          * comp name it links to
+	Element element F1 ELEMENT       * node name and node ref.
+	Element comp    R1 COMP          * node class name of the link.
 	Element opt     C1 WORD          * optional or check - error if not found
 	    Opt check                    * check - error if not found
 	    Opt .                        * optional, if value is also a (.)
@@ -74,16 +78,16 @@ Ref comp Comp       check
 ----------------------------------------------------------------
 Comp Ref2 parent Comp
 ----------------------------------------------------------------
-* Relation of element to comp and child of comp
-* It starts with the (element2 field), which references a component.
-* That component is then used as the parent to find the child (element field) component.
+* Relation of element to a child node.
+* It starts with the (element2 field), which references a node.
+* That node is then used as the parent to find the child (element field) node.
 * Finally, it stores the reference id in the (element field)'s ref.
 * The (element field) is of type L1.
 ----------------------------------------------------------------
 
-	Element element  F1 ELEMENT       * element name to use to find a comp in the remote parent.
-	Element comp     R1 COMP          * comp name it links to.
-	Element element2 F1 ELEMENT       * element name to use for for the link for remote parent
+	Element element  F1 ELEMENT       * node name and node ref.
+	Element comp     R1 COMP          * node class name of the link.
+	Element element2 F1 ELEMENT       * element name to use that has the link to the remote parent node.
 	Element opt      C1 WORD          * optional or check - error if not found
 	   Opt check                      * check
 	   Opt .                          * optional value to use
@@ -97,19 +101,19 @@ Ref element2 Element check
 ----------------------------------------------------------------
 Comp Ref3 parent Comp
 ----------------------------------------------------------------
-* Relation of element to comp and child of comp
-* It starts with the (element2 field), which references a component.
-* The (element3 field) in that component, references another component.
-* That component is then used as the parent to find the child (element field) component.
+* Relation of element to a child node.
+* It starts with the (element2 field), which references a node.
+* The (element3 field) in that node, references another node.
+* That node is then used as the parent to find the child node (element field).
 * Finally, it stores the reference id in the (element field)'s ref.
 * The (element field) is of type M1.
 ----------------------------------------------------------------
 
-	Element element  F1 ELEMENT       * element name to use to find a comp in the remote parent.
-	Element comp     R1 COMP          * comp name it links to.
-	Element element2 F1 ELEMENT       * element name to use for the link to remote comp.
-	Element comp_ref R1 COMP          * comp name it links to.
-	Element element3 C1 WORD          * element name to use to find the remote element in, use its link for the remote parent.
+	Element element  F1 ELEMENT       * node name and node ref.
+	Element comp     R1 COMP          * node class name of the link.
+	Element element2 F1 ELEMENT       * element name to use for the link to another node.
+	Element comp_ref R1 COMP          * class name of the other node.
+	Element element3 C1 WORD          * element name to use that has the element name of the other node for the link to a remote node.
 	Element opt      C1 WORD          * optional or check - error if not found
 	   Opt check                      * check
 	   Opt .                          * optional value to use
@@ -124,18 +128,18 @@ Ref element2 Element check
 ----------------------------------------------------------------
 Comp Refq parent Comp
 ----------------------------------------------------------------
-* Relation of element to comp and child of comp
-* It starts with the parent, which references a component.
-* The (element2 field) in that component, references another component.
-* That component is then used as the parent to find the child (element field) component.
+* Relation of element to child node.
+* It starts with the parent node.
+* The (element2 field) in that node, references another node.
+* That node is then used as the parent to find the child node using the (element field) as name..
 * Finally, it stores the reference id in the (element field)'s ref.
 * The (element field) is of type Q1.
 ----------------------------------------------------------------
 
-	Element element  F1 ELEMENT       * element name to use to find a comp in the remote parent.
-	Element comp     R1 COMP          * comp name it links to.
-	Element element2 C1 ELEMENT       * element name to use to find the remote element in, use its link for the remote parent.
-	Element comp_ref R1 COMP          * parent's Comp
+	Element element  F1 ELEMENT       * element name to use for the name to find a node in the remote parent.
+	Element comp     R1 COMP          * class name of the link.
+	Element element2 C1 ELEMENT       * element name to use for the element name in the parent node that has a link to the remote parent node.
+	Element comp_ref R1 COMP          * class name of the parent node.
 	Element opt      C1 WORD          * optional or check - error if not found
 	   Opt check                      * check
 	   Opt .                          * optional value to use
@@ -150,17 +154,17 @@ Ref comp_ref Comp    check
 Comp Refu parent Comp
 ----------------------------------------------------------------
 * Copy of element to comp and child of comp
-* It starts with the (element2 field), which references a component.
-* The (element3 field) in that component, references another component.
+* It starts with the (element2 field), which references a node. It can be the parent.
+* The (element3 field) in that node, references another node.
 * Finally, it stores the same reference id in the (element field)'s ref.
 * The (element field) is of type U0 that is not a input field.
 ----------------------------------------------------------------
 
-	Element element  F1 ELEMENT       * element name to use to copy remote link..
-	Element comp     R1 COMP          * comp name it links to.
-	Element element2 C1 ELEMENT       * element name to use for the link to remote comp.
-	Element comp_ref R1 COMP          * comp name it links to.
-	Element element3 C1 ELEMENT       * element name to use to find the remote element in, use its link
+	Element element  F1 ELEMENT       * element name to use to copy remote node id.
+	Element comp     R1 COMP          * class name of the remote node.
+	Element element2 C1 ELEMENT       * element name to use that has a link to a remote node.
+	Element comp_ref R1 COMP          * class name of the remote node.
+	Element element3 C1 ELEMENT       * element name to use for the remote comp's element name that has a link, use its link
 	Element opt      C1 WORD          * optional or check - error if not found
 	   Opt check                      * check
 	   Opt .                          * optional value to use

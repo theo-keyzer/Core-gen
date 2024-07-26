@@ -14,7 +14,7 @@ C Concept ${name}
 C ----------------------------------------------------------------
 
 C 
-C Topic bld 1 h1 ${name}
+C Topic bld 1 h1 ${name} class
 C
 
 Its kp_doc doc
@@ -32,6 +32,14 @@ C Topic bld 2 p Child nodes.
 C
 
 Its Comp_parent childs
+Out normal
+Out delay
+
+C
+C Topic bld 2 p Links.
+C
+
+Its Element ele_link
 Out normal
 Out delay
 
@@ -62,6 +70,12 @@ C T . ${}
 
 ----------------------------------------------------------------
 Actor ele
+----------------------------------------------------------------
+
+C T . ${name}: ${doc}
+
+----------------------------------------------------------------
+Actor ele_link . mw in R1,F1
 ----------------------------------------------------------------
 
 C T . ${name}: ${doc}

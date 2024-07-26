@@ -320,6 +320,20 @@ Record get_path(glob, winp, va, lno)
 		}
 		return(ok: true, dat: va[2], path: [] );
 	}
+        if( va[1] == "_options" ) {
+		if( glob.wins[winp].dat is Kp) {
+			dat = glob.wins[winp].dat.flags;
+			if( dat.length == 0 ) {
+				return(ok: true, dat: "", path: []);
+			}
+			var ndat = dat[0];
+			for(var j = 1; j < dat.length; j++) {
+				ndat = "," + dat[j];
+			}
+			return(ok: true, dat: ndat, path: []);
+		}
+		return(ok: false, dat: "?_options?" + lno + "?", path: [] );
+	}
         if( va[1] == "_lno" ) {
 		if( glob.wins[winp].dat is Kp) {
 			return(ok: true, dat: glob.wins[winp].dat.line_no + ", " + lno, path: [] );
