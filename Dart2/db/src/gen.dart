@@ -23,6 +23,7 @@ class WinT {
 	dynamic dat = "";
 	String arg = "";
 	String flno = "";
+	List data_keys = [];
 	String data_key = "";
 	String data_type = "";
 	int cur_act = 0;
@@ -56,6 +57,7 @@ void new_act(glob, actn, arg, flno)
 		glob.wins.add(new WinT());
 	}
 	glob.wins[winp].name = actn;
+	glob.wins[winp].data_keys = [];
 	glob.wins[winp].data_key = "";
 	glob.wins[winp].data_type = "";
 	glob.wins[winp].cnt = -1;
@@ -191,6 +193,10 @@ Future<int> go_cmds(glob, ca, winp) async
 		if (cmd is KpDu) {
 			var args = strs(glob, winp, cmd.k_args, cmd.line_no, true,true );
 			new_act(glob, cmd.k_actor, args[1], cmd.line_no);
+			glob.wins[winp+1].cnt = glob.wins[winp].cnt;
+			glob.wins[winp+1].data_key = glob.wins[winp].data_key;
+			glob.wins[winp+1].data_type = glob.wins[winp].data_type;
+			glob.wins[winp+1].data_keys = glob.wins[winp].data_keys;
 			var ret = await go_act(glob,glob.wins[winp].dat);
 			if (ret != 0) return(ret);
 		}
@@ -352,6 +358,12 @@ List cmd_var(glob, sc, varv, lcnt)
 			}
 			dat = ndat;
 			continue;
+		}
+		if( dat is List ) {
+			var isNum = int.tryParse( sc[i] );
+			if(isNum != null) {
+				dat = dat[isNum];
+			}
 		}
 		if( dat is! String ) { continue; } // strings after this
 

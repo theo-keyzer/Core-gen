@@ -129,6 +129,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 		} catch(e) {
 			glob.run_errs = true;
 			print(e);
+			print(lno);
 			return(0);
 		}
 	}
@@ -146,6 +147,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 		} catch(e) {
 			glob.run_errs = true;
 			print(e);
+			print(lno);
 			return(0);
 		}
 	}
@@ -155,6 +157,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 		} catch(e) {
 			glob.run_errs = true;
 			print(e);
+			print(lno);
 			return(0);
 		}
 	}
@@ -165,6 +168,7 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 		} catch(e) {
 			glob.run_errs = true;
 			print(e);
+			print(lno);
 			return(0);
 		}
 	}
@@ -174,17 +178,23 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 		} catch(e) {
 			glob.run_errs = true;
 			print(e);
+			print(lno);
 			return(0);
 		}
 	}
 	if( cmd.flags.contains("execute") ) {
 		if( glob.is_conn == false ) return(0);
 		try {
-			k_data = await glob.conn.execute("Select * from kp.domain");
+			k_data = await glob.conn.execute(k_data);
+			if( k_data.length > 0 )
+			{
+				glob.wins[winp].data_keys = k_data.first.toColumnMap().keys.toList();
+			}
 	
 		} catch(e) {
 			glob.run_errs = true;
 			print(e);
+			print(lno);
 			return(0);
 		}
 	}
@@ -361,6 +371,9 @@ Record get_path(glob, winp, va, lno)
 	}
 	if (va[1].compareTo( "_key" ) == 0) {
 		return(ok: true, dat: glob.wins[winp].data_key, path: [] );
+	}
+	if (va[1].compareTo( "_keys" ) == 0) {
+		return(ok: true, dat: glob.wins[winp].data_keys, path: [] );
 	}
 	for(var i = winp-1; i >= 0; i--) 
 	{
