@@ -4,7 +4,10 @@ typedef Record = ( {bool ok, dynamic dat, List path} );
 
 Future<int> this_cmd(glob,winp,cmd,lno) async
 {
-	var va = cmd.k_path.split(".");
+	var st = strs(glob, winp, cmd.k_path, cmd.line_no, true,true );
+	var k_path = st[1];
+	var va = k_path.split(".");
+//	var va = cmd.k_path.split(".");
 	var rec = get_path(glob, glob.winp, va, cmd.line_no);
 	var dat = rec.dat;
 	var data_type = dat.runtimeType.toString();

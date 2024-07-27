@@ -33,3 +33,10 @@ echo ::::::::::::::
 dart run ../src/main.dart select.act concept.def $PASS
 if [ $? != 0 ]; then echo select.act concept.def has errors; fi
 
+echo ::::::::::::::
+echo def_unit_q.act
+echo ::::::::::::::
+
+dart run ../src/main.dart def_unit_q.act note.def_unit >note.tst_unit
+if [ $? != 0 ]; then echo def_unit_q.act note.def_unit has errors; fi
+
