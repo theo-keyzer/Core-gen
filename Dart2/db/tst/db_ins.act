@@ -1,0 +1,38 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+Dbconn localhost postgres postgres ${2}
+
+All Concept Concept
+
+----------------------------------------------------------------
+Actor Concept
+----------------------------------------------------------------
+
+Add.execute _:Concept Insert into Concept (parent_id, "name") values (-1, '${name}') returning pk_id
+Its Topic Topic
+
+----------------------------------------------------------------
+Actor Topic
+----------------------------------------------------------------
+
+Add.execute _:Topic Insert into Topic (parent_id, "name", "level", "tag", "desc") values (${_.Concept:0:0}, '${name}', '${level}', '${tag}', '${desc}') returning pk_id
+
+Its T T
+Its See See
+
+----------------------------------------------------------------
+Actor T
+----------------------------------------------------------------
+
+Add.execute _:T Insert into T (parent_id, "file", "desc") values (${_.Topic:0:0}, '${file}', '${desc}') returning pk_id
+
+
+----------------------------------------------------------------
+Actor See
+----------------------------------------------------------------
+
+Add.execute _:See Insert into See (parent_id, "concept") values (${_.Topic:0:0}, '${concept}') returning pk_id
+
+

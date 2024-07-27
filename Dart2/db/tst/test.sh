@@ -40,3 +40,9 @@ echo ::::::::::::::
 dart run ../src/main.dart def_unit_q.act note.def_unit >note.tst_unit
 if [ $? != 0 ]; then echo def_unit_q.act note.def_unit has errors; fi
 
+dart run ../src/main.dart gen_ins.act ../bld/concept.unit >db_ins.act
+dart run ../src/main.dart gen_sel.act ../bld/concept.unit >db_sel.act
+dart run ../src/main.dart cre_tbl.act ../bld/concept.unit $PASS
+dart run ../src/main.dart db_ins.act concept.def $PASS
+dart run ../src/main.dart db_sel.act empty.def $PASS
+

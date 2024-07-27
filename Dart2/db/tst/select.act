@@ -4,8 +4,14 @@ Actor main
 
 Dbconn localhost postgres postgres ${2}
 
-Add.execute _:res Select * from kp.domain
+-Add.execute _:res Insert into kp.domain (name) values ('abc') returning pk_id
 
+-C ${_.res} ${_.res:0} ${_.res:0:0}
+
+Add.execute _:res Select * from kp.domain
+-Add.execute _:res Delete from kp.domain where name = 'abc'
+
+C ${._keys}
 C ${_.res}
 
 Add.eval _:val [2+3, 7-1]
