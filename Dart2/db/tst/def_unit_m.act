@@ -9,7 +9,7 @@ Actor comp Comp
 ----------------------------------------------------------------
 
 C
-C Comp ${name} ${nop:eol} ${parent:eol} ${find:eol} ${doc}
+C Comp ${name} ${nop:eol} ${parent:eol} ${find:eol} ${doc:eol}
 
 Its Element element
 Its Ref ref
@@ -22,7 +22,7 @@ Its Join join
 Actor element Element
 ----------------------------------------------------------------
 
-C  Element ${name} ${mw} ${mw2:eol} ${pad:eol} ${doc}
+C  Element ${name} ${mw} ${mw2:eol:c} ${pad:eol} ${doc}
 
 ----------------------------------------------------------------
 Actor ref Ref
@@ -49,48 +49,50 @@ Actor refq Refq
 C  Refq ${element} ${comp} ${element2} ${comp_ref} ${opt:eol}
 
 ----------------------------------------------------------------
+Actor ref3 Ref3
+----------------------------------------------------------------
+
+C  Ref3 ${element} ${comp} ${element2} ${comp_ref} ${element3} ${opt:eol}
+
+----------------------------------------------------------------
 Actor join Join
 ----------------------------------------------------------------
 
-Its parent.parent.Element q_look
-Its parent.parent q_find
+Its parent.Element m_look
 
 ----------------------------------------------------------------
-Actor q_look Element mw in R1,RS,F1
+Actor m_look Element mw in R1,RS,F1
 ----------------------------------------------------------------
 
-All Comp q_look2 ${Ref_element.comp}
-Break loop
+All Comp m_look3 ${Ref_element.comp}
 
 ----------------------------------------------------------------
-Actor q_look Element mw in Q1,QS
+Actor m_look Element mw in Q1,QS
 ----------------------------------------------------------------
 
-All Comp q_look2 ${Refq_element.comp}
-Break loop
+All Comp m_look3 ${Refq_element.comp}
 
 ----------------------------------------------------------------
-Actor q_find Comp _.${name}.${parent.parent} ?!= 0
+Actor m_look3 Comp name = ${._arg}
+----------------------------------------------------------------
+
+Its Element m_look4
+
+----------------------------------------------------------------
+Actor m_look4 Element mw in R1,RS,F1
+----------------------------------------------------------------
+
+All Comp m_look5 ${Ref_element.comp}
+
+----------------------------------------------------------------
+Actor m_look5 Comp parent = ${._arg}
+Actor m_look5 Comp name &= ${.join.comp}
 ----------------------------------------------------------------
 
 C
-C  Element ${.join.element:l}    Q1 ${.join.comp} 
-C Refq ${.join.element} ${.join.comp} ${_.A.Model} ${name} ?
+C  Element ${.join.element:l}    M1 ${.join.comp} 
+C Ref3 ${.join.element} ${.join.comp} ${.m_look.name} ${.m_look3.name} ${.m_look4.name} check
 
-----------------------------------------------------------------
-Actor q_look2 Comp parent = ${._arg}
-Actor q_look2 Comp name &= ${.join.comp}
-----------------------------------------------------------------
-
-C
-C  Element ${.join.element:l}    Q1 ${.join.comp} 
-C Refq ${.join.element} ${.join.comp} ${.q_look.name} ${.q_look.parent.name} ?
-
-Add.check.map _:${.join.parent.name}
-Add.check _.${.join.parent.name}:${.join.comp} ${.join.element}
-
--C ${_}
-
-Break cmds of join
+Break loop of join
 
 

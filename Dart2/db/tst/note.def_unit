@@ -34,12 +34,12 @@ Comp A parent Frame FindIn
 * Use domain from parent
 ----------------------------------------------------------------
 
-	Element model      QS Model      * ref to model
+-	Element model      QS Model      * ref to model
 	Element name       C1 WORD       * a name
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
-Refq model Model domain Frame ?
+-Refq model Model domain Frame ?
 
 Join.q model to Model
 
@@ -47,10 +47,12 @@ Join.q model to Model
 Comp Use parent A
 ----------------------------------------------------------------
 
-	Element a          L1 A          * ref to a in frame
+-	Element frame      QS Frame      * ref to frame
+-	Element a          L1 A          * ref to a in frame
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
+-Refq frame Frame model A ?
 -Ref2 a A frame ?
 
 Join.q frame to Frame

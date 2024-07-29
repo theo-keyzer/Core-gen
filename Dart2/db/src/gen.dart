@@ -89,7 +89,9 @@ Future<int> go_act(glob, dat) async
 		var act = glob.acts.ap_actor[i];
 		if (act.k_attr.compareTo("E_O_L") != 0) {
 			var value = strs(glob, winp, act.k_value, act.line_no, false, false );
-			var sc = act.k_attr.split(":");
+			var k_attr = strs(glob, winp, act.k_attr, act.line_no, true, true );
+//			var sc = act.k_attr.split(":");
+			var sc = k_attr[1].split(":");
 			var va = sc[0].split(".");
 			var v = s_get_var(glob, winp, sc, va, act.line_no);
 			if (chk(glob, act.k_eq, v[1], value[1], prev, v[0], value[0], act.line_no) == false ) {
@@ -374,7 +376,10 @@ List cmd_var(glob, sc, varv, lcnt)
 			dat = dat.toLowerCase();
 		}
 		if (sc[i] == 'c') {
-			dat = dat[0].toUpperCase() + dat.substring(1);
+			dat = dat[0].toUpperCase() + dat.substring(1).toLowerCase();
+		}
+		if (sc[i] == 'eol' && dat == "E_O_L") {
+			dat = "";
 		}
 	}
 	return( [ true, dat.toString() ] );
