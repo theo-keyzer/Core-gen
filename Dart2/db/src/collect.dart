@@ -245,7 +245,8 @@ Future<int> add_cmd(glob,winp,cmd,lno,body) async
 			return(0);
 		}
 		if( cmd.flags.contains("check") || cmd.flags.contains("break") ) {
-			if( dat[ va[1] ] == k_data ) {
+//			if( dat[ va[1] ] == k_data ) {
+			if( dat[ va[1] ] != null) {
 				if( cmd.flags.contains("break") ) {
 					return(2);
 				}

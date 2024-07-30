@@ -1,0 +1,88 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+All Comp comp
+
+----------------------------------------------------------------
+Actor comp Comp
+----------------------------------------------------------------
+
+C
+C Comp ${name} ${nop:eol} ${parent:eol} ${find:eol} ${doc}
+
+Its Element element
+Its Ref ref
+Its Ref2 ref2
+Its Refu refu
+Its Refq refq
+Its Join join
+
+----------------------------------------------------------------
+Actor element Element
+----------------------------------------------------------------
+
+C  Element ${name} ${mw} ${mw2:eol} ${pad:eol} ${doc}
+
+----------------------------------------------------------------
+Actor ref Ref
+----------------------------------------------------------------
+
+C  Ref ${element} ${comp} ${opt:eol}
+
+----------------------------------------------------------------
+Actor ref2 Ref2
+----------------------------------------------------------------
+
+C  Ref2 ${element} ${comp} ${element2} ${opt:eol}
+
+----------------------------------------------------------------
+Actor refu Refu
+----------------------------------------------------------------
+
+C  Refu ${element} ${comp} ${element2} ${comp_ref} ${element3} ${opt:eol}
+
+----------------------------------------------------------------
+Actor refq Refq
+----------------------------------------------------------------
+
+C  Refq ${element} ${comp} ${element2} ${comp_ref} ${opt:eol}
+
+----------------------------------------------------------------
+Actor join Join ._options has r
+----------------------------------------------------------------
+
+All Comp r_look
+
+----------------------------------------------------------------
+Actor join Join ._options has f
+----------------------------------------------------------------
+
+All Comp f_look
+
+----------------------------------------------------------------
+Actor r_look Comp name = ${.join.comp}
+----------------------------------------------------------------
+
+C
+C  Element ${.join.element:l}    R1 ${.join.comp} 
+C Ref ${.join.element} ${.join.comp} .
+
+Add.check.map _:${.join.parent.name}
+Add.check _.${.join.parent.name}:${.join.comp} ${.join.element}
+Break loop
+
+----------------------------------------------------------------
+Actor f_look Comp name = ${.join.comp}
+Actor f_look Comp parent.name &= ${.join.parent.parent.name}
+----------------------------------------------------------------
+
+C
+C  Element ${.join.element:l}    F1 ${.join.comp} 
+C Ref ${.join.element} ${.join.comp} .
+
+Add.check.map _:${.join.parent.name}
+Add.check _.${.join.parent.name}:${.join.comp} ${.join.element}
+Break loop
+
+

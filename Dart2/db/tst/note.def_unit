@@ -19,14 +19,14 @@ Comp Frame parent Model FindIn
 ----------------------------------------------------------------
 
 	Element group      N1 WORD       * search navigation group index tree
-	Element domain     RS Domain     * ref to domain
+-	Element domain     RS Domain     * ref to domain
 	Element name       C1 WORD       * frame name
 	Element pad        C1 WORD       * padding
 	Element info       V1 WORD       * info
 
-Ref domain Domain .
+-Ref domain Domain .
 
--Join.r domain to Domain
+Join.r domain to Domain
 
 ----------------------------------------------------------------
 Comp A parent Frame FindIn
@@ -56,6 +56,7 @@ Comp Use parent A
 -Ref2 a A frame ?
 
 Join.q frame to Frame
+Join.l a A
 
 ----------------------------------------------------------------
 Comp Grid parent . Find
