@@ -11,6 +11,10 @@ Actor comp Comp
 C
 C Comp ${name} ${nop:eol} ${parent:eol} ${find:eol} ${doc}
 
+Its Ref ref_add
+Its Ref2 ref_add
+Its Refu ref_add
+Its Refq ref_add
 Its Element element
 Its Ref ref
 Its Ref2 ref2
@@ -23,6 +27,15 @@ Actor element Element
 ----------------------------------------------------------------
 
 C  Element ${name} ${mw} ${mw2:eol} ${pad:eol} ${doc}
+
+----------------------------------------------------------------
+Actor ref_add Ref
+----------------------------------------------------------------
+
+Add.check.map _:${parent.name}
+Add.check _.${parent.name}:${comp} ${element}
+
+-C ${_}
 
 ----------------------------------------------------------------
 Actor ref Ref
@@ -61,6 +74,18 @@ Actor join Join ._options has f
 All Comp f_look
 
 ----------------------------------------------------------------
+Actor join Join ._options has l
+----------------------------------------------------------------
+
+All Comp l_find
+
+----------------------------------------------------------------
+Actor join Join ._options has m
+----------------------------------------------------------------
+
+Its parent m_find
+
+----------------------------------------------------------------
 Actor r_look Comp name = ${.join.comp}
 ----------------------------------------------------------------
 
@@ -70,7 +95,7 @@ C Ref ${.join.element} ${.join.comp} .
 
 Add.check.map _:${.join.parent.name}
 Add.check _.${.join.parent.name}:${.join.comp} ${.join.element}
-Break loop
+Break cmds of join
 
 ----------------------------------------------------------------
 Actor f_look Comp name = ${.join.comp}
@@ -83,6 +108,44 @@ C Ref ${.join.element} ${.join.comp} .
 
 Add.check.map _:${.join.parent.name}
 Add.check _.${.join.parent.name}:${.join.comp} ${.join.element}
-Break loop
+Break cmds of join
+
+----------------------------------------------------------------
+Actor l_find Comp name = ${.join.comp}
+Actor l_find Comp _.${.join.parent.name}.${parent} ?&!= 0
+----------------------------------------------------------------
+
+Add.node _:TMP _.${.join.parent.name}.${parent}
+
+C
+C  Element ${.join.element:l}    L1 ${.join.comp} 
+C Ref2 ${.join.element} ${.join.comp} ${_.TMP} .
+
+Add.check.map _:${.join.parent.name}
+Add.check _.${.join.parent.name}:${.join.comp} ${.join.element}
+Break cmds of join
+
+----------------------------------------------------------------
+Actor m_find Comp _.${name} ?!= 0
+----------------------------------------------------------------
+
+All Comp m_find3
+
+----------------------------------------------------------------
+Actor m_find3 Comp _.${.m_find.name}.${name} ?!= 0
+Actor m_find3 Comp _.${name}.${parent} ?&!= 0
+Actor m_find3 Comp name &= ${.join.comp}
+----------------------------------------------------------------
+
+Add.node  _:TMP _.${name}.${parent}
+Add.node _:TMP2 _.${.m_find.name}.${name}
+
+C
+C  Element ${.join.element:l}    L1 ${.join.comp} 
+C Ref3 ${.join.element} ${.join.comp} ${_.TMP2} ${name} ${_.TMP} check
+
+Add.check.map _:${.join.parent.name}
+Add.check _.${.join.parent.name}:${.join.comp} ${.join.element}
+Break cmds of join
 
 

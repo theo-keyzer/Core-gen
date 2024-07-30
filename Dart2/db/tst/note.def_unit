@@ -56,7 +56,7 @@ Comp Use parent A
 -Ref2 a A frame ?
 
 Join.q frame to Frame
-Join.l a A
+Join.l a to A
 
 ----------------------------------------------------------------
 Comp Grid parent . Find

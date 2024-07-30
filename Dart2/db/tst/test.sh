@@ -44,8 +44,8 @@ echo ::::::::::::::
 echo def_unit_m.act
 echo ::::::::::::::
 
-dart run ../src/main.dart def_unit_m.act sample.def_unit >sample.tst_unit
-if [ $? != 0 ]; then echo def_unit_m.act sample.def_unit has errors; fi
+dart run ../src/main.dart def_unit_rfl.act sample.def_unit >sample.tst_unit
+if [ $? != 0 ]; then echo def_unit_rfl.act sample.def_unit has errors; fi
 
 
 #dart run ../src/main.dart gen_ins.act ../bld/concept.unit >db_ins.act
