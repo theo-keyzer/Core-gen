@@ -18,4 +18,13 @@ type KpActor struct {
 	Kcc string
 	Kchilds [] Kp
 }
+type KpC struct {
+	Kp
+	Kme int
+	LineNo string
+	up *KpActor
+	parent string
+	parentP int
+	Kdesc string
+}
 

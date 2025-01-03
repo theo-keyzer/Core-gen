@@ -6,21 +6,29 @@ import (
 	"strings"
 )
 
-
-// Acts represents the actions structure
-type Acts struct {
-	ApActor []Actor
-	Index   map[string]interface{}
+// GlobT represents global state
+type GlobT struct {
+	LoadErrs  bool
+	RunErrs   bool
+	Acts      ActT
+	Dats      ActT
+	Winp      int
+	Wins      []WinT
+	Collect   map[string]interface{}
+	OutOn     bool
+	InOn      bool
+	Ins       strings.Builder
 }
 
-// Actor represents an actor in the system
-type Actor struct {
-	KName string
-}
 
 // KpExtra represents extra key-value pairs
 type KpExtra struct {
 	Names map[string]string
+}
+func (me KpExtra) GetVar(glob *GlobT, s []string, ln string) (bool, string) {
+	r,ok := me.Names[s[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s", s[0], ln) }
+	return !ok,r
 }
 
 func main() {
@@ -30,18 +38,14 @@ func main() {
 		return
 	}
 
-//	glob := &GlobT{
-//		Acts: Acts{
-//			Index: make(map[string]interface{}),
-//		},
-//	}
-
-	var globs  GlobT;
-	glob := &globs;
+	glob := new(GlobT)
+	glob.Winp = -1
 	// Load files and check for errors
 	glob.LoadErrs = loadFiles(args[0], &glob.Acts)
 	glob.LoadErrs = glob.LoadErrs || loadFiles(args[1], &glob.Dats)
 
+//		fmt.Println(glob.Acts.ApActor[0])
+//		fmt.Println(glob.Acts.ApActor[0].Kchilds[0])
 	if len(glob.Acts.ApActor) > 0 {
 		kp := &KpExtra{
 			Names: make(map[string]string),
@@ -51,9 +55,9 @@ func main() {
 		for i, arg := range args {
 			kp.Names[fmt.Sprint(i)] = arg
 		}
-
-		newAct(glob, glob.Acts.ApActor[0].Kname, "", "run:1")
-		goAct(glob, kp)
+//fmt.Println("HERE")
+		NewAct(glob, glob.Acts.ApActor[0].Kname, "", "run:1")
+		GoAct(glob, kp)
 	}
 
 	if glob.LoadErrs || glob.RunErrs {
@@ -62,7 +66,7 @@ func main() {
 	}
 }
 
-func loadFiles(files string, act interface{}) bool {
+func loadFiles(files string, act *ActT) bool {
 	errs := false
 	fileList := strings.Split(files, ",")
 	
@@ -73,15 +77,31 @@ func loadFiles(files string, act interface{}) bool {
 			errs = true
 			continue
 		}
-		
+//			fmt.Println(string(content))
+
 		lines := strings.Split(string(content), "\n")
-		errs = errs || loadData(lines, act, file)
+//		fmt.Println(lines)
+		errs = errs || LoadData(lines, act, file)
 	}
 	
 	errs = errs || refs(act)
 	return errs
 }
 
+// LoadData loads data from lines into an actor
+func LoadData(lns []string, act *ActT, file string) bool {
+	errs := false
+	for i := 0; i < len(lns); i++ {
+		lno := fmt.Sprintf("%s:%d", file, i+1)
+		pos,tok := getw(lns[i], 0)
+		if tok == "E_O_F" {
+			break
+		}
+		errs = errs || Load(act, tok, lns[i], pos, lno)
+	}
+	return errs
+}
+/*
 // fnd finds a value in the index
 func fnd(act interface{}, s string, f string, chk string, lno string) (bool, interface{}) {
 	if a, ok := act.(Acts); ok {
@@ -100,7 +120,7 @@ func fnd(act interface{}, s string, f string, chk string, lno string) (bool, int
 	fmt.Printf("%s not found %s\n", s, lno)
 	return false, -1
 }
-
+*/
 // getName gets a value from a map by name
 func getName(m map[string]string, n string) string {
 	if v, ok := m[n]; ok {
@@ -185,12 +205,6 @@ func getsw(line string, pos int) (int, string) {
 		return to + 2, line[from : to+1]
 	}
 	return to + 1, line[from : to+1]
-}
-
-// Placeholder functions that would need to be implemented
-func loadData(lines []string, act interface{}, file string) bool {
-	// Implementation needed
-	return false
 }
 
 func refs(act interface{}) bool {

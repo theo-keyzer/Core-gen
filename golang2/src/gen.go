@@ -11,19 +11,6 @@ import (
 //	index       map[string]int
 //}
 
-// GlobT represents global state
-type GlobT struct {
-	LoadErrs  bool
-	RunErrs   bool
-	Acts      ActT
-	Dats      ActT
-	Winp      int
-	Wins      []WinT
-	Collect   map[string]interface{}
-	OutOn     bool
-	InOn      bool
-	Ins       strings.Builder
-}
 
 // WinT represents window state
 type WinT struct {
@@ -44,22 +31,10 @@ type WinT struct {
 	IsCheck   bool
 }
 
-// LoadData loads data from lines into an actor
-func LoadData(lns []string, act *ActT, file string) bool {
-	errs := false
-	for i := 0; i < len(lns); i++ {
-		lno := fmt.Sprintf("%s:%d", file, i+1)
-		pos,tok := getw(lns[i], 0)
-		if tok == "E_O_F" {
-			break
-		}
-		errs = errs || Load(act, tok, lns[i], pos, lno)
-	}
-	return errs
-}
 
 // NewAct creates a new action
 func NewAct(glob *GlobT, actn string, arg string, flno string) {
+//	fmt.Println("NEW")
 	winp := glob.Winp + 1
 	if len(glob.Wins) <= winp {
 		glob.Wins = append(glob.Wins, WinT{})
@@ -85,6 +60,7 @@ func NewAct(glob *GlobT, actn string, arg string, flno string) {
 
 // GoAct processes an action
 func GoAct(glob *GlobT, dat interface{}) int {
+//	fmt.Println("go")
 	winp := glob.Winp + 1
 	glob.Winp = winp
 	glob.Wins[winp].Dat = dat
@@ -96,6 +72,7 @@ func GoAct(glob *GlobT, dat interface{}) int {
 		if glob.Acts.ApActor[i].Kname != name {
 			continue
 		}
+//	fmt.Println("go2")
 
 		act := glob.Acts.ApActor[i]
 		if act.Kattr != "E_O_L" {
@@ -138,6 +115,7 @@ func GoAct(glob *GlobT, dat interface{}) int {
 
 // GoCmds processes commands
 func GoCmds(glob *GlobT, ca int, winp int) int {
+//	fmt.Println("cmd")
 	glob.Wins[winp].IsOn = false
 	glob.Wins[winp].IsTrig = false
 	glob.Wins[winp].IsCheck = false
@@ -145,10 +123,10 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 
 	for i := 0; i < len(a.Kchilds); i++ {
 		glob.Wins[winp].CurPos = i
-/*
+
 		cmd := a.Kchilds[i]
 		switch v := cmd.(type) {
-		
+/*		
 		case *KpIn:
 			if v.KFlag == "on" {
 				glob.InOn = true
@@ -159,30 +137,31 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			if contains(v.Flags, "clear") {
 				glob.Ins.Reset()
 			}
-
+*/
 		case *KpC:
-			if !glob.OutOn {
-				continue
-			}
-			if glob.Wins[winp].IsOn && !glob.Wins[winp].IsTrig {
-				continue
-			}
-			Trig(glob, winp)
+//			if !glob.OutOn {
+//				continue
+//			}
+//			if glob.Wins[winp].IsOn && !glob.Wins[winp].IsTrig {
+//				continue
+//			}
+//			Trig(glob, winp)
 
-			kDesc := v.KDesc
-			if contains(v.Flags, "r") {
-				kDesc = v.KDesc
-			} else {
-				_, res := Strs(glob, winp, v.KDesc, v.LineNo, false, true)
+			kDesc := v.Kdesc
+//			if contains(v.Flags, "r") {
+//				kDesc = v.KDesc
+//			} else {
+				_, res := Strs(glob, winp, v.Kdesc, v.LineNo, false, true)
 				kDesc = res
-			}
+//			}
+//	fmt.Println(kDesc)
 
 			if glob.InOn {
 				fmt.Fprintln(&glob.Ins, kDesc)
 			} else {
 				fmt.Println(kDesc)
 			}
-
+/*
 		case *KpCs:
 			if !glob.OutOn {
 				continue
@@ -332,9 +311,9 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 
 		case *KpRefs:
 			glob.LoadErrs = glob.LoadErrs || Refs(&glob.Dats)
-			
+		*/	
 		}
-		*/
+		
 	}
 	return 0
 }
@@ -550,6 +529,7 @@ func GetVarFromData(data interface{}, glob *GlobT, va []string, lno string) (boo
 	if getter, ok := data.(VariableGetter); ok {
 		return getter.GetVar(glob, va, lno)
 	}
+//fmt.Println(data)
 	return false, fmt.Sprintf("?%s?%s?", va[0], lno)
 }
 
