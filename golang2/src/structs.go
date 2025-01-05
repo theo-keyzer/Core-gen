@@ -16,7 +16,7 @@ type KpActor struct {
 	Keq string
 	Kvalue string
 	Kcc string
-	Kchilds [] Kp
+	Childs [] Kp
 }
 type KpC struct {
 	Kp

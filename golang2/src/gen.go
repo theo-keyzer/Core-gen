@@ -121,10 +121,10 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 	glob.Wins[winp].IsCheck = false
 	a := glob.Acts.ApActor[ca]
 
-	for i := 0; i < len(a.Kchilds); i++ {
+	for i := 0; i < len(a.Childs); i++ {
 		glob.Wins[winp].CurPos = i
 
-		cmd := a.Kchilds[i]
+		cmd := a.Childs[i]
 		switch v := cmd.(type) {
 /*		
 		case *KpIn:

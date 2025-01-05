@@ -33,7 +33,9 @@ func doActor(act *ActT, ln string, pos int, lno string, flag []string) {
 	p,st.Keq = getw(ln,p)
 	p,st.Kvalue = getw(ln,p)
 	p,st.Kcc = getws(ln,p)
+	act.index["Actor_" + st.Kname] = st.Kme;
 }
+
 func doC(act *ActT, ln string, pos int, lno string, flag []string) {
 	p := pos
 	st := new(KpC)
@@ -41,8 +43,6 @@ func doC(act *ActT, ln string, pos int, lno string, flag []string) {
 	st.LineNo = lno
 	act.ApC = append(act.ApC, st)
 	p,st.Kdesc = getws(ln,p)
-	act.ApActor[ len( act.ApActor)-1 ].Kchilds = append(act.ApActor[ len( act.ApActor)-1 ].Kchilds, st)
-//	Acts.ApActor[ len( Acts.ApActor)-1 ].itsC = append(Acts.ApActor[ len( Acts.ApActor)-1 ].itsC, st)
-//	st.up = Acts.ApActor[ len(Acts.ApActor)-1]
+	act.ApActor[ len( act.ApActor)-1 ].Childs = append(act.ApActor[ len( act.ApActor)-1 ].Childs, st)
 }
 

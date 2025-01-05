@@ -1,0 +1,642 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C package main
+C
+C type Kp interface {
+C 	DoIts(glob *GlobT, va []string, lno string) int
+C 	GetVar(glob *GlobT, va []string, lno string) (bool, string)
+C 	GetLineNo() string
+C }
+C
+
+All Comp struct
+
+----------------------------------------------------------------
+Actor struct Comp name = Actor
+----------------------------------------------------------------
+
+D ${name:c} struct
+
+C type Kp${name:c} struct {
+C 	Kp
+C 	Me int
+C 	LineNo string
+C 	Comp string
+C 	Flags [] string
+
+Its parent parent_field
+Its Element val_inc
+Its Element val_inc2
+
+C 	Childs [] Kp
+C }
+C
+C func load${name:c}(act *ActT, ln string, pos int, lno string, flag []string) bool {
+C 	p := pos
+C 	st := new(Kp${name:c})
+C 	st.Me = len(act.Ap${name:c})
+C 	st.LineNo = lno
+C 	st.Comp = "${name:c}";
+C 	st.Flags = flag;
+
+Its Element ele_act
+Its parent parent_field_p
+Du index_act
+
+C 	act.Ap${name:c} = append(act.Ap${name:c}, st)
+C 	return true;
+C }
+C
+
+Break
+
+----------------------------------------------------------------
+Actor struct Comp parent = Actor
+----------------------------------------------------------------
+
+D ${name:c} struct
+
+C type Kp${name:c} struct {
+C 	Kp
+C 	Me int
+C 	LineNo string
+C 	Comp string
+C 	Flags [] string
+
+Its parent parent_field
+Its Element val_inc
+Its Element val_inc2
+
+-C 	Childs [] Kp
+C }
+C
+C func load${name:c}(act *ActT, ln string, pos int, lno string, flag []string) bool {
+C 	p := pos
+C 	st := new(Kp${name:c})
+C 	st.Me = len(act.Ap${name:c})
+C 	st.LineNo = lno
+C 	st.Comp = "${name:c}";
+C 	st.Flags = flag;
+
+Its Element ele_act
+Its parent parent_field_p
+
+C 	act.Ap${name:c} = append(act.Ap${name:c}, st)
+C 	return true;
+C }
+C
+
+Break
+
+----------------------------------------------------------------
+-Actor struct Comp name != Actor
+Actor struct Comp
+----------------------------------------------------------------
+
+C type Kp${name:c} struct {
+C 	Kp
+C 	Me int
+C 	LineNo string
+C 	Comp string
+C 	Flags [] string
+C 	Names map[string]string
+
+Its parent parent_field
+Its Element val_inc2
+Its Comp_parent from_to
+Its Element val_inc_d
+Its Comp_parent childs
+
+-C 	Childs [] Kp
+C }
+C
+C func load${name:c}(act *ActT, ln string, pos int, lno string, flag []string) bool {
+C 	p := pos
+C 	st := new(Kp${name:c})
+C 	st.Names = make(map[string]string) 
+
+C 	st.Me = len(act.Ap${name:c})
+C 	st.LineNo = lno
+C 	st.Comp = "${name:c}";
+C 	st.Flags = flag;
+C 	st.Names["Comp"] = st.Comp
+C 	st.Names["Me"] = st.Me
+
+Its Element ele
+Its parent parent_field_p
+Du index
+
+C 	act.Ap${name:c} = append(act.Ap${name:c}, st)
+C 	return true;
+C }
+C
+C 	List get_var(glob, va, lno) {
+
+Its Ref ref_var
+Its Ref2 ref_var2
+Its Ref3 ref_var3
+Its parent parent_field_var
+Its Ref_comp other_var
+Its Ref2_comp other_var2
+Its Ref3_comp other_var3
+Its Comp_parent find
+
+C 		var v = names[ va[0] ];
+C 		if( v != null) {
+C 			return( [true, v] );
+C 		}
+C 		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",${name}?"] );
+C 	}
+C
+C 	int do_its(glob, va, lno) {
+
+Its Comp_parent from_to_doo
+Its parent parent_field_func
+Its Ref ref_func
+Its Ref2 ref_func2
+Its Ref3 ref_func3
+Its Refq ref_funcq
+Its Ref_comp other_func
+Its Ref2_comp other_func2
+Its Ref3_comp other_func3
+Its Refq_comp other_funcq
+Its Element nested
+
+C 		if ( va[0].compareTo("Child") == 0 ) { // ${._lno}
+
+Its Comp_parent childs_func
+
+C 			return(0);
+C 		}
+
+C 		print("?No its " + va[0] + " cmd for ${name}," + line_no + "," + lno + "?");
+C 		glob.run_errs = true;
+C 		return(0);
+C 	}
+C }
+C
+
+----------------------------------------------------------------
+Actor nested Element mw = N1
+----------------------------------------------------------------
+
+
+----------------------------------------------------------------
+Actor childs_func Comp name != Actor
+----------------------------------------------------------------
+
+C 			for (var st in childs) {
+C 				if (va.length > 1) {
+C 					var ret = st.do_its(glob, va.sublist(1), lno);
+C 					if (ret != 0) {
+C 						return(ret);
+C 					}
+C 					continue;
+C 				}
+C 				var ret = go_act(glob, st);
+C 				if (ret != 0) {
+C 					return(ret);
+C 				}
+C 			}
+
+Break loop
+
+----------------------------------------------------------------
+Actor parent_field_p Comp name = Actor
+----------------------------------------------------------------
+
+C 	Kparentp = act.Ap${name:c}.length-1;
+C 	if (Kparentp < 0 ) { 
+C 		print(lno + " ${.struct.name:c} has no ${name:c} parent") ;
+C 		return false;
+C 	}
+C 	act.Ap${name:c}[ len( act.Ap${name:c} )-1 ].Childs = append(act.Ap${name:c}[ len( act.Ap${name:c} )-1 ].Childs, st)
+
+----------------------------------------------------------------
+Actor parent_field_p Comp name != Actor
+----------------------------------------------------------------
+
+
+C 	st.Kparentp = act.Ap${name:c}.length-1;
+C 	st.Names["Kparent"] = strconv.Itoa(st.Kparentp)
+
+C 	if (st.Kparentp < 0 ) { 
+C 		print(lno + " ${.struct.name:c} has no ${name:c} parent") ;
+C 		return false;
+C 	}
+C 	act.Ap${name:c}[ len( act.Ap${name:c} )-1 ].Childs = append(act.Ap${name:c}[ len( act.Ap${name:c} )-1 ].Childs, st)
+C 	act.Ap${name:c}[ len( act.Ap${name:c} )-1 ].Its${.struct.name:c} = append(act.Ap${name:c}[ len( act.Ap${name:c} )-1 ].Its${.struct.name:c}, st)
+
+----------------------------------------------------------------
+Actor index Comp find = Find
+----------------------------------------------------------------
+
+Its Element index_name
+
+----------------------------------------------------------------
+Actor index_name Element name = name
+----------------------------------------------------------------
+
+C 	act.index["${.index.name:c}_" + st.Kname] = st.Me;
+
+----------------------------------------------------------------
+Actor index_act Comp find = Find
+----------------------------------------------------------------
+
+Its Element index_act_name
+
+----------------------------------------------------------------
+Actor index_act_name Element name = name
+----------------------------------------------------------------
+
+C 	act.index["${.index_act.name:c}_" + st.Kname] = st.Me;
+
+----------------------------------------------------------------
+Actor index Comp find = FindIn
+----------------------------------------------------------------
+
+Its Element index_name_in
+
+----------------------------------------------------------------
+Actor index_name_in Element name = name
+----------------------------------------------------------------
+
+C 	s := strconv.Itoa(st.Kparentp) + "_${.index.name:c}_" + Kname
+C 	act.index[s] = st.Me;
+
+----------------------------------------------------------------
+Actor ele_act . mw in C1,R1,F1,L1
+----------------------------------------------------------------
+
+C 	p,st.K${name:l} = getw(ln,p)
+
+----------------------------------------------------------------
+Actor ele_act . mw = V1
+----------------------------------------------------------------
+
+C 	p,st.K${name:l} = getws(ln,p)
+
+----------------------------------------------------------------
+Actor ele . mw in C1,R1,F1,L1,M1,N1,P1,Q1
+----------------------------------------------------------------
+
+C 	p,st.Names["K${name:l}"] = getw(ln,p)
+
+----------------------------------------------------------------
+Actor ele . mw = V1
+----------------------------------------------------------------
+
+C 	p,st.Names["K${name:l}"] = getws(ln,p)
+
+----------------------------------------------------------------
+Actor ele . mw in CS,RS,FS,LS,MS,NS,PS,QS
+----------------------------------------------------------------
+
+C 	p,st.Names["K${name:l}"] = getsw(ln,p)
+
+----------------------------------------------------------------
+Actor childs Comp
+----------------------------------------------------------------
+
+-C 	List <Kp> childs = [];
+C 	Childs [] Kp
+
+Break loop
+
+----------------------------------------------------------------
+Actor find Comp find = FindIn
+----------------------------------------------------------------
+
+Its Element ele_name_in
+
+----------------------------------------------------------------
+Actor ele_name_in . name = name
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${.find.name:c}") == 0 && va.length > 2) { // ${._lno}
+C 			var en = glob.dats.index[me.toString() + "_${.find.name:c}_" + va[1] ];
+C 			if(en != null) {
+C 				return (glob.dats.ap_${.find.name:l}[en].get_var(glob, va.sublist(2), lno));
+C 			}
+C 			return( [false, "?" + va[0] + "=" + va[1] + "?" + line_no + "," + lno + "?"] );
+C 		}
+
+----------------------------------------------------------------
+Actor find Comp find != FindIn
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${name:c}") == 0 && va.length > 2 && its${name:l}.length > 0) { // ${._lno}
+C 			return (its${name:l}[0].get_var(glob, va.sublist(1), lno));
+C 		}
+
+----------------------------------------------------------------
+Actor ref_func Ref
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${element.name:l}") == 0) {
+C 			if (k_${element.name:l}p >= 0) {
+C 				var st = glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ];
+C 				if (va.length > 1) {
+C 					return( st.do_its(glob, va.sublist(1), lno) );
+C 				}
+C 				return( go_act(glob, st) );
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor ref_func2 Ref2
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${element.name:l}") == 0) {
+C 			if (k_${element.name:l}p >= 0) {
+C 				var st = glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ];
+C 				if (va.length > 1) {
+C 					return( st.do_its(glob, va.sublist(1), lno) );
+C 				}
+C 				return( go_act(glob, st) );
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor ref_func3 Ref3
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${element.name:l}") == 0) {
+C 			if (k_${element.name:l}p >= 0) {
+C 				var st = glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ];
+C 				if (va.length > 1) {
+C 					return( st.do_its(glob, va.sublist(1), lno) );
+C 				}
+C 				return( go_act(glob, st) );
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor ref_funcq Refq
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${element.name:l}") == 0) {
+C 			if (k_${element.name:l}p >= 0) {
+C 				var st = glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ];
+C 				if (va.length > 1) {
+C 					return( st.do_its(glob, va.sublist(1), lno) );
+C 				}
+C 				return( go_act(glob, st) );
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor parent_field_func Comp
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("parent") == 0) { // ${._lno}
+C 			if (k_parentp >= 0) {
+C 				var st = glob.dats.ap_${name:l}[ k_parentp ];
+C 				if (va.length > 1) {
+C 					return( st.do_its(glob, va.sublist(1), lno) );
+C 				}
+C 				return( go_act(glob, st) );
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor parent_field_var Comp
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("parent") == 0) { // ${._lno}
+C 			if (k_parentp >= 0 && va.length > 1) {
+C 				return( glob.dats.ap_${name:l}[ k_parentp ].get_var(glob, va.sublist(1),lno) );
+C 			}
+C 		}
+
+----------------------------------------------------------------
+Actor other_func Ref
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0) { // ${._lno}
+C 			for (Kp${parent.name:c} st in glob.dats.ap_${parent.name:l}) {
+C 				if (st.k_${element.name:l}p == me) {
+C 					if (va.length > 1) {
+C 						var ret = st.do_its(glob, va.sublist(1), lno);
+C 						if (ret != 0) {
+C 							return(ret);
+C 						}
+C 						continue;
+C 					}
+C 					var ret = go_act(glob, st);
+C 					if (ret != 0) {
+C 						return(ret);
+C 					}
+C 				}
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor other_func2 Ref2
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0) { // ${._lno}
+C 			for (Kp${parent.name:c} st in glob.dats.ap_${parent.name:l}) {
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 				if (st.k_${element.name:l}p == me) {
+C 					if (va.length > 1) {
+C 						var ret = st.do_its(glob, va.sublist(1), lno);
+C 						if (ret != 0) {
+C 							return(ret);
+C 						}
+C 						continue;
+C 					}
+C 					var ret = go_act(glob, st);
+C 					if (ret != 0) {
+C 						return(ret);
+C 					}
+C 				}
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor other_func3 Ref3
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0) { // ${._lno}
+C 			for (Kp${parent.name:c} st in glob.dats.ap_${parent.name:l}) {
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 				if (st.k_${element.name:l}p == me) {
+C 					if (va.length > 1) {
+C 						var ret = st.do_its(glob, va.sublist(1), lno);
+C 						if (ret != 0) {
+C 							return(ret);
+C 						}
+C 						continue;
+C 					}
+C 					var ret = go_act(glob, st);
+C 					if (ret != 0) {
+C 						return(ret);
+C 					}
+C 				}
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor other_funcq Refq
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0) { // ${._lno}
+C 			for (Kp${parent.name:c} st in glob.dats.ap_${parent.name:l}) {
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 				if (st.k_${element.name:l}p == me) {
+C 					if (va.length > 1) {
+C 						var ret = st.do_its(glob, va.sublist(1), lno);
+C 						if (ret != 0) {
+C 							return(ret);
+C 						}
+C 						continue;
+C 					}
+C 					var ret = go_act(glob, st);
+C 					if (ret != 0) {
+C 						return(ret);
+C 					}
+C 				}
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor ref_var Ref
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${element.name:l}") == 0) { // ${._lno}
+C 			if (k_${element.name:l}p >= 0 && va.length > 1) {
+C 				return( glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ].get_var(glob, va.sublist(1), lno) );
+C 			}
+C 		}
+
+----------------------------------------------------------------
+Actor ref_var2 Ref2
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${element.name:l}") == 0) { // ${._lno}
+C 			if (k_${element.name:l}p >= 0 && va.length > 1) {
+C 				return( glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ].get_var(glob, va.sublist(1), lno) );
+C 			}
+C 		}
+
+----------------------------------------------------------------
+Actor ref_var3 Ref3
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${element.name:l}") == 0) { // ${._lno}
+C 			if (k_${element.name:l}p >= 0 && va.length > 1) {
+C 				return( glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ].get_var(glob, va.sublist(1), lno) );
+C 			}
+C 		}
+
+----------------------------------------------------------------
+Actor star Star
+----------------------------------------------------------------
+
+D 	* ${doc}
+
+----------------------------------------------------------------
+Actor val_inc_d Element
+----------------------------------------------------------------
+
+D 	${name:l} * ${doc}
+
+----------------------------------------------------------------
+Actor val_inc Element mw in C1,CS,V1,R1,F1,L1,M1
+----------------------------------------------------------------
+
+C 	K${name:l} string
+
+----------------------------------------------------------------
+Actor val_inc2 Element mw in R1,F1,L1,M1,Q1,U0,RS,FS,LS,MS,QS
+----------------------------------------------------------------
+
+C 	K${name:l}p int
+
+----------------------------------------------------------------
+Actor parent_field Comp
+----------------------------------------------------------------
+
+C 	Kparentp int
+
+----------------------------------------------------------------
+Actor from_to Comp
+----------------------------------------------------------------
+
+
+C 	Its${name:c} [] Kp${name:c} 
+
+----------------------------------------------------------------
+Actor from_to_doo Comp
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${name:c}") == 0) { // ${._lno}
+C 			for(var st in its${name:l}) {
+C 				if (va.length > 1) {
+C 					var ret = st.do_its(glob, va.sublist(1), lno);
+C 					if (ret != 0) {
+C 						return(ret);
+C 					}
+C 					continue;
+C 				}
+C 				var ret = go_act(glob, st);
+C 				if (ret != 0) {
+C 					return(ret);
+C 				}
+C 			}
+C 			return(0);
+C 		}
+
+----------------------------------------------------------------
+Actor other_var Ref
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0 && va.length > 1) { // ${._lno}
+C 			for (var st in glob.dats.ap_${parent.name:l}) {
+C 				if (st.k_${element.name:l}p == me) {
+C 					return (st.get_var(glob, va.sublist(1), lno) );
+C 				}
+C 			}
+C 		}
+
+----------------------------------------------------------------
+Actor other_var2 Ref2
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0 && va.length > 1) { // ${._lno}
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 			for (var st in glob.dats.ap_${parent.name:l}) {
+C 				if (st.k_${element.name:l}p == me) {
+C 					return (st.get_var(glob, va.sublist(1), lno) );
+C 				}
+C 			}
+C 		}
+
+----------------------------------------------------------------
+Actor other_var3 Ref3
+----------------------------------------------------------------
+
+C 		if (va[0].compareTo("${parent.name:c}_${element.name:l}") == 0 && va.length > 1) { // ${._lno}
+-C 			glob.dats.ap_${parent.name:l}.each do |st| {
+C 			for (var st in glob.dats.ap_${parent.name:l}) {
+C 				if (st.k_${element.name:l}p == me) {
+C 					return (st.get_var(glob, va.sublist(1), lno) );
+C 				}
+C 			}
+C 		}
+
+
+
+

@@ -1,0 +1,123 @@
+----------------------------------------------------------------
+Comp Node parent . Find
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * node name
+	Element pad        C1 WORD       * padding
+	Element parent     R1 Node       * parent node
+	Element var        C1 WORD       * a table
+	Element eq         C1 WORD       * padding, as
+	Element value      C1 WORD       * value
+
+Ref parent Node .
+
+----------------------------------------------------------------
+Comp Link parent Node
+----------------------------------------------------------------
+
+	Element to       R1 Node       * node name
+	
+Ref to Node check
+
+----------------------------------------------------------------
+Comp Graph parent . Find
+----------------------------------------------------------------
+
+	Element name     C1 WORD * a type
+	Element pad      C1 WORD             * Padding
+	Element search   V1 WORD             * Search for field
+
+----------------------------------------------------------------
+Comp Matrix parent . Find
+----------------------------------------------------------------
+
+	Element a        C1 WORD * a type
+	Element b        C1 WORD * a type
+	Element c        C1 WORD * a type
+	Element pad      C1 WORD             * Padding
+	Element search   C1 WORD             * Search for field
+
+----------------------------------------------------------------
+Comp Table parent . Find
+----------------------------------------------------------------
+
+	Element name  C1 WORD * a table
+	Element pad   C1 WORD * padding, as
+	Element value C1 WORD * value
+
+----------------------------------------------------------------
+Comp Field parent Table FindIn
+----------------------------------------------------------------
+
+	Element type     R1 TYPE       * Pointer to (Type).
+	Element name     C1 WORD       * a field name
+	Element dt       C1 WORD       * data type
+	Element pad      C1 WORD       * padding
+	Element use      C1 WORD       * grid,search
+		Opt grid                   * display field in grid on search screen
+		Opt dropdown               * small select options on capture screen
+		Opt search                 * popup search window for value on capture screen
+		Opt normal                 * normal input text
+
+Ref type Type .
+
+----------------------------------------------------------------
+Comp Attrs parent Field FindIn
+----------------------------------------------------------------
+
+	Element name     C1 WORD       * a attr name
+	
+----------------------------------------------------------------
+Comp Of parent Table
+----------------------------------------------------------------
+
+	Element field    F1 Field     * Field name
+	Element type     U0 Field     * Use type from field
+	Element attr     L1 Attr      * Attr name
+	Element from     L1 Attr      * Attr name
+	Element op       C1 WORD      * (=, >, like)
+	Element value    V1 WORD      * Select value
+
+
+Ref    field Field             check
+Refu   type  Type field Field type
+Ref2   attr Attr type
+Ref2   from Attr type
+
+-Ref3   attr  Attr  field Field type ?
+-Ref3   from  Attr  attr Attr table ?
+
+
+----------------------------------------------------------------
+Comp Join1 parent Table
+----------------------------------------------------------------
+
+
+	Element field1 F1 .Field       * link to its field
+	Element table2 R1 Table        * link to other table
+	Element field2 L1 Table.Field  * link to other table's field
+	Element pad    C1 WORD         * padding 
+	Element use    C1 WORD         * grid,search
+
+
+Ref  field1 Field check
+Ref  table2 Table check
+Ref2 field2 Field table2 check
+
+----------------------------------------------------------------
+Comp Join2 parent Table
+----------------------------------------------------------------
+
+
+	Element field1 F1 .Field            * link to its field
+	Element table2 R1 Table             * link to other table
+	Element field2 L1 Table.Field       * link to other table's field
+	Element attr2  L1 Table.Field.Attr  * link to other field's attr
+
+
+Ref  field1 Field  check
+Ref  table2 Table  check
+Ref2 field2 Field  table2 check
+Ref2 attr2  Attrs  field2 check
+
+

@@ -67,6 +67,7 @@ func main() {
 }
 
 func loadFiles(files string, act *ActT) bool {
+	act.index = make(map[string]int) 
 	errs := false
 	fileList := strings.Split(files, ",")
 	
