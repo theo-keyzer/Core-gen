@@ -132,49 +132,53 @@ C 	act.Ap${name:c} = append(act.Ap${name:c}, st)
 C 	return true;
 C }
 C
-C 	List get_var(glob, va, lno) {
+-C 	List get_var(glob, va, lno) {
 
-Its Ref ref_var
-Its Ref2 ref_var2
-Its Ref3 ref_var3
-Its parent parent_field_var
-Its Ref_comp other_var
-Its Ref2_comp other_var2
-Its Ref3_comp other_var3
-Its Comp_parent find
+C func (me Kp${name:c}) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 
-C 		var v = names[ va[0] ];
-C 		if( v != null) {
-C 			return( [true, v] );
-C 		}
-C 		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",${name}?"] );
-C 	}
+-Its Ref ref_var
+-Its Ref2 ref_var2
+-Its Ref3 ref_var3
+-Its parent parent_field_var
+-Its Ref_comp other_var
+-Its Ref2_comp other_var2
+-Its Ref3_comp other_var3
+-Its Comp_parent find
+
+-C 		var v = names[ va[0] ];
+-C 		if( v != null) {
+-C 			return( [true, v] );
+-C 		}
+-C 		return( [false, "?" + va[0] + "?" + line_no + "," + lno + ",${name}?"] );
+C 	return false, "?"
+C }
 C
-C 	int do_its(glob, va, lno) {
+-C 	int do_its(glob, va, lno) {
 
-Its Comp_parent from_to_doo
-Its parent parent_field_func
-Its Ref ref_func
-Its Ref2 ref_func2
-Its Ref3 ref_func3
-Its Refq ref_funcq
-Its Ref_comp other_func
-Its Ref2_comp other_func2
-Its Ref3_comp other_func3
-Its Refq_comp other_funcq
-Its Element nested
+C func (me Kp${name:c}) DoIts(glob *GlobT, va []string, lno string) int {
 
-C 		if ( va[0].compareTo("Child") == 0 ) { // ${._lno}
+-Its Comp_parent from_to_doo
+-Its parent parent_field_func
+-Its Ref ref_func
+-Its Ref2 ref_func2
+-Its Ref3 ref_func3
+-Its Refq ref_funcq
+-Its Ref_comp other_func
+-Its Ref2_comp other_func2
+-Its Ref3_comp other_func3
+-Its Refq_comp other_funcq
+-Its Element nested
 
-Its Comp_parent childs_func
+-C 		if ( va[0].compareTo("Child") == 0 ) { // ${._lno}
 
-C 			return(0);
-C 		}
+-Its Comp_parent childs_func
 
-C 		print("?No its " + va[0] + " cmd for ${name}," + line_no + "," + lno + "?");
-C 		glob.run_errs = true;
-C 		return(0);
-C 	}
+-C 			return(0);
+-C 		}
+
+-C 		print("?No its " + va[0] + " cmd for ${name}," + line_no + "," + lno + "?");
+-C 		glob.run_errs = true;
+C 	return(0)
 C }
 C
 
