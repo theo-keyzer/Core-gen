@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"strconv"
+)
+
 type Kp interface {
 	DoIts(glob *GlobT, va []string, lno string) int
 	GetVar(glob *GlobT, va []string, lno string) (bool, string)
@@ -14,13 +19,13 @@ type KpComp struct {
 	Flags [] string
 	Names map[string]string
 	Kparentp int
-	ItsElement [] KpElement 
-	ItsRef [] KpRef 
-	ItsRef2 [] KpRef2 
-	ItsRef3 [] KpRef3 
-	ItsRefq [] KpRefq 
-	ItsRefu [] KpRefu 
-	ItsJoin [] KpJoin 
+	ItsElement [] *KpElement 
+	ItsRef [] *KpRef 
+	ItsRef2 [] *KpRef2 
+	ItsRef3 [] *KpRef3 
+	ItsRefq [] *KpRefq 
+	ItsRefu [] *KpRefu 
+	ItsJoin [] *KpJoin 
 	Childs [] Kp
 }
 
@@ -32,20 +37,24 @@ func loadComp(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.LineNo = lno
 	st.Comp = "Comp";
 	st.Flags = flag;
-	st.Names["Comp"] = st.Comp
-	st.Names["Me"] = st.Me
-	p,st.Names["Kname"] = getw(ln,p)
-	p,st.Names["Knop"] = getw(ln,p)
-	p,st.Names["Kparent"] = getw(ln,p)
-	p,st.Names["Kfind"] = getw(ln,p)
-	p,st.Names["Kdoc"] = getws(ln,p)
-	act.index["Comp_" + st.Kname] = st.Me;
+	st.Names["kComp"] = st.Comp
+	st.Names["kMe"] = strconv.Itoa(st.Me)
+	p,st.Names["name"] = getw(ln,p)
+	p,st.Names["nop"] = getw(ln,p)
+	p,st.Names["parent"] = getw(ln,p)
+	p,st.Names["find"] = getw(ln,p)
+	p,st.Names["doc"] = getws(ln,p)
+	st.Kparentp = -1
+	name,_ := st.Names["name"]
+	act.index["Comp_" + name] = st.Me;
 	act.ApComp = append(act.ApComp, st)
 	return true;
 }
 
 func (me KpComp) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	return false, "?"
+	r,ok := me.Names[va[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Comp?", va[0], lno, me.LineNo) }
+	return !ok,r
 }
 
 func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
@@ -60,7 +69,7 @@ type KpElement struct {
 	Flags [] string
 	Names map[string]string
 	Kparentp int
-	ItsOpt [] KpOpt 
+	ItsOpt [] *KpOpt 
 	Childs [] Kp
 }
 
@@ -72,29 +81,32 @@ func loadElement(act *ActT, ln string, pos int, lno string, flag []string) bool 
 	st.LineNo = lno
 	st.Comp = "Element";
 	st.Flags = flag;
-	st.Names["Comp"] = st.Comp
-	st.Names["Me"] = st.Me
-	p,st.Names["Kname"] = getw(ln,p)
-	p,st.Names["Kmw"] = getw(ln,p)
-	p,st.Names["Kmw2"] = getw(ln,p)
-	p,st.Names["Kpad"] = getw(ln,p)
-	p,st.Names["Kdoc"] = getws(ln,p)
-	st.Kparentp = act.ApComp.length-1;
-	st.Names["Kparent"] = strconv.Itoa(st.Kparentp)
+	st.Names["kComp"] = st.Comp
+	st.Names["kMe"] = strconv.Itoa(st.Me)
+	p,st.Names["name"] = getw(ln,p)
+	p,st.Names["mw"] = getw(ln,p)
+	p,st.Names["mw2"] = getw(ln,p)
+	p,st.Names["pad"] = getw(ln,p)
+	p,st.Names["doc"] = getws(ln,p)
+	st.Kparentp = len( act.ApComp ) - 1;
+	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Element has no Comp parent") ;
 		return false;
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsElement = append(act.ApComp[ len( act.ApComp )-1 ].ItsElement, st)
-	s := strconv.Itoa(st.Kparentp) + "_Element_" + Kname
+	act.ApComp[ len( act.ApComp )-1 ].ItsElement = append(act.ApComp[ len( act.ApComp )-1 ].ItsElement, st)	// gen.unit:2, g_struct.act:248
+	name,_ := st.Names["name"]
+	s := strconv.Itoa(st.Kparentp) + "_Element_" + name	// gen.unit:24, g_struct.act:286
 	act.index[s] = st.Me;
 	act.ApElement = append(act.ApElement, st)
 	return true;
 }
 
 func (me KpElement) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	return false, "?"
+	r,ok := me.Names[va[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Element?", va[0], lno, me.LineNo) }
+	return !ok,r
 }
 
 func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
@@ -119,27 +131,30 @@ func loadOpt(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.LineNo = lno
 	st.Comp = "Opt";
 	st.Flags = flag;
-	st.Names["Comp"] = st.Comp
-	st.Names["Me"] = st.Me
-	p,st.Names["Kname"] = getw(ln,p)
-	p,st.Names["Kpad"] = getw(ln,p)
-	p,st.Names["Kdoc"] = getws(ln,p)
-	st.Kparentp = act.ApElement.length-1;
-	st.Names["Kparent"] = strconv.Itoa(st.Kparentp)
+	st.Names["kComp"] = st.Comp
+	st.Names["kMe"] = strconv.Itoa(st.Me)
+	p,st.Names["name"] = getw(ln,p)
+	p,st.Names["pad"] = getw(ln,p)
+	p,st.Names["doc"] = getws(ln,p)
+	st.Kparentp = len( act.ApElement ) - 1;
+	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Opt has no Element parent") ;
 		return false;
 	}
 	act.ApElement[ len( act.ApElement )-1 ].Childs = append(act.ApElement[ len( act.ApElement )-1 ].Childs, st)
-	act.ApElement[ len( act.ApElement )-1 ].ItsOpt = append(act.ApElement[ len( act.ApElement )-1 ].ItsOpt, st)
-	s := strconv.Itoa(st.Kparentp) + "_Opt_" + Kname
+	act.ApElement[ len( act.ApElement )-1 ].ItsOpt = append(act.ApElement[ len( act.ApElement )-1 ].ItsOpt, st)	// gen.unit:19, g_struct.act:248
+	name,_ := st.Names["name"]
+	s := strconv.Itoa(st.Kparentp) + "_Opt_" + name	// gen.unit:45, g_struct.act:286
 	act.index[s] = st.Me;
 	act.ApOpt = append(act.ApOpt, st)
 	return true;
 }
 
 func (me KpOpt) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	return false, "?"
+	r,ok := me.Names[va[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Opt?", va[0], lno, me.LineNo) }
+	return !ok,r
 }
 
 func (me KpOpt) DoIts(glob *GlobT, va []string, lno string) int {
@@ -166,27 +181,31 @@ func loadRef(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.LineNo = lno
 	st.Comp = "Ref";
 	st.Flags = flag;
-	st.Names["Comp"] = st.Comp
-	st.Names["Me"] = st.Me
-	p,st.Names["Kelement"] = getw(ln,p)
-	p,st.Names["Kcomp"] = getw(ln,p)
-	p,st.Names["Kopt"] = getw(ln,p)
-	p,st.Names["Kvar"] = getw(ln,p)
-	p,st.Names["Kdoc"] = getws(ln,p)
-	st.Kparentp = act.ApComp.length-1;
-	st.Names["Kparent"] = strconv.Itoa(st.Kparentp)
+	st.Names["kComp"] = st.Comp
+	st.Names["kMe"] = strconv.Itoa(st.Me)
+	p,st.Names["element"] = getw(ln,p)
+	p,st.Names["comp"] = getw(ln,p)
+	p,st.Names["opt"] = getw(ln,p)
+	p,st.Names["var"] = getw(ln,p)
+	p,st.Names["doc"] = getws(ln,p)
+	st.Kelementp = -1
+	st.Kcompp = -1
+	st.Kparentp = len( act.ApComp ) - 1;
+	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Ref has no Comp parent") ;
 		return false;
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRef = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef, st)
+	act.ApComp[ len( act.ApComp )-1 ].ItsRef = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef, st)	// gen.unit:2, g_struct.act:248
 	act.ApRef = append(act.ApRef, st)
 	return true;
 }
 
 func (me KpRef) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	return false, "?"
+	r,ok := me.Names[va[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Ref?", va[0], lno, me.LineNo) }
+	return !ok,r
 }
 
 func (me KpRef) DoIts(glob *GlobT, va []string, lno string) int {
@@ -214,28 +233,33 @@ func loadRef2(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.LineNo = lno
 	st.Comp = "Ref2";
 	st.Flags = flag;
-	st.Names["Comp"] = st.Comp
-	st.Names["Me"] = st.Me
-	p,st.Names["Kelement"] = getw(ln,p)
-	p,st.Names["Kcomp"] = getw(ln,p)
-	p,st.Names["Kelement2"] = getw(ln,p)
-	p,st.Names["Kopt"] = getw(ln,p)
-	p,st.Names["Kvar"] = getw(ln,p)
-	p,st.Names["Kdoc"] = getws(ln,p)
-	st.Kparentp = act.ApComp.length-1;
-	st.Names["Kparent"] = strconv.Itoa(st.Kparentp)
+	st.Names["kComp"] = st.Comp
+	st.Names["kMe"] = strconv.Itoa(st.Me)
+	p,st.Names["element"] = getw(ln,p)
+	p,st.Names["comp"] = getw(ln,p)
+	p,st.Names["element2"] = getw(ln,p)
+	p,st.Names["opt"] = getw(ln,p)
+	p,st.Names["var"] = getw(ln,p)
+	p,st.Names["doc"] = getws(ln,p)
+	st.Kelementp = -1
+	st.Kcompp = -1
+	st.Kelement2p = -1
+	st.Kparentp = len( act.ApComp ) - 1;
+	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Ref2 has no Comp parent") ;
 		return false;
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRef2 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef2, st)
+	act.ApComp[ len( act.ApComp )-1 ].ItsRef2 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef2, st)	// gen.unit:2, g_struct.act:248
 	act.ApRef2 = append(act.ApRef2, st)
 	return true;
 }
 
 func (me KpRef2) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	return false, "?"
+	r,ok := me.Names[va[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Ref2?", va[0], lno, me.LineNo) }
+	return !ok,r
 }
 
 func (me KpRef2) DoIts(glob *GlobT, va []string, lno string) int {
@@ -264,30 +288,36 @@ func loadRef3(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.LineNo = lno
 	st.Comp = "Ref3";
 	st.Flags = flag;
-	st.Names["Comp"] = st.Comp
-	st.Names["Me"] = st.Me
-	p,st.Names["Kelement"] = getw(ln,p)
-	p,st.Names["Kcomp"] = getw(ln,p)
-	p,st.Names["Kelement2"] = getw(ln,p)
-	p,st.Names["Kcomp_ref"] = getw(ln,p)
-	p,st.Names["Kelement3"] = getw(ln,p)
-	p,st.Names["Kopt"] = getw(ln,p)
-	p,st.Names["Kvar"] = getw(ln,p)
-	p,st.Names["Kdoc"] = getws(ln,p)
-	st.Kparentp = act.ApComp.length-1;
-	st.Names["Kparent"] = strconv.Itoa(st.Kparentp)
+	st.Names["kComp"] = st.Comp
+	st.Names["kMe"] = strconv.Itoa(st.Me)
+	p,st.Names["element"] = getw(ln,p)
+	p,st.Names["comp"] = getw(ln,p)
+	p,st.Names["element2"] = getw(ln,p)
+	p,st.Names["comp_ref"] = getw(ln,p)
+	p,st.Names["element3"] = getw(ln,p)
+	p,st.Names["opt"] = getw(ln,p)
+	p,st.Names["var"] = getw(ln,p)
+	p,st.Names["doc"] = getws(ln,p)
+	st.Kelementp = -1
+	st.Kcompp = -1
+	st.Kelement2p = -1
+	st.Kcomp_refp = -1
+	st.Kparentp = len( act.ApComp ) - 1;
+	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Ref3 has no Comp parent") ;
 		return false;
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRef3 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef3, st)
+	act.ApComp[ len( act.ApComp )-1 ].ItsRef3 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef3, st)	// gen.unit:2, g_struct.act:248
 	act.ApRef3 = append(act.ApRef3, st)
 	return true;
 }
 
 func (me KpRef3) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	return false, "?"
+	r,ok := me.Names[va[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Ref3?", va[0], lno, me.LineNo) }
+	return !ok,r
 }
 
 func (me KpRef3) DoIts(glob *GlobT, va []string, lno string) int {
@@ -315,29 +345,34 @@ func loadRefq(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.LineNo = lno
 	st.Comp = "Refq";
 	st.Flags = flag;
-	st.Names["Comp"] = st.Comp
-	st.Names["Me"] = st.Me
-	p,st.Names["Kelement"] = getw(ln,p)
-	p,st.Names["Kcomp"] = getw(ln,p)
-	p,st.Names["Kelement2"] = getw(ln,p)
-	p,st.Names["Kcomp_ref"] = getw(ln,p)
-	p,st.Names["Kopt"] = getw(ln,p)
-	p,st.Names["Kvar"] = getw(ln,p)
-	p,st.Names["Kdoc"] = getws(ln,p)
-	st.Kparentp = act.ApComp.length-1;
-	st.Names["Kparent"] = strconv.Itoa(st.Kparentp)
+	st.Names["kComp"] = st.Comp
+	st.Names["kMe"] = strconv.Itoa(st.Me)
+	p,st.Names["element"] = getw(ln,p)
+	p,st.Names["comp"] = getw(ln,p)
+	p,st.Names["element2"] = getw(ln,p)
+	p,st.Names["comp_ref"] = getw(ln,p)
+	p,st.Names["opt"] = getw(ln,p)
+	p,st.Names["var"] = getw(ln,p)
+	p,st.Names["doc"] = getws(ln,p)
+	st.Kelementp = -1
+	st.Kcompp = -1
+	st.Kcomp_refp = -1
+	st.Kparentp = len( act.ApComp ) - 1;
+	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Refq has no Comp parent") ;
 		return false;
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRefq = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefq, st)
+	act.ApComp[ len( act.ApComp )-1 ].ItsRefq = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefq, st)	// gen.unit:2, g_struct.act:248
 	act.ApRefq = append(act.ApRefq, st)
 	return true;
 }
 
 func (me KpRefq) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	return false, "?"
+	r,ok := me.Names[va[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Refq?", va[0], lno, me.LineNo) }
+	return !ok,r
 }
 
 func (me KpRefq) DoIts(glob *GlobT, va []string, lno string) int {
@@ -365,30 +400,35 @@ func loadRefu(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.LineNo = lno
 	st.Comp = "Refu";
 	st.Flags = flag;
-	st.Names["Comp"] = st.Comp
-	st.Names["Me"] = st.Me
-	p,st.Names["Kelement"] = getw(ln,p)
-	p,st.Names["Kcomp"] = getw(ln,p)
-	p,st.Names["Kelement2"] = getw(ln,p)
-	p,st.Names["Kcomp_ref"] = getw(ln,p)
-	p,st.Names["Kelement3"] = getw(ln,p)
-	p,st.Names["Kopt"] = getw(ln,p)
-	p,st.Names["Kvar"] = getw(ln,p)
-	p,st.Names["Kdoc"] = getws(ln,p)
-	st.Kparentp = act.ApComp.length-1;
-	st.Names["Kparent"] = strconv.Itoa(st.Kparentp)
+	st.Names["kComp"] = st.Comp
+	st.Names["kMe"] = strconv.Itoa(st.Me)
+	p,st.Names["element"] = getw(ln,p)
+	p,st.Names["comp"] = getw(ln,p)
+	p,st.Names["element2"] = getw(ln,p)
+	p,st.Names["comp_ref"] = getw(ln,p)
+	p,st.Names["element3"] = getw(ln,p)
+	p,st.Names["opt"] = getw(ln,p)
+	p,st.Names["var"] = getw(ln,p)
+	p,st.Names["doc"] = getws(ln,p)
+	st.Kelementp = -1
+	st.Kcompp = -1
+	st.Kcomp_refp = -1
+	st.Kparentp = len( act.ApComp ) - 1;
+	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Refu has no Comp parent") ;
 		return false;
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRefu = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefu, st)
+	act.ApComp[ len( act.ApComp )-1 ].ItsRefu = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefu, st)	// gen.unit:2, g_struct.act:248
 	act.ApRefu = append(act.ApRefu, st)
 	return true;
 }
 
 func (me KpRefu) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	return false, "?"
+	r,ok := me.Names[va[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Refu?", va[0], lno, me.LineNo) }
+	return !ok,r
 }
 
 func (me KpRefu) DoIts(glob *GlobT, va []string, lno string) int {
@@ -413,29 +453,31 @@ func loadJoin(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.LineNo = lno
 	st.Comp = "Join";
 	st.Flags = flag;
-	st.Names["Comp"] = st.Comp
-	st.Names["Me"] = st.Me
-	p,st.Names["Kelement"] = getw(ln,p)
-	p,st.Names["Kdir"] = getw(ln,p)
-	p,st.Names["Kcomp"] = getw(ln,p)
-	p,st.Names["Kusing"] = getw(ln,p)
-	p,st.Names["Kelement2"] = getw(ln,p)
-	p,st.Names["Kcomp2"] = getw(ln,p)
-	p,st.Names["Kelement3"] = getw(ln,p)
-	st.Kparentp = act.ApComp.length-1;
-	st.Names["Kparent"] = strconv.Itoa(st.Kparentp)
+	st.Names["kComp"] = st.Comp
+	st.Names["kMe"] = strconv.Itoa(st.Me)
+	p,st.Names["element"] = getw(ln,p)
+	p,st.Names["dir"] = getw(ln,p)
+	p,st.Names["comp"] = getw(ln,p)
+	p,st.Names["using"] = getw(ln,p)
+	p,st.Names["element2"] = getw(ln,p)
+	p,st.Names["comp2"] = getw(ln,p)
+	p,st.Names["element3"] = getw(ln,p)
+	st.Kparentp = len( act.ApComp ) - 1;
+	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Join has no Comp parent") ;
 		return false;
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsJoin = append(act.ApComp[ len( act.ApComp )-1 ].ItsJoin, st)
+	act.ApComp[ len( act.ApComp )-1 ].ItsJoin = append(act.ApComp[ len( act.ApComp )-1 ].ItsJoin, st)	// gen.unit:2, g_struct.act:248
 	act.ApJoin = append(act.ApJoin, st)
 	return true;
 }
 
 func (me KpJoin) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	return false, "?"
+	r,ok := me.Names[va[0]]
+	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Join?", va[0], lno, me.LineNo) }
+	return !ok,r
 }
 
 func (me KpJoin) DoIts(glob *GlobT, va []string, lno string) int {
@@ -496,8 +538,9 @@ func loadAll(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	p,st.Kwhat = getw(ln,p)
 	p,st.Kactor = getw(ln,p)
 	p,st.Kargs = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kactorp = -1
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " All has no Actor parent") ;
 		return false;
 	}
@@ -527,8 +570,9 @@ func loadDu(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Flags = flag;
 	p,st.Kactor = getw(ln,p)
 	p,st.Kargs = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kactorp = -1
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " Du has no Actor parent") ;
 		return false;
 	}
@@ -559,8 +603,8 @@ func loadNew(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	p,st.Kwhere = getw(ln,p)
 	p,st.Kwhat = getw(ln,p)
 	p,st.Kline = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " New has no Actor parent") ;
 		return false;
 	}
@@ -587,8 +631,8 @@ func loadRefs(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Comp = "Refs";
 	st.Flags = flag;
 	p,st.Kwhere = getw(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " Refs has no Actor parent") ;
 		return false;
 	}
@@ -619,8 +663,8 @@ func loadVar(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	p,st.Kattr = getw(ln,p)
 	p,st.Keq = getw(ln,p)
 	p,st.Kvalue = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " Var has no Actor parent") ;
 		return false;
 	}
@@ -652,8 +696,9 @@ func loadIts(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	p,st.Kwhat = getw(ln,p)
 	p,st.Kactor = getw(ln,p)
 	p,st.Kargs = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kactorp = -1
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " Its has no Actor parent") ;
 		return false;
 	}
@@ -680,8 +725,8 @@ func loadC(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Comp = "C";
 	st.Flags = flag;
 	p,st.Kdesc = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " C has no Actor parent") ;
 		return false;
 	}
@@ -708,8 +753,8 @@ func loadCs(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Comp = "Cs";
 	st.Flags = flag;
 	p,st.Kdesc = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " Cs has no Actor parent") ;
 		return false;
 	}
@@ -740,8 +785,8 @@ func loadOut(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	p,st.Kwhat = getw(ln,p)
 	p,st.Kpad = getw(ln,p)
 	p,st.Kdesc = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " Out has no Actor parent") ;
 		return false;
 	}
@@ -768,8 +813,8 @@ func loadIn(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Comp = "In";
 	st.Flags = flag;
 	p,st.Kflag = getw(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " In has no Actor parent") ;
 		return false;
 	}
@@ -802,8 +847,8 @@ func loadBreak(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	p,st.Kpad = getw(ln,p)
 	p,st.Kactor = getw(ln,p)
 	p,st.Kcheck = getw(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " Break has no Actor parent") ;
 		return false;
 	}
@@ -832,8 +877,8 @@ func loadAdd(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Flags = flag;
 	p,st.Kpath = getw(ln,p)
 	p,st.Kdata = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " Add has no Actor parent") ;
 		return false;
 	}
@@ -865,8 +910,9 @@ func loadThis(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	p,st.Kpath = getw(ln,p)
 	p,st.Kactor = getw(ln,p)
 	p,st.Kargs = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kactorp = -1
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " This has no Actor parent") ;
 		return false;
 	}
@@ -901,8 +947,8 @@ func loadReplace(act *ActT, ln string, pos int, lno string, flag []string) bool 
 	p,st.Kwith = getw(ln,p)
 	p,st.Kpad2 = getw(ln,p)
 	p,st.Kmatch = getws(ln,p)
-	Kparentp = act.ApActor.length-1;
-	if (Kparentp < 0 ) { 
+	st.Kparentp = len(act.ApActor)-1;
+	if (st.Kparentp < 0 ) { 
 		print(lno + " Replace has no Actor parent") ;
 		return false;
 	}

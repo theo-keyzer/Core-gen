@@ -98,7 +98,7 @@ C 	Ap${name:c} [] *Kp${name:c}
 Actor load .
 ----------------------------------------------------------------
 
-C 	if tok == "${name:c}" { _ := load${name:c}(act,ln,pos,lno,flag) }
+C 	if tok == "${name:c}" { load${name:c}(act,ln,pos,lno,flag) }
 
 -C 	if ( tok.compareTo( "${name:c}" ) == 0 ) {
 -C 		var comp = new Kp${name:c}();
