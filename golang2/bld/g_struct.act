@@ -163,7 +163,7 @@ C func (me Kp${name:c}) GetVar(glob *GlobT, va []string, lno string) (bool, stri
 
 C 	r,ok := me.Names[va[0]]
 C 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,${name}?", va[0], lno, me.LineNo) }
-C 	return !ok,r
+C 	return ok,r
 
 C }
 C

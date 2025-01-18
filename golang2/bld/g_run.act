@@ -6,6 +6,7 @@ C package main
 C 
 C import (
 C 	"strings"
+C 	"fmt"
 C )
 C
 C type ActT struct {
@@ -52,15 +53,14 @@ C
 -C
 
 
--C int do_all(glob, va, lno)
--C {
+C func DoAll(glob *GlobT, va []string, lno string) int {
 
--All Comp do_all
+All Comp do_all
 
--C 	print("?No all " + va[0] + " cmd " + "," + lno + "?");
--C 	return 0;
--C }
--C
+C 	fmt.Sprintf("?No all %s cmd ?%s?", va[0], lno);
+C 	return 0;
+C }
+C
 
 C func Load(act *ActT, toks string, ln string, pos int, lno string) bool {
 C 	ss := strings.Split(toks,".")
@@ -281,31 +281,31 @@ C 	}
 Actor do_all Comp parent != Actor
 ----------------------------------------------------------------
 
-C 	if (va[0].compareTo("${name:c}") == 0) {
-C 		if (va.length > 1 && va[1].length > 0) {
-C 			var en = glob.dats.index["${name:c}_" + va[1] ];
-C 			if (en != null) {
-C 				if (va.length > 2) {
-C 					return( glob.dats.ap_${name:l}[en].do_its(glob, va.sublist(2), lno) );
+C 	if va[0] == "${name:c}" {
+C 		if (len(va) > 1 && len(va[1]) > 0) {
+C 			en, er := glob.Dats.index["${name:c}_" + va[1] ];
+C 			if !er {
+C 				if len(va) > 2 {
+C 					return( glob.Dats.Ap${name:c}[en].DoIts(glob, va[2:], lno) )
 C 				}
-C 				return( go_act(glob, glob.dats.ap_${name:l}[en]) );
+C 				return( GoAct(glob, glob.Dats.Ap${name:c}[en]) )
 C 			}
-C 			return(0);
+C 			return(0)
 C 		}
-C 		for(var st in glob.dats.ap_${name:l}) {
-C 			if (va.length > 2) {
-C 				var ret = st.do_its(glob, va.sublist(2), lno);
-C 				if (ret != 0) {
-C 					return(ret);
+C 		for _, st := range glob.Dats.Ap${name:c} {
+C 			if len(va) > 2 {
+C 				ret := st.DoIts(glob, va[2:], lno)
+C 				if ret != 0 {
+C 					return(ret)
 C 				}
-C 				continue;
+C 				continue
 C 			}
-C 			var ret = go_act(glob, st);
-C 			if (ret != 0) {
-C 				return(ret);
+C 			ret := GoAct(glob, st)
+C 			if ret != 0 {
+C 				return(ret)
 C 			}
 C 		}
-C 		return(0);
+C 		return(0)
 C 	}
 
 

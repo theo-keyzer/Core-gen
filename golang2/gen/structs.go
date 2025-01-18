@@ -54,7 +54,7 @@ func loadComp(act *ActT, ln string, pos int, lno string, flag []string) bool {
 func (me KpComp) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Comp?", va[0], lno, me.LineNo) }
-	return !ok,r
+	return ok,r
 }
 
 func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
@@ -106,7 +106,7 @@ func loadElement(act *ActT, ln string, pos int, lno string, flag []string) bool 
 func (me KpElement) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Element?", va[0], lno, me.LineNo) }
-	return !ok,r
+	return ok,r
 }
 
 func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
@@ -154,7 +154,7 @@ func loadOpt(act *ActT, ln string, pos int, lno string, flag []string) bool {
 func (me KpOpt) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Opt?", va[0], lno, me.LineNo) }
-	return !ok,r
+	return ok,r
 }
 
 func (me KpOpt) DoIts(glob *GlobT, va []string, lno string) int {
@@ -205,7 +205,7 @@ func loadRef(act *ActT, ln string, pos int, lno string, flag []string) bool {
 func (me KpRef) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Ref?", va[0], lno, me.LineNo) }
-	return !ok,r
+	return ok,r
 }
 
 func (me KpRef) DoIts(glob *GlobT, va []string, lno string) int {
@@ -259,7 +259,7 @@ func loadRef2(act *ActT, ln string, pos int, lno string, flag []string) bool {
 func (me KpRef2) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Ref2?", va[0], lno, me.LineNo) }
-	return !ok,r
+	return ok,r
 }
 
 func (me KpRef2) DoIts(glob *GlobT, va []string, lno string) int {
@@ -317,7 +317,7 @@ func loadRef3(act *ActT, ln string, pos int, lno string, flag []string) bool {
 func (me KpRef3) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Ref3?", va[0], lno, me.LineNo) }
-	return !ok,r
+	return ok,r
 }
 
 func (me KpRef3) DoIts(glob *GlobT, va []string, lno string) int {
@@ -372,7 +372,7 @@ func loadRefq(act *ActT, ln string, pos int, lno string, flag []string) bool {
 func (me KpRefq) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Refq?", va[0], lno, me.LineNo) }
-	return !ok,r
+	return ok,r
 }
 
 func (me KpRefq) DoIts(glob *GlobT, va []string, lno string) int {
@@ -428,7 +428,7 @@ func loadRefu(act *ActT, ln string, pos int, lno string, flag []string) bool {
 func (me KpRefu) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Refu?", va[0], lno, me.LineNo) }
-	return !ok,r
+	return ok,r
 }
 
 func (me KpRefu) DoIts(glob *GlobT, va []string, lno string) int {
@@ -477,7 +477,7 @@ func loadJoin(act *ActT, ln string, pos int, lno string, flag []string) bool {
 func (me KpJoin) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Join?", va[0], lno, me.LineNo) }
-	return !ok,r
+	return ok,r
 }
 
 func (me KpJoin) DoIts(glob *GlobT, va []string, lno string) int {

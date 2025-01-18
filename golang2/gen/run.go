@@ -2,6 +2,7 @@ package main
 
 import (
 	"strings"
+	"fmt"
 )
 
 type ActT struct {
@@ -30,6 +31,271 @@ type ActT struct {
 	ApAdd [] *KpAdd
 	ApThis [] *KpThis
 	ApReplace [] *KpReplace
+}
+
+func DoAll(glob *GlobT, va []string, lno string) int {
+	if va[0] == "Comp" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Comp_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApComp[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApComp[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApComp {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Element" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Element_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApElement[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApElement[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApElement {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Opt" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Opt_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApOpt[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApOpt[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApOpt {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Ref" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Ref_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApRef[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApRef[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApRef {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Ref2" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Ref2_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApRef2[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApRef2[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApRef2 {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Ref3" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Ref3_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApRef3[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApRef3[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApRef3 {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Refq" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Refq_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApRefq[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApRefq[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApRefq {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Refu" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Refu_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApRefu[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApRefu[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApRefu {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Join" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Join_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApJoin[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApJoin[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApJoin {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Actor" {
+		if (len(va) > 1 && len(va[1]) > 0) {
+			en, er := glob.Dats.index["Actor_" + va[1] ];
+			if !er {
+				if len(va) > 2 {
+					return( glob.Dats.ApActor[en].DoIts(glob, va[2:], lno) )
+				}
+				return( GoAct(glob, glob.Dats.ApActor[en]) )
+			}
+			return(0)
+		}
+		for _, st := range glob.Dats.ApActor {
+			if len(va) > 2 {
+				ret := st.DoIts(glob, va[2:], lno)
+				if ret != 0 {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if ret != 0 {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	fmt.Sprintf("?No all %s cmd ?%s?", va[0], lno);
+	return 0;
 }
 
 func Load(act *ActT, toks string, ln string, pos int, lno string) bool {

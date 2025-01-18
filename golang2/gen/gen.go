@@ -176,17 +176,17 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			} else {
 				fmt.Print(res)
 			}
-
+*/
 		case *KpAll:
-			_, args := Strs(glob, winp, v.KArgs, v.LineNo, true, true)
-			NewAct(glob, v.KActor, args, v.LineNo)
-			_, what := Strs(glob, winp, v.KWhat, v.LineNo, true, true)
+			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
+			NewAct(glob, v.Kactor, args, v.LineNo)
+			_, what := Strs(glob, winp, v.Kwhat, v.LineNo, true, true)
 			va := strings.Split(what, ".")
 			ret := DoAll(glob, va, v.LineNo)
 			if ret > 1 || ret < 0 {
 				return ret
 			}
-
+/*
 		case *KpThis:
 			_, args := Strs(glob, winp, v.KArgs, v.LineNo, true, true)
 			NewAct(glob, v.KActor, args, v.LineNo)
@@ -596,6 +596,7 @@ func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, v
 	case "=":
 		return v == ss
 	case "!=":
+//	fmt.Println(v,ss, (v != ss) )
 		return v != ss
 	case "in":
 		values := strings.Split(ss, ",")
