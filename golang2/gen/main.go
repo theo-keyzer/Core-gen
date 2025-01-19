@@ -80,7 +80,7 @@ func loadFiles(files string, act *ActT) int {
 		errs += LoadData(lines, act, file)
 	}
 	
-//	errs += refs(act)
+	errs += refs(act)
 	return errs
 }
 
@@ -98,13 +98,11 @@ func LoadData(lns []string, act *ActT, file string) int {
 	}
 	return errs
 }
-/*
+
 // fnd finds a value in the index
-func fnd(act interface{}, s string, f string, chk string, lno string) (bool, interface{}) {
-	if a, ok := act.(Acts); ok {
-		if v, exists := a.Index[s]; exists {
-			return true, v
-		}
+func fnd(act *ActT, s string, f string, chk string, lno string) (bool, int) {
+	if v, exists := act.index[s]; exists {
+		return true, v
 	}
 	
 	if chk == "?" {
@@ -114,10 +112,10 @@ func fnd(act interface{}, s string, f string, chk string, lno string) (bool, int
 		return true, -1
 	}
 	
-	fmt.Printf("%s not found %s\n", s, lno)
+	fmt.Printf("%s (%s) not found %s\n", f, s, lno)
 	return false, -1
 }
-*/
+
 // getName gets a value from a map by name
 func getName(m map[string]string, n string) string {
 	if v, ok := m[n]; ok {
@@ -203,12 +201,12 @@ func getsw(line string, pos int) (int, string) {
 	}
 	return to + 1, line[from : to+1]
 }
-
+/*
 func refs(act interface{}) bool {
 	// Implementation needed
 	return false
 }
-
+*/
 func newAct(glob *GlobT, kname string, s1 string, s2 string) {
 	// Implementation needed
 }

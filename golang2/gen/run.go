@@ -3,6 +3,7 @@ package main
 import (
 	"strings"
 	"fmt"
+	"strconv"
 )
 
 type ActT struct {
@@ -31,6 +32,150 @@ type ActT struct {
 	ApAdd [] *KpAdd
 	ApThis [] *KpThis
 	ApReplace [] *KpReplace
+}
+
+func refs(act *ActT) int {
+	errs := 0
+	v := ""
+	res := 0
+	err := false
+	for _, st := range act.ApComp {
+		v, _ = st.Names["parent"]
+		err, res = fnd(act, "Comp_" + v , "parent",  ".", st.LineNo );
+		st.Kparentp = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	for _, st := range act.ApRef {
+		v, _ = st.Names["element"]
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		st.Kelementp = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["comp"]
+		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		st.Kcompp = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	for _, st := range act.ApRef2 {
+		v, _ = st.Names["element"]
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		st.Kelementp = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["comp"]
+		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		st.Kcompp = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["element2"]
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element2",  "check", st.LineNo );
+		st.Kelement2p = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	for _, st := range act.ApRef3 {
+		v, _ = st.Names["element"]
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		st.Kelementp = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["comp"]
+		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		st.Kcompp = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["element2"]
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element2",  "check", st.LineNo );
+		st.Kelement2p = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["comp_ref"]
+		err, res = fnd(act, "Comp_" + v , "comp_ref",  "check", st.LineNo );
+		st.Kcomp_refp = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	for _, st := range act.ApRefq {
+		v, _ = st.Names["element"]
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		st.Kelementp = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["comp"]
+		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		st.Kcompp = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["comp_ref"]
+		err, res = fnd(act, "Comp_" + v , "comp_ref",  "check", st.LineNo );
+		st.Kcomp_refp = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	for _, st := range act.ApRefu {
+		v, _ = st.Names["element"]
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		st.Kelementp = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["comp"]
+		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		st.Kcompp = res
+		if (err == false) {
+			errs += 1
+		}
+		v, _ = st.Names["comp_ref"]
+		err, res = fnd(act, "Comp_" + v , "comp_ref",  "check", st.LineNo );
+		st.Kcomp_refp = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	for _, st := range act.ApAll {
+		err, res = fnd(act, "Actor_" + st.Kactor , "actor",  ".", st.LineNo );
+		st.Kactorp = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	for _, st := range act.ApDu {
+		err, res = fnd(act, "Actor_" + st.Kactor , "actor",  ".", st.LineNo );
+		st.Kactorp = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	for _, st := range act.ApIts {
+		err, res = fnd(act, "Actor_" + st.Kactor , "actor",  ".", st.LineNo );
+		st.Kactorp = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	for _, st := range act.ApThis {
+		err, res = fnd(act, "Actor_" + st.Kactor , "actor",  ".", st.LineNo );
+		st.Kactorp = res
+		if (err == false) {
+			errs += 1
+		}
+	}
+	return(errs)
 }
 
 func DoAll(glob *GlobT, va []string, lno string) int {

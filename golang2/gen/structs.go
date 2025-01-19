@@ -52,12 +52,187 @@ func loadComp(act *ActT, ln string, pos int, lno string, flag []string) int {
 }
 
 func (me KpComp) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
+	if (va[0] == "Comp_parent" && len(va) > 1) { // gen.unit:16, g_struct.act:632
+		for _, st := range glob.Dats.ApComp {
+			if (st.Kparentp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Ref_comp" && len(va) > 1) { // gen.unit:65, g_struct.act:632
+		for _, st := range glob.Dats.ApRef {
+			if (st.Kcompp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Ref2_comp" && len(va) > 1) { // gen.unit:83, g_struct.act:632
+		for _, st := range glob.Dats.ApRef2 {
+			if (st.Kcompp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Ref3_comp" && len(va) > 1) { // gen.unit:104, g_struct.act:632
+		for _, st := range glob.Dats.ApRef3 {
+			if (st.Kcompp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Ref3_comp_ref" && len(va) > 1) { // gen.unit:105, g_struct.act:632
+		for _, st := range glob.Dats.ApRef3 {
+			if (st.Kcomp_refp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Refq_comp" && len(va) > 1) { // gen.unit:126, g_struct.act:632
+		for _, st := range glob.Dats.ApRefq {
+			if (st.Kcompp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Refq_comp_ref" && len(va) > 1) { // gen.unit:127, g_struct.act:632
+		for _, st := range glob.Dats.ApRefq {
+			if (st.Kcomp_refp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Refu_comp" && len(va) > 1) { // gen.unit:147, g_struct.act:632
+		for _, st := range glob.Dats.ApRefu {
+			if (st.Kcompp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Refu_comp_ref" && len(va) > 1) { // gen.unit:148, g_struct.act:632
+		for _, st := range glob.Dats.ApRefu {
+			if (st.Kcomp_refp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Comp?", va[0], lno, me.LineNo) }
 	return ok,r
 }
 
 func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
+	if va[0] == "Element" { // gen.unit:19, g_struct.act:611
+		for _, st := range me.ItsElement {
+			if len(va) > 1 {
+				ret := st.DoIts(glob, va[1:], lno)
+				if (ret != 0) {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if (ret != 0) {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Ref" { // gen.unit:50, g_struct.act:611
+		for _, st := range me.ItsRef {
+			if len(va) > 1 {
+				ret := st.DoIts(glob, va[1:], lno)
+				if (ret != 0) {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if (ret != 0) {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Ref2" { // gen.unit:68, g_struct.act:611
+		for _, st := range me.ItsRef2 {
+			if len(va) > 1 {
+				ret := st.DoIts(glob, va[1:], lno)
+				if (ret != 0) {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if (ret != 0) {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Ref3" { // gen.unit:87, g_struct.act:611
+		for _, st := range me.ItsRef3 {
+			if len(va) > 1 {
+				ret := st.DoIts(glob, va[1:], lno)
+				if (ret != 0) {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if (ret != 0) {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Refq" { // gen.unit:109, g_struct.act:611
+		for _, st := range me.ItsRefq {
+			if len(va) > 1 {
+				ret := st.DoIts(glob, va[1:], lno)
+				if (ret != 0) {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if (ret != 0) {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Refu" { // gen.unit:130, g_struct.act:611
+		for _, st := range me.ItsRefu {
+			if len(va) > 1 {
+				ret := st.DoIts(glob, va[1:], lno)
+				if (ret != 0) {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if (ret != 0) {
+				return(ret)
+			}
+		}
+		return(0)
+	}
+	if va[0] == "Join" { // gen.unit:151, g_struct.act:611
+		for _, st := range me.ItsJoin {
+			if len(va) > 1 {
+				ret := st.DoIts(glob, va[1:], lno)
+				if (ret != 0) {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if (ret != 0) {
+				return(ret)
+			}
+		}
+		return(0)
+	}
 	return(0)
 }
 
@@ -104,12 +279,77 @@ func loadElement(act *ActT, ln string, pos int, lno string, flag []string) int {
 }
 
 func (me KpElement) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
+	if (va[0] == "Ref_element" && len(va) > 1) { // gen.unit:64, g_struct.act:632
+		for _, st := range glob.Dats.ApRef {
+			if (st.Kelementp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Ref2_element" && len(va) > 1) { // gen.unit:82, g_struct.act:632
+		for _, st := range glob.Dats.ApRef2 {
+			if (st.Kelementp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Ref2_element2" && len(va) > 1) { // gen.unit:84, g_struct.act:632
+		for _, st := range glob.Dats.ApRef2 {
+			if (st.Kelement2p == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Ref3_element" && len(va) > 1) { // gen.unit:103, g_struct.act:632
+		for _, st := range glob.Dats.ApRef3 {
+			if (st.Kelementp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Ref3_element2" && len(va) > 1) { // gen.unit:106, g_struct.act:632
+		for _, st := range glob.Dats.ApRef3 {
+			if (st.Kelement2p == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Refq_element" && len(va) > 1) { // gen.unit:125, g_struct.act:632
+		for _, st := range glob.Dats.ApRefq {
+			if (st.Kelementp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
+	if (va[0] == "Refu_element" && len(va) > 1) { // gen.unit:146, g_struct.act:632
+		for _, st := range glob.Dats.ApRefu {
+			if (st.Kelementp == me.Me) {
+				return (st.GetVar(glob, va[1:], lno) )
+			}
+		}
+	}
 	r,ok := me.Names[va[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s,%s,Element?", va[0], lno, me.LineNo) }
 	return ok,r
 }
 
 func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
+	if va[0] == "Opt" { // gen.unit:39, g_struct.act:611
+		for _, st := range me.ItsOpt {
+			if len(va) > 1 {
+				ret := st.DoIts(glob, va[1:], lno)
+				if (ret != 0) {
+					return(ret)
+				}
+				continue
+			}
+			ret := GoAct(glob, st)
+			if (ret != 0) {
+				return(ret)
+			}
+		}
+		return(0)
+	}
 	return(0)
 }
 

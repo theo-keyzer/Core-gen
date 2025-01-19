@@ -7,6 +7,7 @@ C
 C import (
 C 	"strings"
 C 	"fmt"
+C 	"strconv"
 C )
 C
 C type ActT struct {
@@ -28,17 +29,18 @@ C
 -C }
 -C 
 
--C bool refs(act)
--C {
--C 	var errs = false;
--C 	var res = fnd(act, '', '', '', '');
+C func refs(act *ActT) int {
+C 	errs := 0
+C 	v := ""
+C 	res := 0
+C 	err := false
 
--All Comp refs
+All Comp refs
 -All Comp refs2
 
--C 	return(errs);
--C }
--C
+C 	return(errs)
+C }
+C
 
 -C List var_all(glob, va, lno) 
 -C {
@@ -90,7 +92,7 @@ C
 Actor ar .
 ----------------------------------------------------------------
 
--C 	List<Kp${name:c}> ap_${name:l} = [];
+-C 	List<Kp${name:c}> Ap${name:c} = [];
 C 	Ap${name:c} [] *Kp${name:c}
 
 ----------------------------------------------------------------
@@ -105,7 +107,8 @@ Actor refs Comp parent = Actor
 
 Out delay
 
-C 	for(var st in act.ap_${name:l}) {
+-C 	for(var st in act.Ap${name:c}) {
+C 	for _, st := range act.Ap${name:c} {
 		
 Its Element refs_act_ele
 
@@ -119,7 +122,8 @@ Actor refs .
 
 Out delay
 
-C 	for(var st in act.ap_${name:l}) {
+-C 	for(var st in act.Ap${name:c}) {
+C 	for _, st := range act.Ap${name:c} {
 		
 Its Element refs_ele
 
@@ -131,7 +135,7 @@ Actor refs2 .
 
 Out delay
 
-C 	for(var st in act.ap_${name:l}) {
+C 	for(var st in act.Ap${name:c}) {
 		
 Its Element refs_ele2
 
@@ -141,22 +145,39 @@ C 	}
 Actor refs_act_ele . mw in R1,RS
 ----------------------------------------------------------------
 
-C 		res = fnd(act, "${Ref_element.comp.name:c}_" + st.k_${name:l} , st.k_${name:l},  ".", st.line_no );
-C 		st.k_${name:l}p = res[1];
-C 		if (res[0] == false) {
-C 			errs = true;
+C 		err, res = fnd(act, "${Ref_element.comp.name:c}_" + st.K${name:l} , "${name:l}",  ".", st.LineNo );
+C 		st.K${name:l}p = res
+C 		if (err == false) {
+C 			errs += 1
 C 		}
 
 ----------------------------------------------------------------
 Actor refs_ele . mw in R1,RS
 ----------------------------------------------------------------
 
-C 		res = fnd(act, "${Ref_element.comp.name:c}_" + get_name(st.names, "${name:l}") , get_name(st.names, "${name:l}"),  "${Ref_element.opt}", st.line_no );
-C 		st.k_${name:l}p = res[1];
-C 		st.names["k_${name:l}p"] = st.k_${name:l}p.toString();
-C 		if (res[0] == false) {
-C 			errs = true;
+C 		v, _ = st.Names["${name:l}"]
+C 		err, res = fnd(act, "${Ref_element.comp.name:c}_" + v , "${name:l}",  "${Ref_element.opt}", st.LineNo );
+C 		st.K${name:l}p = res
+C 		if (err == false) {
+C 			errs += 1
 C 		}
+
+----------------------------------------------------------------
+Actor refs_ele . mw in F1,FS
+----------------------------------------------------------------
+
+C 		v, _ = st.Names["${name:l}"]
+C 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_${Ref_element.comp.name:c}_" + v , "${name:l}",  "${Ref_element.opt}", st.LineNo );
+C 		st.K${name:l}p = res
+C 		if (err == false) {
+C 			errs += 1
+C 		}
+-C 		res = fnd(act, st.k_parentp.toString() + "_${Ref_element.comp.name:c}_" + get_name(st.names, "${name:l}") , get_name(st.names, "${name:l}"),  "${Ref_element.opt}", st.line_no );
+-C 		st.K${name:c}p = res[1];
+-C 		st.names["K${name:c}p"] = st.K${name:c}p.toString();
+-C 		if (res[0] == false) {
+-C 			errs = true;
+-C 		}
 
 ----------------------------------------------------------------
 Actor refs_ele2 . mw in M1,MS
@@ -170,7 +191,7 @@ C 			tp = act.ap_${Ref3_element.comp_ref.name:l}[ap].k_${Ref3_element.element3.n
 C 		}
 C 		if (tp >= 0) {
 C 			res = fnd(act, tp.toString() + "_${Ref3_element.comp.name:c}_" + get_name(st.names, "${name:l}") , get_name(st.names, "${name:l}"),  "${Ref3_element.opt}", st.line_no );
-C 			st.k_${name:l}p = res[1];
+C 			st.K${name:c}p = res[1];
 C 			if (res[0] == false) {
 C 				errs = true;
 C 			}
@@ -178,18 +199,7 @@ C 		} else if ( "${Ref3_element.opt}".compareTo( "?" ) != 0 && get_name(st.names
 C 			print( "ref error " + st.line_no);
 C 			errs = true;
 C 		}
-C 		st.names["k_${name:l}p"] = st.k_${name:l}p.toString();
-C 		}
-----------------------------------------------------------------
-Actor refs_ele . mw in F1,FS
-----------------------------------------------------------------
-
--C 		r, st.k_${name:l}p = fnd(act, st.k_parentp.toString() + "_${Ref_element.comp.name:c}_" + st.names["${name:l}"] , st.names["${name:l}"],  "${Ref_element.opt}", st.line_no )
-C 		res = fnd(act, st.k_parentp.toString() + "_${Ref_element.comp.name:c}_" + get_name(st.names, "${name:l}") , get_name(st.names, "${name:l}"),  "${Ref_element.opt}", st.line_no );
-C 		st.k_${name:l}p = res[1];
-C 		st.names["k_${name:l}p"] = st.k_${name:l}p.toString();
-C 		if (res[0] == false) {
-C 			errs = true;
+C 		st.names["K${name:c}p"] = st.K${name:c}p.toString();
 C 		}
 
 ----------------------------------------------------------------
@@ -197,8 +207,8 @@ Actor refs_ele2 . mw in L1,LS
 ----------------------------------------------------------------
 
 C 		res = fnd(act, st.k_${Ref2_element.element2.name:l}p.toString() + "_${Ref2_element.comp.name:c}_" + get_name(st.names, "${name:l}") , get_name(st.names, "${name:l}"),  "${Ref2_element.opt}", st.line_no );
-C 		st.k_${name:l}p = res[1];
-C 		st.names["k_${name:l}p"] = st.k_${name:l}p.toString();
+C 		st.K${name:c}p = res[1];
+C 		st.names["K${name:c}p"] = st.K${name:c}p.toString();
 C 		if (res[0] == false) {
 C 			errs = true;
 C 		}
@@ -209,12 +219,12 @@ Actor refs_ele2 . mw = U0
 
 C 		var t = st.k_${Refu_element.element2:l}p;
 C 		if(t >= 0) {
-C 			st.k_${name:l}p = act.ap_${Refu_element.comp_ref.name:l}[t].k_${Refu_element.element3:l}p;
+C 			st.K${name:c}p = act.ap_${Refu_element.comp_ref.name:l}[t].k_${Refu_element.element3:l}p;
 C 		} else if ( "${Refu_element.opt}".compareTo( "?" ) != 0 ) {
 C 			print( "ref error ${Refu_element.element2:l} not resolved " + st.line_no);
 C 			errs = true;
 C 		}
-C 		st.names["k_${name:l}p"] = st.k_${name:l}p.toString();
+C 		st.names["K${name:c}p"] = st.K${name:c}p.toString();
 
 ----------------------------------------------------------------
 Actor refs_ele2 . mw in Q1,QS
@@ -228,7 +238,7 @@ C 			tp = act.ap_${Refq_element.comp_ref.name:l}[ap].k_${Refq_element.element2.n
 C 		}
 C 		if (tp >= 0) {
 C 			res = fnd(act, tp.toString() + "_${Refq_element.comp.name:c}_" + get_name(st.names, "${name:l}") , get_name(st.names, "${name:l}"),  "${Refq_element.opt}", st.line_no );
-C 			st.k_${name:l}p = res[1];
+C 			st.K${name:c}p = res[1];
 C 			if (res[0] == false) {
 C 				errs = true;
 C 			}
@@ -236,7 +246,7 @@ C 		} else if ("${Refq_element.opt}".compareTo( "?" ) != 0 && get_name(st.names,
 C 			print( "ref error " + st.line_no );
 C 			errs = true;
 C 		}
-C 		st.names["k_${name:l}p"] = st.k_${name:l}p.toString();
+C 		st.names["K${name:c}p"] = st.K${name:c}p.toString();
 C 		}
 
 ----------------------------------------------------------------
@@ -246,7 +256,7 @@ Actor var_all Comp find = Find
 C 	if (va[0].compareTo("${name:c}") == 0) {
 C 		var en = glob.dats.index["${name:c}_" + va[1] ];
 C 		if(en != null) {
-C 			return (glob.dats.ap_${name:l}[en].get_var(glob, va.sublist(2), lno));
+C 			return (glob.dats.Ap${name:c}[en].get_var(glob, va.sublist(2), lno));
 C 		}
 C 		return( [false, "?" + va[0] + "=" + va[1] + "?" + lno + "?"] );
 C 	}

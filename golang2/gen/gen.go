@@ -212,11 +212,11 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			if ret != 0 {
 				return ret
 			}
-
+*/
 		case *KpIts:
-			args := Strs(glob, winp, v.KArgs, v.LineNo, true, true)
-			NewAct(glob, v.KActor, args[1], v.LineNo)
-			va := strings.Split(v.KWhat, ".")
+			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
+			NewAct(glob, v.Kactor, args, v.LineNo)
+			va := strings.Split(v.Kwhat, ".")
 			if len(va[0]) == 0 && len(va) > 1 {
 				for i := winp - 1; i >= 0; i-- {
 					if glob.Wins[i].Name == va[1] {
@@ -235,7 +235,7 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			if ret > 1 || ret < 0 {
 				return ret
 			}
-
+/*
 		case *KpBreak:
 			if v.KCheck == "True" && !glob.Wins[winp].IsCheck {
 				continue
