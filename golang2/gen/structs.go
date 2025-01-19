@@ -29,7 +29,7 @@ type KpComp struct {
 	Childs [] Kp
 }
 
-func loadComp(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadComp(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpComp)
 	st.Names = make(map[string]string) 
@@ -48,7 +48,7 @@ func loadComp(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	name,_ := st.Names["name"]
 	act.index["Comp_" + name] = st.Me;
 	act.ApComp = append(act.ApComp, st)
-	return true;
+	return 0
 }
 
 func (me KpComp) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
@@ -73,7 +73,7 @@ type KpElement struct {
 	Childs [] Kp
 }
 
-func loadElement(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadElement(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpElement)
 	st.Names = make(map[string]string) 
@@ -92,7 +92,7 @@ func loadElement(act *ActT, ln string, pos int, lno string, flag []string) bool 
 	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Element has no Comp parent") ;
-		return false;
+		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
 	act.ApComp[ len( act.ApComp )-1 ].ItsElement = append(act.ApComp[ len( act.ApComp )-1 ].ItsElement, st)	// gen.unit:2, g_struct.act:248
@@ -100,7 +100,7 @@ func loadElement(act *ActT, ln string, pos int, lno string, flag []string) bool 
 	s := strconv.Itoa(st.Kparentp) + "_Element_" + name	// gen.unit:24, g_struct.act:286
 	act.index[s] = st.Me;
 	act.ApElement = append(act.ApElement, st)
-	return true;
+	return 0
 }
 
 func (me KpElement) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
@@ -123,7 +123,7 @@ type KpOpt struct {
 	Kparentp int
 }
 
-func loadOpt(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadOpt(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpOpt)
 	st.Names = make(map[string]string) 
@@ -140,7 +140,7 @@ func loadOpt(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Opt has no Element parent") ;
-		return false;
+		return 1
 	}
 	act.ApElement[ len( act.ApElement )-1 ].Childs = append(act.ApElement[ len( act.ApElement )-1 ].Childs, st)
 	act.ApElement[ len( act.ApElement )-1 ].ItsOpt = append(act.ApElement[ len( act.ApElement )-1 ].ItsOpt, st)	// gen.unit:19, g_struct.act:248
@@ -148,7 +148,7 @@ func loadOpt(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	s := strconv.Itoa(st.Kparentp) + "_Opt_" + name	// gen.unit:45, g_struct.act:286
 	act.index[s] = st.Me;
 	act.ApOpt = append(act.ApOpt, st)
-	return true;
+	return 0
 }
 
 func (me KpOpt) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
@@ -173,7 +173,7 @@ type KpRef struct {
 	Kcompp int
 }
 
-func loadRef(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadRef(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRef)
 	st.Names = make(map[string]string) 
@@ -194,12 +194,12 @@ func loadRef(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Ref has no Comp parent") ;
-		return false;
+		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
 	act.ApComp[ len( act.ApComp )-1 ].ItsRef = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef, st)	// gen.unit:2, g_struct.act:248
 	act.ApRef = append(act.ApRef, st)
-	return true;
+	return 0
 }
 
 func (me KpRef) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
@@ -225,7 +225,7 @@ type KpRef2 struct {
 	Kelement2p int
 }
 
-func loadRef2(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadRef2(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRef2)
 	st.Names = make(map[string]string) 
@@ -248,12 +248,12 @@ func loadRef2(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Ref2 has no Comp parent") ;
-		return false;
+		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
 	act.ApComp[ len( act.ApComp )-1 ].ItsRef2 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef2, st)	// gen.unit:2, g_struct.act:248
 	act.ApRef2 = append(act.ApRef2, st)
-	return true;
+	return 0
 }
 
 func (me KpRef2) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
@@ -280,7 +280,7 @@ type KpRef3 struct {
 	Kcomp_refp int
 }
 
-func loadRef3(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadRef3(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRef3)
 	st.Names = make(map[string]string) 
@@ -306,12 +306,12 @@ func loadRef3(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Ref3 has no Comp parent") ;
-		return false;
+		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
 	act.ApComp[ len( act.ApComp )-1 ].ItsRef3 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef3, st)	// gen.unit:2, g_struct.act:248
 	act.ApRef3 = append(act.ApRef3, st)
-	return true;
+	return 0
 }
 
 func (me KpRef3) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
@@ -337,7 +337,7 @@ type KpRefq struct {
 	Kcomp_refp int
 }
 
-func loadRefq(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadRefq(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRefq)
 	st.Names = make(map[string]string) 
@@ -361,12 +361,12 @@ func loadRefq(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Refq has no Comp parent") ;
-		return false;
+		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
 	act.ApComp[ len( act.ApComp )-1 ].ItsRefq = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefq, st)	// gen.unit:2, g_struct.act:248
 	act.ApRefq = append(act.ApRefq, st)
-	return true;
+	return 0
 }
 
 func (me KpRefq) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
@@ -392,7 +392,7 @@ type KpRefu struct {
 	Kcomp_refp int
 }
 
-func loadRefu(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadRefu(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRefu)
 	st.Names = make(map[string]string) 
@@ -417,12 +417,12 @@ func loadRefu(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Refu has no Comp parent") ;
-		return false;
+		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
 	act.ApComp[ len( act.ApComp )-1 ].ItsRefu = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefu, st)	// gen.unit:2, g_struct.act:248
 	act.ApRefu = append(act.ApRefu, st)
-	return true;
+	return 0
 }
 
 func (me KpRefu) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
@@ -445,7 +445,7 @@ type KpJoin struct {
 	Kparentp int
 }
 
-func loadJoin(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadJoin(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpJoin)
 	st.Names = make(map[string]string) 
@@ -466,12 +466,12 @@ func loadJoin(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Names["kParentp"] = strconv.Itoa(st.Kparentp)
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Join has no Comp parent") ;
-		return false;
+		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
 	act.ApComp[ len( act.ApComp )-1 ].ItsJoin = append(act.ApComp[ len( act.ApComp )-1 ].ItsJoin, st)	// gen.unit:2, g_struct.act:248
 	act.ApJoin = append(act.ApJoin, st)
-	return true;
+	return 0
 }
 
 func (me KpJoin) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
@@ -498,7 +498,7 @@ type KpActor struct {
 	Childs [] Kp
 }
 
-func loadActor(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadActor(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpActor)
 	st.Me = len(act.ApActor)
@@ -512,7 +512,7 @@ func loadActor(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	p,st.Kvalue = getws(ln,p)
 	act.index["Actor_" + st.Kname] = st.Me;
 	act.ApActor = append(act.ApActor, st)
-	return true;
+	return 0
 }
 
 type KpAll struct {
@@ -528,7 +528,7 @@ type KpAll struct {
 	Kactorp int
 }
 
-func loadAll(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadAll(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpAll)
 	st.Me = len(act.ApAll)
@@ -542,11 +542,11 @@ func loadAll(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " All has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApAll = append(act.ApAll, st)
-	return true;
+	return 0
 }
 
 type KpDu struct {
@@ -561,7 +561,7 @@ type KpDu struct {
 	Kactorp int
 }
 
-func loadDu(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadDu(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpDu)
 	st.Me = len(act.ApDu)
@@ -574,11 +574,11 @@ func loadDu(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Du has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApDu = append(act.ApDu, st)
-	return true;
+	return 0
 }
 
 type KpNew struct {
@@ -593,7 +593,7 @@ type KpNew struct {
 	Kline string
 }
 
-func loadNew(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadNew(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpNew)
 	st.Me = len(act.ApNew)
@@ -606,11 +606,11 @@ func loadNew(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " New has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApNew = append(act.ApNew, st)
-	return true;
+	return 0
 }
 
 type KpRefs struct {
@@ -623,7 +623,7 @@ type KpRefs struct {
 	Kwhere string
 }
 
-func loadRefs(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadRefs(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRefs)
 	st.Me = len(act.ApRefs)
@@ -634,11 +634,11 @@ func loadRefs(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Refs has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApRefs = append(act.ApRefs, st)
-	return true;
+	return 0
 }
 
 type KpVar struct {
@@ -653,7 +653,7 @@ type KpVar struct {
 	Kvalue string
 }
 
-func loadVar(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadVar(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpVar)
 	st.Me = len(act.ApVar)
@@ -666,11 +666,11 @@ func loadVar(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Var has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApVar = append(act.ApVar, st)
-	return true;
+	return 0
 }
 
 type KpIts struct {
@@ -686,7 +686,7 @@ type KpIts struct {
 	Kactorp int
 }
 
-func loadIts(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadIts(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpIts)
 	st.Me = len(act.ApIts)
@@ -700,11 +700,11 @@ func loadIts(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Its has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApIts = append(act.ApIts, st)
-	return true;
+	return 0
 }
 
 type KpC struct {
@@ -717,7 +717,7 @@ type KpC struct {
 	Kdesc string
 }
 
-func loadC(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadC(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpC)
 	st.Me = len(act.ApC)
@@ -728,11 +728,11 @@ func loadC(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " C has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApC = append(act.ApC, st)
-	return true;
+	return 0
 }
 
 type KpCs struct {
@@ -745,7 +745,7 @@ type KpCs struct {
 	Kdesc string
 }
 
-func loadCs(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadCs(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpCs)
 	st.Me = len(act.ApCs)
@@ -756,11 +756,11 @@ func loadCs(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Cs has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApCs = append(act.ApCs, st)
-	return true;
+	return 0
 }
 
 type KpOut struct {
@@ -775,7 +775,7 @@ type KpOut struct {
 	Kdesc string
 }
 
-func loadOut(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadOut(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpOut)
 	st.Me = len(act.ApOut)
@@ -788,11 +788,11 @@ func loadOut(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Out has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApOut = append(act.ApOut, st)
-	return true;
+	return 0
 }
 
 type KpIn struct {
@@ -805,7 +805,7 @@ type KpIn struct {
 	Kflag string
 }
 
-func loadIn(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadIn(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpIn)
 	st.Me = len(act.ApIn)
@@ -816,11 +816,11 @@ func loadIn(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " In has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApIn = append(act.ApIn, st)
-	return true;
+	return 0
 }
 
 type KpBreak struct {
@@ -836,7 +836,7 @@ type KpBreak struct {
 	Kcheck string
 }
 
-func loadBreak(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadBreak(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpBreak)
 	st.Me = len(act.ApBreak)
@@ -850,11 +850,11 @@ func loadBreak(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Break has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApBreak = append(act.ApBreak, st)
-	return true;
+	return 0
 }
 
 type KpAdd struct {
@@ -868,7 +868,7 @@ type KpAdd struct {
 	Kdata string
 }
 
-func loadAdd(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadAdd(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpAdd)
 	st.Me = len(act.ApAdd)
@@ -880,11 +880,11 @@ func loadAdd(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Add has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApAdd = append(act.ApAdd, st)
-	return true;
+	return 0
 }
 
 type KpThis struct {
@@ -900,7 +900,7 @@ type KpThis struct {
 	Kactorp int
 }
 
-func loadThis(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadThis(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpThis)
 	st.Me = len(act.ApThis)
@@ -914,11 +914,11 @@ func loadThis(act *ActT, ln string, pos int, lno string, flag []string) bool {
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " This has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApThis = append(act.ApThis, st)
-	return true;
+	return 0
 }
 
 type KpReplace struct {
@@ -935,7 +935,7 @@ type KpReplace struct {
 	Kmatch string
 }
 
-func loadReplace(act *ActT, ln string, pos int, lno string, flag []string) bool {
+func loadReplace(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpReplace)
 	st.Me = len(act.ApReplace)
@@ -950,10 +950,10 @@ func loadReplace(act *ActT, ln string, pos int, lno string, flag []string) bool 
 	st.Kparentp = len(act.ApActor)-1;
 	if (st.Kparentp < 0 ) { 
 		print(lno + " Replace has no Actor parent") ;
-		return false;
+		return 1
 	}
 	act.ApActor[ len( act.ApActor )-1 ].Childs = append(act.ApActor[ len( act.ApActor )-1 ].Childs, st)
 	act.ApReplace = append(act.ApReplace, st)
-	return true;
+	return 0
 }
 

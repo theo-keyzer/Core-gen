@@ -8,8 +8,8 @@ import (
 
 // GlobT represents global state
 type GlobT struct {
-	LoadErrs  bool
-	RunErrs   bool
+	LoadErrs  int
+	RunErrs   int
 	Acts      ActT
 	Dats      ActT
 	Winp      int
@@ -41,11 +41,9 @@ func main() {
 	glob := new(GlobT)
 	glob.Winp = -1
 	// Load files and check for errors
-	glob.LoadErrs = loadFiles(args[0], &glob.Acts)
-	glob.LoadErrs = glob.LoadErrs || loadFiles(args[1], &glob.Dats)
+	glob.LoadErrs += loadFiles(args[0], &glob.Acts)
+	glob.LoadErrs += loadFiles(args[1], &glob.Dats)
 
-//		fmt.Println(glob.Acts.ApActor[0])
-//		fmt.Println(glob.Acts.ApActor[0].Kchilds[0])
 	if len(glob.Acts.ApActor) > 0 {
 		kp := &KpExtra{
 			Names: make(map[string]string),
@@ -55,50 +53,48 @@ func main() {
 		for i, arg := range args {
 			kp.Names[fmt.Sprint(i)] = arg
 		}
-//fmt.Println("HERE")
 		NewAct(glob, glob.Acts.ApActor[0].Kname, "", "run:1")
 		GoAct(glob, kp)
 	}
 
-	if glob.LoadErrs || glob.RunErrs {
-		fmt.Println("Errors")
+	if glob.LoadErrs > 0 || glob.RunErrs > 0 {
+		fmt.Println("Errors", glob.LoadErrs, glob.RunErrs)
 		os.Exit(1)
 	}
 }
 
-func loadFiles(files string, act *ActT) bool {
+func loadFiles(files string, act *ActT) int {
 	act.index = make(map[string]int) 
-	errs := false
+	errs := 0
 	fileList := strings.Split(files, ",")
 	
 	for _, file := range fileList {
 		content, err := os.ReadFile(file)
 		if err != nil {
 			fmt.Printf("Error reading file %s: %v\n", file, err)
-			errs = true
+			errs = errs + 1
 			continue
 		}
-//			fmt.Println(string(content))
 
 		lines := strings.Split(string(content), "\n")
-//		fmt.Println(lines)
-		errs = errs || LoadData(lines, act, file)
+		errs += LoadData(lines, act, file)
 	}
 	
-	errs = errs || refs(act)
+//	errs += refs(act)
 	return errs
 }
 
 // LoadData loads data from lines into an actor
-func LoadData(lns []string, act *ActT, file string) bool {
-	errs := false
+func LoadData(lns []string, act *ActT, file string) int {
+	errs := 0
 	for i := 0; i < len(lns); i++ {
 		lno := fmt.Sprintf("%s:%d", file, i+1)
-		pos,tok := getw(lns[i], 0)
+		line := strings.ReplaceAll(lns[i], "\r", "")
+		pos,tok := getw( line, 0)
 		if tok == "E_O_F" {
 			break
 		}
-		errs = errs || Load(act, tok, lns[i], pos, lno)
+		errs += Load(act, tok, line, pos, lno)
 	}
 	return errs
 }

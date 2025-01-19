@@ -62,16 +62,15 @@ C 	return 0;
 C }
 C
 
-C func Load(act *ActT, toks string, ln string, pos int, lno string) bool {
+C func Load(act *ActT, toks string, ln string, pos int, lno string) int {
+C 	errs := 0
 C 	ss := strings.Split(toks,".")
 C 	tok := ss[0]
 C 	flag := ss[1:]
 
 All Comp load
 
--C 	if tok == "Actor" { doActor(act,ln,pos,lno,flag) }
--C 	if tok == "C" { doC(act,ln,pos,lno,flag) }
-C 	return false
+C 	return errs
 C }
 C
 
@@ -98,32 +97,7 @@ C 	Ap${name:c} [] *Kp${name:c}
 Actor load .
 ----------------------------------------------------------------
 
-C 	if tok == "${name:c}" { load${name:c}(act,ln,pos,lno,flag) }
-
--C 	if ( tok.compareTo( "${name:c}" ) == 0 ) {
--C 		var comp = new Kp${name:c}();
--C 		var r = comp.load(act, ln, pos, lno, flag);
--C 		if (r == false) {
--C 			errs = true;
--C 		}
--C 		act.ap_${name:l}.add( comp );
--C 	}
-
-
--Its Token load_tok
-
-----------------------------------------------------------------
-Actor load_tok .
-----------------------------------------------------------------
-
-C 	if ( tok.compareTo( "${token}n" ) == 0 ) {
-C 		var comp = Kp${.load.name:c}();
-C 		var r = comp.load(act, ln, pos, lno, flag);
-C 		if (r == false) {
-C 			errs = true;
-C 		}
-C 		act.ap_${.load.name:l}.add( comp );
-C 	}
+C 	if tok == "${name:c}" { errs += load${name:c}(act,ln,pos,lno,flag) }
 
 ----------------------------------------------------------------
 Actor refs Comp parent = Actor

@@ -60,7 +60,6 @@ func NewAct(glob *GlobT, actn string, arg string, flno string) {
 
 // GoAct processes an action
 func GoAct(glob *GlobT, dat interface{}) int {
-//	fmt.Println("go")
 	winp := glob.Winp + 1
 	glob.Winp = winp
 	glob.Wins[winp].Dat = dat
@@ -72,7 +71,6 @@ func GoAct(glob *GlobT, dat interface{}) int {
 		if glob.Acts.ApActor[i].Kname != name {
 			continue
 		}
-//	fmt.Println("go2")
 
 		act := glob.Acts.ApActor[i]
 		if act.Kattr != "E_O_L" {
@@ -411,13 +409,13 @@ func Strs(glob *GlobT, winp int, ss string, lno string, prErr bool, isErr bool) 
 				// Get variable value
 				okr,res := SGetVar(glob, winp, sc, va, lno)
 				
-				if okr {
+				if okr == false{
 					ok = false
 					if prErr {
 						fmt.Println(res)
 					}
 					if isErr {
-						glob.RunErrs = true
+						glob.RunErrs += 1
 					}
 				}
 
@@ -526,7 +524,8 @@ func CmdVar(glob *GlobT, sc []string, varv string, lcnt int) (bool, string) {
 
 // GetVarFromData is a helper function to get variable from data object
 func GetVarFromData(data interface{}, glob *GlobT, va []string, lno string) (bool, string) {
-	if getter, ok := data.(VariableGetter); ok {
+//	if getter, ok := data.(VariableGetter); ok {
+	if getter, ok := data.(Kp); ok {
 		return getter.GetVar(glob, va, lno)
 	}
 //fmt.Println(data)
@@ -543,7 +542,6 @@ type VariableGetter interface {
 // chk performs various comparison operations based on the equality operator
 func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, valOk bool, lno string) bool {
 	eq := eqa
-
 	// Special case for "??" operator
 	if eq == "??" {
 		if !attrOk || !valOk {
@@ -581,12 +579,12 @@ func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, v
 
 	// Check for attribute and value validity
 	if !attrOk {
-		glob.RunErrs = true
+		glob.RunErrs += 1
 		fmt.Println(v)
 		return false
 	}
 	if !valOk {
-		glob.RunErrs = true
+		glob.RunErrs += 1
 		fmt.Println(ss)
 		return false
 	}
@@ -596,7 +594,6 @@ func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, v
 	case "=":
 		return v == ss
 	case "!=":
-//	fmt.Println(v,ss, (v != ss) )
 		return v != ss
 	case "in":
 		values := strings.Split(ss, ",")
@@ -625,7 +622,7 @@ func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, v
 	case "regex":
 		rx, err := regexp.Compile(ss)
 		if err != nil {
-			glob.RunErrs = true
+			glob.RunErrs += 1
 			fmt.Printf("Invalid regex pattern: %v\n", err)
 			return false
 		}

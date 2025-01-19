@@ -298,34 +298,35 @@ func DoAll(glob *GlobT, va []string, lno string) int {
 	return 0;
 }
 
-func Load(act *ActT, toks string, ln string, pos int, lno string) bool {
+func Load(act *ActT, toks string, ln string, pos int, lno string) int {
+	errs := 0
 	ss := strings.Split(toks,".")
 	tok := ss[0]
 	flag := ss[1:]
-	if tok == "Comp" { loadComp(act,ln,pos,lno,flag) }
-	if tok == "Element" { loadElement(act,ln,pos,lno,flag) }
-	if tok == "Opt" { loadOpt(act,ln,pos,lno,flag) }
-	if tok == "Ref" { loadRef(act,ln,pos,lno,flag) }
-	if tok == "Ref2" { loadRef2(act,ln,pos,lno,flag) }
-	if tok == "Ref3" { loadRef3(act,ln,pos,lno,flag) }
-	if tok == "Refq" { loadRefq(act,ln,pos,lno,flag) }
-	if tok == "Refu" { loadRefu(act,ln,pos,lno,flag) }
-	if tok == "Join" { loadJoin(act,ln,pos,lno,flag) }
-	if tok == "Actor" { loadActor(act,ln,pos,lno,flag) }
-	if tok == "All" { loadAll(act,ln,pos,lno,flag) }
-	if tok == "Du" { loadDu(act,ln,pos,lno,flag) }
-	if tok == "New" { loadNew(act,ln,pos,lno,flag) }
-	if tok == "Refs" { loadRefs(act,ln,pos,lno,flag) }
-	if tok == "Var" { loadVar(act,ln,pos,lno,flag) }
-	if tok == "Its" { loadIts(act,ln,pos,lno,flag) }
-	if tok == "C" { loadC(act,ln,pos,lno,flag) }
-	if tok == "Cs" { loadCs(act,ln,pos,lno,flag) }
-	if tok == "Out" { loadOut(act,ln,pos,lno,flag) }
-	if tok == "In" { loadIn(act,ln,pos,lno,flag) }
-	if tok == "Break" { loadBreak(act,ln,pos,lno,flag) }
-	if tok == "Add" { loadAdd(act,ln,pos,lno,flag) }
-	if tok == "This" { loadThis(act,ln,pos,lno,flag) }
-	if tok == "Replace" { loadReplace(act,ln,pos,lno,flag) }
-	return false
+	if tok == "Comp" { errs += loadComp(act,ln,pos,lno,flag) }
+	if tok == "Element" { errs += loadElement(act,ln,pos,lno,flag) }
+	if tok == "Opt" { errs += loadOpt(act,ln,pos,lno,flag) }
+	if tok == "Ref" { errs += loadRef(act,ln,pos,lno,flag) }
+	if tok == "Ref2" { errs += loadRef2(act,ln,pos,lno,flag) }
+	if tok == "Ref3" { errs += loadRef3(act,ln,pos,lno,flag) }
+	if tok == "Refq" { errs += loadRefq(act,ln,pos,lno,flag) }
+	if tok == "Refu" { errs += loadRefu(act,ln,pos,lno,flag) }
+	if tok == "Join" { errs += loadJoin(act,ln,pos,lno,flag) }
+	if tok == "Actor" { errs += loadActor(act,ln,pos,lno,flag) }
+	if tok == "All" { errs += loadAll(act,ln,pos,lno,flag) }
+	if tok == "Du" { errs += loadDu(act,ln,pos,lno,flag) }
+	if tok == "New" { errs += loadNew(act,ln,pos,lno,flag) }
+	if tok == "Refs" { errs += loadRefs(act,ln,pos,lno,flag) }
+	if tok == "Var" { errs += loadVar(act,ln,pos,lno,flag) }
+	if tok == "Its" { errs += loadIts(act,ln,pos,lno,flag) }
+	if tok == "C" { errs += loadC(act,ln,pos,lno,flag) }
+	if tok == "Cs" { errs += loadCs(act,ln,pos,lno,flag) }
+	if tok == "Out" { errs += loadOut(act,ln,pos,lno,flag) }
+	if tok == "In" { errs += loadIn(act,ln,pos,lno,flag) }
+	if tok == "Break" { errs += loadBreak(act,ln,pos,lno,flag) }
+	if tok == "Add" { errs += loadAdd(act,ln,pos,lno,flag) }
+	if tok == "This" { errs += loadThis(act,ln,pos,lno,flag) }
+	if tok == "Replace" { errs += loadReplace(act,ln,pos,lno,flag) }
+	return errs
 }
 
