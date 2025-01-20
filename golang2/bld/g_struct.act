@@ -172,8 +172,8 @@ C
 C func (me Kp${name:c}) DoIts(glob *GlobT, va []string, lno string) int {
 
 Its Comp_parent from_to_doo
--Its parent parent_field_func
--Its Ref ref_func
+Its parent parent_field_func
+Its Ref ref_func
 -Its Ref2 ref_func2
 -Its Ref3 ref_func3
 -Its Refq ref_funcq
@@ -355,16 +355,16 @@ C 		}
 Actor ref_func Ref
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${element.name:l}") == 0) {
-C 			if (k_${element.name:l}p >= 0) {
-C 				var st = glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ];
-C 				if (va.length > 1) {
-C 					return( st.do_its(glob, va.sublist(1), lno) );
-C 				}
-C 				return( go_act(glob, st) );
+C 	if va[0] == "${element.name:l}" {
+C 		if me.K${element.name:l}p >= 0 {
+C 			st := glob.Dats.Ap${comp.name:c}[ me.K${element.name:l}p ]
+C 			if len(va) > 1 {
+C 				return( st.DoIts(glob, va[1:], me.LineNo) )
 C 			}
-C 			return(0);
+C 			return( GoAct(glob, st) )
 C 		}
+C 		return(0)
+C 	}
 
 ----------------------------------------------------------------
 Actor ref_func2 Ref2
@@ -415,26 +415,26 @@ C 		}
 Actor parent_field_func Comp
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("parent") == 0) { // ${._lno}
-C 			if (k_parentp >= 0) {
-C 				var st = glob.dats.ap_${name:l}[ k_parentp ];
-C 				if (va.length > 1) {
-C 					return( st.do_its(glob, va.sublist(1), lno) );
-C 				}
-C 				return( go_act(glob, st) );
+C 	if va[0] == "parent" { // ${._lno}
+C 		if me.Kparentp >= 0 {
+C 			st := glob.Dats.Ap${name:c}[ me.Kparentp ]
+C 			if len(va) > 1 {
+C 				return( st.DoIts(glob, va[1:], lno) )
 C 			}
-C 			return(0);
+C 			return( GoAct(glob, st) )
 C 		}
+C 		return(0)
+C 	}
 
 ----------------------------------------------------------------
 Actor parent_field_var Comp
 ----------------------------------------------------------------
 
-C 		if (va[0] == "parent") { // ${._lno}
-C 			if (me.Kparentp >= 0 && len(va) > 1) {
-C 				return( glob.Dats.Ap${name:c}[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
-C 			}
+C 	if (va[0] == "parent") { // ${._lno}
+C 		if (me.Kparentp >= 0 && len(va) > 1) {
+C 			return( glob.Dats.Ap${name:c}[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
 C 		}
+C 	}
 
 ----------------------------------------------------------------
 Actor other_func Ref

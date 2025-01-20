@@ -204,15 +204,15 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			if ret != 0 {
 				return ret
 			}
-
+*/
 		case *KpDu:
-			args := Strs(glob, winp, v.KArgs, v.LineNo, true, true)
-			NewAct(glob, v.KActor, args[1], v.LineNo)
+			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
+			NewAct(glob, v.Kactor, args, v.LineNo)
 			ret := GoAct(glob, glob.Wins[winp].Dat)
 			if ret != 0 {
 				return ret
 			}
-*/
+
 		case *KpIts:
 			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
 			NewAct(glob, v.Kactor, args, v.LineNo)
@@ -235,27 +235,27 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			if ret > 1 || ret < 0 {
 				return ret
 			}
-/*
+
 		case *KpBreak:
-			if v.KCheck == "True" && !glob.Wins[winp].IsCheck {
+			if v.Kcheck == "True" && !glob.Wins[winp].IsCheck {
 				continue
 			}
-			if v.KCheck == "False" && glob.Wins[winp].IsCheck {
+			if v.Kcheck == "False" && glob.Wins[winp].IsCheck {
 				continue
 			}
 			ret := 0
-			if v.KWhat == "E_O_L" || v.KWhat == "actor" {
+			if v.Kwhat == "E_O_L" || v.Kwhat == "actor" {
 				ret = 2
 			}
-			if v.KWhat == "loop" {
+			if v.Kwhat == "loop" {
 				ret = 1
 			}
-			if v.KWhat == "cmds" {
+			if v.Kwhat == "cmds" {
 				ret = 3
 			}
-			if v.KActor != "E_O_L" && v.KActor != "." {
+			if v.Kactor != "E_O_L" && v.Kactor != "." {
 				for i := winp - 1; i >= 0; i-- {
-					if glob.Wins[i].Name == v.KActor {
+					if glob.Wins[i].Name == v.Kactor {
 						glob.Wins[i+1].BrkAct = true
 						ret = -ret
 						break
@@ -263,7 +263,7 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 				}
 			}
 			return ret
-
+/*
 		case *KpVar:
 			res := Strs(glob, winp, v.KValue, v.LineNo, true, true)
 			va := strings.Split(v.KAttr, ".")
