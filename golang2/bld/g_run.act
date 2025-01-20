@@ -145,7 +145,7 @@ C 	}
 Actor refs_act_ele . mw in R1,RS
 ----------------------------------------------------------------
 
-C 		err, res = fnd(act, "${Ref_element.comp.name:c}_" + st.K${name:l} , "${name:l}",  ".", st.LineNo );
+C 		err, res = fnd(act, "${Ref_element.comp.name:c}_" + st.K${name:l}, st.K${name:l},  ".", st.LineNo );
 C 		st.K${name:l}p = res
 C 		if (err == false) {
 C 			errs += 1
@@ -156,7 +156,7 @@ Actor refs_ele . mw in R1,RS
 ----------------------------------------------------------------
 
 C 		v, _ = st.Names["${name:l}"]
-C 		err, res = fnd(act, "${Ref_element.comp.name:c}_" + v , "${name:l}",  "${Ref_element.opt}", st.LineNo );
+C 		err, res = fnd(act, "${Ref_element.comp.name:c}_" + v, v,  "${Ref_element.opt}", st.LineNo );
 C 		st.K${name:l}p = res
 C 		if (err == false) {
 C 			errs += 1
@@ -167,7 +167,7 @@ Actor refs_ele . mw in F1,FS
 ----------------------------------------------------------------
 
 C 		v, _ = st.Names["${name:l}"]
-C 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_${Ref_element.comp.name:c}_" + v , "${name:l}",  "${Ref_element.opt}", st.LineNo );
+C 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_${Ref_element.comp.name:c}_" + v, v,  "${Ref_element.opt}", st.LineNo );
 C 		st.K${name:l}p = res
 C 		if (err == false) {
 C 			errs += 1
