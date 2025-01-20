@@ -60,7 +60,6 @@ func NewAct(glob *GlobT, actn string, arg string, flno string) {
 
 // GoAct processes an action
 func GoAct(glob *GlobT, dat interface{}) int {
-//	fmt.Println("go")
 	winp := glob.Winp + 1
 	glob.Winp = winp
 	glob.Wins[winp].Dat = dat
@@ -72,7 +71,6 @@ func GoAct(glob *GlobT, dat interface{}) int {
 		if glob.Acts.ApActor[i].Kname != name {
 			continue
 		}
-//	fmt.Println("go2")
 
 		act := glob.Acts.ApActor[i]
 		if act.Kattr != "E_O_L" {
@@ -176,17 +174,17 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			} else {
 				fmt.Print(res)
 			}
-
+*/
 		case *KpAll:
-			_, args := Strs(glob, winp, v.KArgs, v.LineNo, true, true)
-			NewAct(glob, v.KActor, args, v.LineNo)
-			_, what := Strs(glob, winp, v.KWhat, v.LineNo, true, true)
+			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
+			NewAct(glob, v.Kactor, args, v.LineNo)
+			_, what := Strs(glob, winp, v.Kwhat, v.LineNo, true, true)
 			va := strings.Split(what, ".")
 			ret := DoAll(glob, va, v.LineNo)
 			if ret > 1 || ret < 0 {
 				return ret
 			}
-
+/*
 		case *KpThis:
 			_, args := Strs(glob, winp, v.KArgs, v.LineNo, true, true)
 			NewAct(glob, v.KActor, args, v.LineNo)
@@ -206,19 +204,19 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			if ret != 0 {
 				return ret
 			}
-
+*/
 		case *KpDu:
-			args := Strs(glob, winp, v.KArgs, v.LineNo, true, true)
-			NewAct(glob, v.KActor, args[1], v.LineNo)
+			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
+			NewAct(glob, v.Kactor, args, v.LineNo)
 			ret := GoAct(glob, glob.Wins[winp].Dat)
 			if ret != 0 {
 				return ret
 			}
 
 		case *KpIts:
-			args := Strs(glob, winp, v.KArgs, v.LineNo, true, true)
-			NewAct(glob, v.KActor, args[1], v.LineNo)
-			va := strings.Split(v.KWhat, ".")
+			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
+			NewAct(glob, v.Kactor, args, v.LineNo)
+			va := strings.Split(v.Kwhat, ".")
 			if len(va[0]) == 0 && len(va) > 1 {
 				for i := winp - 1; i >= 0; i-- {
 					if glob.Wins[i].Name == va[1] {
@@ -239,25 +237,25 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			}
 
 		case *KpBreak:
-			if v.KCheck == "True" && !glob.Wins[winp].IsCheck {
+			if v.Kcheck == "True" && !glob.Wins[winp].IsCheck {
 				continue
 			}
-			if v.KCheck == "False" && glob.Wins[winp].IsCheck {
+			if v.Kcheck == "False" && glob.Wins[winp].IsCheck {
 				continue
 			}
 			ret := 0
-			if v.KWhat == "E_O_L" || v.KWhat == "actor" {
+			if v.Kwhat == "E_O_L" || v.Kwhat == "actor" {
 				ret = 2
 			}
-			if v.KWhat == "loop" {
+			if v.Kwhat == "loop" {
 				ret = 1
 			}
-			if v.KWhat == "cmds" {
+			if v.Kwhat == "cmds" {
 				ret = 3
 			}
-			if v.KActor != "E_O_L" && v.KActor != "." {
+			if v.Kactor != "E_O_L" && v.Kactor != "." {
 				for i := winp - 1; i >= 0; i-- {
-					if glob.Wins[i].Name == v.KActor {
+					if glob.Wins[i].Name == v.Kactor {
 						glob.Wins[i+1].BrkAct = true
 						ret = -ret
 						break
@@ -265,7 +263,7 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 				}
 			}
 			return ret
-
+/*
 		case *KpVar:
 			res := Strs(glob, winp, v.KValue, v.LineNo, true, true)
 			va := strings.Split(v.KAttr, ".")
@@ -411,13 +409,13 @@ func Strs(glob *GlobT, winp int, ss string, lno string, prErr bool, isErr bool) 
 				// Get variable value
 				okr,res := SGetVar(glob, winp, sc, va, lno)
 				
-				if okr {
+				if okr == false{
 					ok = false
 					if prErr {
 						fmt.Println(res)
 					}
 					if isErr {
-						glob.RunErrs = true
+						glob.RunErrs += 1
 					}
 				}
 
@@ -526,7 +524,8 @@ func CmdVar(glob *GlobT, sc []string, varv string, lcnt int) (bool, string) {
 
 // GetVarFromData is a helper function to get variable from data object
 func GetVarFromData(data interface{}, glob *GlobT, va []string, lno string) (bool, string) {
-	if getter, ok := data.(VariableGetter); ok {
+//	if getter, ok := data.(VariableGetter); ok {
+	if getter, ok := data.(Kp); ok {
 		return getter.GetVar(glob, va, lno)
 	}
 //fmt.Println(data)
@@ -543,7 +542,6 @@ type VariableGetter interface {
 // chk performs various comparison operations based on the equality operator
 func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, valOk bool, lno string) bool {
 	eq := eqa
-
 	// Special case for "??" operator
 	if eq == "??" {
 		if !attrOk || !valOk {
@@ -581,12 +579,12 @@ func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, v
 
 	// Check for attribute and value validity
 	if !attrOk {
-		glob.RunErrs = true
+		glob.RunErrs += 1
 		fmt.Println(v)
 		return false
 	}
 	if !valOk {
-		glob.RunErrs = true
+		glob.RunErrs += 1
 		fmt.Println(ss)
 		return false
 	}
@@ -624,7 +622,7 @@ func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, v
 	case "regex":
 		rx, err := regexp.Compile(ss)
 		if err != nil {
-			glob.RunErrs = true
+			glob.RunErrs += 1
 			fmt.Printf("Invalid regex pattern: %v\n", err)
 			return false
 		}

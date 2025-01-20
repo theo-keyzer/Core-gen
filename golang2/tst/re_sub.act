@@ -1,0 +1,36 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+* Convert variable names to new format.
+* The space at the end should still be there for some cases.
+* Does not match the '_'
+----------------------------------------------------------------
+
+
+In on
+
+C.r <c:forEach var="${table.name}lItem" items="$${${table.name}lItems}">
+C.r   <form:option value="$${${table.name}lItem.${Where_attr.from_id}l}">$${${table.name}lItem.displayFld}</form:option>
+C.r </c:forEach> ${a}c ${}  ${e}  ${a.b.c}l $${xa}l ${}
+
+In off
+
+Add _:input ${._ins}
+
+-Add.file _:input ../bld/d_run.act
+
+Replace.group _:input with $${\1}junk match (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\} 
+Replace.group _:input with $${\1:l}junk match (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\}l
+Replace.group _:input with $${\1:c}junk match (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\}c
+Replace.group _:input with $${\1:u}junk match (?<!\$)\$\{((\.)*(\w+)(\.\w+)*)\}u
+
+Replace _:input with $${._lno} match (?<!\$)\$\{\} 
+Replace _:input with $${._lno} match (?<!\$)\$\{\}
+
+Add _:replace 
+
+Replace _:input with ${_.replace} match junk
+
+C ${_.input}
+
+

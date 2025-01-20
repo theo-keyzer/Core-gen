@@ -1,0 +1,46 @@
+parent (Comp_.) not found sample.def_unit:3
+
+Comp Type parent . Find 
+ Element name C1 NAME * Its name.
+ Element desc V1 WORD * Description.
+
+Comp Data parent Type E_O_L 
+ Element name C1 WORD * Field name
+ Element op C1 WORD * (= >)
+ Element value V1 WORD * Data value
+
+Comp Attr parent Type FindIn 
+ Element relation C1 WORD * Relation type
+ Element name C1 NAME * Colomn name.
+ Element mytype C1 WORD * Data type.
+ Element len C1 WORD * Default length.
+ Element null C1 WORD * Not null.
+ Element flags C1 WORD * Input flags - search,grid,edit,modify
+ Element desc V1 WORD * Documentation.
+
+ Element table R1 Type
+ Ref table Type .
+
+Comp Where parent Type E_O_L 
+ Element eq C1 WORD * =
+ Element op C1 WORD * (=, >, like)
+ Element value V1 WORD * Select value
+
+ Element attr F1 Attr
+ Ref attr Attr .
+
+ Element id F1 Attr
+ Ref id Attr .
+
+ Element table    U0 Type 
+ Refu    table Type  attr Attr table
+
+ Element from_id L1 Attr
+ Ref2 from_id Attr table ?
+
+Comp Logic parent Type E_O_L 
+ Element attr F1 WORD * Field name
+ Element op C1 WORD * (=)
+ Element code C1 WORD * Code block name
+ Ref attr Attr .
+Errors 1 0

@@ -1,0 +1,87 @@
+----------------------------------------------------------------
+Actor main
+----------------------------------------------------------------
+
+Add.map _:Unique
+
+C <!DOCTYPE html>
+C <html>
+C <body>
+
+All Topic topic ${2}
+
+C </body>
+C </html>
+
+----------------------------------------------------------------
+Actor topic Topic name in ${.main.2}
+Actor topic Topic .main.2 |= *
+----------------------------------------------------------------
+
+C
+C <${tag}>${desc}</${tag}>
+C <a name=tag_${k_me}></a>
+
+Its T t
+Break
+
+----------------------------------------------------------------
+Actor topic Topic name = _
+----------------------------------------------------------------
+
+Add _:Is false
+Its parent.Topic topic_is
+Add.no_add.break _:Is false
+
+C
+C <${tag}>${desc}</${tag}>
+C <a name=tag_${k_me}></a>
+
+Its T t
+
+----------------------------------------------------------------
+Actor topic Topic name = .
+----------------------------------------------------------------
+
+Add _:Is false
+Its parent.Topic topic_is
+Add.no_add.break _:Is false
+
+C
+C <${tag}>${desc}</${tag}>
+C <a name=tag_${k_me}></a>
+
+Its T t
+Its parent.Topic links
+Add.clear.map _:Unique
+
+----------------------------------------------------------------
+Actor t T desc != .
+----------------------------------------------------------------
+
+C ${desc}
+
+----------------------------------------------------------------
+Actor t T .main.3 ?= include
+Actor t T file &!= .
+----------------------------------------------------------------
+
+Add.file _:inc ${file}
+C ${_.inc}
+
+----------------------------------------------------------------
+Actor topic_is Topic name in ${.main.2}
+----------------------------------------------------------------
+
+Add _:Is true
+Break loop
+
+----------------------------------------------------------------
+Actor links Topic name != .
+Actor links Topic name &!in ${.main.2}
+----------------------------------------------------------------
+
+Add.break _:Unique ${name}
+
+C <a href="${name}.html#tag_${.topic.k_me}">${name}</a>
+

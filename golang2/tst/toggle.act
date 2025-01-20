@@ -1,0 +1,31 @@
+----------------------------------------------------------------
+Actor main .
+----------------------------------------------------------------
+
+C ${2} ${3}
+
+Add _:doc ${2}
+Add _:code ${3}
+
+Out ${_.doc}
+
+C The documentaion for the table functions
+
+Out ${_.code}
+
+C The code for the table functions
+
+All Type body
+
+----------------------------------------------------------------
+Actor body
+----------------------------------------------------------------
+
+Out ${_.doc}
+
+C The documentaion for ${name} function
+
+Out ${_.code}
+
+C The code for ${name} function
+
