@@ -58,7 +58,8 @@ func main() {
 	}
 
 	if glob.LoadErrs > 0 || glob.RunErrs > 0 {
-		fmt.Println("Errors", glob.LoadErrs, glob.RunErrs)
+//		fmt.Println("Errors", glob.LoadErrs, glob.RunErrs)
+		println("Errors", glob.LoadErrs, glob.RunErrs)
 		os.Exit(1)
 	}
 }
@@ -112,7 +113,7 @@ func fnd(act *ActT, s string, f string, chk string, lno string) (bool, int) {
 		return true, -1
 	}
 	
-	fmt.Printf("%s (%s) not found %s\n", f, s, lno)
+	fmt.Printf("%s (%s) not found %s (%s)\n", f, s, lno,chk)
 	return false, -1
 }
 

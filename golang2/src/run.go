@@ -65,254 +65,468 @@ func refs(act *ActT) int {
 	res := 0
 	err := false
 	for _, st := range act.ApAttr {
+
+//  sample.unit:29, g_run.act:161
+
 		v, _ = st.Names["table"]
-		err, res = fnd(act, "Type_" + v , "table",  ".", st.LineNo );
+		err, res = fnd(act, "Type_" + v, v,  ".", st.LineNo );
 		st.Ktablep = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApWhere {
+
+//  sample.unit:67, g_run.act:174
+
 		v, _ = st.Names["attr"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Attr_" + v , "attr",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Attr_" + v, v,  "check", st.LineNo );
 		st.Kattrp = res
 		if (err == false) {
 			errs += 1
 		}
+//  sample.unit:71, g_run.act:174
+
 		v, _ = st.Names["id"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Attr_" + v , "id",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Attr_" + v, v,  "check", st.LineNo );
 		st.Kidp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApLogic {
+
+//  sample.unit:92, g_run.act:174
+
 		v, _ = st.Names["attr"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Attr_" + v , "attr",  ".", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Attr_" + v, v,  ".", st.LineNo );
 		st.Kattrp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApNode {
+
+//  app.unit:7, g_run.act:161
+
 		v, _ = st.Names["parent"]
-		err, res = fnd(act, "Node_" + v , "parent",  ".", st.LineNo );
+		err, res = fnd(act, "Node_" + v, v,  ".", st.LineNo );
 		st.Kparentp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApLink {
+
+//  app.unit:18, g_run.act:161
+
 		v, _ = st.Names["to"]
-		err, res = fnd(act, "Node_" + v , "to",  "check", st.LineNo );
+		err, res = fnd(act, "Node_" + v, v,  "check", st.LineNo );
 		st.Ktop = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApField {
+
+//  app.unit:52, g_run.act:161
+
 		v, _ = st.Names["type"]
-		err, res = fnd(act, "Type_" + v , "type",  ".", st.LineNo );
+		err, res = fnd(act, "Type_" + v, v,  ".", st.LineNo );
 		st.Ktypep = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApOf {
+
+//  app.unit:74, g_run.act:174
+
 		v, _ = st.Names["field"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Field_" + v , "field",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Field_" + v, v,  "check", st.LineNo );
 		st.Kfieldp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApJoin1 {
+
+//  app.unit:96, g_run.act:174
+
 		v, _ = st.Names["field1"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Field_" + v , "field1",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Field_" + v, v,  "check", st.LineNo );
 		st.Kfield1p = res
 		if (err == false) {
 			errs += 1
 		}
+//  app.unit:97, g_run.act:161
+
 		v, _ = st.Names["table2"]
-		err, res = fnd(act, "Table_" + v , "table2",  "check", st.LineNo );
+		err, res = fnd(act, "Table_" + v, v,  "check", st.LineNo );
 		st.Ktable2p = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApJoin2 {
+
+//  app.unit:112, g_run.act:174
+
 		v, _ = st.Names["field1"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Field_" + v , "field1",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Field_" + v, v,  "check", st.LineNo );
 		st.Kfield1p = res
 		if (err == false) {
 			errs += 1
 		}
+//  app.unit:113, g_run.act:161
+
 		v, _ = st.Names["table2"]
-		err, res = fnd(act, "Table_" + v , "table2",  "check", st.LineNo );
+		err, res = fnd(act, "Table_" + v, v,  "check", st.LineNo );
 		st.Ktable2p = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApFrame {
+
+//  note.unit:22, g_run.act:161
+
 		v, _ = st.Names["domain"]
-		err, res = fnd(act, "Domain_" + v , "domain",  ".", st.LineNo );
+		err, res = fnd(act, "Domain_" + v, v,  ".", st.LineNo );
 		st.Kdomainp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApCol {
+
+//  note.unit:65, g_run.act:161
+
 		v, _ = st.Names["name"]
-		err, res = fnd(act, "Grid_" + v , "name",  "?", st.LineNo );
+		err, res = fnd(act, "Grid_" + v, v,  "?", st.LineNo );
 		st.Knamep = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApGrid {
+
+//  note.unit:77, g_run.act:161
+
 		v, _ = st.Names["name"]
-		err, res = fnd(act, "Grid_" + v , "name",  "?", st.LineNo );
+		err, res = fnd(act, "Grid_" + v, v,  "?", st.LineNo );
 		st.Knamep = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApAll {
-		err, res = fnd(act, "Actor_" + st.Kactor , "actor",  ".", st.LineNo );
+//  act.unit:26, g_run.act:149
+
+		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApDu {
-		err, res = fnd(act, "Actor_" + st.Kactor , "actor",  ".", st.LineNo );
+//  act.unit:41, g_run.act:149
+
+		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApIts {
-		err, res = fnd(act, "Actor_" + st.Kactor , "actor",  ".", st.LineNo );
+//  act.unit:87, g_run.act:149
+
+		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApThis {
-		err, res = fnd(act, "Actor_" + st.Kactor , "actor",  ".", st.LineNo );
+//  act.unit:177, g_run.act:149
+
+		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApComp {
+
+//  gen.unit:9, g_run.act:161
+
 		v, _ = st.Names["parent"]
-		err, res = fnd(act, "Comp_" + v , "parent",  ".", st.LineNo );
+		err, res = fnd(act, "Comp_" + v, v,  ".", st.LineNo );
 		st.Kparentp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApRef {
+
+//  gen.unit:55, g_run.act:174
+
 		v, _ = st.Names["element"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:56, g_run.act:161
+
 		v, _ = st.Names["comp"]
-		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApRef2 {
+
+//  gen.unit:73, g_run.act:174
+
 		v, _ = st.Names["element"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:74, g_run.act:161
+
 		v, _ = st.Names["comp"]
-		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:75, g_run.act:174
+
 		v, _ = st.Names["element2"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element2",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelement2p = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApRef3 {
+
+//  gen.unit:92, g_run.act:174
+
 		v, _ = st.Names["element"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:93, g_run.act:161
+
 		v, _ = st.Names["comp"]
-		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:94, g_run.act:174
+
 		v, _ = st.Names["element2"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element2",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelement2p = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:95, g_run.act:161
+
 		v, _ = st.Names["comp_ref"]
-		err, res = fnd(act, "Comp_" + v , "comp_ref",  "check", st.LineNo );
+		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcomp_refp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApRefq {
+
+//  gen.unit:114, g_run.act:174
+
 		v, _ = st.Names["element"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:115, g_run.act:161
+
 		v, _ = st.Names["comp"]
-		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:117, g_run.act:161
+
 		v, _ = st.Names["comp_ref"]
-		err, res = fnd(act, "Comp_" + v , "comp_ref",  "check", st.LineNo );
+		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcomp_refp = res
 		if (err == false) {
 			errs += 1
 		}
 	}
 	for _, st := range act.ApRefu {
+
+//  gen.unit:135, g_run.act:174
+
 		v, _ = st.Names["element"]
-		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v , "element",  "check", st.LineNo );
+		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:136, g_run.act:161
+
 		v, _ = st.Names["comp"]
-		err, res = fnd(act, "Comp_" + v , "comp",  "check", st.LineNo );
+		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:138, g_run.act:161
+
 		v, _ = st.Names["comp_ref"]
-		err, res = fnd(act, "Comp_" + v , "comp_ref",  "check", st.LineNo );
+		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcomp_refp = res
 		if (err == false) {
 			errs += 1
 		}
+	}
+	for _, st := range act.ApWhere {
+
+//  sample.unit:68, g_run.act:248
+
+	t := st.Kattrp
+	if t >= 0 {
+		st.Ktablep = act.ApAttr[t].Ktablep
+	} else if "E_O_L" != "?" {
+		fmt.Printf("ref error Attr not resolved %d\n", st.LineNo)
+		errs += 1
+	}
+//  sample.unit:69, g_run.act:228
+
+	v, _ = st.Names["from_id"]
+	err, res = fnd(act, strconv.Itoa(st.Ktablep) + "_Attr_" + v, v, "E_O_L", st.LineNo)
+	st.Kfrom_idp = res
+	if !err {
+		errs += 1
+	}
+	}
+	for _, st := range act.ApOf {
+
+//  app.unit:75, g_run.act:248
+
+	t := st.Kfieldp
+	if t >= 0 {
+		st.Ktypep = act.ApField[t].Ktypep
+	} else if "E_O_L" != "?" {
+		fmt.Printf("ref error Field not resolved %d\n", st.LineNo)
+		errs += 1
+	}
+//  app.unit:76, g_run.act:228
+
+	v, _ = st.Names["attr"]
+	err, res = fnd(act, strconv.Itoa(st.Ktypep) + "_Attr_" + v, v, "E_O_L", st.LineNo)
+	st.Kattrp = res
+	if !err {
+		errs += 1
+	}
+//  app.unit:77, g_run.act:228
+
+	v, _ = st.Names["from"]
+	err, res = fnd(act, strconv.Itoa(st.Ktypep) + "_Attr_" + v, v, "E_O_L", st.LineNo)
+	st.Kfromp = res
+	if !err {
+		errs += 1
+	}
+	}
+	for _, st := range act.ApJoin1 {
+
+//  app.unit:98, g_run.act:228
+
+	v, _ = st.Names["field2"]
+	err, res = fnd(act, strconv.Itoa(st.Ktable2p) + "_Field_" + v, v, "check", st.LineNo)
+	st.Kfield2p = res
+	if !err {
+		errs += 1
+	}
+	}
+	for _, st := range act.ApJoin2 {
+
+//  app.unit:114, g_run.act:228
+
+	v, _ = st.Names["field2"]
+	err, res = fnd(act, strconv.Itoa(st.Ktable2p) + "_Field_" + v, v, "check", st.LineNo)
+	st.Kfield2p = res
+	if !err {
+		errs += 1
+	}
+//  app.unit:115, g_run.act:228
+
+	v, _ = st.Names["attr2"]
+	err, res = fnd(act, strconv.Itoa(st.Kfield2p) + "_Attrs_" + v, v, "check", st.LineNo)
+	st.Kattr2p = res
+	if !err {
+		errs += 1
+	}
+	}
+	for _, st := range act.ApA {
+
+//  note.unit:36, g_run.act:248
+
+	t := st.Kparentp
+	if t >= 0 {
+		st.Kdomainp = act.ApFrame[t].Kdomainp
+	} else if "." != "?" {
+		fmt.Printf("ref error Parent not resolved %d\n", st.LineNo)
+		errs += 1
+	}
+//  note.unit:37, g_run.act:228
+
+	v, _ = st.Names["model"]
+	err, res = fnd(act, strconv.Itoa(st.Kdomainp) + "_Model_" + v, v, "?", st.LineNo)
+	st.Kmodelp = res
+	if !err {
+		errs += 1
+	}
+	}
+	for _, st := range act.ApUse {
+
+//  note.unit:50, g_run.act:248
+
+	t := st.Kparentp
+	if t >= 0 {
+		st.Kmodelp = act.ApA[t].Kmodelp
+	} else if "." != "?" {
+		fmt.Printf("ref error Parent not resolved %d\n", st.LineNo)
+		errs += 1
+	}
+//  note.unit:51, g_run.act:228
+
+	v, _ = st.Names["frame"]
+	err, res = fnd(act, strconv.Itoa(st.Kmodelp) + "_Frame_" + v, v, ".", st.LineNo)
+	st.Kframep = res
+	if !err {
+		errs += 1
+	}
+//  note.unit:52, g_run.act:228
+
+	v, _ = st.Names["a"]
+	err, res = fnd(act, strconv.Itoa(st.Kframep) + "_A_" + v, v, ".", st.LineNo)
+	st.Kap = res
+	if !err {
+		errs += 1
+	}
 	}
 	return(errs)
 }

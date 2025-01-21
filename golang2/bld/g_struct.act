@@ -131,6 +131,7 @@ C 	st.Comp = "${name:c}";
 C 	st.Flags = flag;
 C 	st.Names["kComp"] = st.Comp
 C 	st.Names["kMe"] = strconv.Itoa(st.Me)
+C 	st.Names["_lno"] = lno
 
 Its Element ele
 Its Element val_inc2_init
@@ -145,13 +146,13 @@ C
 
 C func (me Kp${name:c}) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 
--Its Ref ref_var
--Its Ref2 ref_var2
--Its Ref3 ref_var3
+Its Ref ref_var
+Its Ref2 ref_var
+Its Ref3 ref_var
 Its parent parent_field_var
 Its Ref_comp other_var
--Its Ref2_comp other_var2
--Its Ref3_comp other_var3
+Its Ref2_comp other_var
+Its Ref3_comp other_var
 -Its Comp_parent find
 
 -C 		var v = names[ va[0] ];
@@ -174,13 +175,13 @@ C func (me Kp${name:c}) DoIts(glob *GlobT, va []string, lno string) int {
 Its Comp_parent from_to_doo
 Its parent parent_field_func
 Its Ref ref_func
--Its Ref2 ref_func2
--Its Ref3 ref_func3
--Its Refq ref_funcq
+Its Ref2 ref_func
+Its Ref3 ref_func
+Its Refq ref_func
 Its Ref_comp other_func
--Its Ref2_comp other_func2
--Its Ref3_comp other_func3
--Its Refq_comp other_funcq
+Its Ref2_comp other_func
+Its Ref3_comp other_func
+Its Refq_comp other_func
 -Its Element nested
 
 -C 		if ( va[0].compareTo("Child") == 0 ) { // ${._lno}
@@ -536,11 +537,11 @@ C 		}
 Actor ref_var Ref
 ----------------------------------------------------------------
 
-C 		if (va[0].compareTo("${element.name:l}") == 0) { // ${._lno}
-C 			if (k_${element.name:l}p >= 0 && va.length > 1) {
-C 				return( glob.dats.ap_${comp.name:l}[ k_${element.name:l}p ].get_var(glob, va.sublist(1), lno) );
-C 			}
+C 	if va[0] == "${element.name:l}" { // ${._lno}
+C 		if (me.K${element.name:l}p >= 0 && len(va) > 1) {
+C 			return( glob.Dats.Ap${comp.name:c}[ me.K${element.name:l}p ].GetVar(glob, va[1:], lno) )
 C 		}
+C 	}
 
 ----------------------------------------------------------------
 Actor ref_var2 Ref2

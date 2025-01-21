@@ -140,10 +140,10 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 //			if !glob.OutOn {
 //				continue
 //			}
-//			if glob.Wins[winp].IsOn && !glob.Wins[winp].IsTrig {
-//				continue
-//			}
-//			Trig(glob, winp)
+			if glob.Wins[winp].IsOn && !glob.Wins[winp].IsTrig {
+				continue
+			}
+			Trig(glob, winp)
 
 			kDesc := v.Kdesc
 //			if contains(v.Flags, "r") {
@@ -279,11 +279,10 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			}
 			dat := glob.Wins[winp].Dat.(NameSetter)
 			dat.SetName(v.KAttr, res[1])
-
+*/
 		case *KpOut:
-			res := Strs(glob, winp, v.KWhat, v.LineNo, true, true)
-			kWhat := res[1]
-			switch kWhat {
+			_, res := Strs(glob, winp, v.Kwhat, v.LineNo, true, true)
+			switch res {
 			case "on":
 				glob.OutOn = true
 			case "off":
@@ -295,7 +294,7 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 				glob.Wins[winp].IsOn = false
 				glob.Wins[winp].IsTrig = false
 			}
-
+/*
 		case *KpNew:
 			if !glob.OutOn {
 				continue
@@ -353,6 +352,31 @@ func Trig(glob *GlobT, winp int) {
 	ReGoCmds(glob, prev)
 }
 func ReGoCmds(glob *GlobT, winp int) {
+	Trig(glob,winp)
+	a := glob.Acts.ApActor[ glob.Wins[winp].CurAct ];
+	for i := glob.Wins[winp].OnPos; i < glob.Wins[winp].CurPos; i++ {
+//	for(var i = glob.wins[winp].on_pos; i < glob.wins[winp].cur_pos; i++) {
+		cmd := a.Childs[i];
+		switch v := cmd.(type) {
+			case *KpC:
+				_, res := Strs(glob, winp, v.Kdesc, v.LineNo, false, true)
+				if glob.InOn {
+					fmt.Fprintln(&glob.Ins, res)
+				} else {
+					fmt.Println(res)
+				}
+			/*
+		if (cmd is KpCs) {
+			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
+			stdout.write(res[1]);
+		}
+		if (cmd is KpNew) {
+			var line = strs(glob, winp, " " + cmd.k_line, cmd.line_no, true,true );
+			glob.load_errs |= load(glob.dats, cmd.k_what, line[1], 0, "23");
+		}
+		*/
+		}
+	}
 }
 
 // StrResult represents the result of string operations
@@ -456,10 +480,14 @@ func SGetVar(glob *GlobT, winp int, sc []string, va []string, lno string) (bool,
 	// Handle special variables
 	if len(va) == 1 {
 //		return true, fmt.Sprintf("%s, %s", glob.Wins[winp].Dat.GetLineNo(), lno)
-		return true, fmt.Sprintf("%s, %s", "", lno)
+		_, dlno := GetVarFromData(glob.Wins[winp].Dat, glob, va[1:], lno)
+		return true, fmt.Sprintf("%s, %s", dlno, lno)
 	}
 
 	switch va[1] {
+	case "_lno":
+		_, dlno := GetVarFromData(glob.Wins[winp].Dat, glob, va[1:], lno)
+		return true, fmt.Sprintf("%s, %s", dlno, lno)
 	case "arg":
 		return true, glob.Wins[winp].Arg
 	case "depth":
