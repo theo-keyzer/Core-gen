@@ -23,6 +23,7 @@ type GlobT struct {
 
 // KpExtra represents extra key-value pairs
 type KpExtra struct {
+	Kp
 	Names map[string]string
 }
 func (me KpExtra) GetVar(glob *GlobT, s []string, ln string) (bool, string) {
@@ -40,6 +41,8 @@ func main() {
 
 	glob := new(GlobT)
 	glob.Winp = -1
+	glob.OutOn = true
+	glob.Collect = make(map[string]interface{})
 	// Load files and check for errors
 	glob.LoadErrs += loadFiles(args[0], &glob.Acts)
 	glob.LoadErrs += loadFiles(args[1], &glob.Dats)
@@ -207,7 +210,7 @@ func refs(act interface{}) bool {
 	// Implementation needed
 	return false
 }
-*/
+
 func newAct(glob *GlobT, kname string, s1 string, s2 string) {
 	// Implementation needed
 }
@@ -215,4 +218,4 @@ func newAct(glob *GlobT, kname string, s1 string, s2 string) {
 func goAct(glob *GlobT, kp *KpExtra) {
 	// Implementation needed
 }
-
+*/

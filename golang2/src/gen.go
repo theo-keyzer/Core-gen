@@ -1,56 +1,68 @@
 package main
 
 import (
+//	"database/sql"
 	"fmt"
 //	"os"
 	"regexp"
+	"strconv"
 	"strings"
+	"slices"
 )
-
-//type ActT struct {
-//	index       map[string]int
-//}
-
-
-// WinT represents window state
+/*
+type GlobT struct {
+	LoadErrs bool
+	RunErrs  bool
+	Acts     *ActT
+	Dats     *ActT
+	Winp     int
+	Wins     []*WinT
+	Collect  map[string]interface{}
+	OutOn    bool
+	InOn     bool
+	Ins      strings.Builder
+	Conn     *sql.DB
+	IsConn   bool
+}
+*/
 type WinT struct {
-	Name      string
-	Cnt       int
-	Dat       interface{}
-	Arg       string
-	Flno      string
-	DataKey   string
-	DataType  string
-	CurAct    int
-	CurPos    int
-	OnPos     int
-	BrkAct    bool
-	IsOn      bool
-	IsTrig    bool
-	IsPrev    bool
-	IsCheck   bool
+	Name     string
+	Cnt      int
+	Dat      interface{}
+	Arg      string
+	Flno     string
+	DataKeys []string
+	DataKey  string
+	DataType string
+	CurAct   int
+	CurPos   int
+	OnPos    int
+	BrkAct   bool
+	IsOn     bool
+	IsTrig   bool
+	IsPrev   bool
+	IsCheck  bool
 }
 
-
-// NewAct creates a new action
-func NewAct(glob *GlobT, actn string, arg string, flno string) {
-//	fmt.Println("NEW")
+func NewAct(glob *GlobT, actn, arg, flno string) {
 	winp := glob.Winp + 1
 	if len(glob.Wins) <= winp {
 		glob.Wins = append(glob.Wins, WinT{})
 	}
+	
 	glob.Wins[winp].Name = actn
+	glob.Wins[winp].DataKeys = []string{}
 	glob.Wins[winp].DataKey = ""
 	glob.Wins[winp].DataType = ""
 	glob.Wins[winp].Cnt = -1
 	glob.Wins[winp].Arg = arg
 	glob.Wins[winp].Flno = flno
 	glob.Wins[winp].BrkAct = false
-
+	
 	if winp == 0 {
 		return
 	}
-
+	
 	if glob.Wins[winp-1].IsOn || glob.Wins[winp-1].IsPrev {
 		if !glob.Wins[winp-1].IsTrig {
 			glob.Wins[winp].IsPrev = true
@@ -58,44 +70,49 @@ func NewAct(glob *GlobT, actn string, arg string, flno string) {
 	}
 }
 
-// GoAct processes an action
-func GoAct(glob *GlobT, dat interface{}) int {
+func GoAct(glob *GlobT, dat interface{}) (int) {
 	winp := glob.Winp + 1
 	glob.Winp = winp
 	glob.Wins[winp].Dat = dat
 	name := glob.Wins[winp].Name
 	prev := false
 	incCnt := true
-
+	
 	for i := 0; i < len(glob.Acts.ApActor); i++ {
 		if glob.Acts.ApActor[i].Kname != name {
 			continue
 		}
-
+		
 		act := glob.Acts.ApActor[i]
 		if act.Kattr != "E_O_L" {
-			valOk, val := Strs(glob, winp, act.Kvalue, act.LineNo, false, false)
-			sc := strings.Split(act.Kattr, ":")
+			valOk, val := strs(glob, winp, act.Kvalue, act.LineNo, false, false)
+			_, kAttr := strs(glob, winp, act.Kattr, act.LineNo, true, true)
+			sc := strings.Split(kAttr, ":")
 			va := strings.Split(sc[0], ".")
-			varOk, varv := SGetVar(glob, winp, sc, va, act.LineNo)
-			if !Chk(glob, act.Keq, varv, val, prev, varOk, valOk, act.LineNo) {
+			varOk, varv := sGetVar(glob, winp, sc, va, act.LineNo)
+			
+			if !chk(glob, act.Keq, varv, val, prev, varOk, valOk, act.LineNo) {
 				prev = false
 				continue
 			}
 		}
-
+		
 		prev = true
 		glob.Wins[winp].CurAct = i
 		if incCnt {
 			incCnt = false
 			glob.Wins[winp].Cnt++
 		}
-
-		ret := GoCmds(glob, i, winp)
+		
+		ret := goCmds(glob, i, winp)
+		
+		if ret == -4 {
+			return ret
+		}
 		if ret == 0 || ret == 3 {
 			continue
 		}
-
+		
 		nret := ret
 		if ret == 2 {
 			nret = 0
@@ -106,60 +123,57 @@ func GoAct(glob *GlobT, dat interface{}) int {
 		glob.Winp--
 		return nret
 	}
-
+	
 	glob.Winp = winp - 1
 	return 0
 }
 
-// GoCmds processes commands
-func GoCmds(glob *GlobT, ca int, winp int) int {
-//	fmt.Println("cmd")
+func goCmds(glob *GlobT, ca, winp int) (int) {
 	glob.Wins[winp].IsOn = false
 	glob.Wins[winp].IsTrig = false
 	glob.Wins[winp].IsCheck = false
+	
 	a := glob.Acts.ApActor[ca]
-
 	for i := 0; i < len(a.Childs); i++ {
 		glob.Wins[winp].CurPos = i
-
 		cmd := a.Childs[i]
-		switch v := cmd.(type) {
-/*		
+		
+		// Handle different command types
+		switch c := cmd.(type) {
 		case *KpIn:
-			if v.KFlag == "on" {
+			if c.Kflag == "on" {
 				glob.InOn = true
 			}
-			if v.KFlag == "off" {
+			if c.Kflag == "off" {
 				glob.InOn = false
 			}
-			if contains(v.Flags, "clear") {
+			if slices.Contains(c.Flags, "clear") {
 				glob.Ins.Reset()
 			}
-*/
+			
 		case *KpC:
-//			if !glob.OutOn {
-//				continue
-//			}
+//			fmt.Println(c.Kdesc)
+			if !glob.OutOn {
+				continue
+			}
 			if glob.Wins[winp].IsOn && !glob.Wins[winp].IsTrig {
 				continue
 			}
-			Trig(glob, winp)
-
-			kDesc := v.Kdesc
-//			if contains(v.Flags, "r") {
-//				kDesc = v.KDesc
-//			} else {
-				_, res := Strs(glob, winp, v.Kdesc, v.LineNo, false, true)
+			trig(glob, winp)
+			
+			kDesc := c.Kdesc
+			if !slices.Contains(c.Flags, "r") {
+				_, res := strs(glob, winp, c.Kdesc, c.LineNo, false, true)
 				kDesc = res
-//			}
-//	fmt.Println(kDesc)
-
+			}
+//			fmt.Println(kDesc)
+			
 			if glob.InOn {
-				fmt.Fprintln(&glob.Ins, kDesc)
+				glob.Ins.WriteString(kDesc + "\n")
 			} else {
 				fmt.Println(kDesc)
 			}
-/*
+			
 		case *KpCs:
 			if !glob.OutOn {
 				continue
@@ -167,95 +181,125 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			if glob.Wins[winp].IsOn && !glob.Wins[winp].IsTrig {
 				continue
 			}
-			Trig(glob, winp)
-			_, res := Strs(glob, winp, v.KDesc, v.LineNo, false, true)
-			if glob.InOn {
-				glob.Ins.WriteString(res)
-			} else {
-				fmt.Print(res)
-			}
-*/
+			trig(glob, winp)
+			
+			_, res := strs(glob, winp, c.Kdesc, c.LineNo, false, true)
+				if glob.InOn {
+					glob.Ins.WriteString(res)
+				} else {
+					fmt.Print(res)
+				}
+			
+			
 		case *KpAll:
-			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
-			NewAct(glob, v.Kactor, args, v.LineNo)
-			_, what := Strs(glob, winp, v.Kwhat, v.LineNo, true, true)
+			_, args := strs(glob, winp, c.Kargs, c.LineNo, true, true)
+			NewAct(glob, c.Kactor, args, c.LineNo)
+			
+			_, what := strs(glob, winp, c.Kwhat, c.LineNo, true, true)
 			va := strings.Split(what, ".")
-			ret := DoAll(glob, va, v.LineNo)
-			if ret > 1 || ret < 0 {
+			ret := DoAll(glob, va, c.LineNo)
+			if  ret > 1 || ret < 0 {
 				return ret
 			}
-/*
+			
 		case *KpThis:
-			_, args := Strs(glob, winp, v.KArgs, v.LineNo, true, true)
-			NewAct(glob, v.KActor, args, v.LineNo)
-			ret := ThisCmd(glob, winp, v, v.LineNo)
-			if ret > 1 || ret < 0 {
+			_, args := strs(glob, winp, c.Kargs, c.LineNo, true, true)
+			NewAct(glob, c.Kactor, args, c.LineNo)
+			ret := thisCmd(glob, winp, c, c.LineNo)
+			if  ret > 1 || ret < 0 {
 				return ret
 			}
-
+			
 		case *KpAdd:
-			ret := AddCmd(glob, winp, v, v.LineNo)
-			if ret != 0 {
+			ret := addCmd(glob, winp, c, c.LineNo, "")
+			if  ret != 0 {
 				return ret
 			}
-
+/*			
+		case *KpHttp:
+			ret, err := httpCmd(glob, winp, c, c.LineNo)
+			if  ret != 0 {
+				return ret
+			}
+			
+		case *KpDbconn:
+			ret := dbconnCmd(glob, winp, c, c.LineNo)
+			if  ret != 0 {
+				return ret
+			}
+*/			
 		case *KpReplace:
-			ret := ReplaceCmd(glob, winp, v, v.LineNo)
+			ret := replaceCmd(glob, winp, c, c.LineNo)
 			if ret != 0 {
 				return ret
 			}
-*/
+			
 		case *KpDu:
-			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
-			NewAct(glob, v.Kactor, args, v.LineNo)
+			_, args := strs(glob, winp, c.Kargs, c.LineNo, true, true)
+			NewAct(glob, c.Kactor, args, c.LineNo)
+			glob.Wins[winp+1].Cnt = glob.Wins[winp].Cnt
+			glob.Wins[winp+1].DataKey = glob.Wins[winp].DataKey
+			glob.Wins[winp+1].DataType = glob.Wins[winp].DataType
+			glob.Wins[winp+1].DataKeys = glob.Wins[winp].DataKeys
 			ret := GoAct(glob, glob.Wins[winp].Dat)
 			if ret != 0 {
 				return ret
 			}
-
+			
 		case *KpIts:
-			_, args := Strs(glob, winp, v.Kargs, v.LineNo, true, true)
-			NewAct(glob, v.Kactor, args, v.LineNo)
-			va := strings.Split(v.Kwhat, ".")
+			_, args := strs(glob, winp, c.Kargs, c.LineNo, true, true)
+			NewAct(glob, c.Kactor, args, c.LineNo)
+			va := strings.Split(c.Kwhat, ".")
+			
 			if len(va[0]) == 0 && len(va) > 1 {
 				for i := winp - 1; i >= 0; i-- {
 					if glob.Wins[i].Name == va[1] {
-						dat := glob.Wins[i].Dat.(Doer) // Using interface for do_its
-						ret := dat.DoIts(glob, va[2:], v.LineNo)
-						if ret > 1 || ret < 0 {
-							return ret
+						if kp, ok := glob.Wins[i].Dat.(Kp); ok {
+							ret := kp.DoIts(glob, va[2:], c.LineNo)
+							if  ret > 1 || ret < 0 {
+								return ret
+							}
 						}
 						break
 					}
 				}
 				continue
 			}
-			dat := glob.Wins[winp].Dat.(Doer)
-			ret := dat.DoIts(glob, va, v.LineNo)
-			if ret > 1 || ret < 0 {
-				return ret
+			
+			if kp, ok := glob.Wins[winp].Dat.(Kp); ok {
+				ret := kp.DoIts(glob, va, c.LineNo)
+				if  ret > 1 || ret < 0 {
+					return ret
+				}
 			}
-
+			
 		case *KpBreak:
-			if v.Kcheck == "True" && !glob.Wins[winp].IsCheck {
+			if c.Kcheck == "True" && !glob.Wins[winp].IsCheck {
 				continue
 			}
-			if v.Kcheck == "False" && glob.Wins[winp].IsCheck {
+			if c.Kcheck == "False" && glob.Wins[winp].IsCheck {
 				continue
 			}
+			
 			ret := 0
-			if v.Kwhat == "E_O_L" || v.Kwhat == "actor" {
+			if c.Kwhat == "E_O_L" || c.Kwhat == "actor" {
 				ret = 2
 			}
-			if v.Kwhat == "loop" {
+			if c.Kwhat == "loop" {
 				ret = 1
 			}
-			if v.Kwhat == "cmds" {
+			if c.Kwhat == "cmds" {
 				ret = 3
 			}
-			if v.Kactor != "E_O_L" && v.Kactor != "." {
+			if c.Kwhat == "exit" {
+				if glob.LoadErrs > 0 || glob.RunErrs > 0 {
+					return -4
+				}
+			}
+			
+			if c.Kactor != "E_O_L" && c.Kactor != "." {
 				for i := winp - 1; i >= 0; i-- {
-					if glob.Wins[i].Name == v.Kactor {
+					if glob.Wins[i].Name == c.Kactor {
 						glob.Wins[i+1].BrkAct = true
 						ret = -ret
 						break
@@ -263,38 +307,44 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 				}
 			}
 			return ret
-/*
+/*			
 		case *KpVar:
-			res := Strs(glob, winp, v.KValue, v.LineNo, true, true)
-			va := strings.Split(v.KAttr, ".")
+			_, res := strs(glob, winp, c.Kvalue, c.LineNo, true, true)
+			va := strings.Split(c.Kattr, ".")
 			if va[0] == "" && len(va) > 2 {
 				for i := winp - 1; i >= 0; i-- {
 					if glob.Wins[i].Name == va[1] {
-						dat := glob.Wins[i].Dat.(NameSetter)
-						dat.SetName(va[2], res[1])
+						if kp, ok := glob.Wins[i].Dat.(Kp); ok {
+							kp.SetName(va[2], res[1].(string))
+						}
 						break
 					}
 				}
 				continue
 			}
-			dat := glob.Wins[winp].Dat.(NameSetter)
-			dat.SetName(v.KAttr, res[1])
-*/
+			if kp, ok := glob.Wins[winp].Dat.(Kp); ok {
+				kp.SetName(c.KAttr, res[1].(string))
+			}
+*/			
 		case *KpOut:
-			_, res := Strs(glob, winp, v.Kwhat, v.LineNo, true, true)
-			switch res {
-			case "on":
+			_, res := strs(glob, winp, c.Kwhat, c.LineNo, true, true)
+			kwhat := res
+			
+			if kwhat == "on" {
 				glob.OutOn = true
-			case "off":
+			}
+			if kwhat == "off" {
 				glob.OutOn = false
-			case "delay":
+			}
+			if kwhat == "delay" {
 				glob.Wins[winp].IsOn = true
 				glob.Wins[winp].OnPos = i
-			case "normal":
+			}
+			if kwhat == "normal" {
 				glob.Wins[winp].IsOn = false
 				glob.Wins[winp].IsTrig = false
 			}
-/*
+/*			
 		case *KpNew:
 			if !glob.OutOn {
 				continue
@@ -302,45 +352,30 @@ func GoCmds(glob *GlobT, ca int, winp int) int {
 			if glob.Wins[winp].IsOn && !glob.Wins[winp].IsTrig {
 				continue
 			}
-			Trig(glob, winp)
-			line := Strs(glob, winp, " "+v.KLine, v.LineNo, true, true)
-			glob.LoadErrs = glob.LoadErrs || Load(&glob.Dats, v.KWhat, line[1], 0, "23")
-
+			trig(glob, winp)
+			
+			_, line := strs(glob, winp, " "+c.KLine, c.LineNo, true, true)
+			if err == nil {
+				glob.LoadErrs = glob.LoadErrs || load(glob.Dats, c.KWhat, line[1].(string), 0, "23")
+			}
+			
 		case *KpRefs:
-			glob.LoadErrs = glob.LoadErrs || Refs(&glob.Dats)
-		*/	
+			glob.LoadErrs = glob.LoadErrs || refs(glob.Dats)
+*/
 		}
 		
 	}
+	
 	return 0
 }
 
-// Interfaces for type assertions
-type Doer interface {
-	DoIts(glob *GlobT, va []string, lineNo string) int
-}
-
-type NameSetter interface {
-	SetName(key, value string)
-}
-
-// Helper functions
-func contains(slice []string, item string) bool {
-	for _, s := range slice {
-		if s == item {
-			return true
-		}
-	}
-	return false
-}
-
-// Trig handles trigger logic
-func Trig(glob *GlobT, winp int) {
+func trig(glob *GlobT, winp int) {
 	if !glob.Wins[winp].IsPrev || winp == 0 {
 		return
 	}
 	glob.Wins[winp].IsPrev = false
 	prev := winp - 1
+	
 	if !glob.Wins[prev].IsOn && !glob.Wins[prev].IsPrev {
 		return
 	}
@@ -348,92 +383,146 @@ func Trig(glob *GlobT, winp int) {
 		return
 	}
 	glob.Wins[prev].IsTrig = true
-
-	ReGoCmds(glob, prev)
+	
+	reGoCmds(glob, prev)
 }
-func ReGoCmds(glob *GlobT, winp int) {
-	Trig(glob,winp)
-	a := glob.Acts.ApActor[ glob.Wins[winp].CurAct ];
+
+func reGoCmds(glob *GlobT, winp int) {
+	trig(glob, winp)
+	a := glob.Acts.ApActor[glob.Wins[winp].CurAct]
+	
 	for i := glob.Wins[winp].OnPos; i < glob.Wins[winp].CurPos; i++ {
-//	for(var i = glob.wins[winp].on_pos; i < glob.wins[winp].cur_pos; i++) {
-		cmd := a.Childs[i];
-		switch v := cmd.(type) {
-			case *KpC:
-				_, res := Strs(glob, winp, v.Kdesc, v.LineNo, false, true)
-				if glob.InOn {
-					fmt.Fprintln(&glob.Ins, res)
-				} else {
-					fmt.Println(res)
+		cmd := a.Childs[i]
+		
+		switch c := cmd.(type) {
+		case *KpC:
+			_, res := strs(glob, winp, c.Kdesc, c.LineNo, false, true)
+				fmt.Println(res)
+		case *KpCs:
+			_, res := strs(glob, winp, c.Kdesc, c.LineNo, false, true)
+				fmt.Print(res)
+/*
+		case *KpNew:
+			_, line := strs(glob, winp, " "+c.KLine, c.LineNo, true, true)
+			if err == nil {
+				glob.LoadErrs = glob.LoadErrs || load(glob.Dats, c.KWhat, line[1].(string), 0, "23")
+			}
+*/
+		}
+	}
+}
+
+func cmdVar(glob *GlobT, sc []string, varv interface{}, lcnt int) (bool, string) {
+	dat := varv
+	
+	for i := 1; i < len(sc); i++ {
+		if sc[i] == "join" {
+			if slice, ok := dat.([]interface{}); ok {
+				if len(slice) == 0 {
+					dat = ""
+					continue
 				}
-			/*
-		if (cmd is KpCs) {
-			var res = strs(glob, winp, cmd.k_desc, cmd.line_no, false,true);
-			stdout.write(res[1]);
+				result := fmt.Sprintf("%v", slice[0])
+				for j := 1; j < len(slice); j++ {
+					result += "," + fmt.Sprintf("%v", slice[j])
+				}
+				dat = result
+				continue
+			}
 		}
-		if (cmd is KpNew) {
-			var line = strs(glob, winp, " " + cmd.k_line, cmd.line_no, true,true );
-			glob.load_errs |= load(glob.dats, cmd.k_what, line[1], 0, "23");
+		
+		if slice, ok := dat.([]interface{}); ok {
+			if idx, err := strconv.Atoi(sc[i]); err == nil {
+				if idx >= 0 && idx < len(slice) {
+					dat = slice[idx]
+				}
+			}
 		}
-		*/
+		
+		if str, ok := dat.(string); ok {
+			switch sc[i] {
+			case "u":
+				dat = strings.ToUpper(str)
+			case "l":
+				dat = strings.ToLower(str)
+			case "c":
+				if len(str) > 0 {
+					dat = strings.ToUpper(str[:1]) + strings.ToLower(str[1:])
+				}
+			case "eol":
+				if str == "E_O_L" {
+					dat = ""
+				}
+			}
 		}
 	}
+	
+	return true, fmt.Sprintf("%v", dat)
 }
 
-// StrResult represents the result of string operations
-type StrResult struct {
-	Ok  bool
-	Val string
-}
-
-// Strs handles string template processing and variable substitution
-func Strs(glob *GlobT, winp int, ss string, lno string, prErr bool, isErr bool) (bool,string) {
-	// Early return for empty string
-	if ss == "" {
-		return true, ""
+func sGetVar(glob *GlobT, winp int, sc []string, va []string, lno string) (bool, string) {
+	path := va
+	rec := getPath(glob, winp, path, lno)
+	if !rec.Ok {
+		return false, rec.Dat.(string)
 	}
+	
+	dat := rec.Dat
+//	kp3, ok3 := dat.(Kp)
+//	fmt.Println(ok3,kp3,dat,glob.Wins[winp].Dat)
+	if _, ok := dat.(Kp); !ok && len(rec.Path) > 0 && rec.Path[0] != "." && rec.Path[0] != "" {
+//	fmt.Println("xx")
+		return false, fmt.Sprintf("?%s?%s?", rec.Path[0], lno)
+	}
+	
+	if kp, ok := dat.(Kp); ok && len(rec.Path) > 0 && rec.Path[0] != "." {
+		resOk, res := kp.GetVar(glob, rec.Path, lno)
+		if !resOk {
+			return resOk, res
+		}
+		dat = res
+	}
+	
+	return cmdVar(glob, sc, dat, 3)
+}
 
-	var result strings.Builder
-	runes := []rune(ss)
-	l := len(runes)
+func strs(glob *GlobT, winp int, ss interface{}, lno string, prErr, isErr bool) (bool,string) {
+	s := fmt.Sprintf("%v", ss)
 	ok := true
+	ret := ""
 	pos := 0
-	dp := -3  // dollar position
-	bp := -3  // brace position
-
+	dp := -3
+	bp := -3
+	
+	runes := []rune(s)
+	l := len(runes)
+	
 	for i := 0; i < l; i++ {
 		if runes[i] == '$' {
 			if i == dp+1 {
-				// Handle escaped dollar sign
-				result.WriteString(string(runes[pos:i]))
+				ret += string(runes[pos:i])
 				pos = i + 1
 				continue
 			}
 			dp = i
 		}
-
+		
 		if runes[i] == '{' {
-			if i == dp+1 {
+			if i == (dp + 1) {
 				if i > 1 {
-					result.WriteString(string(runes[pos : i-1]))
+					ret += string(runes[pos : i-1])
 				}
 				pos = i
 				bp = i
 			}
 		}
-
+		
 		if runes[i] == '}' {
 			if bp > 0 {
-				// Extract variable expression
-				varExpr := string(runes[bp+1 : i])
-				
-				// Split into components
-				sc := strings.Split(varExpr, ":")
+				sc := strings.Split(string(runes[bp+1:i]), ":")
 				va := strings.Split(sc[0], ".")
-
-				// Get variable value
-				okr,res := SGetVar(glob, winp, sc, va, lno)
-				
-				if okr == false{
+				resOk, res := sGetVar(glob, winp, sc, va, lno)
+				if !resOk {
 					ok = false
 					if prErr {
 						fmt.Println(res)
@@ -442,144 +531,35 @@ func Strs(glob *GlobT, winp int, ss string, lno string, prErr bool, isErr bool) 
 						glob.RunErrs += 1
 					}
 				}
-
-				result.WriteString(res)
+				ret += fmt.Sprintf("%v", res)
 				pos = i + 1
 				dp = -3
 				bp = -3
 			}
 		}
 	}
-
-	// Append remaining string
+	
 	if pos < l {
-		result.WriteString(string(runes[pos:]))
+		ret += string(runes[pos:l])
 	}
-
-	return ok, result.String()
+	
+	return ok, ret
 }
 
-// SGetVar gets a variable value, handling various special cases
-func SGetVar(glob *GlobT, winp int, sc []string, va []string, lno string) (bool, string) {
-	// Special case for whitespace indentation
-	if len(va) == 1 && len(va[0]) > 0 {
-		if firstChar := va[0][0]; firstChar == ' ' || firstChar == '\t' {
-			var indent strings.Builder
-			for i := 0; i < winp; i++ {
-				indent.WriteString(va[0])
-			}
-			return true, indent.String()
-		}
-	}
-
-	// Handle non-empty variable name
-	if len(va[0]) > 0 {
-		return GetVarFromData(glob.Wins[winp].Dat, glob, va, lno)
-	}
-
-	// Handle special variables
-	if len(va) == 1 {
-//		return true, fmt.Sprintf("%s, %s", glob.Wins[winp].Dat.GetLineNo(), lno)
-		_, dlno := GetVarFromData(glob.Wins[winp].Dat, glob, va[1:], lno)
-		return true, fmt.Sprintf("%s, %s", dlno, lno)
-	}
-
-	switch va[1] {
-	case "_lno":
-		_, dlno := GetVarFromData(glob.Wins[winp].Dat, glob, va[1:], lno)
-		return true, fmt.Sprintf("%s, %s", dlno, lno)
-	case "arg":
-		return true, glob.Wins[winp].Arg
-	case "depth":
-		return true, fmt.Sprintf("%d", winp)
-	case "+":
-		return true, fmt.Sprintf("%d", glob.Wins[winp].Cnt+1)
-	case "-":
-		return true, fmt.Sprintf("%d", glob.Wins[winp].Cnt)
-	case "0":
-		if glob.Wins[winp].Cnt != 0 {
-			return true, ""
-		}
-		if len(va) >= 3 {
-			return true, va[2]
-		}
-	case "1":
-		if glob.Wins[winp].Cnt == 0 {
-			return true, ""
-		}
-		if len(va) >= 3 {
-			return true, va[2]
-		}
-	}
-
-	// Look up variable in previous windows
-	for i := winp - 1; i >= 0; i-- {
-		if glob.Wins[i].Name == va[1] {
-			return SGetVar(glob, i, []string{}, va[2:], lno)
-		}
-	}
-
-	// Check pocket variables
-	if st, ok := glob.Collect[va[1]]; ok {
-		return GetVarFromData(st, glob, va[2:], lno)
-	}
-
-	// Try variable alternatives
-//	return VarAll(glob, va[1:], lno)
-	return false, "var all"
-}
-
-// CmdVar handles variable transformations based on command modifiers
-func CmdVar(glob *GlobT, sc []string, varv string, lcnt int) (bool, string) {
-	result := varv
-
-	// Apply modifiers in sequence
-	for i := 1; i < len(sc); i++ {
-		switch sc[i] {
-		case "u":
-			result = strings.ToUpper(result)
-		case "l":
-			result = strings.ToLower(result)
-		case "c":
-			if len(result) > 0 {
-				result = strings.ToUpper(result[:1]) + result[1:]
-			}
-		}
-	}
-
-	return true, result
-}
-
-// GetVarFromData is a helper function to get variable from data object
-func GetVarFromData(data interface{}, glob *GlobT, va []string, lno string) (bool, string) {
-//	if getter, ok := data.(VariableGetter); ok {
-	if getter, ok := data.(Kp); ok {
-		return getter.GetVar(glob, va, lno)
-	}
-//fmt.Println(data)
-	return false, fmt.Sprintf("?%s?%s?", va[0], lno)
-}
-
-// VariableGetter interface for objects that can provide variable values
-type VariableGetter interface {
-	GetVar(glob *GlobT, va []string, lno string) (bool,string)
-}
-
-// Previous code remains the same...
-
-// chk performs various comparison operations based on the equality operator
-func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, valOk bool, lno string) bool {
+func chk(glob *GlobT, eqa string, v, ss interface{}, prev, attrOk, valOk bool, lno string) bool {
 	eq := eqa
-	// Special case for "??" operator
+	
 	if eq == "??" {
-		if !attrOk || !valOk {
+		if !attrOk {
+			return true
+		}
+		if !valOk {
 			return true
 		}
 		return false
 	}
-
-	// Handle "?" prefix
-	if strings.HasPrefix(eq, "?") {
+	
+	if len(eq) > 0 && eq[0] == '?' {
 		if !attrOk || !valOk {
 			return false
 		}
@@ -588,76 +568,75 @@ func Chk(glob *GlobT, eqa string, v string, ss string, prev bool, attrOk bool, v
 		}
 		eq = eq[1:]
 	}
-
-	// Handle "&" prefix (AND operation)
-	if strings.HasPrefix(eq, "&") {
+	
+	if len(eq) > 0 && eq[0] == '&' {
 		if !prev {
 			return false
 		}
 		eq = eq[1:]
 	}
-
-	// Handle "|" prefix (OR operation)
-	if strings.HasPrefix(eq, "|") {
+	
+	if len(eq) > 0 && eq[0] == '|' {
 		if prev {
 			return true
 		}
 		eq = eq[1:]
 	}
-
-	// Check for attribute and value validity
+	
 	if !attrOk {
 		glob.RunErrs += 1
 		fmt.Println(v)
 		return false
 	}
+	
 	if !valOk {
 		glob.RunErrs += 1
 		fmt.Println(ss)
 		return false
 	}
-
-	// Handle different comparison operators
+	
+	vStr := fmt.Sprintf("%v", v)
+	ssStr := fmt.Sprintf("%v", ss)
+	
 	switch eq {
 	case "=":
-		return v == ss
+		return vStr == ssStr
 	case "!=":
-		return v != ss
+		return vStr != ssStr
 	case "in":
-		values := strings.Split(ss, ",")
-		for _, val := range values {
-			if val == v {
+		parts := strings.Split(ssStr, ",")
+		for _, part := range parts {
+			if strings.TrimSpace(part) == vStr {
 				return true
 			}
 		}
 		return false
 	case "!in":
-		values := strings.Split(ss, ",")
-		for _, val := range values {
-			if val == v {
+		parts := strings.Split(ssStr, ",")
+		for _, part := range parts {
+			if strings.TrimSpace(part) == vStr {
 				return false
 			}
 		}
 		return true
 	case "has":
-		values := strings.Split(v, ",")
-		for _, val := range values {
-			if val == ss {
+		parts := strings.Split(vStr, ",")
+		for _, part := range parts {
+			if strings.TrimSpace(part) == ssStr {
 				return true
 			}
 		}
 		return false
 	case "regex":
-		rx, err := regexp.Compile(ss)
+		rx, err := regexp.Compile(ssStr)
 		if err != nil {
-			glob.RunErrs += 1
-			fmt.Printf("Invalid regex pattern: %v\n", err)
-			return false
+    			return false
 		}
-		return rx.MatchString(v)
+		return rx.MatchString(vStr)
+		// Implementation would require regexp package
+		//return false
 	}
-
+	
 	return false
 }
 
-// Additional utility functions would go here...
