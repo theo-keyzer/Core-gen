@@ -29,6 +29,10 @@ type KpComp struct {
 	Childs [] Kp
 }
 
+func (me KpComp) GetLineNo() string {
+	return me.LineNo
+}
+
 func loadComp(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpComp)
@@ -53,68 +57,68 @@ func loadComp(act *ActT, ln string, pos int, lno string, flag []string) int {
 }
 
 func (me KpComp) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	if va[0] == "parent" { // gen.unit:16, g_struct.act:540
+	if va[0] == "parent" { // gen.unit:18, g_struct.act:676
 		if (me.Kparentp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kparentp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if (va[0] == "Comp_parent" && len(va) > 1) { // gen.unit:16, g_struct.act:634
+	if (va[0] == "Comp_parent" && len(va) > 1) { // gen.unit:18, g_struct.act:770
 		for _, st := range glob.Dats.ApComp {
 			if (st.Kparentp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Ref_comp" && len(va) > 1) { // gen.unit:65, g_struct.act:634
+	if (va[0] == "Ref_comp" && len(va) > 1) { // gen.unit:76, g_struct.act:770
 		for _, st := range glob.Dats.ApRef {
 			if (st.Kcompp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Ref2_comp" && len(va) > 1) { // gen.unit:83, g_struct.act:634
+	if (va[0] == "Ref2_comp" && len(va) > 1) { // gen.unit:98, g_struct.act:770
 		for _, st := range glob.Dats.ApRef2 {
 			if (st.Kcompp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Ref3_comp" && len(va) > 1) { // gen.unit:104, g_struct.act:634
+	if (va[0] == "Ref3_comp" && len(va) > 1) { // gen.unit:124, g_struct.act:770
 		for _, st := range glob.Dats.ApRef3 {
 			if (st.Kcompp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Ref3_comp_ref" && len(va) > 1) { // gen.unit:105, g_struct.act:634
+	if (va[0] == "Ref3_comp_ref" && len(va) > 1) { // gen.unit:125, g_struct.act:770
 		for _, st := range glob.Dats.ApRef3 {
 			if (st.Kcomp_refp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Refq_comp" && len(va) > 1) { // gen.unit:126, g_struct.act:634
+	if (va[0] == "Refq_comp" && len(va) > 1) { // gen.unit:150, g_struct.act:770
 		for _, st := range glob.Dats.ApRefq {
 			if (st.Kcompp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Refq_comp_ref" && len(va) > 1) { // gen.unit:127, g_struct.act:634
+	if (va[0] == "Refq_comp_ref" && len(va) > 1) { // gen.unit:151, g_struct.act:770
 		for _, st := range glob.Dats.ApRefq {
 			if (st.Kcomp_refp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Refu_comp" && len(va) > 1) { // gen.unit:147, g_struct.act:634
+	if (va[0] == "Refu_comp" && len(va) > 1) { // gen.unit:175, g_struct.act:770
 		for _, st := range glob.Dats.ApRefu {
 			if (st.Kcompp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Refu_comp_ref" && len(va) > 1) { // gen.unit:148, g_struct.act:634
+	if (va[0] == "Refu_comp_ref" && len(va) > 1) { // gen.unit:176, g_struct.act:770
 		for _, st := range glob.Dats.ApRefu {
 			if (st.Kcomp_refp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
@@ -127,7 +131,7 @@ func (me KpComp) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 }
 
 func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
-	if va[0] == "Element" { // gen.unit:19, g_struct.act:613
+	if va[0] == "Element" { // gen.unit:21, g_struct.act:749
 		for _, st := range me.ItsElement {
 			if len(va) > 1 {
 				ret := st.DoIts(glob, va[1:], lno)
@@ -143,7 +147,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if va[0] == "Ref" { // gen.unit:50, g_struct.act:613
+	if va[0] == "Ref" { // gen.unit:55, g_struct.act:749
 		for _, st := range me.ItsRef {
 			if len(va) > 1 {
 				ret := st.DoIts(glob, va[1:], lno)
@@ -159,7 +163,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if va[0] == "Ref2" { // gen.unit:68, g_struct.act:613
+	if va[0] == "Ref2" { // gen.unit:79, g_struct.act:749
 		for _, st := range me.ItsRef2 {
 			if len(va) > 1 {
 				ret := st.DoIts(glob, va[1:], lno)
@@ -175,7 +179,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if va[0] == "Ref3" { // gen.unit:87, g_struct.act:613
+	if va[0] == "Ref3" { // gen.unit:102, g_struct.act:749
 		for _, st := range me.ItsRef3 {
 			if len(va) > 1 {
 				ret := st.DoIts(glob, va[1:], lno)
@@ -191,7 +195,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if va[0] == "Refq" { // gen.unit:109, g_struct.act:613
+	if va[0] == "Refq" { // gen.unit:129, g_struct.act:749
 		for _, st := range me.ItsRefq {
 			if len(va) > 1 {
 				ret := st.DoIts(glob, va[1:], lno)
@@ -207,7 +211,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if va[0] == "Refu" { // gen.unit:130, g_struct.act:613
+	if va[0] == "Refu" { // gen.unit:154, g_struct.act:749
 		for _, st := range me.ItsRefu {
 			if len(va) > 1 {
 				ret := st.DoIts(glob, va[1:], lno)
@@ -223,7 +227,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if va[0] == "Join" { // gen.unit:151, g_struct.act:613
+	if va[0] == "Join" { // gen.unit:179, g_struct.act:749
 		for _, st := range me.ItsJoin {
 			if len(va) > 1 {
 				ret := st.DoIts(glob, va[1:], lno)
@@ -249,7 +253,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Comp_parent") { // gen.unit:16, g_struct.act:444
+	if (va[0] == "Comp_parent") { // gen.unit:18, g_struct.act:580
 		for _, st := range glob.Dats.ApComp {
 			if (st.Kparentp == me.Me) {
 				if len(va) > 1 {
@@ -267,7 +271,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Ref_comp") { // gen.unit:65, g_struct.act:444
+	if (va[0] == "Ref_comp") { // gen.unit:76, g_struct.act:580
 		for _, st := range glob.Dats.ApRef {
 			if (st.Kcompp == me.Me) {
 				if len(va) > 1 {
@@ -285,7 +289,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Ref2_comp") { // gen.unit:83, g_struct.act:444
+	if (va[0] == "Ref2_comp") { // gen.unit:98, g_struct.act:580
 		for _, st := range glob.Dats.ApRef2 {
 			if (st.Kcompp == me.Me) {
 				if len(va) > 1 {
@@ -303,7 +307,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Ref3_comp") { // gen.unit:104, g_struct.act:444
+	if (va[0] == "Ref3_comp") { // gen.unit:124, g_struct.act:580
 		for _, st := range glob.Dats.ApRef3 {
 			if (st.Kcompp == me.Me) {
 				if len(va) > 1 {
@@ -321,7 +325,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Ref3_comp_ref") { // gen.unit:105, g_struct.act:444
+	if (va[0] == "Ref3_comp_ref") { // gen.unit:125, g_struct.act:580
 		for _, st := range glob.Dats.ApRef3 {
 			if (st.Kcomp_refp == me.Me) {
 				if len(va) > 1 {
@@ -339,7 +343,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Refq_comp") { // gen.unit:126, g_struct.act:444
+	if (va[0] == "Refq_comp") { // gen.unit:150, g_struct.act:580
 		for _, st := range glob.Dats.ApRefq {
 			if (st.Kcompp == me.Me) {
 				if len(va) > 1 {
@@ -357,7 +361,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Refq_comp_ref") { // gen.unit:127, g_struct.act:444
+	if (va[0] == "Refq_comp_ref") { // gen.unit:151, g_struct.act:580
 		for _, st := range glob.Dats.ApRefq {
 			if (st.Kcomp_refp == me.Me) {
 				if len(va) > 1 {
@@ -375,7 +379,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Refu_comp") { // gen.unit:147, g_struct.act:444
+	if (va[0] == "Refu_comp") { // gen.unit:175, g_struct.act:580
 		for _, st := range glob.Dats.ApRefu {
 			if (st.Kcompp == me.Me) {
 				if len(va) > 1 {
@@ -393,7 +397,7 @@ func (me KpComp) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Refu_comp_ref") { // gen.unit:148, g_struct.act:444
+	if (va[0] == "Refu_comp_ref") { // gen.unit:176, g_struct.act:580
 		for _, st := range glob.Dats.ApRefu {
 			if (st.Kcomp_refp == me.Me) {
 				if len(va) > 1 {
@@ -426,6 +430,10 @@ type KpElement struct {
 	Childs [] Kp
 }
 
+func (me KpElement) GetLineNo() string {
+	return me.LineNo
+}
+
 func loadElement(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpElement)
@@ -449,63 +457,63 @@ func loadElement(act *ActT, ln string, pos int, lno string, flag []string) int {
 		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsElement = append(act.ApComp[ len( act.ApComp )-1 ].ItsElement, st)	// gen.unit:2, g_struct.act:249
+	act.ApComp[ len( act.ApComp )-1 ].ItsElement = append(act.ApComp[ len( act.ApComp )-1 ].ItsElement, st)	// gen.unit:2, g_struct.act:385
 	name,_ := st.Names["name"]
-	s := strconv.Itoa(st.Kparentp) + "_Element_" + name	// gen.unit:24, g_struct.act:287
+	s := strconv.Itoa(st.Kparentp) + "_Element_" + name	// gen.unit:29, g_struct.act:423
 	act.index[s] = st.Me;
 	act.ApElement = append(act.ApElement, st)
 	return 0
 }
 
 func (me KpElement) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	if (va[0] == "parent") { // gen.unit:2, g_struct.act:434
+	if (va[0] == "parent") { // gen.unit:2, g_struct.act:570
 		if (me.Kparentp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
 		}
 	}
-	if (va[0] == "Ref_element" && len(va) > 1) { // gen.unit:64, g_struct.act:634
+	if (va[0] == "Ref_element" && len(va) > 1) { // gen.unit:75, g_struct.act:770
 		for _, st := range glob.Dats.ApRef {
 			if (st.Kelementp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Ref2_element" && len(va) > 1) { // gen.unit:82, g_struct.act:634
+	if (va[0] == "Ref2_element" && len(va) > 1) { // gen.unit:97, g_struct.act:770
 		for _, st := range glob.Dats.ApRef2 {
 			if (st.Kelementp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Ref2_element2" && len(va) > 1) { // gen.unit:84, g_struct.act:634
+	if (va[0] == "Ref2_element2" && len(va) > 1) { // gen.unit:99, g_struct.act:770
 		for _, st := range glob.Dats.ApRef2 {
 			if (st.Kelement2p == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Ref3_element" && len(va) > 1) { // gen.unit:103, g_struct.act:634
+	if (va[0] == "Ref3_element" && len(va) > 1) { // gen.unit:123, g_struct.act:770
 		for _, st := range glob.Dats.ApRef3 {
 			if (st.Kelementp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Ref3_element2" && len(va) > 1) { // gen.unit:106, g_struct.act:634
+	if (va[0] == "Ref3_element2" && len(va) > 1) { // gen.unit:126, g_struct.act:770
 		for _, st := range glob.Dats.ApRef3 {
 			if (st.Kelement2p == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Refq_element" && len(va) > 1) { // gen.unit:125, g_struct.act:634
+	if (va[0] == "Refq_element" && len(va) > 1) { // gen.unit:149, g_struct.act:770
 		for _, st := range glob.Dats.ApRefq {
 			if (st.Kelementp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
 			}
 		}
 	}
-	if (va[0] == "Refu_element" && len(va) > 1) { // gen.unit:146, g_struct.act:634
+	if (va[0] == "Refu_element" && len(va) > 1) { // gen.unit:174, g_struct.act:770
 		for _, st := range glob.Dats.ApRefu {
 			if (st.Kelementp == me.Me) {
 				return (st.GetVar(glob, va[1:], lno) )
@@ -518,7 +526,7 @@ func (me KpElement) GetVar(glob *GlobT, va []string, lno string) (bool, string) 
 }
 
 func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
-	if va[0] == "Opt" { // gen.unit:39, g_struct.act:613
+	if va[0] == "Opt" { // gen.unit:44, g_struct.act:749
 		for _, st := range me.ItsOpt {
 			if len(va) > 1 {
 				ret := st.DoIts(glob, va[1:], lno)
@@ -534,7 +542,7 @@ func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if va[0] == "parent" { // gen.unit:2, g_struct.act:419
+	if va[0] == "parent" { // gen.unit:2, g_struct.act:555
 		if me.Kparentp >= 0 {
 			st := glob.Dats.ApComp[ me.Kparentp ]
 			if len(va) > 1 {
@@ -544,7 +552,7 @@ func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Ref_element") { // gen.unit:64, g_struct.act:444
+	if (va[0] == "Ref_element") { // gen.unit:75, g_struct.act:580
 		for _, st := range glob.Dats.ApRef {
 			if (st.Kelementp == me.Me) {
 				if len(va) > 1 {
@@ -562,7 +570,7 @@ func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Ref2_element") { // gen.unit:82, g_struct.act:444
+	if (va[0] == "Ref2_element") { // gen.unit:97, g_struct.act:580
 		for _, st := range glob.Dats.ApRef2 {
 			if (st.Kelementp == me.Me) {
 				if len(va) > 1 {
@@ -580,7 +588,7 @@ func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Ref2_element2") { // gen.unit:84, g_struct.act:444
+	if (va[0] == "Ref2_element2") { // gen.unit:99, g_struct.act:580
 		for _, st := range glob.Dats.ApRef2 {
 			if (st.Kelement2p == me.Me) {
 				if len(va) > 1 {
@@ -598,7 +606,7 @@ func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Ref3_element") { // gen.unit:103, g_struct.act:444
+	if (va[0] == "Ref3_element") { // gen.unit:123, g_struct.act:580
 		for _, st := range glob.Dats.ApRef3 {
 			if (st.Kelementp == me.Me) {
 				if len(va) > 1 {
@@ -616,7 +624,7 @@ func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Ref3_element2") { // gen.unit:106, g_struct.act:444
+	if (va[0] == "Ref3_element2") { // gen.unit:126, g_struct.act:580
 		for _, st := range glob.Dats.ApRef3 {
 			if (st.Kelement2p == me.Me) {
 				if len(va) > 1 {
@@ -634,7 +642,7 @@ func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Refq_element") { // gen.unit:125, g_struct.act:444
+	if (va[0] == "Refq_element") { // gen.unit:149, g_struct.act:580
 		for _, st := range glob.Dats.ApRefq {
 			if (st.Kelementp == me.Me) {
 				if len(va) > 1 {
@@ -652,7 +660,7 @@ func (me KpElement) DoIts(glob *GlobT, va []string, lno string) int {
 		}
 		return(0)
 	}
-	if (va[0] == "Refu_element") { // gen.unit:146, g_struct.act:444
+	if (va[0] == "Refu_element") { // gen.unit:174, g_struct.act:580
 		for _, st := range glob.Dats.ApRefu {
 			if (st.Kelementp == me.Me) {
 				if len(va) > 1 {
@@ -683,6 +691,10 @@ type KpOpt struct {
 	Kparentp int
 }
 
+func (me KpOpt) GetLineNo() string {
+	return me.LineNo
+}
+
 func loadOpt(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpOpt)
@@ -704,16 +716,16 @@ func loadOpt(act *ActT, ln string, pos int, lno string, flag []string) int {
 		return 1
 	}
 	act.ApElement[ len( act.ApElement )-1 ].Childs = append(act.ApElement[ len( act.ApElement )-1 ].Childs, st)
-	act.ApElement[ len( act.ApElement )-1 ].ItsOpt = append(act.ApElement[ len( act.ApElement )-1 ].ItsOpt, st)	// gen.unit:19, g_struct.act:249
+	act.ApElement[ len( act.ApElement )-1 ].ItsOpt = append(act.ApElement[ len( act.ApElement )-1 ].ItsOpt, st)	// gen.unit:21, g_struct.act:385
 	name,_ := st.Names["name"]
-	s := strconv.Itoa(st.Kparentp) + "_Opt_" + name	// gen.unit:45, g_struct.act:287
+	s := strconv.Itoa(st.Kparentp) + "_Opt_" + name	// gen.unit:50, g_struct.act:423
 	act.index[s] = st.Me;
 	act.ApOpt = append(act.ApOpt, st)
 	return 0
 }
 
 func (me KpOpt) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	if (va[0] == "parent") { // gen.unit:19, g_struct.act:434
+	if (va[0] == "parent") { // gen.unit:21, g_struct.act:570
 		if (me.Kparentp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApElement[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
 		}
@@ -724,7 +736,7 @@ func (me KpOpt) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 }
 
 func (me KpOpt) DoIts(glob *GlobT, va []string, lno string) int {
-	if va[0] == "parent" { // gen.unit:19, g_struct.act:419
+	if va[0] == "parent" { // gen.unit:21, g_struct.act:555
 		if me.Kparentp >= 0 {
 			st := glob.Dats.ApElement[ me.Kparentp ]
 			if len(va) > 1 {
@@ -747,6 +759,10 @@ type KpRef struct {
 	Kparentp int
 	Kelementp int
 	Kcompp int
+}
+
+func (me KpRef) GetLineNo() string {
+	return me.LineNo
 }
 
 func loadRef(act *ActT, ln string, pos int, lno string, flag []string) int {
@@ -774,23 +790,23 @@ func loadRef(act *ActT, ln string, pos int, lno string, flag []string) int {
 		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRef = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef, st)	// gen.unit:2, g_struct.act:249
+	act.ApComp[ len( act.ApComp )-1 ].ItsRef = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef, st)	// gen.unit:2, g_struct.act:385
 	act.ApRef = append(act.ApRef, st)
 	return 0
 }
 
 func (me KpRef) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	if va[0] == "element" { // gen.unit:64, g_struct.act:540
+	if va[0] == "element" { // gen.unit:75, g_struct.act:676
 		if (me.Kelementp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApElement[ me.Kelementp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "comp" { // gen.unit:65, g_struct.act:540
+	if va[0] == "comp" { // gen.unit:76, g_struct.act:676
 		if (me.Kcompp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kcompp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if (va[0] == "parent") { // gen.unit:2, g_struct.act:434
+	if (va[0] == "parent") { // gen.unit:2, g_struct.act:570
 		if (me.Kparentp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
 		}
@@ -801,7 +817,7 @@ func (me KpRef) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 }
 
 func (me KpRef) DoIts(glob *GlobT, va []string, lno string) int {
-	if va[0] == "parent" { // gen.unit:2, g_struct.act:419
+	if va[0] == "parent" { // gen.unit:2, g_struct.act:555
 		if me.Kparentp >= 0 {
 			st := glob.Dats.ApComp[ me.Kparentp ]
 			if len(va) > 1 {
@@ -847,6 +863,10 @@ type KpRef2 struct {
 	Kelement2p int
 }
 
+func (me KpRef2) GetLineNo() string {
+	return me.LineNo
+}
+
 func loadRef2(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRef2)
@@ -874,28 +894,28 @@ func loadRef2(act *ActT, ln string, pos int, lno string, flag []string) int {
 		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRef2 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef2, st)	// gen.unit:2, g_struct.act:249
+	act.ApComp[ len( act.ApComp )-1 ].ItsRef2 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef2, st)	// gen.unit:2, g_struct.act:385
 	act.ApRef2 = append(act.ApRef2, st)
 	return 0
 }
 
 func (me KpRef2) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	if va[0] == "element" { // gen.unit:82, g_struct.act:540
+	if va[0] == "element" { // gen.unit:97, g_struct.act:676
 		if (me.Kelementp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApElement[ me.Kelementp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "comp" { // gen.unit:83, g_struct.act:540
+	if va[0] == "comp" { // gen.unit:98, g_struct.act:676
 		if (me.Kcompp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kcompp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "element2" { // gen.unit:84, g_struct.act:540
+	if va[0] == "element2" { // gen.unit:99, g_struct.act:676
 		if (me.Kelement2p >= 0 && len(va) > 1) {
 			return( glob.Dats.ApElement[ me.Kelement2p ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if (va[0] == "parent") { // gen.unit:2, g_struct.act:434
+	if (va[0] == "parent") { // gen.unit:2, g_struct.act:570
 		if (me.Kparentp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
 		}
@@ -906,7 +926,7 @@ func (me KpRef2) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 }
 
 func (me KpRef2) DoIts(glob *GlobT, va []string, lno string) int {
-	if va[0] == "parent" { // gen.unit:2, g_struct.act:419
+	if va[0] == "parent" { // gen.unit:2, g_struct.act:555
 		if me.Kparentp >= 0 {
 			st := glob.Dats.ApComp[ me.Kparentp ]
 			if len(va) > 1 {
@@ -963,6 +983,10 @@ type KpRef3 struct {
 	Kcomp_refp int
 }
 
+func (me KpRef3) GetLineNo() string {
+	return me.LineNo
+}
+
 func loadRef3(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRef3)
@@ -993,33 +1017,33 @@ func loadRef3(act *ActT, ln string, pos int, lno string, flag []string) int {
 		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRef3 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef3, st)	// gen.unit:2, g_struct.act:249
+	act.ApComp[ len( act.ApComp )-1 ].ItsRef3 = append(act.ApComp[ len( act.ApComp )-1 ].ItsRef3, st)	// gen.unit:2, g_struct.act:385
 	act.ApRef3 = append(act.ApRef3, st)
 	return 0
 }
 
 func (me KpRef3) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	if va[0] == "element" { // gen.unit:103, g_struct.act:540
+	if va[0] == "element" { // gen.unit:123, g_struct.act:676
 		if (me.Kelementp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApElement[ me.Kelementp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "comp" { // gen.unit:104, g_struct.act:540
+	if va[0] == "comp" { // gen.unit:124, g_struct.act:676
 		if (me.Kcompp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kcompp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "comp_ref" { // gen.unit:105, g_struct.act:540
+	if va[0] == "comp_ref" { // gen.unit:125, g_struct.act:676
 		if (me.Kcomp_refp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kcomp_refp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "element2" { // gen.unit:106, g_struct.act:540
+	if va[0] == "element2" { // gen.unit:126, g_struct.act:676
 		if (me.Kelement2p >= 0 && len(va) > 1) {
 			return( glob.Dats.ApElement[ me.Kelement2p ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if (va[0] == "parent") { // gen.unit:2, g_struct.act:434
+	if (va[0] == "parent") { // gen.unit:2, g_struct.act:570
 		if (me.Kparentp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
 		}
@@ -1030,7 +1054,7 @@ func (me KpRef3) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 }
 
 func (me KpRef3) DoIts(glob *GlobT, va []string, lno string) int {
-	if va[0] == "parent" { // gen.unit:2, g_struct.act:419
+	if va[0] == "parent" { // gen.unit:2, g_struct.act:555
 		if me.Kparentp >= 0 {
 			st := glob.Dats.ApComp[ me.Kparentp ]
 			if len(va) > 1 {
@@ -1096,6 +1120,10 @@ type KpRefq struct {
 	Kcomp_refp int
 }
 
+func (me KpRefq) GetLineNo() string {
+	return me.LineNo
+}
+
 func loadRefq(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRefq)
@@ -1124,28 +1152,28 @@ func loadRefq(act *ActT, ln string, pos int, lno string, flag []string) int {
 		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRefq = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefq, st)	// gen.unit:2, g_struct.act:249
+	act.ApComp[ len( act.ApComp )-1 ].ItsRefq = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefq, st)	// gen.unit:2, g_struct.act:385
 	act.ApRefq = append(act.ApRefq, st)
 	return 0
 }
 
 func (me KpRefq) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	if va[0] == "element" { // gen.unit:125, g_struct.act:540
+	if va[0] == "element" { // gen.unit:149, g_struct.act:676
 		if (me.Kelementp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApElement[ me.Kelementp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "comp" { // gen.unit:126, g_struct.act:540
+	if va[0] == "comp" { // gen.unit:150, g_struct.act:676
 		if (me.Kcompp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kcompp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "comp_ref" { // gen.unit:127, g_struct.act:540
+	if va[0] == "comp_ref" { // gen.unit:151, g_struct.act:676
 		if (me.Kcomp_refp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kcomp_refp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if (va[0] == "parent") { // gen.unit:2, g_struct.act:434
+	if (va[0] == "parent") { // gen.unit:2, g_struct.act:570
 		if (me.Kparentp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
 		}
@@ -1156,7 +1184,7 @@ func (me KpRefq) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 }
 
 func (me KpRefq) DoIts(glob *GlobT, va []string, lno string) int {
-	if va[0] == "parent" { // gen.unit:2, g_struct.act:419
+	if va[0] == "parent" { // gen.unit:2, g_struct.act:555
 		if me.Kparentp >= 0 {
 			st := glob.Dats.ApComp[ me.Kparentp ]
 			if len(va) > 1 {
@@ -1212,6 +1240,10 @@ type KpRefu struct {
 	Kcomp_refp int
 }
 
+func (me KpRefu) GetLineNo() string {
+	return me.LineNo
+}
+
 func loadRefu(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpRefu)
@@ -1241,28 +1273,28 @@ func loadRefu(act *ActT, ln string, pos int, lno string, flag []string) int {
 		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsRefu = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefu, st)	// gen.unit:2, g_struct.act:249
+	act.ApComp[ len( act.ApComp )-1 ].ItsRefu = append(act.ApComp[ len( act.ApComp )-1 ].ItsRefu, st)	// gen.unit:2, g_struct.act:385
 	act.ApRefu = append(act.ApRefu, st)
 	return 0
 }
 
 func (me KpRefu) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	if va[0] == "element" { // gen.unit:146, g_struct.act:540
+	if va[0] == "element" { // gen.unit:174, g_struct.act:676
 		if (me.Kelementp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApElement[ me.Kelementp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "comp" { // gen.unit:147, g_struct.act:540
+	if va[0] == "comp" { // gen.unit:175, g_struct.act:676
 		if (me.Kcompp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kcompp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if va[0] == "comp_ref" { // gen.unit:148, g_struct.act:540
+	if va[0] == "comp_ref" { // gen.unit:176, g_struct.act:676
 		if (me.Kcomp_refp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kcomp_refp ].GetVar(glob, va[1:], lno) )
 		}
 	}
-	if (va[0] == "parent") { // gen.unit:2, g_struct.act:434
+	if (va[0] == "parent") { // gen.unit:2, g_struct.act:570
 		if (me.Kparentp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
 		}
@@ -1273,7 +1305,7 @@ func (me KpRefu) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 }
 
 func (me KpRefu) DoIts(glob *GlobT, va []string, lno string) int {
-	if va[0] == "parent" { // gen.unit:2, g_struct.act:419
+	if va[0] == "parent" { // gen.unit:2, g_struct.act:555
 		if me.Kparentp >= 0 {
 			st := glob.Dats.ApComp[ me.Kparentp ]
 			if len(va) > 1 {
@@ -1326,6 +1358,10 @@ type KpJoin struct {
 	Kparentp int
 }
 
+func (me KpJoin) GetLineNo() string {
+	return me.LineNo
+}
+
 func loadJoin(act *ActT, ln string, pos int, lno string, flag []string) int {
 	p := pos
 	st := new(KpJoin)
@@ -1351,13 +1387,13 @@ func loadJoin(act *ActT, ln string, pos int, lno string, flag []string) int {
 		return 1
 	}
 	act.ApComp[ len( act.ApComp )-1 ].Childs = append(act.ApComp[ len( act.ApComp )-1 ].Childs, st)
-	act.ApComp[ len( act.ApComp )-1 ].ItsJoin = append(act.ApComp[ len( act.ApComp )-1 ].ItsJoin, st)	// gen.unit:2, g_struct.act:249
+	act.ApComp[ len( act.ApComp )-1 ].ItsJoin = append(act.ApComp[ len( act.ApComp )-1 ].ItsJoin, st)	// gen.unit:2, g_struct.act:385
 	act.ApJoin = append(act.ApJoin, st)
 	return 0
 }
 
 func (me KpJoin) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
-	if (va[0] == "parent") { // gen.unit:2, g_struct.act:434
+	if (va[0] == "parent") { // gen.unit:2, g_struct.act:570
 		if (me.Kparentp >= 0 && len(va) > 1) {
 			return( glob.Dats.ApComp[ me.Kparentp ].GetVar(glob, va[1:], me.LineNo) );
 		}
@@ -1368,7 +1404,7 @@ func (me KpJoin) GetVar(glob *GlobT, va []string, lno string) (bool, string) {
 }
 
 func (me KpJoin) DoIts(glob *GlobT, va []string, lno string) int {
-	if va[0] == "parent" { // gen.unit:2, g_struct.act:419
+	if va[0] == "parent" { // gen.unit:2, g_struct.act:555
 		if me.Kparentp >= 0 {
 			st := glob.Dats.ApComp[ me.Kparentp ]
 			if len(va) > 1 {

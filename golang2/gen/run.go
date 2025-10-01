@@ -40,6 +40,9 @@ func refs(act *ActT) int {
 	res := 0
 	err := false
 	for _, st := range act.ApComp {
+
+//  gen.unit:11, g_run.act:161
+
 		v, _ = st.Names["parent"]
 		err, res = fnd(act, "Comp_" + v, v,  ".", st.LineNo );
 		st.Kparentp = res
@@ -48,12 +51,17 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApRef {
+
+//  gen.unit:66, g_run.act:174
+
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:67, g_run.act:161
+
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
@@ -62,18 +70,25 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApRef2 {
+
+//  gen.unit:88, g_run.act:174
+
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:89, g_run.act:161
+
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:90, g_run.act:174
+
 		v, _ = st.Names["element2"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelement2p = res
@@ -82,24 +97,33 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApRef3 {
+
+//  gen.unit:112, g_run.act:174
+
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:113, g_run.act:161
+
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:114, g_run.act:174
+
 		v, _ = st.Names["element2"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelement2p = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:115, g_run.act:161
+
 		v, _ = st.Names["comp_ref"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcomp_refp = res
@@ -108,18 +132,25 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApRefq {
+
+//  gen.unit:139, g_run.act:174
+
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:140, g_run.act:161
+
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:142, g_run.act:161
+
 		v, _ = st.Names["comp_ref"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcomp_refp = res
@@ -128,18 +159,25 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApRefu {
+
+//  gen.unit:163, g_run.act:174
+
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
 		st.Kelementp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:164, g_run.act:161
+
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcompp = res
 		if (err == false) {
 			errs += 1
 		}
+//  gen.unit:166, g_run.act:161
+
 		v, _ = st.Names["comp_ref"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
 		st.Kcomp_refp = res
@@ -148,6 +186,8 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApAll {
+//  act.unit:37, g_run.act:149
+
 		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
 		if (err == false) {
@@ -155,6 +195,8 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApDu {
+//  act.unit:49, g_run.act:149
+
 		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
 		if (err == false) {
@@ -162,6 +204,8 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApIts {
+//  act.unit:93, g_run.act:149
+
 		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
 		if (err == false) {
@@ -169,6 +213,8 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApThis {
+//  act.unit:192, g_run.act:149
+
 		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
 		if (err == false) {
