@@ -48,6 +48,8 @@ type ActT struct {
 	ApAdd [] *KpAdd
 	ApThis [] *KpThis
 	ApReplace [] *KpReplace
+	ApDbconn [] *KpDbconn
+	ApHttp [] *KpHttp
 	ApComp [] *KpComp
 	ApElement [] *KpElement
 	ApOpt [] *KpOpt
@@ -221,7 +223,7 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApAll {
-//  act.unit:26, g_run.act:149
+//  act.unit:37, g_run.act:149
 
 		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
@@ -230,7 +232,7 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApDu {
-//  act.unit:41, g_run.act:149
+//  act.unit:49, g_run.act:149
 
 		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
@@ -239,7 +241,7 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApIts {
-//  act.unit:87, g_run.act:149
+//  act.unit:93, g_run.act:149
 
 		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
@@ -248,7 +250,7 @@ func refs(act *ActT) int {
 		}
 	}
 	for _, st := range act.ApThis {
-//  act.unit:177, g_run.act:149
+//  act.unit:192, g_run.act:149
 
 		err, res = fnd(act, "Actor_" + st.Kactor, st.Kactor,  ".", st.LineNo );
 		st.Kactorp = res
@@ -258,7 +260,7 @@ func refs(act *ActT) int {
 	}
 	for _, st := range act.ApComp {
 
-//  gen.unit:9, g_run.act:161
+//  gen.unit:11, g_run.act:161
 
 		v, _ = st.Names["parent"]
 		err, res = fnd(act, "Comp_" + v, v,  ".", st.LineNo );
@@ -269,7 +271,7 @@ func refs(act *ActT) int {
 	}
 	for _, st := range act.ApRef {
 
-//  gen.unit:55, g_run.act:174
+//  gen.unit:66, g_run.act:174
 
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
@@ -277,7 +279,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:56, g_run.act:161
+//  gen.unit:67, g_run.act:161
 
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
@@ -288,7 +290,7 @@ func refs(act *ActT) int {
 	}
 	for _, st := range act.ApRef2 {
 
-//  gen.unit:73, g_run.act:174
+//  gen.unit:88, g_run.act:174
 
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
@@ -296,7 +298,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:74, g_run.act:161
+//  gen.unit:89, g_run.act:161
 
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
@@ -304,7 +306,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:75, g_run.act:174
+//  gen.unit:90, g_run.act:174
 
 		v, _ = st.Names["element2"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
@@ -315,7 +317,7 @@ func refs(act *ActT) int {
 	}
 	for _, st := range act.ApRef3 {
 
-//  gen.unit:92, g_run.act:174
+//  gen.unit:112, g_run.act:174
 
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
@@ -323,7 +325,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:93, g_run.act:161
+//  gen.unit:113, g_run.act:161
 
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
@@ -331,7 +333,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:94, g_run.act:174
+//  gen.unit:114, g_run.act:174
 
 		v, _ = st.Names["element2"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
@@ -339,7 +341,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:95, g_run.act:161
+//  gen.unit:115, g_run.act:161
 
 		v, _ = st.Names["comp_ref"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
@@ -350,7 +352,7 @@ func refs(act *ActT) int {
 	}
 	for _, st := range act.ApRefq {
 
-//  gen.unit:114, g_run.act:174
+//  gen.unit:139, g_run.act:174
 
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
@@ -358,7 +360,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:115, g_run.act:161
+//  gen.unit:140, g_run.act:161
 
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
@@ -366,7 +368,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:117, g_run.act:161
+//  gen.unit:142, g_run.act:161
 
 		v, _ = st.Names["comp_ref"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
@@ -377,7 +379,7 @@ func refs(act *ActT) int {
 	}
 	for _, st := range act.ApRefu {
 
-//  gen.unit:135, g_run.act:174
+//  gen.unit:163, g_run.act:174
 
 		v, _ = st.Names["element"]
 		err, res = fnd(act, strconv.Itoa(st.Kparentp) + "_Element_" + v, v,  "check", st.LineNo );
@@ -385,7 +387,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:136, g_run.act:161
+//  gen.unit:164, g_run.act:161
 
 		v, _ = st.Names["comp"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
@@ -393,7 +395,7 @@ func refs(act *ActT) int {
 		if (err == false) {
 			errs += 1
 		}
-//  gen.unit:138, g_run.act:161
+//  gen.unit:166, g_run.act:161
 
 		v, _ = st.Names["comp_ref"]
 		err, res = fnd(act, "Comp_" + v, v,  "check", st.LineNo );
@@ -409,14 +411,14 @@ func refs(act *ActT) int {
 	t := st.Kattrp
 	if t >= 0 {
 		st.Ktablep = act.ApAttr[t].Ktablep
-	} else if "E_O_L" != "?" {
-		fmt.Printf("ref error Attr not resolved %d\n", st.LineNo)
+	} else if "check" != "?" {
+		fmt.Printf("ref error attr not resolved %d\n", st.LineNo)
 		errs += 1
 	}
 //  sample.unit:69, g_run.act:228
 
 	v, _ = st.Names["from_id"]
-	err, res = fnd(act, strconv.Itoa(st.Ktablep) + "_Attr_" + v, v, "E_O_L", st.LineNo)
+	err, res = fnd(act, strconv.Itoa(st.Ktablep) + "_Attr_" + v, v, "check", st.LineNo)
 	st.Kfrom_idp = res
 	if !err {
 		errs += 1
@@ -430,7 +432,7 @@ func refs(act *ActT) int {
 	if t >= 0 {
 		st.Ktypep = act.ApField[t].Ktypep
 	} else if "E_O_L" != "?" {
-		fmt.Printf("ref error Field not resolved %d\n", st.LineNo)
+		fmt.Printf("ref error field not resolved %d\n", st.LineNo)
 		errs += 1
 	}
 //  app.unit:76, g_run.act:228
@@ -488,7 +490,7 @@ func refs(act *ActT) int {
 	if t >= 0 {
 		st.Kdomainp = act.ApFrame[t].Kdomainp
 	} else if "." != "?" {
-		fmt.Printf("ref error Parent not resolved %d\n", st.LineNo)
+		fmt.Printf("ref error parent not resolved %d\n", st.LineNo)
 		errs += 1
 	}
 //  note.unit:37, g_run.act:228
@@ -508,7 +510,7 @@ func refs(act *ActT) int {
 	if t >= 0 {
 		st.Kmodelp = act.ApA[t].Kmodelp
 	} else if "." != "?" {
-		fmt.Printf("ref error Parent not resolved %d\n", st.LineNo)
+		fmt.Printf("ref error parent not resolved %d\n", st.LineNo)
 		errs += 1
 	}
 //  note.unit:51, g_run.act:228
@@ -1491,6 +1493,8 @@ func Load(act *ActT, toks string, ln string, pos int, lno string) int {
 	if tok == "Add" { errs += loadAdd(act,ln,pos,lno,flag) }
 	if tok == "This" { errs += loadThis(act,ln,pos,lno,flag) }
 	if tok == "Replace" { errs += loadReplace(act,ln,pos,lno,flag) }
+	if tok == "Dbconn" { errs += loadDbconn(act,ln,pos,lno,flag) }
+	if tok == "Http" { errs += loadHttp(act,ln,pos,lno,flag) }
 	if tok == "Comp" { errs += loadComp(act,ln,pos,lno,flag) }
 	if tok == "Element" { errs += loadElement(act,ln,pos,lno,flag) }
 	if tok == "Opt" { errs += loadOpt(act,ln,pos,lno,flag) }

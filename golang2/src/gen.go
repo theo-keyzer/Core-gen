@@ -86,8 +86,7 @@ func GoAct(glob *GlobT, dat interface{}) (int) {
 		act := glob.Acts.ApActor[i]
 		if act.Kattr != "E_O_L" {
 			valOk, val := strs(glob, winp, act.Kvalue, act.LineNo, false, false)
-			_, kAttr := strs(glob, winp, act.Kattr, act.LineNo, true, true)
-			sc := strings.Split(kAttr, ":")
+			sc := strings.Split(act.Kattr, ":")
 			va := strings.Split(sc[0], ".")
 			varOk, varv := sGetVar(glob, winp, sc, va, act.LineNo)
 			
@@ -152,7 +151,6 @@ func goCmds(glob *GlobT, ca, winp int) (int) {
 			}
 			
 		case *KpC:
-//			fmt.Println(c.Kdesc)
 			if !glob.OutOn {
 				continue
 			}
@@ -166,7 +164,6 @@ func goCmds(glob *GlobT, ca, winp int) (int) {
 				_, res := strs(glob, winp, c.Kdesc, c.LineNo, false, true)
 				kDesc = res
 			}
-//			fmt.Println(kDesc)
 			
 			if glob.InOn {
 				glob.Ins.WriteString(kDesc + "\n")
@@ -468,10 +465,7 @@ func sGetVar(glob *GlobT, winp int, sc []string, va []string, lno string) (bool,
 	}
 	
 	dat := rec.Dat
-//	kp3, ok3 := dat.(Kp)
-//	fmt.Println(ok3,kp3,dat,glob.Wins[winp].Dat)
 	if _, ok := dat.(Kp); !ok && len(rec.Path) > 0 && rec.Path[0] != "." && rec.Path[0] != "" {
-//	fmt.Println("xx")
 		return false, fmt.Sprintf("?%s?%s?", rec.Path[0], lno)
 	}
 	

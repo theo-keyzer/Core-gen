@@ -456,7 +456,6 @@ func getPath(glob *GlobT, winp int, va []string, lno string) Record {
 	
 	if len(va[0]) > 0 || len(va) == 1 {
 		dat := glob.Wins[winp].Dat
-//	fmt.Println(dat)
 		return getNode(glob, dat, va, lno)
 	}
 	
@@ -535,7 +534,6 @@ func getPath(glob *GlobT, winp int, va []string, lno string) Record {
 			return getPath(glob, i, va[2:], lno)
 		}
 	}
-	
 	return Record{Ok: false, Dat: fmt.Sprintf("?%s?%s?", va[1], lno), Path: va}
 }
 

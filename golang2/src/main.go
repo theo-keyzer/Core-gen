@@ -29,7 +29,7 @@ type KpExtra struct {
 func (me KpExtra) GetVar(glob *GlobT, s []string, ln string) (bool, string) {
 	r,ok := me.Names[s[0]]
 	if !ok { r = fmt.Sprintf("?%s?:%s", s[0], ln) }
-	return !ok,r
+	return ok,r
 }
 
 func main() {
