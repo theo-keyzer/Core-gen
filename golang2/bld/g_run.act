@@ -251,7 +251,7 @@ C 	t := st.K${Refu_element.element2:l}p
 C 	if t >= 0 {
 C 		st.K${name:l}p = act.Ap${Refu_element.comp_ref.name:c}[t].K${Refu_element.element3:l}p
 C 	} else if "${Refu_element.opt}" != "?" {
-C 		fmt.Printf("ref error ${Refu_element.element2:c} not resolved %d\n", st.LineNo)
+C 		fmt.Printf("ref error ${Refu_element.element2:l} not resolved %d\n", st.LineNo)
 C 		errs += 1
 C 	}
 

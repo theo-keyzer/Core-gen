@@ -120,6 +120,10 @@ Its Comp_parent childs
 -C 	Childs [] Kp
 C }
 C
+C func (me Kp${name:c}) GetLineNo() string {
+C 	return me.LineNo
+C }
+C
 C func load${name:c}(act *ActT, ln string, pos int, lno string, flag []string) int {
 C 	p := pos
 C 	st := new(Kp${name:c})
@@ -168,7 +172,6 @@ C 	return ok,r
 
 C }
 C
--C 	int do_its(glob, va, lno) {
 
 C func (me Kp${name:c}) DoIts(glob *GlobT, va []string, lno string) int {
 
@@ -182,7 +185,7 @@ Its Ref_comp other_func
 Its Ref2_comp other_func
 Its Ref3_comp other_func
 Its Refq_comp other_func
--Its Element nested
+Its Element nested
 
 -C 		if ( va[0].compareTo("Child") == 0 ) { // ${._lno}
 
@@ -201,6 +204,139 @@ C
 Actor nested Element mw = N1
 ----------------------------------------------------------------
 
+C 		if va[0] == "${name:l}" && len(va) > 1 && me.Kparentp >= 0 { // ${._lno}
+C 			pos := 0
+C 			v, ok := me.Names["${name:l}"]
+C 			if ok {
+C 				pos, _ = strconv.Atoi(v)
+C 			}
+C 			if va[1] == "down" && pos > 0 {
+C 				pst := glob.Dats.Ap${.struct.parent.name:c}[me.Kparentp]
+C 				isin := false
+C 				for _, st := range pst.Its${.struct.name:c} {
+C 					if st.Me == me.Me {
+C 						isin = true
+C 						continue
+C 					}
+C 					if !isin {
+C 						continue
+C 					}
+C 					pos2 := 0
+C 					v2, ok2 := st.Names["${name:l}"]
+C 					if ok2 {
+C 						pos2, _ = strconv.Atoi(v2)
+C 					}
+C 					if pos2 == 0 {
+C 						continue
+C 					}
+C 					if pos2 == (pos - 1) {
+C 						break
+C 					}
+C 					if pos2 == pos {
+C 						if len(va) > 2 {
+C 							return st.DoIts(glob, va[2:], lno)
+C 						}
+C 						return GoAct(glob, st)
+C 					}
+C 				}
+C 				return 0
+C 			}
+C 			if va[1] == "up" && pos > 0 {
+C 				pst := glob.Dats.Ap${.struct.parent.name:c}[me.Kparentp]
+C 				isin := false
+C 				prev := 0
+C 				for _, st := range pst.Its${.struct.name:c} {
+C 					pos2 := 0
+C 					v2, ok2 := st.Names["${name:l}"]
+C 					if ok2 {
+C 						pos2, _ = strconv.Atoi(v2)
+C 					}
+C 					if pos2 == 0 {
+C 						continue
+C 					}
+C 					if pos2 == pos && st.Me != me.Me {
+C 						prev = st.Me
+C 						isin = true
+C 						continue
+C 					}
+C 					if pos2 == (pos - 1) {
+C 						isin = false
+C 					}
+C 					if st.Me == me.Me && isin {
+C 						if len(va) > 2 {
+C 							return glob.Dats.Ap${.struct.name:c}[prev].DoIts(glob, va[2:], lno)
+C 						}
+C 						return GoAct(glob, glob.Dats.Ap${.struct.name:c}[prev])
+C 					}
+C 				}
+C 				return 0
+C 			}
+C 			if va[1] == "left" && pos > 0 {
+C 				pst := glob.Dats.Ap${.struct.parent.name:c}[me.Kparentp]
+C 				isin := false
+C 				prev := 0
+C 				for _, st := range pst.Its${.struct.name:c} {
+C 					pos2 := 0
+C 					v2, ok2 := st.Names["${name:l}"]
+C 					if ok2 {
+C 						pos2, _ = strconv.Atoi(v2)
+C 					}
+C 					if pos2 == 0 {
+C 						continue
+C 					}
+C 					if pos2 == (pos - 1) {
+C 						prev = st.Me
+C 						isin = true
+C 						continue
+C 					}
+C 					if st.Me == me.Me && isin {
+C 						if len(va) > 2 {
+C 							return glob.Dats.Ap${.struct.name:c}[prev].DoIts(glob, va[2:], lno)
+C 						}
+C 						return GoAct(glob, glob.Dats.Ap${.struct.name:c}[prev])
+C 					}
+C 				}
+C 				return 0
+C 			}
+C 			if va[1] == "right" && pos > 0 {
+C 				pst := glob.Dats.Ap${.struct.parent.name:c}[me.Kparentp]
+C 				isin := false
+C 				for _, st := range pst.Its${.struct.name:c} {
+C 					if st.Me == me.Me {
+C 						isin = true
+C 						continue
+C 					}
+C 					if !isin {
+C 						continue
+C 					}
+C 					pos2 := 0
+C 					v2, ok2 := st.Names["${name:l}"]
+C 					if ok2 {
+C 						pos2, _ = strconv.Atoi(v2)
+C 					}
+C 					if pos2 == 0 {
+C 						continue
+C 					}
+C 					if pos2 <= pos {
+C 						break
+C 					}
+C 					if pos2 == (pos + 1) {
+C 						if len(va) > 2 {
+C 							ret := st.DoIts(glob, va[2:], lno)
+C 							if ret != 0 {
+C 								return ret
+C 							}
+C 							continue
+C 						}
+C 						ret := GoAct(glob, st)
+C 						if ret != 0 {
+C 							return ret
+C 						}
+C 					}
+C 				}
+C 				return 0
+C 			}
+C 		}
 
 ----------------------------------------------------------------
 Actor childs_func Comp name != Actor

@@ -1,5 +1,5 @@
 ----------------------------------------------------------------
-Comp Concept parent . 
+Comp Concept parent . Find
 ----------------------------------------------------------------
 
 	Element name       C1 WORD       * name of concept
@@ -19,5 +19,13 @@ Comp T parent Topic
 
 	Element file   C1 WORD       * optional file to include
 	Element desc   V1 DESC       * doc to output.
+
+----------------------------------------------------------------
+Comp See parent Topic
+----------------------------------------------------------------
+
+	Element concept R1 Concept   * Ref to concept
+
+Ref concept Concept .
 
 
