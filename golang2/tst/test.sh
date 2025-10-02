@@ -1,4 +1,4 @@
-run="/home/theo/Downloads/go1.24.5.linux-amd64/go/bin/go run ../src/main.go ../src/gen.go ../src/run.go ../src/structs.go  ../src/collect.go"
+run="go run ../src/main.go ../src/gen.go ../src/run.go ../src/structs.go  ../src/collect.go"
 
 echo ::::::::::::::
 echo concept_md.act "*"
@@ -13,6 +13,13 @@ echo ::::::::::::::
 
 $run  concept.act concept.def cmd import >concept.html
 if [ $? != 0 ]; then echo concept.act concept.def has errors; fi
+
+echo ::::::::::::::
+echo concept2.act "*"
+echo ::::::::::::::
+
+$run  concept2.act generator3.def syntax import >generator.html
+if [ $? != 0 ]; then echo concept2.act generator2.def has errors; fi
 
 echo ::::::::::::::
 echo collect.act

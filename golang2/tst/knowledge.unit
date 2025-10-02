@@ -1,0 +1,194 @@
+----------------------------------------------------------------
+Comp Domain parent . Find
+----------------------------------------------------------------
+* A knowledge domain or subject area
+* Top-level organizational unit
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * domain identifier
+	Element title      V1 DESC       * full domain title
+
+----------------------------------------------------------------
+Comp Entity parent Domain FindIn
+----------------------------------------------------------------
+* A concept, person, place, thing, or idea within a domain
+* The core knowledge node
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * entity identifier
+	Element kind       C1 WORD       * type of entity
+	    Opt concept                  * abstract concept
+	    Opt person                   * individual person
+	    Opt place                    * location or venue
+	    Opt thing                    * physical object
+	    Opt event                    * historical event
+	    Opt process                  * procedure or algorithm
+	    Opt .                        * unspecified
+	Element title      V1 DESC       * full entity title
+
+----------------------------------------------------------------
+Comp Fact parent Entity
+----------------------------------------------------------------
+* A factual statement about an entity
+* Core knowledge content
+----------------------------------------------------------------
+
+	Element label      C1 WORD       * fact category
+	    Opt definition               * what it is
+	    Opt description              * detailed info
+	    Opt property                 * characteristic
+	    Opt function                 * what it does
+	    Opt origin                   * where it came from
+	    Opt location                 * where it is
+	    Opt date                     * when it occurred
+	    Opt composition              * what it's made of
+	    Opt impact                   * its effects
+	    Opt .                        * general fact
+	Element text       V1 DESC       * fact content
+
+----------------------------------------------------------------
+Comp Link parent Entity
+----------------------------------------------------------------
+* Relationship between entities
+* Creates knowledge graph connections
+----------------------------------------------------------------
+
+	Element relation   C1 WORD       * relationship type
+	    Opt is-a                     * type/subtype
+	    Opt part-of                  * composition
+	    Opt created-by               * authorship
+	    Opt influences               * causation
+	    Opt related-to               * general association
+	    Opt located-in               * spatial
+	    Opt preceded-by              * temporal before
+	    Opt followed-by              * temporal after
+	    Opt opposite-of              * contrast
+	    Opt similar-to               * comparison
+	Element target     R1 ENTITY     * linked entity
+	Element strength   C1 WORD       * link importance
+	    Opt strong                   * primary relationship
+	    Opt medium                   * secondary relationship
+	    Opt weak                     * tertiary relationship
+	    Opt .                        * unspecified
+	Element note       V1 DESC       * explanation of relationship
+
+Ref target Entity check
+
+----------------------------------------------------------------
+Comp Source parent Entity
+----------------------------------------------------------------
+* Citation or reference for entity knowledge
+* Tracks provenance
+----------------------------------------------------------------
+
+	Element kind       C1 WORD       * source type
+	    Opt book                     * published book
+	    Opt article                  * article or paper
+	    Opt website                  * web resource
+	    Opt expert                   * domain expert
+	    Opt observation              * direct observation
+	    Opt .                        * other
+	Element author     C1 WORD       * creator or author
+	Element title      C1 WORD       * source title
+	Element year       C1 WORD       * publication year
+	Element url        V1 DESC       * web address if applicable
+
+----------------------------------------------------------------
+Comp Tag parent Entity
+----------------------------------------------------------------
+* Keywords for categorization and search
+* Enables multiple categorization schemes
+----------------------------------------------------------------
+
+	Element category   C1 WORD       * tag category
+	Element value      V1 DESC       * tag value
+
+----------------------------------------------------------------
+Comp Question parent Entity
+----------------------------------------------------------------
+* Common questions about this entity
+* FAQ or learning prompts
+----------------------------------------------------------------
+
+	Element text       V1 DESC       * question text
+
+----------------------------------------------------------------
+Comp Answer parent Question
+----------------------------------------------------------------
+* Answer to a question
+* Can have multiple answers for different perspectives
+----------------------------------------------------------------
+
+	Element text       V1 DESC       * answer text
+
+----------------------------------------------------------------
+Comp Example parent Entity
+----------------------------------------------------------------
+* Concrete example or instance
+* Helps illustrate abstract concepts
+----------------------------------------------------------------
+
+	Element title      C1 WORD       * example identifier
+	Element context    V1 DESC       * example description
+
+----------------------------------------------------------------
+Comp Note parent Entity
+----------------------------------------------------------------
+* Personal notes or annotations
+* User commentary and insights
+----------------------------------------------------------------
+
+	Element author     C1 WORD       * note author
+	Element date       C1 WORD       * note date
+	Element text       V1 DESC       * note content
+
+----------------------------------------------------------------
+Comp Hierarchy parent Domain
+----------------------------------------------------------------
+* Hierarchical organization of entities
+* Creates tree structures within domain
+----------------------------------------------------------------
+
+	Element entity     R1 ENTITY     * entity to organize
+	Element level      N1 WORD       * tree depth
+
+Ref entity Entity check
+
+----------------------------------------------------------------
+Comp Timeline parent Domain
+----------------------------------------------------------------
+* Temporal organization of entities
+* Creates chronological structures
+----------------------------------------------------------------
+
+	Element entity     R1 ENTITY     * entity to organize
+	Element sequence   N1 WORD       * temporal order
+
+Ref entity Entity check
+
+----------------------------------------------------------------
+Comp Collection parent Domain
+----------------------------------------------------------------
+* Named groupings of related entities
+* Custom collections for themes or topics
+----------------------------------------------------------------
+
+	Element name       C1 WORD       * collection identifier
+	Element title      V1 DESC       * collection title
+
+----------------------------------------------------------------
+Comp Member parent Collection
+----------------------------------------------------------------
+* Entity membership in a collection
+* Many-to-many relationship
+----------------------------------------------------------------
+
+	Element entity     R1 ENTITY     * entity in collection
+	Element rank       C1 WORD       * importance or order
+	    Opt primary                  * core member
+	    Opt secondary                * related member
+	    Opt .                        * unranked
+	Element note       V1 DESC       * membership note
+
+Ref entity Entity check
+
