@@ -89,7 +89,7 @@ func GoAct(glob *GlobT, dat interface{}) (int) {
 			sc := strings.Split(act.Kattr, ":")
 			va := strings.Split(sc[0], ".")
 			varOk, varv := sGetVar(glob, winp, sc, va, act.LineNo)
-			
+
 			if !chk(glob, act.Keq, varv, val, prev, varOk, valOk, act.LineNo) {
 				prev = false
 				continue

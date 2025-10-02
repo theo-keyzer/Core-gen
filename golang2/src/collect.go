@@ -329,7 +329,6 @@ func addCmd(glob *GlobT, winp int, cmd *KpAdd, lno string, body interface{}) (in
 	}
 	
 	dat := rec.Dat
-	
 	if slice, ok := dat.([]interface{}); ok {
 		if contains(cmd.Flags, "check") || contains(cmd.Flags, "break") {
 			if containsValue(slice, kData) {
@@ -347,6 +346,7 @@ func addCmd(glob *GlobT, winp int, cmd *KpAdd, lno string, body interface{}) (in
 		// Add to slice (need to update the original reference)
 		
 		newSlice := append(slice, kData)
+//		fmt.Println(newSlice)
 		updPath(glob, glob.Winp, path, cmd.LineNo, newSlice)
 //		updatePath(glob, glob.Winp, path, newSlice)
 		return 0
@@ -375,12 +375,16 @@ func addCmd(glob *GlobT, winp int, cmd *KpAdd, lno string, body interface{}) (in
 		}
 		
 		if contains(cmd.Flags, "check") || contains(cmd.Flags, "break") {
-			if _, exists := mapData[va[1]]; exists {
-				if contains(cmd.Flags, "break") {
-					return 2
+			if mvar, exists := mapData[va[1]]; exists {
+			
+				if mvar == kData {
+//			printDebug("node")
+					if contains(cmd.Flags, "break") {
+						return 2
+					}
+					glob.Wins[winp].IsCheck = true
+					return 0
 				}
-				glob.Wins[winp].IsCheck = true
-				return 0
 			}
 		}
 		
