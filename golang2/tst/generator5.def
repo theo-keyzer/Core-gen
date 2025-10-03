@@ -1,0 +1,941 @@
+----------------------------------------------------------------
+Concept architecture
+----------------------------------------------------------------
+
+Topic . 1 h1 System Architecture
+
+T . A multi-stage template-based code generation system for creating custom generators.
+T . The architecture separates schema definition, data content, and generation logic.
+T . The system is implemented in Go but generates loaders that can target any language.
+
+----------------------------------------------------------------
+Concept bootstrap
+----------------------------------------------------------------
+
+Topic . 1 h2 Bootstrap Process
+
+T . The system uses a two-stage bootstrap to generate itself.
+
+Topic core 2 h3 Core Generator
+
+T . The core generator is written in Go in the gen directory.
+T . Core files are main.go gen.go run.go structs.go and collect.go.
+T . It reads unit schemas and generates loader code in the target language.
+T . The generated loader parses definition files according to the schema.
+T . Command syntax is: go run gen/*.go actor_file schema1.unit,schema2.unit >output.
+
+Topic application 2 h3 Application Generator
+
+T . The application generator uses the generated loader to read definition files.
+T . Generated files include run.go for parsing and structs.go for data structures.
+T . It validates data against the schema ensuring structural integrity.
+T . Actor files drive the code generation or documentation output.
+T . This stage can generate any output format from the structured data.
+
+Topic benefits 2 h3 Bootstrap Benefits
+
+T . The generator can regenerate its own loader when schemas change.
+T . New generator applications require no host language coding.
+T . Schema changes automatically propagate through regeneration.
+T . The system is self-documenting through its own documentation generator.
+
+Topic usage 2 h3 Getting Started
+
+T . Install Go version 1.16 or later.
+T . Organize files in gen directory for bootstrap and src for generated code.
+T . Run g_struct.act against gen.unit to generate structs.go.
+T . Run g_run.act against gen.unit to generate run.go.
+T . The generated loader can now process your schemas and definitions.
+T . Example: go run src/*.go myapp.act mydata.def arg2 arg3 >output.
+
+----------------------------------------------------------------
+Concept entry
+----------------------------------------------------------------
+
+Topic . 1 h2 Program Entry Point
+
+T . The main function serves as the entry point for generated applications.
+T . It orchestrates initialization, loading, and execution phases.
+
+Topic arguments 2 h3 Command Line Arguments
+
+T . The first argument specifies the actor file or comma-separated list.
+T . The second argument specifies the data definition file or comma-separated list.
+T . Additional arguments are stored as numbered variables for actor access.
+T . Minimum two arguments required or program exits silently.
+T . Arguments are accessible via dollar-brace-0-brace through dollar-brace-N-brace.
+
+Topic initialization 2 h3 Global Initialization
+
+T . Creates new GlobT structure to hold all global state.
+T . Sets Winp to minus one indicating no current window.
+T . Sets OutOn to true enabling output by default.
+T . Initializes Collect map for collection storage.
+T . Prepares error counters LoadErrs and RunErrs to zero.
+
+Topic execution 2 h3 Execution Flow
+
+T . Calls loadFiles for actor file storing in glob.Acts.
+T . Calls loadFiles for data file storing in glob.Dats.
+T . Checks if any actors exist in ApActor array.
+T . Creates KpExtra with Names map for argument storage.
+T . Stores all command-line arguments in Names map by index.
+T . Calls NewAct with first actor name and run:1 line number.
+T . Calls GoAct to execute the actor with argument context.
+
+Topic termination 2 h3 Error Handling
+
+T . Checks LoadErrs and RunErrs after execution completes.
+T . Prints error counts using println if any errors occurred.
+T . Calls os.Exit with status 1 if errors present.
+T . Exits normally with status 0 if no errors.
+T . Error messages include file names and line numbers.
+
+----------------------------------------------------------------
+Concept runtime
+----------------------------------------------------------------
+
+Topic . 1 h2 Runtime State
+
+T . The GlobT structure maintains global execution state across all actors.
+
+Topic errors 2 h3 Error Tracking
+
+T . LoadErrs counts errors during file loading and parsing.
+T . RunErrs counts errors during actor execution and variable resolution.
+T . Error counters accumulate across all operations.
+T . Non-zero error count causes program exit with status 1.
+
+Topic data 2 h3 Data Storage
+
+T . Acts field holds ActT structure with all loaded actors.
+T . Dats field holds ActT structure with all loaded data nodes.
+T . Each ActT contains component arrays and index map.
+T . ApActor array specifically holds actor definitions.
+T . The index map provides O(1) lookup by component_name key.
+
+Topic windows 2 h3 Window Management
+
+T . Winp tracks current window position as integer.
+T . Wins array holds WinT structures for each window context.
+T . Value minus one indicates no active window.
+T . Windows enable nested execution contexts for complex iteration.
+
+Topic collections 2 h3 Collections Map
+
+T . Collect map stores dynamically created collections by name.
+T . Keys are collection names as strings.
+T . Values are interface{} allowing any data type.
+T . Collections persist across all actor invocations.
+T . Used for accumulating results and cross-actor communication.
+
+Topic output 2 h3 Output Control
+
+T . OutOn boolean flag enables or disables output generation.
+T . InOn boolean flag enables or disables input redirection.
+T . Ins is a strings.Builder accumulating redirected output.
+T . These support the Out and In commands for flow control.
+T . Output can be delayed, disabled, or redirected to variables.
+
+----------------------------------------------------------------
+Concept loading
+----------------------------------------------------------------
+
+Topic . 1 h2 File Loading Process
+
+T . The loadFiles function coordinates reading and parsing input files.
+
+Topic splitting 2 h3 File List Processing
+
+T . Accepts comma-separated list of file paths as single string.
+T . Splits on comma using strings.Split to get individual files.
+T . Processes each file independently in sequence.
+T . Accumulates errors across all files.
+
+Topic reading 2 h3 File Reading
+
+T . Uses os.ReadFile to load entire file into memory.
+T . Converts byte array to string for line processing.
+T . Reports file read errors with filename and error message.
+T . Increments error counter for each file that fails to load.
+T . Continues processing remaining files after read errors.
+
+Topic parsing 2 h3 Line Parsing
+
+T . Splits file content on newline creating line array.
+T . Calls LoadData with lines, target ActT, and filename.
+T . LoadData iterates lines with loop counter.
+T . Constructs line number as filename:number for error reporting.
+T . Removes carriage return characters for cross-platform compatibility.
+
+Topic indexing 2 h3 Index Initialization
+
+T . Creates index map in ActT before loading any files.
+T . Map stores string keys to integer node identifiers.
+T . Index enables fast lookup of Find and FindIn components.
+T . Reference resolution depends on index for target lookup.
+
+Topic resolution 2 h3 Reference Resolution
+
+T . Calls refs function after all files loaded.
+T . Resolution happens in multiple passes until stable.
+T . Returns total count of unresolved references.
+T . Error count added to overall LoadErrs counter.
+T . Successful resolution required for execution to proceed.
+
+----------------------------------------------------------------
+Concept lineprocessing
+----------------------------------------------------------------
+
+Topic . 1 h2 Line Processing
+
+T . LoadData processes individual lines from definition files.
+
+Topic iteration 2 h3 Line Iteration
+
+T . Loop variable i ranges from 0 to len(lns) minus 1.
+T . Line number calculated as i plus 1 for human readability.
+T . Constructs lno string as filename:linenumber for error tracking.
+T . Each line processed independently in sequence.
+
+Topic cleaning 2 h3 Line Cleaning
+
+T . Removes carriage return characters using strings.ReplaceAll.
+T . Handles files with Windows CRLF or Unix LF line endings.
+T . Ensures consistent line processing across platforms.
+
+Topic tokenization 2 h3 Initial Tokenization
+
+T . Calls getw function to extract first token at position 0.
+T . Returns new position and token string.
+T . Token represents component name or command.
+T . E_O_F token causes immediate break from processing loop.
+T . E_O_L token indicates empty or whitespace-only line.
+
+Topic loading 2 h3 Load Dispatch
+
+T . Calls Load function with ActT, token, line, position, and line number.
+T . Load function looks up component schema and parses fields.
+T . Returns error count for the line.
+T . Accumulated errors added to total for the file.
+T . Processing continues even if individual lines have errors.
+
+----------------------------------------------------------------
+Concept utilities
+----------------------------------------------------------------
+
+Topic . 1 h2 Utility Functions
+
+T . Helper functions provide low-level parsing and lookup operations.
+
+Topic lookup 2 h3 Index Lookup
+
+T . fnd function searches ActT.index map for named component.
+T . First parameter is ActT structure containing the index.
+T . Second parameter s is the search key string.
+T . Third parameter f is the field name for error messages.
+T . Fourth parameter chk controls error reporting behavior.
+T . Returns boolean found flag and integer node identifier.
+
+Topic checking 2 h3 Check Modes
+
+T . Question mark chk value means return -1 without error if not found.
+T . Matching f and chk values means return -1 without error.
+T . Other values cause error message to be printed.
+T . Error format shows field name, search key, line number, and check value.
+T . Found entries return true and valid node identifier.
+
+Topic maps 2 h3 Map Access
+
+T . getName retrieves value from map[string]string by key.
+T . Returns string value if key exists in map.
+T . Returns empty string if key not found.
+T . No error generated for missing keys.
+T . Used for accessing node Names map fields.
+
+Topic words 2 h3 Word Extraction
+
+T . getw extracts next whitespace-delimited word from line.
+T . Parameter line is the input string.
+T . Parameter pos is the starting position in the line.
+T . Returns new position after the word and the word string.
+T . Returns E_O_L token if position exceeds line length.
+
+Topic whitespace 2 h3 Whitespace Handling
+
+T . Skips leading spaces and tabs before extracting word.
+T . Spaces and tabs both treated as delimiters.
+T . Word boundary detected when whitespace encountered.
+T . Returns position pointing to character after the word.
+
+Topic remaining 2 h3 Rest of Line
+
+T . getws extracts all remaining text from position to end.
+T . Returns length of line as new position.
+T . Returns substring from pos+1 to end of line.
+T . Returns empty string if position at or beyond end.
+T . Used for V1 fields that capture entire line remainder.
+
+Topic colon 2 h3 Colon Words
+
+T . getsw extracts word that may be followed by colon.
+T . Skips leading whitespace like getw.
+T . Stops at space, tab, or colon character.
+T . If colon encountered, advances position by 2 not 1.
+T . Returns word without the colon character.
+T . Used for parsing labels and prefixed identifiers.
+
+----------------------------------------------------------------
+Concept extensions
+----------------------------------------------------------------
+
+Topic . 1 h2 Extension Mechanisms
+
+T . The system supports custom extensions through interface implementations.
+
+Topic kpextra 2 h3 KpExtra Structure
+
+T . KpExtra embeds the Kp interface for polymorphism.
+T . Adds Names map[string]string for storing key-value pairs.
+T . Provides GetVar method for custom variable resolution.
+T . Used in main function to pass command-line arguments to actors.
+
+Topic getvariable 2 h3 GetVar Implementation
+
+T . Method signature is GetVar(glob *GlobT, s []string, ln string) (bool, string).
+T . Parameter glob provides access to global state.
+T . Parameter s is array of path segments for variable lookup.
+T . Parameter ln is line number for error reporting.
+T . Returns boolean success flag and string value.
+
+Topic customlookup 2 h3 Custom Variable Lookup
+
+T . Checks if s[0] exists in Names map.
+T . Returns value and true if key found.
+T . Returns formatted error string if key not found.
+T . Error format is question-key-question-colon-linenumber.
+T . Allows actors to access arguments via variable substitution.
+
+Topic integration 2 h3 Integration with Actors
+
+T . KpExtra instance passed to NewAct and GoAct functions.
+T . Actors can reference command-line arguments by index.
+T . Variable ${0} returns first argument (actor file name).
+T . Variable ${1} returns second argument (data file name).
+T . Higher numbers access additional command-line arguments.
+
+----------------------------------------------------------------
+Concept schemas
+----------------------------------------------------------------
+
+Topic . 1 h2 Schema Definition
+
+T . Unit files define the data schema using a component-element model.
+
+Topic components 2 h3 Component Declaration
+
+T . Each Comp statement declares a node type with a unique name.
+T . The parent field establishes hierarchical relationships between components.
+T . Find option marks components as top-level searchable nodes.
+T . FindIn option marks components as nested within parent contexts.
+T . A dot value for find means the component has no name field.
+T . Components can have dot-suffixed flags like Comp.flag1.flag2 in definition files.
+
+Topic hierarchy 2 h3 Component Hierarchy
+
+T . The parent field creates a tree of component types.
+T . Root components have parent set to dot indicating no parent.
+T . Child components reference their parent by name.
+T . This hierarchy controls where components can appear in definition files.
+T . The loader validates that child nodes only appear under valid parents.
+T . Each child is stored in both generic Childs array and typed Its arrays.
+
+Topic elements 2 h3 Element Fields
+
+T . Element statements define the fields within each component.
+T . Each element has a name identifier and a type specification.
+T . Elements appear in definition files in the order declared.
+T . Optional padding elements improve readability without storing data.
+T . Documentation strings describe the purpose of each field.
+
+Topic indexing 2 h3 Component Indexing
+
+T . Find components are indexed as CompName_nodename.
+T . FindIn components are indexed as parentId_CompName_nodename.
+T . The index maps string keys to numeric node identifiers.
+T . This enables fast lookup during reference resolution.
+T . The DoAll command uses indexes to find named nodes.
+
+----------------------------------------------------------------
+Concept datatypes
+----------------------------------------------------------------
+
+Topic . 1 h2 Data Types
+
+T . Element types control how values are parsed and stored.
+
+Topic simple 2 h3 Simple Types
+
+T . C1 captures a single whitespace-delimited word.
+T . V1 captures all remaining text to end of line.
+T . CS captures space-separated words into a single string.
+T . These types store string values directly in the node Names map.
+T . Simple types have no validation beyond parsing rules.
+
+Topic nesting 2 h3 Nesting Control
+
+T . N1 creates tree structures from flat node lists.
+T . The value indicates nesting depth with 1 for top level.
+T . Higher numbers indicate deeper nesting levels.
+T . Zero value marks nodes outside the tree structure.
+T . Multiple N1 fields enable different tree views of same nodes.
+T . Tree structure is materialized during navigation commands.
+
+Topic navigation 2 h3 Tree Navigation
+
+T . Its fieldname.right navigates to child nodes at next level.
+T . Its fieldname.left navigates to parent node at previous level.
+T . Its fieldname.down navigates to next sibling at same level.
+T . Its fieldname.up navigates to previous sibling at same level.
+T . Navigation commands return empty if no node exists in that direction.
+T . The implementation scans siblings comparing N1 values.
+
+Topic parsing 2 h3 Parsing Details
+
+T . Lines are split on whitespace using getw for C1 fields.
+T . The getws function captures remaining line for V1 fields.
+T . The getsw function captures space-separated words for CS fields.
+T . Tabs and spaces are both treated as delimiters.
+T . No escape sequences or quoting mechanisms are supported.
+T . Empty lines and lines starting with dash are ignored.
+
+----------------------------------------------------------------
+Concept references
+----------------------------------------------------------------
+
+Topic . 1 h2 Reference Types
+
+T . Reference types create links between nodes enabling graph structures.
+T . Each reference element has two fields: name string and namep pointer.
+T . The name field stores the target node's name as parsed.
+T . The namep field stores the resolved numeric node identifier.
+T . Default value for unresolved references is minus one.
+
+Topic local 2 h3 Local References
+
+T . R1 links to top-level Find components by name.
+T . RS is space-separated list of R1 references.
+T . F1 links to sibling FindIn components under same parent.
+T . FS is space-separated list of F1 references.
+T . The element value stores the target node's name.
+T . A corresponding Ref statement defines the link validation.
+T . These resolve in the first reference resolution pass.
+
+Topic chained 2 h3 Chained References
+
+T . L1 links to a child of a previously referenced node.
+T . LS is space-separated list of L1 references.
+T . The Ref2 statement specifies which element provides the parent reference.
+T . Multiple L1 fields can chain through multiple hops.
+T . M1 extends L1 by traversing an intermediate reference.
+T . MS is space-separated list of M1 references.
+T . The Ref3 statement defines the two-hop traversal path.
+
+Topic contextual 2 h3 Contextual References
+
+T . Q1 links relative to parent node's reference.
+T . QS is space-separated list of Q1 references.
+T . The Refq statement specifies which parent element to use.
+T . This enables child nodes to reference based on parent context.
+T . U0 copies another element's reference value without parsing.
+T . The Refu statement defines the source element to copy from.
+T . U0 fields are hidden and not parsed from input.
+
+Topic validation 2 h3 Reference Validation
+
+T . Each Ref statement links an element to a target component type.
+T . The opt field controls error handling for missing targets.
+T . Value check means error if target not found.
+T . Value dot means optional when element value is also dot.
+T . Value question means suppress error for missing targets.
+T . The loader reports unresolved references after all passes.
+
+----------------------------------------------------------------
+Concept resolution
+----------------------------------------------------------------
+
+Topic . 1 h2 Reference Resolution
+
+T . References resolve in multiple passes after data loading.
+
+Topic algorithm 2 h3 Resolution Algorithm
+
+T . The refs function is called repeatedly until no progress.
+T . First pass resolves simple R1 RS F1 FS references.
+T . Subsequent passes attempt complex L1 M1 Q1 U0 references.
+T . Each pass returns count of unresolved required references.
+T . Process continues until error count is zero or unchanged.
+T . Typical schemas resolve in two to four passes.
+T . The function returns total error count for validation.
+
+Topic dependencies 2 h3 Reference Dependencies
+
+T . L1 references depend on their R1 or F1 parent being resolved first.
+T . M1 references depend on two chained elements being resolved.
+T . Q1 references depend on parent node's element being resolved.
+T . U0 references depend on source element being resolved.
+T . Circular dependencies cause some references to never resolve.
+T . The algorithm detects lack of progress to avoid infinite loops.
+
+Topic errors 2 h3 Resolution Errors
+
+T . Unresolved references show namep value of minus one.
+T . Not found references show as minus two with error message.
+T . Error format is question-varname-question-lineA-comma-lineB-comma-component-question.
+T . The opt field in Ref controls whether not found is fatal.
+T . Definition files may need reordering to resolve dependencies.
+T . Drawing dependency graphs helps diagnose resolution issues.
+
+Topic reverse 2 h3 Reverse Navigation
+
+T . Forward references enable Its navigation to target nodes.
+T . The system automatically creates reverse reference tracking.
+T . Reverse navigation iterates all nodes checking if they reference current node.
+T . Its CompName_element navigates from target back to sources.
+T . This is implemented as linear scan not indexed lookup.
+T . Reverse navigation enables bidirectional graph traversal.
+
+----------------------------------------------------------------
+Concept definitions
+----------------------------------------------------------------
+
+Topic . 1 h2 Definition Files
+
+T . Definition files contain the actual data following unit schema format.
+
+Topic syntax 2 h3 File Syntax
+
+T . Each line starts with component name followed by field values.
+T . Fields separate by whitespace typically tabs for alignment.
+T . The last V1 field extends to end of line capturing all remaining text.
+T . Lines starting with dashes are section separators for readability.
+T . Blank lines and whitespace-only lines are ignored.
+T . Component names can have dot-suffix flags appended.
+
+Topic structure 2 h3 File Structure
+
+T . Top-level Find components can appear anywhere in the file.
+T . FindIn components must appear after their parent component.
+T . Child components continue until another top-level component appears.
+T . Deep nesting is indicated by component type not by indentation.
+T . Good practice groups related nodes together for readability.
+
+Topic values 2 h3 Field Values
+
+T . C1 fields accept single words without spaces.
+T . V1 fields accept any text including spaces until newline.
+T . Reference fields contain the name of the target node.
+T . N1 fields contain numeric depth indicators.
+T . The dot value has special meaning often for optional fields.
+T . Padding fields can contain any value for visual alignment.
+
+Topic loading 2 h3 Loading Process
+
+T . The Load function reads component name and looks up schema definition.
+T . It splits component on dots to extract flags.
+T . It parses each field according to element type specification.
+T . Field values store in the node Names map.
+T . Reference fields store target name for later resolution.
+T . The loader creates parent-child links based on component hierarchy.
+T . After all files load reference resolution begins.
+T . Multiple unit files can be loaded together comma-separated.
+
+----------------------------------------------------------------
+Concept datamodel
+----------------------------------------------------------------
+
+Topic . 1 h2 Runtime Data Model
+
+T . The generated code creates data structures to hold parsed nodes.
+
+Topic interface 2 h3 Kp Interface
+
+T . All component types implement the Kp interface.
+T . DoIts method handles navigation and iteration commands.
+T . GetVar method handles variable lookups with path traversal.
+T . GetLineNo method returns source line number for error reporting.
+T . This enables polymorphic handling of all node types.
+
+Topic structure 2 h3 Node Structure
+
+T . Each component type generates a KpCompName struct.
+T . Me field stores unique numeric identifier.
+T . LineNo field stores source file line number.
+T . Comp field stores component name as string.
+T . Flags field stores array of dot-suffix flags.
+T . Names map stores all simple field values.
+T . Kparentp stores numeric parent node identifier.
+T . Each reference element gets Kelementp integer pointer field.
+T . Each child component type gets ItsCompName array field.
+T . Generic Childs array stores mixed child types.
+
+Topic collections 2 h3 Data Collections
+
+T . The ActT struct stores all component arrays.
+T . Arrays named ApCompName hold all nodes of that type.
+T . The index map provides name-to-id lookups.
+T . Arrays are append-only during loading.
+T . Node identifiers are array indices.
+
+----------------------------------------------------------------
+Concept actors
+----------------------------------------------------------------
+
+Topic . 1 h2 Actor Execution
+
+T . Actors are like functions that process nodes and generate output.
+T . The actor is given a node for its use.
+
+Topic groups 2 h3 Actor Groups
+
+T . Multiple actors with the same name form a group.
+T . The system tries each actor in the group sequentially.
+T . Each actor has a match condition on node fields.
+T . The first actor with matching condition executes.
+T . If no actor matches the group call fails silently.
+T . This creates a powerful case-switch pattern.
+T . The Break command can exit to calling actor.
+
+Topic matching 2 h3 Match Conditions
+
+T . The comp field is just for documentation.
+T . The attr field names the node field to test.
+T . The eq field specifies the comparison operator.
+T . The value field provides the comparison value.
+T . No match condition means the actor always matches.
+T . This serves as a default case at end of group.
+
+Topic operators 2 h3 Match Operators
+
+T . Equals operator tests exact string match.
+T . Not-equals operator tests for difference.
+T . In operator tests if value appears in space-separated list.
+T . Not-in operator tests if value absent from list.
+T . Has operator tests if field list contains value.
+T . Regex operator performs regular expression matching.
+
+Topic combining 2 h3 Combining Conditions
+
+T . Ampersand combines with previous actor using AND logic.
+T . Pipe combines with previous actor using OR logic.
+T . Question prefix makes variables optional without errors.
+T . Double question matches specifically on variable errors.
+T . These enable complex multi-condition matching.
+
+Topic context 2 h3 Execution Context
+
+T . A calling stack maintains actor invocation chain.
+T . Each stack frame holds the current node and variables.
+T . Variables can access values from previous actors in stack.
+T . The dot prefix accesses current node fields.
+T . The dot-actorname-dot-var accesses ancestor actor variables.
+T . The GlobT structure holds global execution state.
+
+----------------------------------------------------------------
+Concept commands
+----------------------------------------------------------------
+
+Topic . 1 h2 Command Types
+
+T . Commands within actors perform the actual work.
+
+Topic iteration 2 h3 Iteration Commands
+
+T . All command calls actor for each component of specified type.
+T . All CompName iterates all nodes of that type.
+T . All CompName.value iterates nodes where name field equals value.
+T . Its command calls actor for nodes related via references.
+T . Its CompName navigates to typed child components.
+T . Its element navigates via reference to target node.
+T . Its parent navigates to parent node.
+T . This command iterates over collection items calling actor.
+T . Du command conditionally calls actor with current node.
+T . Loop counters track iteration progress for conditional output.
+
+Topic generation 2 h3 Code Generation
+
+T . C command outputs a line with variable substitution.
+T . Cs command outputs text without newline for inline content.
+T . Out command controls output timing with modes.
+T . Out delay defers output until first C in next actor.
+T . Out normal resumes normal output.
+T . Out off disables output completely.
+T . Out on enables output.
+T . In command redirects output to variable for later use.
+T . In on enables redirection to ins variable.
+T . In off disables redirection.
+T . In clear clears the buffer.
+T . Generated content flows to file or variable storage.
+
+Topic flow 2 h3 Control Flow
+
+T . Break command exits from actors loops or command lists.
+T . Break actor continues with calling actor after this group.
+T . Break loop continues after All Its or This loop.
+T . Break cmds continues with next actor in same group.
+T . Break exit terminates entire script immediately.
+T . Break can test IsCheck flag with True or False options.
+T . The IsCheck flag is set in the Add command
+
+Topic data 2 h3 Data Manipulation
+
+T . Add command inserts data into collections.
+T . Var command creates variables in current node instance.
+T . New command creates new nodes dynamically during generation.
+T . Refs command re-runs reference resolution after adding nodes.
+T . Replace command performs string substitution on variables.
+
+----------------------------------------------------------------
+Concept variables
+----------------------------------------------------------------
+
+Topic . 1 h2 Variable System
+
+T . Variables use dollar-brace syntax for substitution in strings.
+
+Topic syntax 2 h3 Variable Syntax
+
+T . Dollar-brace name closing-brace substitutes variable value.
+T . Double dollar-brace produces literal dollar-brace in output.
+T . Colon-c suffix capitalizes first letter of value.
+T . Colon-u suffix converts value to uppercase.
+T . Colon-l suffix converts value to lowercase.
+T . Colon-eol suffix produces empty string if E_O_L flag set.
+T . Colon-join suffix joins array with commas.
+T . Dollar suffix re-evaluates content with nested substitution.
+
+Topic scope 2 h3 Variable Scope
+
+T . Dot-fieldname accesses current node's field value from Names map.
+T . Underscore-name accesses collection storage by name.
+T . Dot-actorname-dot-var accesses variable from ancestor in call stack.
+T . Question-prefix suppresses errors for missing variables.
+T . Variables shadow outer scopes when names conflict.
+
+Topic paths 2 h3 Variable Path Resolution
+
+T . Variable names can be dot-separated paths.
+T . The GetVar method splits path into string array.
+T . It navigates through nodes following the path.
+T . Each segment can be a field name or navigation command.
+T . Reference fields automatically traverse to target node.
+T . Parent keyword navigates to parent node.
+T . Paths enable deep property access in single variable.
+
+Topic special 2 h3 Special Variables
+
+T . Dot-arg contains argument passed from calling actor.
+T . Dot-minus is current loop counter starting at zero.
+T . Dot-plus is loop counter plus one for one-based numbering.
+T . Dot-lno is current line number in output file.
+T . Dot-key is current item key when iterating collections.
+T . Dot-keys is list of keys from chained navigation path.
+T . Dot-kMe is unique numeric index of current node.
+T . Dot-name is component name of current node.
+T . Dot-type is collection data type like List or Map.
+T . Dot-depth is current actor call stack depth.
+T . Numbered variables hold command-line arguments.
+T . Dot-main-dot-N accesses main actor's Nth argument.
+T . These provide context and metadata about execution state.
+
+----------------------------------------------------------------
+Concept collections
+----------------------------------------------------------------
+
+Topic . 1 h2 Collection Storage
+
+T . Collections provide dynamic storage during generation.
+
+Topic types 2 h3 Collection Types
+
+T . List collections store ordered sequences of values.
+T . Map collections store key-value pairs.
+T . Collections can store strings nodes or structured data.
+T . The system infers type from first Add operation.
+T . Explicit type specification prevents inference errors.
+
+Topic operations 2 h3 Add Operations
+
+T . Add underscore-colon-name adds to list collection.
+T . Add underscore-colon-name-colon-key adds to map with key.
+T . Add-dot.me stores current node object in collection.
+T . Add-dot.node stores node from path instead of string.
+T . Add-dot.file loads file contents into collection.
+T . Add-dot.eval evaluates string as expression before storing.
+T . Add-dot.json parses JSON and adds structured data.
+T . Add-dot.post performs HTTP POST to URL.
+T . Add-dot.get performs HTTP GET from URL.
+T . Add-dot.execute runs database SQL query.
+
+Topic options 2 h3 Add Options
+
+T . Map option creates or ensures map collection type.
+T . List option creates or ensures list collection type.
+T . Clear option empties and recreates collection.
+T . Break option breaks actor loop on duplicate detection.
+T . Check option tests for duplicate without adding.
+T . No-add option only checks without modifying collection.
+
+Topic access 2 h3 Collection Access
+
+T . This command iterates collection calling actor for each item.
+T . Dollar-brace-underscore-dot-name accesses string values.
+T . Dollar-brace-underscore-dot-name-dot-field accesses node fields.
+T . Collections persist across all actors for data accumulation.
+T . Nested collections enable complex data structures.
+
+----------------------------------------------------------------
+Concept patterns
+----------------------------------------------------------------
+
+Topic . 1 h2 Common Patterns
+
+T . Several design patterns emerge for common generation tasks.
+
+Topic filter 2 h3 Filter Pattern
+
+T . Use collections to track processed nodes avoiding duplicates.
+T . Add check option tests membership without modifying.
+T . Add break option exits actor when duplicate found.
+T . This creates unique sets for filtering repeated data.
+
+Topic context 2 h3 Context Accumulation
+
+T . Pass data between actors using collections.
+T . Parent actors collect data from child iterations.
+T . Child actors query collections for context information.
+T . This enables cross-references and global analysis.
+
+Topic multipass 2 h3 Multi-Pass Generation
+
+T . First pass collects information into collections.
+T . Subsequent passes use collections to generate output.
+T . Out delay defers output until next actor.
+T . This enables forward references in output.
+T . The delayed output is cleared if the next actor has no output.
+
+Topic conditional 2 h3 Conditional Output
+
+T . Use collections to track state across iterations.
+T . Loop counters enable first-item or last-item detection.
+T . Actor groups with conditions enable case switching.
+T . Question prefix suppresses errors for optional fields.
+
+Topic separator 2 h3 Separator Pattern
+
+T . Use loop counter dot-minus to test for first item.
+T . Output comma or separator only when counter is nonzero.
+T . Variable syntax dollar-brace-dot-one-dot-comma-brace generates comma if not first.
+T . This handles comma-separated lists elegantly.
+
+----------------------------------------------------------------
+Concept workflow
+----------------------------------------------------------------
+
+Topic . 1 h2 Development Workflow
+
+T . Creating a custom generator follows a structured process.
+
+Topic design 2 h3 Design Phase
+
+T . Identify entities and relationships in problem domain.
+T . Sketch data hierarchy and cross-references.
+T . Plan what output format to generate from data.
+T . Consider how actors will traverse data structure.
+
+Topic schema 2 h3 Schema Development
+
+T . Create unit file defining components and elements.
+T . Start with simple top-level components.
+T . Add child components for nested data.
+T . Define reference elements with appropriate types.
+T . Write Ref statements for each reference element.
+T . Use R1 for top-level links and F1 for sibling links.
+T . Use L1 for child-of-reference and M1 for two-hop chains.
+
+Topic testing 2 h3 Schema Testing
+
+T . Create minimal definition file with sample data.
+T . Run bootstrap generator to create loader.
+T . Load definition file and check for errors.
+T . Verify reference resolution completes successfully.
+T . Check that index map contains expected entries.
+T . Iterate on schema fixing validation issues.
+
+Topic actors 2 h3 Actor Development
+
+T . Start with simple actors using C commands only.
+T . Test navigation commands with debug output.
+T . Build up complexity incrementally.
+T . Use collections to track state and prevent duplicates.
+T . Test with varied input data to verify robustness.
+T . Add actor groups with conditions for case logic.
+
+Topic iteration 2 h3 Iterative Refinement
+
+T . Add features to schema as needs emerge.
+T . Regenerate loader after schema changes.
+T . Extend actors to handle new fields and relationships.
+T . Refactor actors to reduce duplication.
+T . Document patterns and conventions for maintainability.
+
+----------------------------------------------------------------
+Concept examples
+----------------------------------------------------------------
+
+Topic . 1 h2 Example Applications
+
+T . The system enables diverse generation tasks.
+
+Topic documentation 2 h3 Documentation Generator
+
+T . Define Concept Topic and T components for structured docs.
+T . Use N1 level field for hierarchical topic nesting.
+T . Actors generate HTML with proper heading levels.
+T . Cross-references link related concepts together.
+T . This documentation itself demonstrates the pattern.
+
+Topic database 2 h3 Database Schema Generator
+
+T . Define Type Attr and Where components.
+T . Use R1 references for foreign key relationships.
+T . Actors generate CREATE TABLE statements.
+T . Additional actors generate ORM class definitions.
+T . View definitions generated from same schema.
+T . Schema documentation generated from same definitions.
+
+Topic webapp 2 h3 Web Application Generator
+
+T . Define Type for entities with Attr for fields.
+T . Generate DAO implementation classes with CRUD methods.
+T . Generate view SQL with joins and decodes.
+T . Generate controller and service layer code.
+T . All from single schema definition.
+
+Topic loader 2 h3 Loader Generator
+
+T . The g_struct.act and g_run.act actors generate the loader itself.
+T . Takes gen.unit and act.unit as input schemas.
+T . Generates Go code for parsing and reference resolution.
+T . Creates typed structs for each component.
+T . Implements navigation and variable lookup.
+T . Demonstrates complete self-hosting capability.
+
+See bootstrap
+See schemas
+See references
+See actors
+See datamodel
+See entry
+See runtime
+See loading
