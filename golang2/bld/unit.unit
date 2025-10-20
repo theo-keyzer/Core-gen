@@ -1,0 +1,57 @@
+----------------------------------------------------------------
+Comp Comp parent . Find
+* This component defines a class or entity, its name, its parent, and its searchability.
+----------------------------------------------------------------
+
+	Element name    word .    + The unique name of the component (e.g., 'Project').
+	Element nop     word .    + Ignored, place holder for readability 
+	Element parent  ref  Comp . The parent component, or '.' for a top-level component.
+	Element find    word .    * How the component can be found: 'Find' for top-level, 'FindIn' for nested.
+
+	    Opt Find              * For top-level components, searchable by name.
+	    Opt FindIn            * For nested components, searchable within parent context.
+	    Opt .                 * Has no name field or is not searchable.
+
+	Element doc     text .    * Documentation string for the component.
+
+----------------------------------------------------------------
+Comp Element parent Comp FindIn
+----------------------------------------------------------------
+    Element name word .     + The name of the element (field).
+    Element type word .     + The storage and data type.
+
+        Opt key             * The find key index
+        Opt word            * Single word value
+        Opt text            * String to end of line
+        Opt number          * Numeric value or index for ordering
+        Opt tree            * Numeric, enables tree navigation
+        Opt ref             * Direct reference to top-level Comp
+        Opt link            * Reference to sibling Comp
+        Opt up_copy    
+        Opt ref_copy        * Derived reference that copies the reference value from a field in the previous ref/link element.
+        Opt ref_child       + Derived reference that looks up a child component within the component referenced by the previous element.
+
+    Element comp  ref  Comp . Component this links to. Use (dot) here for non ref types.
+    Element check word .    + How to check target found for refs and end of line for word
+
+        Opt .               * Error if target not found if target is not dot.
+        Opt +               * Error if target not found
+        Opt 1               * Error if target not found or more targets found
+        Opt *               * No error check for target
+        Opt +               * Error if word is end of line
+        Opt *               * Optional word, can be end of line
+
+    Element doc text .      * Documentation string.
+
+----------------------------------------------------------------
+Comp Opt parent Element FindIn
+----------------------------------------------------------------
+* Select options for element.
+* Add meaning to documentation
+----------------------------------------------------------------
+
+	Element name word . * name of value option
+	Element pad  word . * Ignored, separator for alignment
+	Element doc  text . * documentation string
+	
+

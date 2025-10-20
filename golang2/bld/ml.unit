@@ -1,0 +1,128 @@
+----------------------------------------------------------------
+Comp Ml parent . Find
+----------------------------------------------------------------
+* Definitions for ML inference model specification.
+*
+* Contains (Attr) operations and (Kernel) compute implementations.
+----------------------------------------------------------------
+
+	Element name key  . + Model name.
+	Element desc text . * Description.
+
+----------------------------------------------------------------
+Comp Layer parent Ml FindIn
+----------------------------------------------------------------
+* Neural network layer definitions.
+* Each layer has operations and memory requirements.
+----------------------------------------------------------------
+
+	Element name    key  . + Layer identifier
+	Element type    word . + Layer type (conv, dense, pool, etc)
+	Element desc    text . * Layer description
+
+----------------------------------------------------------------
+Comp Op parent Layer FindIn
+----------------------------------------------------------------
+* Operations within a layer (forward pass steps).
+* Navigates up to parent Ml, then finds Kernel within it.
+----------------------------------------------------------------
+
+	Element name      key        .        + Operation name
+	Element type1     up_copy    Ml       + Navigate up to parent Ml
+	Element kernel    ref_child  Kernel   + Kernel within parent Ml
+	Element type2     up_copy    Ml       + Navigate up to parent Ml
+	Element input     ref_child  Tensor   + Input tensor spec
+	Element type3     up_copy    Ml       + Navigate up to parent Ml
+	Element output    ref_child  Tensor   + Output tensor spec
+	Element params    text       .        * Operation parameters
+
+----------------------------------------------------------------
+Comp Kernel parent Ml FindIn
+----------------------------------------------------------------
+* Compute kernel implementations (CUDA, HIP, Metal).
+* Defines the actual computation for operations.
+----------------------------------------------------------------
+
+	Element name      key  . + Kernel name (unique)
+	Element backend   word . + Target hardware (cuda, hip, metal)
+	Element desc      text . * Kernel description
+
+----------------------------------------------------------------
+Comp KernelOp parent Kernel FindIn
+----------------------------------------------------------------
+* Primitive operations within kernel (memory access, compute).
+* Primitive specifies what compute happens on device.
+----------------------------------------------------------------
+
+	Element name      key   .          + Operation primitive name
+	Element type      word  .          + Primitive type (matmul, add, mem_load, etc)
+	Element compute   text  .          * Compute specification
+
+----------------------------------------------------------------
+Comp Tensor parent Ml FindIn
+----------------------------------------------------------------
+* Tensor shape, layout, and memory specifications.
+* Referenced by operations to define data flow.
+----------------------------------------------------------------
+
+	Element name      key   .        + Tensor name
+	Element shape     word  .        + Shape (e.g., "batch,height,width,channel")
+	Element dtype     word  .        + Data type (fp32, fp16, int8, etc)
+	Element layout    word  .        + Memory layout (nchw, nhwc, etc)
+	Element desc      text  .        * Tensor description
+
+----------------------------------------------------------------
+Comp MemLayout parent Tensor FindIn
+----------------------------------------------------------------
+* Memory layout details (stride, padding, alignment).
+* Child of Tensor to specify hardware-specific layout.
+----------------------------------------------------------------
+
+	Element name      key   .        + Layout variant name
+	Element stride    word  .        + Stride specification
+	Element align     word  .        + Alignment requirement (bytes)
+	Element desc      text  .        * Description
+
+----------------------------------------------------------------
+Comp KernelArg parent Op FindIn
+----------------------------------------------------------------
+* Kernel arguments for operation invocation.
+* Specifies tensors and parameters passed to kernel.
+----------------------------------------------------------------
+
+	Element name      key        .       + Argument name
+	Element type      up_copy    Ml      + Navigate up to parent Ml
+	Element tensor    ref_child  Tensor  + Tensor reference in Ml
+	Element dtype     word       .       + Data type (override if needed)
+	Element desc      text       .       * Argument description
+
+----------------------------------------------------------------
+Comp Config parent Ml FindIn
+----------------------------------------------------------------
+* Inference configuration (batch size, optimization flags).
+* Can reference multiple layers for cross-layer optimization.
+----------------------------------------------------------------
+
+	Element name      key   .       + Configuration name
+	Element target    word  .       + Target device (gpu_a100, mobile, etc)
+	Element batch     word  .       + Batch size
+	Element opt_flag  word  .       + Optimization flags
+	Element desc      text  .       * Description
+
+Opt int8_quantize    . Quantize to int8
+Opt fp16_mixed       . Mixed precision fp16
+Opt fused_ops        . Fuse operations
+Opt memory_optimize  . Minimize memory usage
+
+----------------------------------------------------------------
+Comp Schedule parent Config
+----------------------------------------------------------------
+* Execution schedule for operations.
+* Navigates up to Ml, then finds Layer, then Operation within it.
+----------------------------------------------------------------
+
+	Element seq       word       .        + Sequence number
+	Element type      up_copy    Ml       + Navigate up to parent Ml
+	Element layer     ref_child  Layer    + Layer within parent Ml
+	Element op        ref_child  Op       + Operation within that Layer
+	Element desc      text       .        * Scheduling note
